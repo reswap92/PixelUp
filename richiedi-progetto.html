@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inizia il tuo progetto — PixelUp</title>
+  <meta name="description" content="Raccontaci la tua idea: al resto pensiamo noi. Richiedi un progetto su misura con PixelUp.">
+  <style>
+    :root{
+      --bg:#f7f7f9;
+      --panel:#ffffff;
+      --ink:#121316;
+      --muted:#5b6169;
+      --border:#e5e7eb;
+      --accent:#111214;
+      --accent-2:#1c1f24;
+      --ring:0 0 0 4px rgba(28,31,36,.15);
+      --radius:22px;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.45;
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    .container{width:min(980px,92%);margin-inline:auto}
+
+    /* Header */
+    header{padding:18px 0}
+    .nav{display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{height:34px}
+    .brand span{font-weight:800;letter-spacing:.3px}
+
+    /* Hero title */
+    .hero{padding:24px 0 10px}
+    .hero h1{
+      font-size:clamp(2rem,4.2vw,3.2rem);
+      margin:10px 0 8px 0;
+      letter-spacing:.2px;
+    }
+    .hero p{color:var(--muted);font-size:1.1rem;margin:0}
+
+    /* Form card */
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:26px;
+      margin:22px 0 40px;
+      width:min(760px,100%);
+    }
+    .field{margin:14px 0}
+    label{display:block;font-weight:700;margin:6px 2px 6px}
+    input,select,textarea{
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px 16px;
+      font-size:1rem;
+      background:#fff;
+      transition: box-shadow .15s,border-color .15s;
+    }
+    textarea{min-height:120px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:none;box-shadow:var(--ring);border-color:#cfd6de}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      font-weight:800;border-radius:14px;padding:14px 18px;border:1px solid #cfd6de;
+      background:#fff;transition:transform .18s,background .18s,box-shadow .18s;
+      box-shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .btn-dark:hover{background:var(--accent-2)}
+
+    .note{color:var(--muted);margin:14px 0 18px}
+    .stack{display:grid;gap:12px}
+    .btn-ghost{
+      background:#fff;border:1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="container">
+    <a class="brand" href="index.html">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+      <span>PIXELUP</span>
+    </a>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Inizia il tuo progetto</h1>
+      <p>Raccontaci la tua idea, al resto pensiamo noi.</p>
+    </section>
+
+    <section class="card" aria-label="Modulo di richiesta progetto">
+      <form id="projectForm" action="#" method="post">
+        <div class="field">
+          <label for="name">Nome e cognome</label>
+          <input id="name" name="name" type="text" placeholder="Es. Mario Rossi" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="nome@email.com" required>
+        </div>
+
+        <div class="field">
+          <label for="type">Tipo di progetto</label>
+          <select id="type" name="type" required>
+            <option value="Sito vetrina">Sito vetrina</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="Landing page">Landing page</option>
+            <option value="Brand/Logo">Brand / Logo</option>
+            <option value="Altro">Altro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="budget">Budget indicativo</label>
+          <select id="budget" name="budget" required>
+            <option>&lt; 500€</option>
+            <option>500–1.000€</option>
+            <option>1.000–3.000€</option>
+            <option>&gt; 3.000€</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Messaggio</label>
+          <textarea id="message" name="message" placeholder="Raccontaci l’idea e cosa ti serve…"></textarea>
+        </div>
+
+        <div class="field">
+          <button class="btn btn-dark" type="submit">Invia richiesta</button>
+        </div>
+      </form>
+
+      <p class="note">Ti risponderemo entro 24h con una proposta su misura. Ogni grande progetto inizia da un’idea.</p>
+
+      <div class="stack">
+        <a class="btn btn-ghost" href="progetti.html">Vuoi prima vedere i nostri lavori?</a>
+        <a class="btn btn-ghost" href="https://wa.me/39XXXXXXXXXX?text=Ciao%20PixelUp,%20vorrei%20informazioni%20su%20un%20progetto" target="_blank" rel="noopener">
+          💬 Contattaci su WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Placeholder: mostra un messaggio invece di inviare davvero
+    document.getElementById('projectForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Grazie! La tua richiesta è stata inviata (demo). Imposta un endpoint per ricevere le email.');
+    });
+  </script>
+</body>
+</html>
