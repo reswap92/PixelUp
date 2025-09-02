@@ -1,4 +1,4 @@
-r<!doctype html>
+<!doctype html>
 <html lang="it">
 <head>
   <meta charset="utf-8" />
@@ -7,51 +7,46 @@ r<!doctype html>
   <meta name="description" content="Siamo PixelUp: trasformiamo idee in progetti digitali. Dal sito vetrina allo shop online, soluzioni su misura con design moderno e funzionale.">
   <style>
     :root{
-      --bg:#0f1114;          /* sfondo chiaro */
-      --panel:#eceff3;       /* pannello chiaro */
-      --ink:#0f1114;         /* testo su chiaro */
-      --ink-inv:#f7f8fa;     /* testo su chiaro */
+      /* palette chiara come il sito */
+      --bg:#f6f7f8;
+      --panel:#ffffff;
+      --ink:#111214;
       --muted:#5b6169;
-      --accent:#111214;
-      --accent-2:#1c1f24;
-      --ring: 0 0 0 4px rgba(255,255,255,.18);
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-      --radius: 26px;
-      --radius-sm: 16px;
+      --border:#e5e7eb;
+      --accent:#2d7ef7;
+      --accent-2:#1f6ae0;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+      --radius:26px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background:
-        radial-gradient(1200px 600px at -20% -10%, #13161b 10%, transparent 60%),
-        radial-gradient(1000px 600px at 120% 10%, #151a20 10%, transparent 60%),
-        var(--bg);
-      color:var(--ink-inv);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
       line-height:1.5;
     }
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
-
     .container{width:min(1000px,92%);margin-inline:auto}
 
-    /* Header minimale con menu coerente al sito */
-    header{padding:20px 0}
-    .nav{display:flex;align-items:center;justify-content:center}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand img{height:200px}
-    .brand span{font-weight:800;font-size:1.15rem;letter-spacing:.3px}
-    .menu{display:flex;gap:22px}
-    .menu a{opacity:.85;padding:8px 10px;border-radius:10px}
-    .menu a:hover{opacity:1; background:rgba(255,255,255,.06)}
-    .menu a[aria-current="page"]{background:rgba(255,255,255,.10);opacity:1}
-
-    /* Hero centrale come nel mockup */
-    .hero{
-      padding:30px 0 14px;
-      text-align:center;
+    /* Header chiaro con logo centrato e SENZA scritta */
+    header{
+      padding:20px 0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
     }
+    .nav{display:flex;align-items:center;justify-content:center;gap:0}
+    .brand{display:flex;align-items:center;justify-content:center}
+    .brand img{height:200px;width:auto;margin:0 auto}
+    .brand span{display:none} /* nasconde la scritta PixelUp */
+    .menu{display:flex;gap:22px;justify-content:center;margin-top:12px}
+    .menu a{color:#5b5f66;padding:8px 10px;border-radius:10px}
+    .menu a:hover{color:#111}
+
+    /* Hero */
+    .hero{padding:30px 0 14px;text-align:center}
     .hero .logo-top{display:grid;place-items:center;margin-bottom:12px}
     .hero .logo-top img{height:46px;opacity:.95}
     .hero h1{
@@ -60,62 +55,50 @@ r<!doctype html>
       letter-spacing:.2px;
     }
 
-    /* Card chiara con testi */
+    /* Card contenuti chiara */
     .card{
       margin:0 auto;
       width:min(880px,96%);
       background:var(--panel);
       color:var(--ink);
+      border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:28px 24px;
     }
-    .card p{
-      margin:0 0 16px 0;
-      font-size:clamp(1.05rem,1.6vw,1.25rem);
-      color:#262a31;
-    }
-    .actions{
-      display:flex;gap:14px;flex-wrap:wrap;margin-top:12px
-    }
+    .card p{margin:0 0 16px 0;font-size:clamp(1.05rem,1.6vw,1.2rem);color:#262a31}
+
+    .actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:12px}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;
       padding:14px 18px;border-radius:16px;font-weight:700;
-      transition:.18s transform,.18s background,.18s box-shadow,.18s border-color;
-      border:1px solid #cfd6de; background:#fff; color:#15181c;
-      box-shadow:0 8px 24px rgba(0,0,0,.07);
+      border:1px solid #cfd6de;background:#fff;color:#15181c;
+      box-shadow:0 8px 24px rgba(0,0,0,.06);transition:.18s transform,.18s background
     }
     .btn:hover{transform:translateY(-1px)}
-    .btn:focus-visible{outline:none;box-shadow:var(--ring)}
-    .btn-dark{
-      background:var(--accent); color:#fff; border-color:#0e1013;
-    }
+    .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent)}
     .btn-dark:hover{background:var(--accent-2)}
 
-    /* Spazio finale */
     .spacer{height:48px}
 
-    /* Footer legale coerente al sito */
-    footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;margin-top:14px}
+    /* Footer legale chiaro */
+    footer{border-top:1px solid var(--border);background:#eef1f4;padding:18px 0;margin-top:14px}
     .foot{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-    .foot a{
-      background:rgba(255,255,255,.06);
-      padding:8px 12px;border-radius:12px
-    }
-    .foot a:hover{background:rgba(255,255,255,.12)}
+    .foot a{color:#2b2f36;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:12px}
+    .foot a:hover{background:#f9fafb}
   </style>
 </head>
 <body>
 
-  <!-- Header con menu del sito -->
+  <!-- Header -->
   <header>
     <div class="container nav">
       <a class="brand" href="index.html">
         <img src="logopixelup.png" alt="Logo PixelUp">
-        <span>PixelUp</span>
+        <span>PixelUp</span> <!-- verrà nascosto via CSS -->
       </a>
-      <nav class="menu">
-        <a href="chi-siamo.html" aria-current="page">Chi siamo</a>
+      <nav class="menu" aria-label="Sezioni">
+        <a href="chi-siamo.html" aria-current="page"><strong>Chi siamo</strong></a>
         <a href="contatti.html">Contatti</a>
         <a href="servizi.html">Servizi</a>
       </nav>
@@ -129,13 +112,12 @@ r<!doctype html>
     </div>
     <h1>Chi siamo</h1>
 
-    <!-- Card contenuti -->
     <div class="card">
       <p><strong>Siamo PixelUp.</strong> Trasformiamo idee in progetti digitali pronti a conquistare il mercato.</p>
       <p>Dal sito vetrina più semplice allo shop online completo, sviluppiamo soluzioni su misura
-         con un design moderno, funzionale e ad alto impatto.</p>
+        con un design moderno, funzionale e ad alto impatto.</p>
       <p>Crediamo nella velocità, nell’innovazione e nella concretezza: ogni progetto deve essere
-         <em>bello</em>, veloce e pronto a vendere.</p>
+        <em>bello</em>, veloce e pronto a vendere.</p>
 
       <div class="actions">
         <a class="btn" href="progetti.html">Guarda i nostri lavori</a>
@@ -146,7 +128,7 @@ r<!doctype html>
 
   <div class="spacer" aria-hidden="true"></div>
 
-  <!-- Footer legale -->
+  <!-- Footer -->
   <footer>
     <div class="container foot">
       <a href="privacy.html">Privacy</a>
