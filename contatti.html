@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PixelUp — Contatti</title>
+  <meta name="description" content="Contattaci per trasformare le tue idee in progetti digitali. Rispondiamo entro 24h.">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background: #f6f7f8;
+      color: #111;
+      line-height: 1.5;
+    }
+    header {
+      padding: 18px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+    }
+    header img { height: 32px; }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    h1 { font-size: 2rem; margin-bottom: 8px; }
+    p { margin-top: 0; color: #444; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 1rem;
+    }
+    .contact-info a {
+      text-decoration: none;
+      color: #2d7ef7;
+      font-weight: 600;
+    }
+    iframe {
+      width: 100%;
+      height: 260px;
+      border: 0;
+      border-radius: 12px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+    }
+    input, textarea {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { background: #2d7ef7; }
+
+    footer {
+      margin-top: 40px;
+      padding: 16px;
+      background: #eef1f4;
+      text-align: center;
+      font-size: .9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Contatti</h1>
+    <p>Hai un'idea o un progetto? Scrivici, rispondiamo entro 24h.</p>
+
+    <div class="contact-grid">
+      <!-- Info -->
+      <div class="contact-info">
+        <div>
+          📧 Email: <a href="mailto:pixelup@gmail.com">pixelup@gmail.com</a>
+        </div>
+        <div>
+          💬 WhatsApp: <a href="https://wa.me/393385209039">+39 338 520 9039</a>
+        </div>
+      </div>
+      <!-- Mappa -->
+      <div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2800.815228964994!2d9.4901!3d45.5749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786bc8284d8b9f7%3A0x4b07c21f2b3a7c3!2sPozzo%20d&#39;Adda%2C%20MI!5e0!3m2!1sit!2sit!4v1690000000000" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form>
+      <input type="text" name="nome" placeholder="Nome e cognome" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="messaggio" placeholder="Messaggio" required></textarea>
+      <button type="submit">Invia</button>
+    </form>
+  </main>
+
+  <footer>
+    © 2025 PixelUp — Privacy • Termini • Cookie
+  </footer>
+</body>
+</html>
