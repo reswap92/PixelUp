@@ -43,13 +43,9 @@
       display:flex;align-items:center;justify-content:space-between;
       padding:18px 0;
     }
-    .brand{display:flex;align-items:center}
-    /* <<< Qui: solo logo, 300px su desktop */
-    .brand img{height:300px;width:auto}
-    /* Mobile safety: non far esplodere l’header su schermi piccoli */
-    @media (max-width: 640px){
-      .brand img{height:64px}
-    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:32px;width:auto}
+    .brand span{font-weight:800;font-size:1.25rem;letter-spacing:.2px}
 
     .menu{display:flex;align-items:center;gap:22px}
     .menu a{
@@ -134,7 +130,7 @@
     <div class="container nav" role="navigation" aria-label="Principale">
       <a class="brand" href="/">
         <img src="logopixelup.png" alt="Logo PixelUp">
-        <!-- scritta PixelUp rimossa come richiesto -->
+        <span>PixelUp</span>
       </a>
       <nav class="menu" aria-label="Sezioni">
         <a href="chi-siamo.html">Chi siamo</a>
@@ -150,7 +146,7 @@
       <h1>Dalle idee ai progetti digitali. PixelUp, la tua casa della creatività.</h1>
       <div class="actions">
         <a class="btn" href="progetti.html">Scopri i nostri progetti</a>
-        <a class="btn btn-primary" href="richiedi-sito.html">Richiedi un sito</a>
+        <a class="btn btn-primary" href="richiedi-sito.html">Richiedi il tuo progetto</a>
       </div>
     </section>
 
@@ -174,7 +170,7 @@
     <section class="container cta" aria-labelledby="cta-title">
       <h3 id="cta-title">Vuoi un sito come questo?</h3>
       <p>Lo creiamo per te.</p>
-      <a class="btn btn-primary" href="richiedi-progetto.html">Richiedi un progetto</a>
+      <a class="btn btn-primary" href="richiedi-progetto.html">Contattaci</a>
     </section>
   </main>
 
