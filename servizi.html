@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Servizi — PixelUp</title>
+  <meta name="description" content="Tutti i servizi PixelUp: creazione siti, creazione e vendita progetti, copywriting e manutenzione.">
+  <style>
+    :root{
+      --bg:#f6f7f8;
+      --panel:#ffffff;
+      --ink:#121316;
+      --muted:#5b6169;
+      --border:#e5e7eb;
+      --accent:#2d7ef7;
+      --accent-hover:#1f6ae0;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+      --radius:18px;
+      --chip:#eef1f4;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--ink);background:var(--bg);line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    .container{width:min(1100px,92%);margin-inline:auto}
+
+    /* Header (logo centrato 300px + menu sotto) */
+    header{
+      background:#fff;border-bottom:1px solid var(--border);
+      text-align:center;padding:20px 0;
+    }
+    .brand img{height:300px;width:auto;margin:0 auto}
+    .menu{
+      margin-top:14px;display:flex;justify-content:center;gap:22px
+    }
+    .menu a{color:#5b5f66;padding:8px 10px;border-radius:10px}
+    .menu a:hover{color:#111}
+
+    /* Intro */
+    .intro{padding:34px 0 10px;text-align:center}
+    .intro h1{margin:0 0 8px;font-size:clamp(2rem,5vw,3rem)}
+    .intro p{margin:0 auto;color:var(--muted);max-width:62ch}
+
+    /* Cards servizi */
+    .grid{display:grid;gap:18px;padding:24px 0}
+    @media (min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+    .card{
+      background:var(--panel);border:1px solid var(--border);
+      border-radius:22px;padding:18px;box-shadow:var(--shadow)
+    }
+    .head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+    .icon{font-size:1.6rem}
+    .title{font-size:1.25rem;margin:0}
+    .desc{color:var(--muted);margin:6px 0 10px}
+    ul{margin:0 0 10px 18px}
+    .cta{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 14px;border-radius:12px;
+      border:1px solid #cfd6de;background:#fff;font-weight:700
+    }
+    .cta:hover{box-shadow:0 8px 24px rgba(0,0,0,.06)}
+    .cta.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .cta.primary:hover{background:var(--accent-hover)}
+
+    /* Chip / tag  */
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+    .chip{
+      background:var(--chip);border:1px solid var(--border);
+      padding:6px 10px;border-radius:999px;font-size:.85rem;font-weight:700;color:#394049
+    }
+
+    /* FAQ */
+    .faq{padding:10px 0 36px}
+    .faq h2{text-align:center;margin:10px 0 6px}
+    details{
+      background:#fff;border:1px solid var(--border);border-radius:14px;
+      padding:12px 14px;margin:10px 0;box-shadow:0 8px 24px rgba(0,0,0,.04)
+    }
+    summary{cursor:pointer;font-weight:800}
+    summary::-webkit-details-marker{display:none}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);background:#eef1f4;margin-top:24px}
+    .foot{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:18px 0}
+    .foot a{color:#2b2f36;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:12px}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a class="brand" href="index.html"><img src="logopixelup.png" alt="PixelUp"></a>
+    <nav class="menu" aria-label="Sezioni">
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="servizi.html" aria-current="page"><strong>Servizi</strong></a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Intro -->
+    <section class="intro">
+      <h1>Servizi</h1>
+      <p>Dai pixel ai progetti: design, sviluppo, contenuti e crescita. Scegli ciò che ti serve o chiedi un pacchetto su misura.</p>
+    </section>
+
+    <!-- Cards -->
+    <section class="grid" aria-label="Elenco servizi">
+      <!-- Creazione siti -->
+      <article class="card">
+        <div class="head">
+          <span class="icon">🖥️</span>
+          <h3 class="title">Creazione siti</h3>
+        </div>
+        <p class="desc">Siti vetrina, landing page, e-commerce. Veloci, responsive e pronti al SEO di base.</p>
+        <ul>
+          <li>Design moderno e brand-coherent</li>
+          <li>Responsive e performance</li>
+          <li>Contenuti base + SEO essentials</li>
+          <li>Deploy e dominio/hosting</li>
+        </ul>
+        <a class="cta primary" href="richiedi-progetto.html">Richiedi preventivo</a>
+        <div class="chips">
+          <span class="chip">Vetrina</span><span class="chip">Landing</span><span class="chip">E-commerce</span>
+        </div>
+      </article>
+
+      <!-- Creazione progetti -->
+      <article class="card">
+        <div class="head">
+          <span class="icon">⚙️</span>
+          <h3 class="title">Creazione progetti</h3>
+        </div>
+        <p class="desc">Dal concept al prototipo fino al lancio: prodotti digitali, micro-app, pacchetti brand.</p>
+        <ul>
+          <li>Analisi e concept</li>
+          <li>UX/UI wireframe + visual</li>
+          <li>Proto/MVP e test</li>
+          <li>Piano di lancio</li>
+        </ul>
+        <a class="cta" href="contatti.html">Parla con noi</a>
+        <div class="chips">
+          <span class="chip">MVP</span><span class="chip">UX/UI</span><span class="chip">Go-to-market</span>
+        </div>
+      </article>
+
+      <!-- Vendita progetti -->
+      <article class="card">
+        <div class="head">
+          <span class="icon">🛒</span>
+          <h3 class="title">Vendita progetti</h3>
+        </div>
+        <p class="desc">Progetti pronti all’uso (come BackTag) da acquistare e personalizzare rapidamente.</p>
+        <ul>
+          <li>Catalogo progetti pronti</li>
+          <li>Branding e copy base inclusi</li>
+          <li>Setup tecnico rapido</li>
+          <li>Assistenza al lancio</li>
+        </ul>
+        <a class="cta" href="progetti.html">Scopri il catalogo</a>
+        <div class="chips">
+          <span class="chip">Pronti</span><span class="chip">Personalizzabili</span><span class="chip">Veloci</span>
+        </div>
+      </article>
+
+      <!-- Testo progetti (copywriting) -->
+      <article class="card">
+        <div class="head">
+          <span class="icon">✍️</span>
+          <h3 class="title">Testo progetti (copywriting)</h3>
+        </div>
+        <p class="desc">Naming, payoff, testi per siti e landing che convertono e spiegano bene il tuo valore.</p>
+        <ul>
+          <li>Naming + payoff</li>
+          <li>Copy per sezioni sito/landing</li>
+          <li>Microcopy UX (bottoni, CTA, form)</li>
+          <li>Revisione SEO on-page</li>
+        </ul>
+        <a class="cta" href="contatti.html">Richiedi una bozza</a>
+        <div class="chips">
+          <span class="chip">Brand voice</span><span class="chip">CTA</span><span class="chip">SEO base</span>
+        </div>
+      </article>
+
+      <!-- Manutenzione siti -->
+      <article class="card">
+        <div class="head">
+          <span class="icon">🛡️</span>
+          <h3 class="title">Manutenzione siti</h3>
+        </div>
+        <p class="desc">Aggiornamenti, sicurezza, backup e piccole modifiche mensili su richiesta.</p>
+        <ul>
+          <li>Update contenuti e sezioni</li>
+          <li>Backup e sicurezza</li>
+          <li>Monitor performance</li>
+          <li>Supporto via email</li>
+        </ul>
+        <a class="cta primary" href="contatti.html">Attiva manutenzione</a>
+        <div class="chips">
+          <span class="chip">Mensile</span><span class="chip">Sicurezza</span><span class="chip">Performance</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+      <h2>Domande frequenti</h2>
+      <details>
+        <summary>In quanto tempo consegnate un sito?</summary>
+        <p>Dipende dalla complessità: una landing in 5–10 giorni, un sito vetrina in 2–3 settimane, e-commerce o progetti complessi 4–8 settimane.</p>
+      </details>
+      <details>
+        <summary>Posso partire con un MVP e poi crescere?</summary>
+        <p>Sì. Progettiamo per step: MVP rapido, test, iterazioni e scalabilità.</p>
+      </details>
+      <details>
+        <summary>Fate anche solo testi o grafica?</summary>
+        <p>Certo: puoi richiedere il singolo servizio (copy, UX/UI, branding) o un pacchetto completo.</p>
+      </details>
+    </section>
+
+    <!-- CTA finale -->
+    <section class="intro" style="padding-bottom:32px">
+      <p style="margin-bottom:12px">Non sai quale servizio scegliere?</p>
+      <a class="cta primary" href="contatti.html">Scrivici — ti guidiamo noi</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <a href="privacy.html">Privacy</a>
+      <a href="termini.html">Termini & Condizioni</a>
+      <a href="cookie.html">Cookie</a>
+    </div>
+  </footer>
+
+</body>
+</html>
