@@ -11,16 +11,13 @@
       --card:#e9ecef;
       --ink:#17181a;
       --muted:#5b5f66;
-      --brand:#111214;
       --accent:#2d7ef7;
       --accent-hover:#1f6ae0;
       --ring: 0 0 0 3px rgba(45,126,247,.25);
       --radius:18px;
-      --radius-sm:14px;
       --shadow: 0 10px 30px rgba(0,0,0,.06);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
@@ -34,41 +31,49 @@
     /* Layout */
     .container{width:min(1100px,92%);margin-inline:auto}
     header{
-      position:sticky;top:0;z-index:20;
-      background:linear-gradient(#f6f7f8cc,#f6f7f8cc);
-      backdrop-filter: blur(6px);
+      background:#fff;
       border-bottom:1px solid #e5e7eb;
+      text-align:center;
+      padding:20px 0;
     }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:18px 0;
+    .brand img{
+      height:200px; /* 👈 logo grande */
+      width:auto;
     }
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{height:32px;width:auto}
-    .brand span{font-weight:800;font-size:1.25rem;letter-spacing:.2px}
-
-    .menu{display:flex;align-items:center;gap:22px}
+    .menu{
+      margin-top:14px;
+      display:flex;
+      justify-content:center;
+      gap:22px;
+    }
     .menu a{
-      font-size:.96rem;color:var(--muted);
-      padding:8px 10px;border-radius:10px
+      font-size:.96rem;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
     }
-    .menu a:focus-visible{outline:none;box-shadow:var(--ring)}
     .menu a:hover{color:var(--ink)}
 
     /* Hero */
-    .hero{padding:60px 0 28px}
+    .hero{padding:60px 0 28px;text-align:center}
     .hero h1{
       font-size:clamp(1.8rem,3.2vw,2.4rem);
-      line-height:1.18;margin:0 0 22px 0;max-width:48ch;
+      line-height:1.18;
+      margin:0 0 22px 0;
+      max-width:48ch;
+      margin-inline:auto;
     }
-    .actions{display:flex;gap:16px;flex-wrap:wrap}
+    .actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;
-      padding:14px 18px;border-radius:14px;font-weight:700;
-      border:1px solid #d6dae1;background:#fff;box-shadow:var(--shadow);
+      padding:14px 18px;
+      border-radius:14px;
+      font-weight:700;
+      border:1px solid #d6dae1;
+      background:#fff;
+      box-shadow:var(--shadow);
       transition:.2s transform,.2s background,.2s border-color;
     }
-    .btn:focus-visible{outline:none;box-shadow:var(--ring)}
     .btn:hover{transform:translateY(-1px)}
     .btn-primary{
       background:var(--accent);color:#fff;border-color:var(--accent);
@@ -77,7 +82,7 @@
 
     /* Progetti */
     .section{padding:34px 0}
-    .section h2{font-size:1.8rem;margin:0 0 16px}
+    .section h2{text-align:center;font-size:1.8rem;margin:0 0 16px}
     .grid{
       display:grid;gap:18px;
       grid-template-columns:repeat(3,1fr);
@@ -86,15 +91,18 @@
     @media (max-width:640px){.grid{grid-template-columns:1fr}}
 
     .card{
-      background:var(--card);border-radius:var(--radius);
-      overflow:hidden;box-shadow:var(--shadow);
-      display:block;transition:transform .2s, box-shadow .2s, opacity .2s;
-      position:relative;isolation:isolate;
+      background:var(--card);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:block;
+      transition:transform .2s, box-shadow .2s;
     }
     .card:hover{transform:translateY(-2px)}
     .thumb{
-      aspect-ratio:1/1;background:linear-gradient(135deg,#dfe3e7,#cfd6dc);
-      display:grid;place-items:center;color:#777;font-weight:700;
+      aspect-ratio:1/1;
+      background:linear-gradient(135deg,#dfe3e7,#cfd6dc);
+      display:grid;place-items:center;
     }
 
     /* CTA */
@@ -127,17 +135,14 @@
 
   <!-- Header -->
   <header>
-    <div class="container nav" role="navigation" aria-label="Principale">
-      <a class="brand" href="/">
-        <img src="logopixelup.png" alt="Logo PixelUp">
-        <span>PixelUp</span>
-      </a>
-      <nav class="menu" aria-label="Sezioni">
-        <a href="chi-siamo.html">Chi siamo</a>
-        <a href="contatti.html">Contatti</a>
-        <a href="servizi.html">Servizi</a>
-      </nav>
-    </div>
+    <a class="brand" href="/">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+    </a>
+    <nav class="menu" aria-label="Sezioni">
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="servizi.html">Servizi</a>
+    </nav>
   </header>
 
   <main>
@@ -154,30 +159,25 @@
     <section class="container section" id="progetti">
       <h2>Progetti</h2>
       <div class="grid" role="list">
-       <a class="card" role="listitem" href="progetto-backtag.html" aria-label="Apri progetto BackTag">
-  <div class="thumb">
-    <img src="backtag.png" alt="BackTag" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
-  </div>
-</a>
-
-        <a class="card" role="listitem" href="progetto-2.html" aria-label="Apri progetto 2">
-          <div class="thumb"><span>Progetto 2</span></div>
+        <a class="card" href="progetto-backtag.html" aria-label="Apri progetto BackTag">
+          <div class="thumb">
+            <img src="backtag.png" alt="BackTag" style="width:100%; height:100%; object-fit:cover;">
+          </div>
         </a>
-        <a class="card" role="listitem" href="progetto-3.html" aria-label="Apri progetto 3">
-          <div class="thumb"><span>Progetto 3</span></div>
-        </a>
+        <a class="card" href="progetto-2.html"><div class="thumb"><span>Progetto 2</span></div></a>
+        <a class="card" href="progetto-3.html"><div class="thumb"><span>Progetto 3</span></div></a>
       </div>
     </section>
 
     <!-- Call to action -->
-    <section class="container cta" aria-labelledby="cta-title">
-      <h3 id="cta-title">Vuoi un sito come questo?</h3>
+    <section class="container cta">
+      <h3>Vuoi un sito come questo?</h3>
       <p>Lo creiamo per te.</p>
       <a class="btn btn-primary" href="contatti.html">Contattaci</a>
     </section>
   </main>
 
-  <!-- Footer (solo legale) -->
+  <!-- Footer -->
   <footer>
     <div class="container foot">
       <a href="privacy.html">Privacy</a>
