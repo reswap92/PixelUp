@@ -31,24 +31,36 @@
     img{display:block;max-width:100%}
     .container{width:min(1000px,92%);margin-inline:auto}
 
-    /* Header chiaro con logo centrato e SENZA scritta */
+    /* Header con logo sopra e menu sotto */
     header{
       padding:20px 0;
       background:#fff;
       border-bottom:1px solid var(--border);
+      text-align:center;
     }
-    .nav{display:flex;align-items:center;justify-content:center;gap:0}
-    .brand{display:flex;align-items:center;justify-content:center}
-    .brand img{height:200px;width:auto;margin:0 auto}
+    .brand img{
+      height:200px;
+      width:auto;
+      margin:0 auto;
+    }
     .brand span{display:none} /* nasconde la scritta PixelUp */
-    .menu{display:flex;gap:22px;justify-content:center;margin-top:12px}
-    .menu a{color:#5b5f66;padding:8px 10px;border-radius:10px}
+    .menu{
+      display:flex;
+      gap:22px;
+      justify-content:center;
+      margin-top:12px;
+    }
+    .menu a{
+      color:#5b5f66;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:18px;
+      font-weight:500;
+    }
     .menu a:hover{color:#111}
 
     /* Hero */
     .hero{padding:30px 0 14px;text-align:center}
-    .hero .logo-top{display:grid;place-items:center;margin-bottom:12px}
-    .hero .logo-top img{height:46px;opacity:.95}
     .hero h1{
       margin:8px 0 28px 0;
       font-size:clamp(2rem,4vw,3.2rem);
@@ -90,49 +102,49 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <img src="logopixelup.png" alt="Logo PixelUp">
-        <span>PixelUp</span> <!-- verrà nascosto via CSS -->
-      </a>
-      <nav class="menu" aria-label="Sezioni">
-        <a href="chi-siamo.html" aria-current="page"><strong>Chi siamo</strong></a>
-        <a href="contatti.html">Contatti</a>
-        <a href="servizi.html">Servizi</a>
-      </nav>
+<!-- Header -->
+<header>
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+      <span>PixelUp</span>
+    </a>
+    <nav class="menu" aria-label="Sezioni">
+      <a href="chi-siamo.html" aria-current="page"><strong>Chi siamo</strong></a>
+      <a href="contatti.html">Contatti</a>
+      <a href="servizi.html">Servizi</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero + Titolo -->
+<section class="hero container">
+  <h1>Chi siamo</h1>
+
+  <div class="card">
+    <p><strong>Siamo PixelUp.</strong> Trasformiamo idee in progetti digitali pronti a conquistare il mercato.</p>
+    <p>Dal sito vetrina più semplice allo shop online completo, sviluppiamo soluzioni su misura
+      con un design moderno, funzionale e ad alto impatto.</p>
+    <p>Crediamo nella velocità, nell’innovazione e nella concretezza: ogni progetto deve essere
+      <em>bello</em>, veloce e pronto a vendere.</p>
+
+    <div class="actions">
+      <a class="btn" href="progetti.html">Guarda i nostri lavori</a>
+      <a class="btn btn-dark" href="richiedi-progetto.html">Inizia il tuo progetto</a>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Hero + Titolo -->
-  <section class="hero container">
-    <h1>Chi siamo</h1>
+<div class="spacer" aria-hidden="true"></div>
 
-    <div class="card">
-      <p><strong>Siamo PixelUp.</strong> Trasformiamo idee in progetti digitali pronti a conquistare il mercato.</p>
-      <p>Dal sito vetrina più semplice allo shop online completo, sviluppiamo soluzioni su misura
-        con un design moderno, funzionale e ad alto impatto.</p>
-      <p>Crediamo nella velocità, nell’innovazione e nella concretezza: ogni progetto deve essere
-        <em>bello</em>, veloce e pronto a vendere.</p>
-
-      <div class="actions">
-        <a class="btn" href="progetti.html">Guarda i nostri lavori</a>
-        <a class="btn btn-dark" href="richiedi-progetto.html">Inizia il tuo progetto</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="spacer" aria-hidden="true"></div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container foot">
-      <a href="privacy.html">Privacy</a>
-      <a href="termini.html">Termini & Condizioni</a>
-      <a href="cookie.html">Cookie</a>
-    </div>
-  </footer>
+<!-- Footer -->
+<footer>
+  <div class="container foot">
+    <a href="privacy.html">Privacy</a>
+    <a href="termini.html">Termini & Condizioni</a>
+    <a href="cookie.html">Cookie</a>
+  </div>
+</footer>
 
 </body>
 </html>
