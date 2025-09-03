@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BackTag — Progetto | PixelUp</title>
+  <meta name="description" content="Case study BackTag: un sistema lost & found con QR code, web app e packaging premium. Dall’idea al lancio: brand, UX/UI, sviluppo e go-to-market.">
+  <style>
+    :root{
+      --bg:#f6f7f8; --panel:#fff; --ink:#111214; --muted:#5b6169;
+      --border:#e5e7eb; --accent:#2d7ef7; --accent-2:#1f6ae0;
+      --shadow:0 18px 50px rgba(0,0,0,.08); --radius:26px;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+    a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+    .container{width:min(1000px,92%);margin-inline:auto}
+
+    header{padding:20px 0;background:#fff;border-bottom:1px solid var(--border);text-align:center}
+    .brand img{height:140px;width:auto;margin:0 auto}
+    .brand span{display:none}
+    .menu{display:flex;gap:22px;justify-content:center;margin-top:12px}
+    .menu a{color:#5b5f66;padding:8px 10px;border-radius:10px;font-size:18px;font-weight:500}
+    .menu a:hover{color:#111}
+
+    .hero{padding:34px 0 10px;text-align:center}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:999px;padding:8px 14px;font-size:.95rem;color:#2b2f36}
+    h1{font-size:clamp(2rem,4vw,3rem);margin:12px 0 8px}
+    .subtitle{color:#3a4048;margin:0 0 18px}
+    .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 10px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid #cfd6de;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.06);font-weight:700}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-2)}
+    .grid{display:grid;gap:18px}
+    @media(min-width:880px){ .grid-2{grid-template-columns:1.2fr .8fr} }
+
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    .panel h3{margin:0 0 10px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
+    .kpis .k{background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;text-align:center}
+    .k .v{font-size:1.4rem;font-weight:800}
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media(max-width:720px){ .gallery{grid-template-columns:1fr 1fr} }
+    .section{padding:12px 0}
+    .thin{color:#50565e}
+
+    footer{border-top:1px solid var(--border);background:#eef1f4;padding:18px 0;margin-top:20px}
+    .foot{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .foot a{color:#2b2f36;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:12px}
+    .foot a:hover{background:#f9fafb}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+      <span>PixelUp</span>
+    </a>
+    <nav class="menu" aria-label="Sezioni">
+      <a href="index.html">Home</a>
+      <a href="progetti.html" aria-current="page"><strong>Progetti</strong></a>
+      <a href="contatti.html">Contatti</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero container">
+  <span class="badge">Case Study • Prodotto fisico + Web App</span>
+  <h1>BackTag — sistema “lost & found” con QR</h1>
+  <p class="subtitle">Kit di 5 adesivi QR + area personale per registrare oggetti e contattare il proprietario in modo anonimo.</p>
+  <div class="cta">
+    <a class="btn btn-primary" href="https://backtag.it" target="_blank" rel="noopener">Visita il sito</a>
+    <a class="btn" href="https://backtag.it/come-funziona" target="_blank" rel="noopener">Come funziona</a>
+  </div>
+</section>
+
+<section class="container section grid grid-2">
+  <!-- Colonna contenuti -->
+  <article class="panel">
+    <h3>Panoramica</h3>
+    <p>BackTag è un ecosistema di QR code per <strong>ritrovare oggetti smarriti</strong> senza condividere dati personali. Il kit include 5 adesivi QR (2,5×2,5 cm) e una web app per registrare gli adesivi, assegnarli a oggetti e ricevere messaggi anonimi da chi li trova.</p>
+    <p class="thin">Deliverable: Brand & packaging, sito web, flusso login con OTP, profilo con 6 slot gratuiti + upsell di 10 slot, attivazione QR, pagina “chi trova l’oggetto”, privacy, e primissimo go-to-market social.</p>
+
+    <h3>Obiettivi</h3>
+    <ul>
+      <li>Esperienza di registrazione <em>senza password</em> (OTP via email) e attivazione rapida dei QR.</li>
+      <li>Design <strong>premium ma accessibile</strong> per packaging 11×8,5 cm e kit da 5 adesivi.</li>
+      <li>Contatto anonimo e tracking passivo delle scansioni (integrazione MetriQR iniziale).</li>
+    </ul>
+
+    <h3>Soluzione</h3>
+    <ul>
+      <li>Frontend statico leggero + Firestore per persistenza (email → profilo → slot → attivazione QR).</li>
+      <li>Pagina “chi trova l’oggetto” con <strong>messaggistica anonima</strong> e stato adesivo (registrato / non registrato).</li>
+      <li>Scalabilità del profilo: 6 slot gratuiti + acquisto 10 slot (0,99€) come upsell in-app.</li>
+    </ul>
+
+    <h3>Risultati (MVP)</h3>
+    <ul>
+      <li>Kit pronto alla stampa e sito completo delle principali sezioni.</li>
+      <li>Flusso di registrazione funzionante end-to-end e attivazione QR per slot.</li>
+      <li>Base per integrazione monitoraggio scansioni (luogo, orario, device) e premi per “finder”.</li>
+    </ul>
+  </article>
+
+  <!-- Colonna informazioni rapide -->
+  <aside class="panel">
+    <h3>Info progetto</h3>
+    <p><strong>Ruolo:</strong> Brand & UI/UX, Frontend, integrazione Firestore</p>
+    <p><strong>Stack:</strong> HTML/CSS/JS, Firebase Firestore, EmailJS OTP, MetriQR</p>
+    <p><strong>Tempistiche:</strong> 3–6 settimane (MVP + packaging)</p>
+    <p><strong>Prodotto:</strong> Kit 5 QR — €5,99 (spedizione bassa, packaging premium)</p>
+
+    <div class="kpis">
+      <div class="k"><div class="v">5</div><div>QR per kit</div></div>
+      <div class="k"><div class="v">6</div><div>Slot gratuiti</div></div>
+      <div class="k"><div class="v">0,99€</div><div>+10 slot</div></div>
+    </div>
+  </aside>
+</section>
+
+<section class="container section panel">
+  <h3>Galleria</h3>
+  <div class="gallery">
+    <img src="img/backtag-packaging-front.jpg" alt="Packaging fronte BackTag">
+    <img src="img/backtag-packaging-back.jpg" alt="Packaging retro BackTag">
+    <img src="img/backtag-kit-adesivi.jpg" alt="Kit adesivi QR BackTag">
+    <img src="img/backtag-web-home.jpg" alt="Homepage BackTag">
+    <img src="img/backtag-web-profilo.jpg" alt="Profilo con slot QR">
+    <img src="img/backtag-web-attiva.jpg" alt="Attivazione QR">
+  </div>
+</section>
+
+<section class="container section grid grid-2">
+  <div class="panel">
+    <h3>Problema → Soluzione</h3>
+    <p><strong>Problema:</strong> restituire un oggetto trovato è macchinoso e poco sicuro per chi trova e per il proprietario.</p>
+    <p><strong>Soluzione:</strong> un QR che apre una pagina sicura per inviare un messaggio anonimo al proprietario, senza scambio di contatti personali.</p>
+  </div>
+  <div class="panel">
+    <h3>Funzionalità chiave</h3>
+    <ul>
+      <li>Login email + OTP (no password).</li>
+      <li>Assegnazione nome ad ogni adesivo (es. “Zaino scuola”).</li>
+      <li>Pagina finder con status adesivo e messaggistica anonima.</li>
+      <li>Monitor scansioni (via MetriQR, estendibile). </li>
+    </ul>
+  </div>
+</section>
+
+<section class="container section panel">
+  <h3>Video dimostrativo</h3>
+  <p class="thin">Storyboard → clip breve: scansione del QR, messaggio anonimo, restituzione oggetto.</p>
+  <div style="aspect-ratio:16/9;background:#000;border-radius:16px"></div>
+  <!-- Sostituisci il div con un <iframe src="..."> del video quando pronto -->
+</section>
+
+<section class="container section panel">
+  <h3>FAQ rapide</h3>
+  <p><strong>La batteria del QR?</strong> Gli adesivi sono passivi: nessuna batteria, scansione illimitata.</p>
+  <p><strong>Privacy?</strong> Nessun dato personale esposto; contatto via messaggi anonimi.</p>
+  <p><strong>Resistenza?</strong> Adesivi compatti 2,5×2,5 cm; supporti aggiuntivi disponibili.</p>
+</section>
+
+<section class="container section" style="text-align:center">
+  <a class="btn btn-primary" href="richiedi-progetto.html">Vuoi un progetto come questo?</a>
+</section>
+
+<footer>
+  <div class="container foot">
+    <a href="privacy.html">Privacy</a>
+    <a href="termini.html">Termini & Condizioni</a>
+    <a href="cookie.html">Cookie</a>
+  </div>
+</footer>
+
+</body>
+</html>
