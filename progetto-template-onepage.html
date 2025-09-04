@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Template One-Page — Progetto | PixelUp</title>
+  <meta name="description" content="Template One-Page PixelUp: una landing moderna e veloce per professionisti e piccole attività.">
+  <style>
+    :root{
+      --bg:#f6f7f8; --panel:#fff; --ink:#111214; --muted:#5b6169;
+      --border:#e5e7eb; --accent:#2d7ef7; --accent2:#1f6ae0;
+      --shadow:0 18px 50px rgba(0,0,0,.08); --radius:26px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+    a{color:inherit;text-decoration:none} img{display:block;max-width:100%}
+    .container{width:min(1000px,92%);margin-inline:auto}
+
+    header{text-align:center;background:#fff;border-bottom:1px solid var(--border);padding:20px 0}
+    .brand img{height:180px;margin:0 auto}
+    .menu{display:flex;gap:22px;justify-content:center;margin-top:12px}
+    .menu a{color:#5b5f66;padding:8px 10px;border-radius:10px;font-size:18px;font-weight:500}
+    .menu a:hover{color:#111}
+
+    .hero{padding:34px 0 10px;text-align:center}
+    h1{font-size:clamp(2rem,4vw,3rem);margin:12px 0 8px}
+    .subtitle{color:#3a4048;margin:0 0 18px}
+    .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0 10px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:1px solid #cfd6de;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.06);font-weight:700}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent2)}
+
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    .grid{display:grid;gap:18px}
+    @media(min-width:880px){ .grid-2{grid-template-columns:1.1fr .9fr} }
+
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media(max-width:720px){ .gallery{grid-template-columns:1fr 1fr} }
+    .gallery img{border-radius:16px;aspect-ratio:4/3;object-fit:cover}
+
+    footer{border-top:1px solid var(--border);background:#eef1f4;padding:18px 0;margin-top:20px}
+    .foot{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .foot a{color:#2b2f36;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:12px}
+    .foot a:hover{background:#f9fafb}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="logopixelup.png" alt="PixelUp">
+    </a>
+    <nav class="menu" aria-label="Sezioni">
+      <a href="index.html">Home</a>
+      <a href="progetti.html" aria-current="page"><strong>Progetti</strong></a>
+      <a href="contatti.html">Contatti</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero container">
+  <h1>Template One-Page</h1>
+  <p class="subtitle">Landing moderna e veloce per professionisti e piccole attività. SEO-ready, responsive, caricamento rapido.</p>
+  <div class="cta">
+    <a class="btn btn-primary" href="#" aria-disabled="true">Live demo (presto)</a>
+    <a class="btn" href="richiedi-progetto.html">Chiedi questo template</a>
+  </div>
+</section>
+
+<section class="container panel grid grid-2">
+  <article>
+    <h3>Caratteristiche</h3>
+    <ul>
+      <li>Header con logo + CTA.</li>
+      <li>Sezioni: Hero, Servizi, Portfolio, Testimonianze, Contatti.</li>
+      <li>Prestazioni ottimizzate (immagini lazy, CSS leggero).</li>
+      <li>Facile personalizzazione colori/font.</li>
+    </ul>
+    <h3>Per chi è pensato</h3>
+    <p>Consulenti, artigiani, eventi, estetica, ristorazione, personal trainer: chiunque necessiti di presenza online rapida ed efficace.</p>
+  </article>
+  <aside class="panel">
+    <h3>Dati rapidi</h3>
+    <p><strong>Tempo di consegna:</strong> 3–5 giorni</p>
+    <p><strong>Costo indicativo:</strong> €299–€499 (base)</p>
+    <p><strong>Extra:</strong> blog, multilingua, modulo preventivi, integrazioni.</p>
+  </aside>
+</section>
+
+<section class="container panel">
+  <h3>Galleria</h3>
+  <div class="gallery">
+    <img src="template-onepage-1.jpg" alt="Esempio sezione Hero">
+    <img src="template-onepage-2.jpg" alt="Esempio sezione Servizi">
+    <img src="template-onepage-3.jpg" alt="Esempio sezione Contatti">
+  </div>
+</section>
+
+<footer>
+  <div class="container foot">
+    <a href="privacy.html">Privacy</a>
+    <a href="termini.html">Termini & Condizioni</a>
+    <a href="cookie.html">Cookie</a>
+  </div>
+</footer>
+
+</body>
+</html>
