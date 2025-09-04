@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Summer Party 2025 — Demo Evento • PixelUp</title>
+  <meta name="description" content="Demo Portfolio PixelUp: landing evento con countdown, programma e call-to-action.">
+  <style>
+    :root{
+      --bg:#f7f7f9; --panel:#ffffff; --ink:#121316; --muted:#5b6169; --border:#e5e7eb;
+      --accent:#111214; --accent-2:#1c1f24; --ring:0 0 0 4px rgba(28,31,36,.15);
+      --radius:22px; --shadow:0 18px 50px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1100px,92%);margin-inline:auto}
+    .btn{display:inline-flex;align-items:center;justify-content:center;font-weight:800;border-radius:14px;padding:14px 18px;border:1px solid #cfd6de;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.06);transition:.18s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .btn-dark:hover{background:var(--accent-2)}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    header{padding:26px 0}
+    .brand{display:flex;justify-content:center}
+    .brand img{height:46px}
+    /* HERO */
+    .hero{display:grid;gap:18px;align-items:center;grid-template-columns:1.1fr .9fr;margin:8px 0 24px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .hero h1{font-size:clamp(2rem,4vw,3rem);margin:8px 0}
+    .hero p{color:var(--muted);margin:.3rem 0 1rem}
+    .hero-media{aspect-ratio:16/10;border-radius:18px;border:1px solid var(--border);overflow:hidden;background:linear-gradient(135deg,#ffe9d2,#ffe3f0)}
+    .badge{display:inline-block;padding:6px 12px;border-radius:999px;background:#111214;color:#fff;font-size:.9rem}
+    /* COUNTDOWN */
+    .countdown{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+    .cd-box{min-width:86px;text-align:center;border:1px solid var(--border);border-radius:14px;padding:10px 12px;background:#fff}
+    .num{font-size:1.6rem;font-weight:900}
+    .lbl{font-size:.85rem;color:var(--muted)}
+    /* GRIGLIA SEZIONI */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:20px 0}
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+    .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+    .li{display:flex;gap:12px;align-items:flex-start}
+    .li b{min-width:88px}
+    /* CTA finale */
+    .cta{text-align:center;margin:36px auto;width:min(820px,100%)}
+    footer{padding:40px 0;color:#7a8089;text-align:center}
+  </style>
+</head>
+<body>
+
+<header class="container">
+  <a class="brand" href="index.html" aria-label="PixelUp Home">
+    <img src="logopixelup.png" alt="PixelUp">
+  </a>
+</header>
+
+<main class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <span class="badge">🎉 DEMO PORTFOLIO</span>
+      <h1>Summer Party 2025 — Milano</h1>
+      <p>Una serata con musica live, street food e ospiti speciali. Landing veloce con
+         countdown, programma e call-to-action per mostrare come PixelUp crea pagine evento pronte a convertire.</p>
+
+      <!-- COUNTDOWN -->
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="cd-box"><div class="num" id="d">00</div><div class="lbl">Giorni</div></div>
+        <div class="cd-box"><div class="num" id="h">00</div><div class="lbl">Ore</div></div>
+        <div class="cd-box"><div class="num" id="m">00</div><div class="lbl">Min</div></div>
+        <div class="cd-box"><div class="num" id="s">00</div><div class="lbl">Sec</div></div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <a class="btn btn-dark" href="#biglietti">Prenota ora</a>
+        <a class="btn" href="https://wa.me/393385209039?text=Ciao%20PixelUp,%20info%20su%20Summer%20Party%202025" target="_blank" rel="noopener">💬 Chiedi su WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="hero-media card" aria-label="Immagine evento">
+      <!-- Sostituisci con una tua immagine hero -->
+      <div style="display:flex;align-items:center;justify-content:center;height:100%;font-weight:800;color:#1c1f24;opacity:.7">
+        FOTO HERO EVENTO (placeholder)
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMMA & INFO -->
+  <section class="grid-2">
+    <div class="card">
+      <h2 style="margin:6px 0 10px">Programma</h2>
+      <ul class="list">
+        <li class="li"><b>18:30</b> Apertura cancelli e welcome drink</li>
+        <li class="li"><b>20:00</b> Live band & DJ set</li>
+        <li class="li"><b>21:30</b> Special guest</li>
+        <li class="li"><b>23:00</b> Finale con sorprese</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:6px 0 10px">Dettagli</h2>
+      <ul class="list">
+        <li class="li"><b>Dove</b> Milano, Area Ex Scalo</li>
+        <li class="li"><b>Quando</b> 28 Giugno 2025 — h 18:30</li>
+        <li class="li"><b>Food</b> Street food & drink</li>
+        <li class="li"><b>Note</b> Evento all’aperto, ingresso su prenotazione</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- BIGLIETTI -->
+  <section id="biglietti" class="grid-2">
+    <div class="card">
+      <h2 style="margin:6px 0 10px">Biglietti</h2>
+      <p class="note" style="color:#5b6169;margin:0 0 10px">Demo: pulsanti non collegati a pagamento reale.</p>
+      <div style="display:grid;gap:12px">
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 6px">Standard</h3>
+          <div style="font-weight:900;font-size:1.4rem">€19</div>
+          <p class="note">Ingresso + 1 drink</p>
+          <button class="btn btn-dark" onclick="toast('Selezionato Standard (demo)')">Seleziona</button>
+        </div>
+        <div class="card" style="padding:16px">
+          <h3 style="margin:0 0 6px">Premium</h3>
+          <div style="font-weight:900;font-size:1.4rem">€29</div>
+          <p class="note">Ingresso + 2 drink + area riservata</p>
+          <button class="btn btn-dark" onclick="toast('Selezionato Premium (demo)')">Seleziona</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:6px 0 10px">Perché questa landing funziona</h2>
+      <ul class="list">
+        <li class="li">✅ **Chiaro obiettivo**: prenotazione rapida con CTA visibili</li>
+        <li class="li">⚡ **Veloce**: caricamento leggero, layout responsive</li>
+        <li class="li">🔎 **SEO-ready**: titoli, meta e sezioni ordinate</li>
+        <li class="li">🧭 **UX semplice**: countdown, programma, info pratiche</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta card">
+    <h3 style="margin:8px 0 6px">Vuoi una landing così per il tuo evento?</h3>
+    <p class="note">PixelUp la realizza in tempi rapidi, con grafica moderna e strumenti di conversione.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px">
+      <a class="btn btn-dark" href="inizia.html">Inizia il tuo progetto</a>
+      <a class="btn" href="progetti.html">Guarda i nostri lavori</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © PixelUp — Demo Evento • Privacy • Cookie
+</footer>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#111214;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s, transform .25s">Azione completata (demo)</div>
+
+<script>
+  // COUNTDOWN — imposta la data dell’evento
+  const target = new Date('2025-06-28T18:30:00').getTime();
+  const el = {d:document.getElementById('d'),h:document.getElementById('h'),m:document.getElementById('m'),s:document.getElementById('s')};
+  setInterval(()=>{
+    const now = Date.now(); let diff = Math.max(0, target - now);
+    const d = Math.floor(diff/86400000); diff%=86400000;
+    const h = Math.floor(diff/3600000);  diff%=3600000;
+    const m = Math.floor(diff/60000);    diff%=60000;
+    const s = Math.floor(diff/1000);
+    el.d.textContent = String(d).padStart(2,'0');
+    el.h.textContent = String(h).padStart(2,'0');
+    el.m.textContent = String(m).padStart(2,'0');
+    el.s.textContent = String(s).padStart(2,'0');
+  }, 1000);
+
+  // Toast demo
+  const t = document.getElementById('toast');
+  function toast(msg){
+    t.textContent = msg; t.style.opacity = 1; t.style.transform = 'translateX(-50%) translateY(-6px)';
+    setTimeout(()=>{t.style.opacity = 0; t.style.transform = 'translateX(-50%)'}, 1600);
+  }
+</script>
+</body>
+</html>
