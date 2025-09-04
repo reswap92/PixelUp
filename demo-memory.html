@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Memory — Demo Game • PixelUp</title>
+<meta name="description" content="Demo portfolio PixelUp: Memory Game in HTML/CSS/JS, con timer, mosse e reset.">
+<style>
+  :root{
+    --bg:#0f1114; --panel:#12151a; --ink:#eef2f7; --muted:#8a93a3; --accent:#2ee6a7; --border:#1b2028;
+    --radius:18px; --shadow:0 18px 50px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 60% -10%,#19202a 0,#0f1114 55%), linear-gradient(180deg,#0f1114,#0b0d10 70%);
+    color:var(--ink); font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif; min-height:100dvh;
+    display:grid; place-items:center; padding:24px;
+  }
+  .wrap{width:min(980px,94%); display:grid; gap:16px}
+  header{display:flex; justify-content:center; align-items:center; gap:10px}
+  .dot{width:16px;height:16px;border-radius:6px;background:var(--accent);box-shadow:0 0 14px #2ee6a7aa}
+  .panel{background:linear-gradient(180deg,#141922,#12151a); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
+  .grid{display:grid; gap:16px; grid-template-columns:1fr .9fr}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .hud{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:#0e1319; border:1px solid #1e2530; color:#cdd6e5; font-weight:700}
+  .btn{background:#0e1319; border:1px solid #1f2630; color:#e9edf6; font-weight:800; padding:10px 14px; border-radius:12px; cursor:pointer}
+  .btn:hover{background:#121a23}
+  .btn.accent{background:var(--accent); border-color:#10b779; color:#04150d}
+  .note{color:var(--muted); font-size:.95rem}
+
+  /* Board */
+  .board{display:grid; gap:12px; grid-template-columns:repeat(4,1fr)}
+  @media (max-width:560px){ .board{grid-template-columns:repeat(4,1fr); gap:10px} }
+  .card{
+    aspect-ratio:1/1; position:relative; perspective:800px; border-radius:14px; overflow:hidden;
+  }
+  .card button{
+    all:unset; cursor:pointer; position:absolute; inset:0;
+    border-radius:14px; display:block; width:100%; height:100%;
+  }
+  .inner{
+    position:absolute; inset:0; transform-style:preserve-3d; transition:transform .35s ease;
+  }
+  .card.revealed .inner, .card.matched .inner{ transform:rotateY(180deg) }
+  .face{
+    position:absolute; inset:0; backface-visibility:hidden; display:grid; place-items:center; font-size:clamp(1.6rem,4.8vw,2.4rem); font-weight:900;
+    border:1px solid #1e2530; border-radius:14px;
+  }
+  .front{
+    background:linear-gradient(180deg,#0f141a,#10161e);
+    color:#7fa0c4;
+  }
+  .back{
+    transform:rotateY(180deg);
+    background:linear-gradient(180deg,#0d1218,#0b0f14);
+    box-shadow:inset 0 0 0 2px #263244;
+  }
+  .matched .back{ box-shadow:inset 0 0 0 2px #27d79c }
+  .grid-2{display:grid; gap:16px}
+  .win{display:none; padding:14px; border-radius:12px; background:#0e1319; border:1px solid #1e2530}
+  .win.show{display:block}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="dot"></span><b>PIXELUP • Memory Game (Demo)</b>
+    </header>
+
+    <div class="grid">
+      <!-- Game area -->
+      <section class="panel">
+        <div class="hud" style="margin-bottom:12px">
+          <span class="pill">⏱️ Tempo: <span id="time">00:00</span></span>
+          <span class="pill">🎯 Mosse: <span id="moves">0</span></span>
+          <span class="pill">🏆 Record: <span id="best">—</span></span>
+          <button class="btn" id="btnReset">↺ Reset</button>
+          <button class="btn accent" id="btnNew">🔀 Nuovo mix</button>
+        </div>
+
+        <div id="board" class="board" aria-label="Griglia Memory"></div>
+
+        <div id="win" class="win" role="status" aria-live="polite">
+          🎉 Ben fatto! Tempo <b id="wTime"></b> • Mosse <b id="wMoves"></b>. Record: <b id="wBest"></b>.
+        </div>
+      </section>
+
+      <!-- Info -->
+      <aside class="panel grid-2">
+        <div>
+          <h3 style="margin:0 0 6px">Come si gioca</h3>
+          <p class="note">Clicca due carte per scoprire la coppia. Se combaciano restano scoperte. Completa il set nel minor
+            numero di mosse e nel minor tempo possibile.</p>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Perché in portfolio</h3>
+          <ul class="note" style="margin:0 0 6px; padding-left:18px">
+            <li>Animazioni CSS 3D (flip)</li>
+            <li>Logica JS pulita (stato, timer, shuffle)</li>
+            <li>Accessibilità (ruoli ARIA) e responsive</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="note" style="text-align:center">© PixelUp — Demo Memory. Solo front-end.</footer>
+  </div>
+
+<script>
+(() => {
+  const BOARD = document.getElementById('board');
+  const timeEl = document.getElementById('time');
+  const movesEl = document.getElementById('moves');
+  const bestEl  = document.getElementById('best');
+  const winBox  = document.getElementById('win');
+  const wTime = document.getElementById('wTime');
+  const wMoves = document.getElementById('wMoves');
+  const wBest  = document.getElementById('wBest');
+  const btnReset = document.getElementById('btnReset');
+  const btnNew = document.getElementById('btnNew');
+
+  // set di icone (puoi sostituire con immagini)
+  const ICONS = ['🍕','🎧','🚀','🌙','🎮','📷','💎','⚡'];
+  const BEST_KEY = 'pixelup_memory_best';
+
+  let cards = [];
+  let first = null, second = null, lock = false;
+  let moves = 0, matched = 0;
+  let startAt = 0, timer = null;
+  let best = JSON.parse(localStorage.getItem(BEST_KEY) || 'null');
+
+  function format(ms){
+    const s = Math.floor(ms/1000), m = Math.floor(s/60), r = s%60;
+    return String(m).padStart(2,'0') + ':' + String(r).padStart(2,'0');
+  }
+
+  function startTimer(){
+    if(timer) return;
+    startAt = Date.now();
+    timer = setInterval(()=> timeEl.textContent = format(Date.now()-startAt), 200);
+  }
+  function stopTimer(){ clearInterval(timer); timer = null; }
+
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function build(){
+    // prepara deck 4x4 (8 coppie)
+    const deck = shuffle([...ICONS,...ICONS].map((icon,i)=>({id:i, icon})));
+    BOARD.innerHTML = '';
+    cards = deck.map((item,idx)=>{
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="inner">
+          <div class="face front" aria-hidden="true">PIX</div>
+          <div class="face back" aria-label="Carta ${idx+1}">${item.icon}</div>
+        </div>`;
+      const btn = document.createElement('button');
+      el.appendChild(btn);
+      btn.addEventListener('click', ()=> flip(el,item));
+      BOARD.appendChild(el);
+      return {el, item, revealed:false, matched:false};
+    });
+    // reset HUD
+    moves = 0; matched = 0; first = second = null; lock=false;
+    movesEl.textContent = '0';
+    timeEl.textContent = '00:00';
+    winBox.classList.remove('show');
+    stopTimer(); startAt = 0;
+    bestEl.textContent = best ? `${best.moves} mosse • ${format(best.time)}` : '—';
+  }
+
+  function flip(cardEl, item){
+    if(lock) return;
+    const card = cards.find(c => c.el===cardEl);
+    if(card.matched || card.revealed) return;
+
+    // start timer on first move
+    if(!startAt) startTimer();
+
+    card.revealed = true;
+    cardEl.classList.add('revealed');
+
+    if(!first){ first = card; return; }
+    if(card === first) return;
+
+    second = card; lock = true; moves++; movesEl.textContent = moves;
+
+    // match?
+    if(first.item.icon === second.item.icon){
+      first.matched = second.matched = true;
+      first.el.classList.add('matched'); second.el.classList.add('matched');
+      first = second = null; lock = false; matched += 2;
+      if(matched === cards.length) return win();
+    } else {
+      setTimeout(()=>{
+        first.revealed = second.revealed = false;
+        first.el.classList.remove('revealed'); second.el.classList.remove('revealed');
+        first = second = null; lock = false;
+      }, 650);
+    }
+  }
+
+  function win(){
+    stopTimer();
+    const elapsed = Date.now() - startAt;
+    wTime.textContent  = format(elapsed);
+    wMoves.textContent = moves;
+    // best
+    if(!best || moves < best.moves || (moves===best.moves && elapsed < best.time)){
+      best = {moves, time: elapsed};
+      localStorage.setItem(BEST_KEY, JSON.stringify(best));
+    }
+    wBest.textContent = best ? `${best.moves} • ${format(best.time)}` : '—';
+    bestEl.textContent = `${best.moves} mosse • ${format(best.time)}`;
+    winBox.classList.add('show');
+  }
+
+  btnReset.addEventListener('click', ()=> build());
+  btnNew.addEventListener('click', ()=> { shuffle(ICONS); build(); });
+
+  build();
+})();
+</script>
+</body>
+</html>
