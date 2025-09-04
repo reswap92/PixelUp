@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ristorante Demo • PixelUp</title>
+<meta name="description" content="Demo Portfolio PixelUp: sito ristorante con menù e prenotazione.">
+<style>
+  :root{
+    --bg:#f8f8f8; --panel:#fff; --ink:#1d1d1f; --muted:#5b5e63; --accent:#c0392b; --border:#e5e5e5;
+    --radius:16px; --shadow:0 18px 50px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,Segoe UI,Inter,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  img{max-width:100%;display:block;border-radius:var(--radius)}
+  a{text-decoration:none;color:inherit}
+  .container{width:min(1100px,92%);margin-inline:auto}
+  header{padding:20px 0;display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;color:var(--accent)}
+  nav a{margin-left:20px;color:var(--muted);font-weight:600}
+  nav a:hover{color:var(--accent)}
+  .hero{position:relative;text-align:center;color:#fff;margin-bottom:40px}
+  .hero img{width:100%;height:380px;object-fit:cover;border-radius:0}
+  .hero .overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;flex-direction:column;justify-content:center;align-items:center}
+  .hero h2{font-size:clamp(2rem,5vw,3rem);margin:0}
+  .hero p{margin:10px 0 20px;font-size:1.2rem}
+  .btn{display:inline-block;padding:12px 18px;border-radius:10px;font-weight:700;transition:.2s}
+  .btn-accent{background:var(--accent);color:#fff}
+  .btn-accent:hover{background:#a93226}
+  section{margin:40px 0}
+  h2{margin:0 0 16px;color:var(--accent)}
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:700px){.menu{grid-template-columns:1fr}}
+  .dish{background:var(--panel);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow)}
+  .dish h3{margin:0 0 6px}
+  .dish p{margin:0;color:var(--muted)}
+  .price{font-weight:800;margin-top:6px}
+  .info{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:700px){.info{grid-template-columns:1fr}}
+  .card{background:var(--panel);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+  footer{text-align:center;padding:30px 0;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="container">
+  <h1>🍷 Demo Ristorante</h1>
+  <nav>
+    <a href="#menu">Menù</a>
+    <a href="#info">Info</a>
+    <a href="#contatti">Contatti</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <img src="ristorante-hero.jpg" alt="Sala ristorante (demo)">
+  <div class="overlay">
+    <h2>Benvenuti al Demo Ristorante</h2>
+    <p>Cucina italiana autentica, ingredienti freschi e atmosfera unica.</p>
+    <a href="#contatti" class="btn btn-accent">Prenota un tavolo</a>
+  </div>
+</section>
+
+<main class="container">
+  <!-- Menù -->
+  <section id="menu">
+    <h2>Il nostro Menù</h2>
+    <div class="menu">
+      <div class="dish">
+        <h3>Spaghetti alla Carbonara</h3>
+        <p>Pasta fresca, guanciale, uova e pecorino romano.</p>
+        <div class="price">€12</div>
+      </div>
+      <div class="dish">
+        <h3>Risotto allo Zafferano</h3>
+        <p>Cremoso risotto con pistilli di zafferano di qualità.</p>
+        <div class="price">€14</div>
+      </div>
+      <div class="dish">
+        <h3>Bistecca alla Fiorentina</h3>
+        <p>Taglio selezionato cotto alla brace, servito al sangue.</p>
+        <div class="price">€24</div>
+      </div>
+      <div class="dish">
+        <h3>Tiramisù della Casa</h3>
+        <p>Il classico dessert italiano con mascarpone fresco.</p>
+        <div class="price">€6</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info -->
+  <section id="info">
+    <h2>Info & Orari</h2>
+    <div class="info">
+      <div class="card">
+        <h3>Orari</h3>
+        <p>Mar-Dom: 12:00–14:30 / 19:00–23:00<br>Chiuso Lunedì</p>
+      </div>
+      <div class="card">
+        <h3>Indirizzo</h3>
+        <p>Via Roma 123<br>Milano (MI)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contatti -->
+  <section id="contatti">
+    <h2>Prenota o contattaci</h2>
+    <div class="card">
+      <p>Telefono: <a href="tel:+390212345678">+39 02 12345678</a></p>
+      <p>Email: <a href="mailto:info@demoristorante.it">info@demoristorante.it</a></p>
+      <p>WhatsApp: <a href="https://wa.me/393385209039">+39 338 5209039</a></p>
+      <a href="mailto:info@demoristorante.it" class="btn btn-accent">Prenota via Email</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © PixelUp — Demo Ristorante • Solo per portfolio
+</footer>
+</body>
+</html>
