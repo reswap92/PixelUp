@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Shop — PixelUp</title>
+  <meta name="description" content="Demo portfolio PixelUp: mini-ecommerce a un prodotto, rapido e responsive.">
+  <style>
+    :root{
+      --bg:#f7f7f9;
+      --panel:#ffffff;
+      --ink:#121316;
+      --muted:#5b6169;
+      --border:#e5e7eb;
+      --accent:#111214;
+      --accent-2:#1c1f24;
+      --ring:0 0 0 4px rgba(28,31,36,.15);
+      --radius:22px;
+      --shadow:0 18px 50px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.5;
+    }
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1100px,92%);margin-inline:auto}
+
+    /* Header */
+    header{padding:28px 0 8px}
+    .brand{display:flex;justify-content:center;align-items:center}
+    .brand img{height:46px;width:auto}
+    .badge-demo{
+      display:inline-block;
+      margin:14px auto 24px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#eef2f7;
+      color:#2b313a;
+      font-size:.9rem;
+      border:1px solid var(--border);
+    }
+
+    /* Grid prodotto */
+    .product{
+      display:grid;gap:24px;align-items:start;
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+    @media (max-width: 880px){
+      .product{grid-template-columns:1fr}
+    }
+
+    /* Card generiche */
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+
+    /* Galleria */
+    .gallery{
+      display:grid;gap:14px;
+      grid-template-columns: 1fr;
+    }
+    .hero-media{
+      overflow:hidden;border-radius:16px;border:1px solid var(--border);
+      background:linear-gradient(135deg,#e9eef5,#fafbff);
+      aspect-ratio: 16/10; display:flex;align-items:center;justify-content:center;
+      position:relative;
+    }
+    .hero-media .ph{
+      font-weight:800;letter-spacing:.5px;color:#1c1f24;opacity:.6;
+    }
+    .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .thumb{
+      border:1px solid var(--border);border-radius:12px;overflow:hidden;
+      background:#f1f3f7;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:transform .15s;
+    }
+    .thumb:hover{transform:translateY(-2px)}
+
+    /* Dettagli acquisto */
+    .title{font-size:clamp(1.6rem,2.8vw,2rem);margin:6px 0 4px}
+    .subtitle{color:var(--muted);margin:0 0 10px}
+    .price{font-size:clamp(1.4rem,2.4vw,1.8rem);font-weight:900;margin:14px 0}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;border:1px solid var(--border);
+      background:#fff;color:#2b313a;font-size:.92rem;margin-right:8px;margin-bottom:8px;
+    }
+    .opts{display:flex;flex-wrap:wrap;margin:4px 0 12px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      font-weight:800;border-radius:14px;padding:14px 18px;border:1px solid #cfd6de;
+      background:#fff;transition:transform .18s,background .18s,box-shadow .18s;
+      box-shadow:0 8px 24px rgba(0,0,0,.06);cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .btn-dark:hover{background:var(--accent-2)}
+    .btn-ghost{background:#fff;border:1px solid var(--border)}
+    .note{color:var(--muted);font-size:.95rem}
+
+    /* Tabs info */
+    .tabs{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+    .tab{padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:#fff;cursor:pointer}
+    .tab[aria-selected="true"]{background:#111214;color:#fff;border-color:#111214}
+    .tab-panel{margin-top:12px}
+
+    /* Recensioni */
+    .stars{letter-spacing:1px}
+    .review{border-top:1px dashed #e3e6ea;padding-top:12px;margin-top:12px}
+    .review strong{display:block;margin-bottom:4px}
+
+    /* FAQ */
+    details{border:1px solid var(--border);background:#fff;border-radius:12px;padding:12px 14px}
+    details+details{margin-top:10px}
+    summary{cursor:pointer;font-weight:700}
+
+    /* CTA finale */
+    .cta{
+      text-align:center;margin:40px auto 70px;width:min(820px,100%);
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+      background:#111214;color:#fff;padding:12px 16px;border-radius:12px;
+      box-shadow:0 14px 40px rgba(0,0,0,.25);opacity:0;pointer-events:none;
+      transition:opacity .25s, transform .25s;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+    footer{padding:38px 0;color:#7a8089;text-align:center}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="container">
+    <a class="brand" href="index.html" aria-label="PixelUp Home">
+      <img src="logopixelup.png" alt="Logo PixelUp">
+    </a>
+    <div class="badge-demo">🔧 Demo portfolio • Mini-ecommerce a un prodotto</div>
+  </header>
+
+  <main class="container">
+    <section class="product">
+      <!-- Galleria -->
+      <div class="card">
+        <div class="gallery">
+          <div class="hero-media" id="heroMedia" aria-live="polite">
+            <!-- Sostituisci con <img src="prodotto-1.jpg" alt="..." /> se hai le immagini -->
+            <div class="ph">Immagine Prodotto (Placeholder)</div>
+          </div>
+          <div class="thumbs" aria-label="Anteprime">
+            <div class="thumb" data-img="ph-1"><span>Vista 1</span></div>
+            <div class="thumb" data-img="ph-2"><span>Vista 2</span></div>
+            <div class="thumb" data-img="ph-3"><span>Dettaglio</span></div>
+            <div class="thumb" data-img="ph-4"><span>Packaging</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dettagli & acquisto -->
+      <div class="card">
+        <h1 class="title">T-Shirt PixelUp — Edizione Demo</h1>
+        <p class="subtitle">Cotone premium 180 g/m² • Unisex • Taglie S-XL</p>
+
+        <div class="price">€ 29,90</div>
+
+        <div class="opts" role="group" aria-label="Opzioni">
+          <span class="pill">Colore: Nero</span>
+          <span class="pill">Taglia: M</span>
+          <span class="pill">Spedizione 48h</span>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 8px">
+          <button class="btn btn-dark" id="addToCart">🛒 Aggiungi al carrello</button>
+          <a class="btn btn-ghost" href="https://wa.me/393385209039?text=Ciao%20PixelUp,%20vorrei%20info%20sulla%20T-shirt%20Demo" target="_blank" rel="noopener">💬 Chiedi su WhatsApp</a>
+        </div>
+
+        <p class="note">Questa è una <strong>demo portfolio</strong>. Il carrello è simulato, nessun pagamento reale.</p>
+
+        <!-- Tabs info -->
+        <div class="tabs" role="tablist" aria-label="Informazioni prodotto">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="panel1" id="tab1">Descrizione</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel2" id="tab2">Dettagli</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel3" id="tab3">Recensioni</button>
+        </div>
+        <div class="tab-panel" id="panel1" role="tabpanel" aria-labelledby="tab1">
+          T-shirt in cotone pettinato, stampa frontale PixelUp resistente ai lavaggi.
+          Vestibilità regolare. Perfetta per dimostrare come appare un mini-shop
+          con una singola scheda prodotto chiara e moderna.
+        </div>
+        <div class="tab-panel" id="panel2" role="tabpanel" aria-labelledby="tab2" hidden>
+          <ul>
+            <li>Materiale: 100% cotone pettinato, 180 g/m²</li>
+            <li>Vestibilità: Unisex Regular</li>
+            <li>Cura: Lavare a 30°, no asciugatrice</li>
+            <li>Resi: 14 giorni (demo)</li>
+          </ul>
+        </div>
+        <div class="tab-panel" id="panel3" role="tabpanel" aria-labelledby="tab3" hidden>
+          <div class="stars">★★★★★ <span class="note">(4.9/5 — 128 recensioni, demo)</span></div>
+          <div class="review">
+            <strong>Giulia R.</strong>
+            Qualità top e sito super veloce. Il layout del prodotto è chiarissimo!
+          </div>
+          <div class="review">
+            <strong>Marco D.</strong>
+            Perfetto come esempio di mini-ecommerce per portfolio.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="card" style="margin-top:22px">
+      <h2 style="margin:6px 0 12px">Domande frequenti</h2>
+      <details>
+        <summary>Posso trasformare questa demo in uno shop reale?</summary>
+        Certo. Possiamo collegare pagamenti (PayPal/Stripe), gestione ordini e spedizioni.
+      </details>
+      <details>
+        <summary>Posso cambiare prodotto, colori e stile?</summary>
+        Sì, è tutto personalizzabile: testo, prezzi, immagini, palette e font.
+      </details>
+      <details>
+        <summary>In quanto tempo lo mettiamo online?</summary>
+        Per un mini-shop a 1 prodotto bastano pochi giorni. Design e testi inclusi.
+      </details>
+    </section>
+
+    <!-- CTA finale -->
+    <section class="cta card">
+      <h3 style="margin:8px 0 6px">Vuoi uno shop così per il tuo brand?</h3>
+      <p class="note">Scrivici l’idea: al resto pensiamo noi. Layout responsive, SEO-ready, caricamento rapido.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px">
+        <a class="btn btn-dark" href="inizia.html">Inizia il tuo progetto</a>
+        <a class="btn btn-ghost" href="progetti.html">Guarda i nostri lavori</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © PixelUp — Demo portfolio • Privacy • Cookie
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">Aggiunto al carrello (demo)</div>
+
+  <script>
+    // Tabs accessibili
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+        panels.forEach(p => p.hidden = true);
+        tab.setAttribute('aria-selected','true');
+        document.getElementById(tab.getAttribute('aria-controls')).hidden = false;
+      });
+    });
+
+    // Galleria (placeholder)
+    const hero = document.getElementById('heroMedia');
+    document.querySelectorAll('.thumb').forEach(th => {
+      th.addEventListener('click', () => {
+        hero.innerHTML = '<div class="ph">'+ th.dataset.img.toUpperCase() +' (Placeholder)</div>';
+      });
+    });
+
+    // Toast finto carrello
+    const toast = document.getElementById('toast');
+    document.getElementById('addToCart').addEventListener('click', () => {
+      toast.classList.add('show');
+      setTimeout(()=> toast.classList.remove('show'), 1800);
+    });
+  </script>
+</body>
+</html>
