@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Snake — Demo Game • PixelUp</title>
+<meta name="description" content="Demo portfolio PixelUp: mini gioco Snake in HTML/CSS/JS, responsive e con punteggio.">
+<style>
+  :root{
+    --bg:#0f1114; --panel:#12151a; --ink:#eef2f7; --muted:#8a93a3; --accent:#15d18d; --danger:#ff5a5a;
+    --border:#1b2028; --radius:18px; --shadow:0 18px 50px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:radial-gradient(1200px 600px at 60% -10%,#19202a 0,#0f1114 55%),
+              linear-gradient(180deg,#0f1114,#0b0d10 70%);
+    color:var(--ink); font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;
+    min-height:100dvh; display:grid; place-items:center; padding:24px;
+  }
+  .wrap{width:min(980px,94%); display:grid; gap:16px}
+  header{display:flex; align-items:center; justify-content:center}
+  .brand{display:flex; align-items:center; gap:12px}
+  .brand .dot{width:18px;height:18px;border-radius:6px;background:#2ee6a7;
+              box-shadow:0 0 16px #2ee6a7aa inset, 0 0 18px #2ee6a7aa;}
+  .brand b{letter-spacing:.3px}
+  .panel{
+    background:linear-gradient(180deg,#141922,#12151a);
+    border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:16px;
+  }
+  .grid{display:grid; gap:16px; grid-template-columns: 1.1fr .9fr}
+  @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
+  /* Canvas area */
+  .stage{display:grid; gap:10px}
+  canvas{
+    display:block; width:100%; height:auto; aspect-ratio:1/1;
+    background:
+      linear-gradient(0deg, #0f141a 0 100%),
+      repeating-linear-gradient(0deg,transparent 0 24px,#10161e 24px 25px),
+      repeating-linear-gradient(90deg,transparent 0 24px,#10161e 24px 25px);
+    border:1px solid #1e2530; border-radius:14px;
+  }
+  .hud{display:flex; gap:10px; flex-wrap:wrap}
+  .pill{
+    background:#0e1319; border:1px solid #1e2530; color:#cdd6e5;
+    padding:8px 12px; border-radius:999px; font-weight:700; display:inline-flex; align-items:center; gap:8px;
+  }
+  .pill .dot{width:10px;height:10px;border-radius:50%}
+  .pill.good .dot{background:var(--accent)}
+  .pill.bad .dot{background:var(--danger)}
+  .note{color:var(--muted); font-size:.95rem}
+
+  /* Controls */
+  .controls{display:grid; gap:12px}
+  .btn{
+    background:#0e1319; border:1px solid #1f2630; color:#e9edf6; font-weight:800;
+    padding:12px 14px; border-radius:12px; text-align:center; cursor:pointer;
+    transition:transform .15s, background .15s, border-color .15s;
+  }
+  .btn:hover{transform:translateY(-1px); background:#121a23}
+  .btn.accent{background:var(--accent); border-color:#10b779; color:#04150d}
+  .btn.danger{background:transparent; border-color:#2a313d; color:#ff9a9a}
+  .stack{display:grid; gap:10px}
+  .dpad{
+    display:grid; grid-template-columns:60px 60px 60px; grid-template-rows:60px 60px 60px; gap:8px;
+    justify-content:center; align-content:center;
+  }
+  .dpad button{
+    background:#121a23; border:1px solid #223041; color:#b8c2d4; border-radius:12px; font-weight:800;
+    touch-action:manipulation;
+  }
+  .dpad .sp{visibility:hidden}
+  footer{color:#6f7a8e; text-align:center; font-size:.9rem}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="dot"></span><b>PIXELUP • Demo Game</b>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- GAME -->
+      <section class="panel stage">
+        <canvas id="game" width="480" height="480" aria-label="Campo di gioco Snake"></canvas>
+
+        <div class="hud">
+          <span class="pill"><span class="dot good"></span>Punteggio: <span id="score">0</span></span>
+          <span class="pill"><span class="dot"></span>Record: <span id="best">0</span></span>
+          <span class="pill"><span class="dot"></span>Velocità: <span id="speed">1x</span></span>
+          <span class="pill bad" id="status" hidden><span class="dot"></span><span>Game Over</span></span>
+        </div>
+        <p class="note">Comandi: Frecce / WASD • P = Pausa • R = Restart • Mobile: frecce qui a destra.</p>
+      </section>
+
+      <!-- CONTROLLI -->
+      <aside class="panel controls">
+        <div class="stack">
+          <button class="btn accent" id="btnStart">▶ Avvia / Pausa</button>
+          <button class="btn" id="btnRestart">↺ Restart</button>
+          <button class="btn danger" id="btnWrap">⤾ Muri: <span id="wrapState">Off</span></button>
+        </div>
+
+        <div class="dpad" aria-label="Controller direzionale">
+          <span class="sp"></span><button data-dir="up">▲</button><span class="sp"></span>
+          <button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button>
+        </div>
+
+        <p class="note">Suggerimento: la velocità cresce ogni 5 frutti. Il record viene salvato in locale.</p>
+      </aside>
+    </div>
+
+    <footer>© PixelUp — Demo Snake. Solo front-end, nessun backend.</footer>
+  </div>
+
+<script>
+(() => {
+  // === Config base ===
+  const cvs = document.getElementById('game');
+  const ctx = cvs.getContext('2d');
+  const SIZE = 24;                   // dimensione cella (px canvas)
+  const COLS = cvs.width / SIZE;     // 480/24 = 20
+  const ROWS = cvs.height / SIZE;
+
+  // HUD
+  const elScore = document.getElementById('score');
+  const elBest  = document.getElementById('best');
+  const elSpeed = document.getElementById('speed');
+  const elStatus= document.getElementById('status');
+  const bestKey = 'pixelup_snake_best';
+  let best = +localStorage.getItem(bestKey) || 0; elBest.textContent = best;
+
+  // Stato di gioco
+  let snake, dir, nextDir, food, running, wrapWalls, tick, speedLevel, eaten;
+
+  function reset(){
+    snake = [{x:10, y:10}];
+    dir = {x:1, y:0};
+    nextDir = {...dir};
+    food = spawnFood();
+    running = false;
+    wrapWalls = false;
+    tick = 140;            // ms per frame
+    speedLevel = 1;
+    eaten = 0;
+    score(0);
+    elSpeed.textContent = speedLevel + 'x';
+    document.getElementById('wrapState').textContent = 'Off';
+    elStatus.hidden = true;
+    draw();                // disegna stato iniziale
+  }
+
+  function score(v){ elScore.textContent = v; }
+  function currentScore(){ return +elScore.textContent; }
+
+  function spawnFood(){
+    let f;
+    do {
+      f = { x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS) };
+    } while (snake.some(s => s.x===f.x && s.y===f.y));
+    return f;
+  }
+
+  function drawCell(x,y, color){
+    ctx.fillStyle = color;
+    ctx.fillRect(x*SIZE+1, y*SIZE+1, SIZE-2, SIZE-2);
+  }
+
+  function draw(){
+    // sfondo
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    // griglia leggera (opzionale)
+    ctx.strokeStyle = '#0f1a24';
+    ctx.lineWidth = 1;
+    for(let i=0;i<=COLS;i++){ ctx.beginPath(); ctx.moveTo(i*SIZE,0); ctx.lineTo(i*SIZE,cvs.height); ctx.stroke(); }
+    for(let j=0;j<=ROWS;j++){ ctx.beginPath(); ctx.moveTo(0,j*SIZE); ctx.lineTo(cvs.width,j*SIZE); ctx.stroke(); }
+
+    // cibo
+    drawCell(food.x, food.y, '#15d18d');
+
+    // snake
+    snake.forEach((s,i)=>{
+      const c = i===0 ? '#e9f2ff' : '#9fb4d1';
+      drawCell(s.x,s.y,c);
+    });
+  }
+
+  function step(){
+    if(!running) return;
+    // aggiorna direzione
+    dir = nextDir;
+
+    // nuova testa
+    let head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    // muri
+    if(wrapWalls){
+      head.x = (head.x + COLS) % COLS;
+      head.y = (head.y + ROWS) % ROWS;
+    } else {
+      if(head.x<0 || head.y<0 || head.x>=COLS || head.y>=ROWS) return gameOver();
+    }
+
+    // collisione corpo
+    if(snake.some((s,i)=> i && s.x===head.x && s.y===head.y)) return gameOver();
+
+    // mangia
+    if(head.x===food.x && head.y===food.y){
+      snake.unshift(head);
+      food = spawnFood();
+      eaten++;
+      const s = currentScore()+10; score(s);
+      // velocità ogni 5 frutti
+      if(eaten % 5 === 0 && tick > 70){
+        tick = Math.max(50, tick-10);
+        speedLevel++; elSpeed.textContent = speedLevel + 'x';
+        loop(); // riavvia con tick nuovo
+      }
+    } else {
+      snake.pop();
+      snake.unshift(head);
+    }
+
+    draw();
+  }
+
+  let timer;
+  function loop(){
+    clearInterval(timer);
+    timer = setInterval(step, tick);
+  }
+
+  function startPause(){
+    running = !running;
+    if(running){ elStatus.hidden = true; loop(); }
+    else clearInterval(timer);
+  }
+
+  function gameOver(){
+    running = false;
+    clearInterval(timer);
+    elStatus.hidden = false;
+    // best
+    const s = currentScore();
+    if(s > best){ best = s; localStorage.setItem(bestKey, best); elBest.textContent = best; }
+  }
+
+  // Input tastiera
+  const dirs = {
+    ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0},
+    w:{x:0,y:-1}, s:{x:0,y:1}, a:{x:-1,y:0}, d:{x:1,y:0}
+  };
+  function setDir(d){
+    // blocca inversione immediata (non si può andare indietro)
+    if(d.x === -dir.x && d.y === -dir.y) return;
+    nextDir = d;
+  }
+  addEventListener('keydown', e=>{
+    const d = dirs[e.key];
+    if(d){ setDir(d); }
+    if(e.key==='p' || e.key==='P') startPause();
+    if(e.key==='r' || e.key==='R') reset();
+  });
+
+  // Bottoni UI
+  document.getElementById('btnStart').onclick = startPause;
+  document.getElementById('btnRestart').onclick = reset;
+  document.getElementById('btnWrap').onclick = ()=>{
+    wrapWalls = !wrapWalls;
+    document.getElementById('wrapState').textContent = wrapWalls?'On':'Off';
+  };
+  document.querySelectorAll('.dpad [data-dir]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const map = {up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight'};
+      setDir(dirs[map[b.dataset.dir]]);
+    });
+  });
+
+  // Avvio
+  reset();
+})();
+</script>
+</body>
+</html>
