@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelUp • Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Inter, sans-serif;
+      margin:0;
+      background:#f9fafb;
+      color:#222;
+    }
+    header {
+      text-align:center;
+      padding:20px;
+      background:#fff;
+      border-bottom:1px solid #ddd;
+    }
+    header img {
+      width:200px; /* logo a 200px */
+    }
+    .container {
+      max-width:1200px;
+      margin:30px auto;
+      padding:20px;
+    }
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap:20px;
+    }
+    .card {
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:12px;
+      padding:15px;
+      text-align:center;
+      transition:0.2s ease;
+    }
+    .card:hover {
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+    .card img {
+      width:100%;
+      max-height:180px;
+      object-fit:cover;
+      border-radius:8px;
+      margin-bottom:12px;
+    }
+    .card h3 {
+      margin:8px 0;
+      font-size:18px;
+    }
+    .card p {
+      font-size:14px;
+      color:#555;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html"><img src="logopixelup.png" alt="Logo PixelUp"></a>
+</header>
+
+<div class="container">
+  <h1>I nostri Template</h1>
+  <div class="grid">
+    <!-- Template 1 -->
+    <div class="card">
+      <img src="img/template1.png" alt="Template 1">
+      <h3>Template Business</h3>
+      <p>Descrizione breve...</p>
+    </div>
+    <!-- Template 2 -->
+    <div class="card">
+      <img src="img/template2.png" alt="Template 2">
+      <h3>Template CV</h3>
+      <p>Descrizione breve...</p>
+    </div>
+    <!-- Aggiungi fino a 20 (o più) duplicando i blocchi card -->
+  </div>
+</div>
+
+</body>
+</html>
