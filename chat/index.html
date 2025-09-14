@@ -5,25 +5,79 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>PixelUp AI – Chat</title>
 <style>
-  :root { --bg:#0e0f12; --card:#171a21; --muted:#8b92a1; --acc:#62d0ff; --txt:#eef2f7; }
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-  header{padding:16px;border-bottom:1px solid #22252d;display:flex;justify-content:space-between;align-items:center}
-  h1{font-size:18px;margin:0} .badge{font-size:12px;color:#0b1220;background:var(--acc);padding:4px 8px;border-radius:999px;margin-left:6px}
+  :root {
+    --bg:#ffffff; 
+    --card:#f8f9fa; 
+    --muted:#6c757d; 
+    --acc:#007bff; 
+    --txt:#212529;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--txt);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+  }
+  header{
+    padding:16px;
+    border-bottom:1px solid #dee2e6;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  h1{font-size:18px;margin:0}
+  .badge{
+    font-size:12px;
+    color:#fff;
+    background:var(--acc);
+    padding:4px 8px;
+    border-radius:999px;
+    margin-left:6px
+  }
   main{max-width:920px;margin:0 auto;padding:16px}
-  .card{background:var(--card);border:1px solid #22252d;border-radius:12px}
+  .card{
+    background:var(--card);
+    border:1px solid #dee2e6;
+    border-radius:12px
+  }
   .chat{height:62vh;overflow:auto;padding:16px}
   .row{display:flex;gap:8px;margin-top:10px}
-  textarea{flex:1;min-height:56px;max-height:160px;resize:vertical;padding:12px;border-radius:12px;border:1px solid #2a2f3a;background:#101218;color:var(--txt)}
-  button{border-radius:12px;border:1px solid #2a2f3a;background:#11141a;color:var(--txt);padding:12px 14px;cursor:pointer}
-  button.primary{background:linear-gradient(90deg,#5bbcff,#6ee7ff);color:#0b1220;border:none;font-weight:700}
-  .msg{max-width:75%;padding:10px 12px;border-radius:12px;margin:8px 0;white-space:pre-wrap;line-height:1.45}
-  .user{background:#0f1116;border:1px solid #2a2f3a;margin-left:auto}
-  .bot{background:#12161f;border:1px solid #2a2f3a}
-  .meta{font-size:12px;color:var(--muted);margin-left:6px}
-  .top{display:flex;align-items:center;gap:10px}
-  .pill{font-size:12px;color:var(--muted);border:1px solid #2a2f3a;border-radius:999px;padding:4px 8px}
-  .toolbar{display:flex;gap:8px;align-items:center}
-  .toolbar input{width:280px;padding:10px;border-radius:10px;border:1px solid #2a2f3a;background:#0f1116;color:var(--txt)}
+  textarea{
+    flex:1;
+    min-height:56px;
+    max-height:160px;
+    resize:vertical;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #ced4da;
+    background:#fff;
+    color:var(--txt);
+  }
+  button{
+    border-radius:12px;
+    border:1px solid #ced4da;
+    background:#fff;
+    color:var(--txt);
+    padding:12px 14px;
+    cursor:pointer;
+  }
+  button.primary{
+    background:linear-gradient(90deg,#5bbcff,#6ee7ff);
+    color:#fff;
+    border:none;
+    font-weight:700
+  }
+  .msg{
+    max-width:75%;
+    padding:10px 12px;
+    border-radius:12px;
+    margin:8px 0;
+    white-space:pre-wrap;
+    line-height:1.45
+  }
+  .user{background:#e9ecef;margin-left:auto}
+  .bot{background:#ffffff;border:1px solid #dee2e6}
   .footer{color:var(--muted);text-align:center;font-size:12px;margin:12px 0}
 </style>
 </head>
@@ -31,20 +85,13 @@
 <header>
   <div class="top">
     <h1>PixelUp AI <span class="badge">Chat</span></h1>
-    <span class="pill" id="tplPill">template: -</span>
-    <span class="pill" id="modePill">modalità: Prompt-only</span>
-  </div>
-  <div class="toolbar">
-    <input id="apiKey" placeholder="OpenAI API Key (sk-...)" />
-    <button id="saveKey">Salva</button>
-    <button id="clearKey">Rimuovi</button>
   </div>
 </header>
 
 <main>
   <div class="card">
     <div id="chat" class="chat"></div>
-    <div style="padding:12px;border-top:1px solid #22252d">
+    <div style="padding:12px;border-top:1px solid #dee2e6">
       <div class="row">
         <textarea id="inp" placeholder="Scrivi qui la tua domanda..."></textarea>
         <button class="primary" id="send">Invia</button>
@@ -56,54 +103,23 @@
       </div>
     </div>
   </div>
-  <p class="footer">© PixelUp – Chat IA per template. Questa è una versione Lite (no backend). La tua chiave resta nel browser.</p>
+  <p class="footer">© PixelUp – Chat IA per template. Powered by OpenAI.</p>
 </main>
 
 <script>
   const $ = (id)=>document.getElementById(id);
-  const chatEl = $('chat'); const inp = $('inp');
-  const templates = {
-    'neo-mamme': {
-      title: 'Neo Mamme',
-      system: `Sei "PixelUp AI – Neo Mamme", un assistente dedicato esclusivamente a consigli pratici per neo genitori.
-OBIETTIVO: offrire spiegazioni chiare, empatiche e basate su buone pratiche (no diagnosi mediche).
-LIMITI: rifiuta con gentilezza qualsiasi domanda fuori tema (finanza, sport, ecc.) o richieste mediche specifiche/diagnosi; suggerisci di consultare un professionista sanitario quando opportuno.
-STILE: italiano semplice, esempi concreti, elenchi puntati quando utili, 120–250 parole per risposta salvo richieste diverse.`,
-      guardrail: 'neo mamme, allattamento, sonno, routine, relazione col papà, visite pediatriche generiche'
-    },
-    'wedding': {
-      title: 'Wedding Planner',
-      system: `Sei "PixelUp AI – Wedding Planner", rispondi solo su organizzazione matrimoni (timeline, budget, fornitori, checklist).
-RIFIUTA educatamente fuori tema. Stile professionale ma pratico, con suggerimenti passo-passo.`,
-      guardrail: 'timeline, budget, fornitori, location, preventivi, checklist matrimonio'
-    },
-    'cv': {
-      title: 'CV Assistant',
-      system: `Sei "PixelUp AI – CV Assistant", aiuti solo su CV e lettere motivazionali: bullet points con KPI, riscritture sintetiche, suggerimenti ATS.
-RIFIUTA argomenti non HR.`,
-      guardrail: 'curriculum, lettera di presentazione, job description, soft/hard skills, ATS'
-    }
-  };
+  const chatEl = $('chat'); 
+  const inp = $('inp');
 
-  // url param
+  // Endpoint Vercel (chiave nascosta lato server)
+  const CHAT_ENDPOINT = "https://pixelup-ai-api.vercel.app/api/chatAI";
+
+  // Parametro template da URL (?tpl=neo-mamme / wedding / cv / fitness …)
   const params = new URLSearchParams(location.search);
   const tpl = params.get('tpl') || 'neo-mamme';
-  const cfg = templates[tpl] || templates['neo-mamme'];
-  $('tplPill').textContent = 'template: ' + cfg.title;
 
-  // key handling
-  const LSKEY = 'pixelup_api_key';
-  const saved = localStorage.getItem(LSKEY)||'';
-  $('apiKey').value = saved;
-  const mode = ()=> localStorage.getItem(LSKEY) ? 'API attiva' : 'Prompt-only';
-  $('modePill').textContent = 'modalità: ' + mode();
-  $('saveKey').onclick = ()=>{ localStorage.setItem(LSKEY, $('apiKey').value.trim()); $('modePill').textContent = 'modalità: ' + mode(); };
-  $('clearKey').onclick = ()=>{ localStorage.removeItem(LSKEY); $('apiKey').value=''; $('modePill').textContent = 'modalità: ' + mode(); };
-
-  // chat state
-  let history = [
-    {role:'system', content: cfg.system}
-  ];
+  // Stato chat
+  let history = [];
 
   function appendMsg(text, who='bot'){
     const div = document.createElement('div');
@@ -113,61 +129,53 @@ RIFIUTA argomenti non HR.`,
     chatEl.scrollTop = chatEl.scrollHeight;
   }
 
-  // welcome
-  appendMsg(`Ciao! Questa è la chat dedicata a **${cfg.title}**.\nFornisci dettagli concreti e ti risponderò restando nel tema.\n(se chiedi altro, ti chiederò di tornare su: ${cfg.guardrail})`);
+  // Messaggio di benvenuto
+  appendMsg(`Ciao! Questa è la chat dedicata a **${tpl}**.\nFornisci dettagli concreti e ti risponderò restando nel tema.`);
 
-  // send
+  // Invia messaggio
   $('send').onclick = async ()=>{
     const q = inp.value.trim();
     if(!q) return;
     appendMsg(q, 'user');
     inp.value='';
 
-    const key = localStorage.getItem(LSKEY);
-    // Prompt-only fallback
-    if(!key){
-      const prompt = `SYSTEM:\n${cfg.system}\n\nUSER:\n${q}\n\nNota: incolla questo contenuto nel tuo modello IA preferito.`;
-      appendMsg('Modalità prompt-only.\nCopia e usa questo prompt:\n\n' + prompt);
-      return;
-    }
-
     appendMsg('⏳ Sto pensando...', 'bot');
 
     try{
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      const res = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${key}` },
+        headers: { 'Content-Type':'application/json' },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: history.concat([{role:'user', content: q}]),
-          temperature: 0.6
+          tpl,
+          messages: history.concat([{role:'user', content: q}])
         })
       });
       const data = await res.json();
-      const text = data?.choices?.[0]?.message?.content?.trim() || 'Nessuna risposta.';
-      // sostituisco il "Sto pensando..." con la risposta
+      const text = data?.output || ('⚠️ Errore: ' + (data?.error || 'sconosciuto'));
       chatEl.lastChild.textContent = text;
       history.push({role:'user', content:q}, {role:'assistant', content:text});
     }catch(e){
-      chatEl.lastChild.textContent = '⚠️ Errore: ' + e.message;
+      chatEl.lastChild.textContent = '⚠️ Errore server: ' + e.message;
     }
   };
 
+  // Nuova chat
   $('newChat').onclick = ()=>{
-    history = [{role:'system', content: cfg.system}];
+    history = [];
     chatEl.innerHTML='';
-    appendMsg(`Nuova chat su **${cfg.title}**. Dimmi pure!`);
+    appendMsg(`Nuova chat su **${tpl}**. Dimmi pure!`);
   };
+
+  // Copia ultima risposta
   $('copyLast').onclick = ()=>{
     const msgs = [...chatEl.querySelectorAll('.msg.bot')];
     if(!msgs.length) return;
     navigator.clipboard.writeText(msgs[msgs.length-1].textContent||'');
   };
+
+  // Esporta chat
   $('exportChat').onclick = ()=>{
-    const blob = new Blob(
-      [chatEl.innerText || ''],
-      {type:'text/plain'}
-    );
+    const blob = new Blob([chatEl.innerText || ''], {type:'text/plain'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `pixelup-${tpl}-chat.txt`;
