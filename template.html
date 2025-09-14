@@ -20,7 +20,7 @@
       border-bottom:1px solid #ddd;
     }
     header img {
-      width:200px; /* logo a 200px */
+      width:200px;
     }
     .container {
       max-width:1200px;
@@ -33,30 +33,40 @@
       gap:20px;
     }
     .card {
-      background:#fff;
-      border:1px solid #ddd;
+      position:relative;
       border-radius:12px;
-      padding:15px;
-      text-align:center;
-      transition:0.2s ease;
+      overflow:hidden;
+      cursor:pointer;
+      transition:transform 0.2s ease;
     }
     .card:hover {
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      transform:scale(1.02);
     }
     .card img {
       width:100%;
-      max-height:180px;
+      height:100%;
       object-fit:cover;
-      border-radius:8px;
-      margin-bottom:12px;
+      display:block;
     }
-    .card h3 {
-      margin:8px 0;
+    .overlay {
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      padding:15px;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      text-align:center;
+    }
+    .overlay h3 {
+      margin:0;
       font-size:18px;
+      font-weight:600;
     }
-    .card p {
+    .overlay p {
+      margin:5px 0 0;
       font-size:14px;
-      color:#555;
+      font-weight:400;
     }
   </style>
 </head>
@@ -67,21 +77,32 @@
 </header>
 
 <div class="container">
-  <h1>I nostri Template</h1>
+  <h1 style="text-align:center; margin-bottom:30px;">I nostri Template</h1>
   <div class="grid">
     <!-- Template 1 -->
-    <div class="card">
-      <img src="template1.png" alt="Template 1">
-      <h3>Template Business</h3>
-      <p>Descrizione breve...</p>
+    <div class="card" onclick="location.href='https://www.paypal.com/ncp/payment/tuo-link'">
+      <img src="template1.png" alt="Template Business">
+      <div class="overlay">
+        <h3>Template Business</h3>
+        <p>1,99€</p>
+      </div>
     </div>
     <!-- Template 2 -->
-    <div class="card">
-      <img src="template2.png" alt="Template 2">
-      <h3>Template CV</h3>
-      <p>Descrizione breve...</p>
+    <div class="card" onclick="location.href='https://www.paypal.com/ncp/payment/tuo-link'">
+      <img src="template2.png" alt="Template CV">
+      <div class="overlay">
+        <h3>Template CV</h3>
+        <p>1,99€</p>
+      </div>
     </div>
-    <!-- Aggiungi fino a 20 (o più) duplicando i blocchi card -->
+    <!-- Template 3 -->
+    <div class="card" onclick="location.href='https://www.paypal.com/ncp/payment/tuo-link'">
+      <img src="template3.png" alt="Template Fitness">
+      <div class="overlay">
+        <h3>Template Fitness</h3>
+        <p>1,99€</p>
+      </div>
+    </div>
   </div>
 </div>
 
