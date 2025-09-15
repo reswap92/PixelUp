@@ -9,64 +9,63 @@
   <style>
     body {
       font-family: Inter, sans-serif;
-      margin:0;
-      background:#f9fafb;
-      color:#222;
+      margin: 0;
+      background: #f9fafb;
+      color: #222;
     }
     header {
-      text-align:center;
-      padding:20px;
-      background:#fff;
-      border-bottom:1px solid #ddd;
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
     }
     header img {
-      width:200px;
+      width: 200px; /* logo */
     }
     .container {
-      max-width:1200px;
-      margin:30px auto;
-      padding:20px;
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
     }
     .grid {
-      display:grid;
+      display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap:20px;
+      gap: 20px;
     }
     .card {
-      position:relative;
-      border-radius:12px;
-      overflow:hidden;
-      cursor:pointer;
-      transition:transform 0.2s ease;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      text-align: center;
+      transition: 0.2s ease;
+      overflow: hidden;
     }
     .card:hover {
-      transform:scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
     }
     .card img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
     }
-    .overlay {
-      position:absolute;
-      bottom:0;
-      left:0;
-      width:100%;
-      padding:15px;
-      background:rgba(0,0,0,0.6);
-      color:#fff;
-      text-align:center;
+    .card h3 {
+      margin: 10px 0 4px;
+      font-size: 18px;
     }
-    .overlay h3 {
-      margin:0;
-      font-size:18px;
-      font-weight:600;
+    .card p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 16px;
     }
-    .overlay p {
-      margin:5px 0 0;
-      font-size:14px;
-      font-weight:400;
+    .card a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -77,50 +76,54 @@
 </header>
 
 <div class="container">
-  <h1 style="text-align:center; margin-bottom:30px;">I nostri Template</h1>
+  <h1>I nostri Template</h1>
   <div class="grid">
+    
     <!-- Template 1 -->
-<div class="card">
-  <a href="/neo-mamme.html">
-    <img src="template1.png" alt="Template Neo-Mamma">
-    <h3>Template Neo-Mamma</h3>
-    <p>2,99€</p>
-  </a>
-</div>
-
-<div class="card">
-  <a href="/coach.html">
-    <img src="template2.png" alt="Template Coach IA">
-    <h3>Template Coach IA</h3>
-    <p>1,99€</p>
-  </a>
-</div>
-
-<div class="card">
-  <a href="/cv.html">
-    <img src="template3.jpeg" alt="Template CV">
-    <h3>Template CV</h3>
-    <p>1,99€</p>
-  </a>
-</div>
-
-<div class="card">
-  <a href="/business.html">
-    <img src="template5.png" alt="Template Business Plan">
-    <h3>Template Business Plan</h3>
-    <p>1,99€</p>
-  </a>
-</div>
-
-<div class="card">
-  <a href="/fitness.html">
-    <img src="template4.jpeg" alt="Template Fitness">
-    <h3>Template Fitness</h3>
-    <p>1,99€</p>
-  </a>
-</div>
-
+    <div class="card">
+      <a href="/neo-mamme.html">
+        <img src="template1.png" alt="Template Neo-Mamma">
+        <h3>Template Neo-Mamma</h3>
+        <p>€ 2,99</p>
+      </a>
     </div>
+
+    <!-- Template 2 -->
+    <div class="card">
+      <a href="/coach.html">
+        <img src="template2.png" alt="Template Coach IA">
+        <h3>Template Coach IA</h3>
+        <p>€ 1,99</p>
+      </a>
+    </div>
+
+    <!-- Template 3 -->
+    <div class="card">
+      <a href="/cv.html">
+        <img src="template3.jpeg" alt="Template CV">
+        <h3>Template CV</h3>
+        <p>€ 1,99</p>
+      </a>
+    </div>
+
+    <!-- Template 4 -->
+    <div class="card">
+      <a href="/business.html">
+        <img src="template5.png" alt="Template Business Plan">
+        <h3>Template Business Plan</h3>
+        <p>€ 2,99</p>
+      </a>
+    </div>
+
+    <!-- Template 5 -->
+    <div class="card">
+      <a href="/fitness.html">
+        <img src="template4.jpeg" alt="Template Fitness">
+        <h3>Template Fitness</h3>
+        <p>€ 1,99</p>
+      </a>
+    </div>
+
   </div>
 </div>
 
