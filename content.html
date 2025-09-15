@@ -1,51 +1,36 @@
 <!DOCTYPE html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="it">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Content Creator Pack – PixelUp</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fff;--txt:#111;--mut:#6b7280;--line:#e5e7eb;--acc:#0ea5e9}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,Arial}
-.wrap{max-width:1080px;margin:0 auto;padding:20px}
-header{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
-a.link{color:var(--txt);text-decoration:none}
-.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:18px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
-.cover{border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.cover img{width:100%;display:block}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
-.gallery img{width:100%;height:140px;object-fit:cover;border:1px solid var(--line);border-radius:10px}
-h1{margin:0 0 6px}.price{font-size:22px;font-weight:800;margin:10px 0}
-.box{border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:16px;background:#fff}
-p.mut{color:var(--mut);font-size:14px;margin:6px 0}
-.btn{display:inline-block;padding:12px 16px;border-radius:12px;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;border:0}
-.btn.secondary{background:#fff;color:var(--txt);border:1px solid var(--line);margin-left:8px}
-ul{margin:10px 0 0 18px}
+body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#fafafa;color:#222}
+.box{max-width:800px;margin:0 auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+h1{margin-top:0}.price{font-size:22px;font-weight:bold;margin:10px 0}
+img{max-width:100%;border-radius:8px;margin-bottom:16px}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 </style></head>
-<body><div class="wrap">
-<header><a class="link" href="/template.html">← Torna ai Template</a></header>
-<main class="grid">
-<section>
-  <div class="cover"><img src="/img/content-cover.jpg" alt="Content Creator Pack"></div>
-  <div class="gallery">
-    <img src="/img/content-2.jpg" alt="Anteprima 2">
-    <img src="/img/content-3.jpg" alt="Anteprima 3">
-    <img src="/img/content-4.jpg" alt="Anteprima 4">
-  </div>
-</section>
-<section>
+<body>
+<div class="box">
   <h1>Content Creator Pack</h1>
-  <p class="mut">Calendari editoriali, hook, caption e idee reel. Con Chat IA “Content” per brainstorming e script rapidi.</p>
+  <p>Calendari editoriali, hook e caption con IA “Content Assistant”.</p>
   <div class="price">€ 1,99</div>
-  <p>
-    <a class="btn" href="https://www.paypal.com/ncp/payment/TUO_LINK_PAYPAL_CONTENT" target="_blank" rel="noopener">Acquista ora</a>
-    <a class="btn secondary" href="/chat/?tpl=content">Prova la chat IA</a>
-  </p>
-  <div class="box"><h3>Cosa include</h3>
-    <ul><li>Calendario editoriale</li><li>Foglio idee & hook</li><li>Template caption</li></ul>
+  <div class="gallery">
+    <img src="template1.png" alt="Content copertina">
+    <img src="templatecontent.png" alt="Content anteprima">
   </div>
-  <div class="box"><h3>Dettagli</h3>
-    <ul><li>PDF/PNG + Canva</li><li>Licenza personale</li></ul>
-  </div>
-  <p class="mut">Consegna via email/link dopo l’acquisto.</p>
-</section>
-</main></div></body></html>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=Af9_Axhg9ncsuTlpPqrk75Q4J0diJivqFwkJZhoIp4JjaGMubk23V9ukol8bfs0XdkNnY_Dpin5jmSrG&currency=EUR"></script>
+  <div id="paypal-content"></div>
+  <script>
+    paypal.Buttons({
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{ amount: { value: "1.99" }, description: "Content Creator Pack - PixelUp" }]
+      }),
+      onApprove: (data, actions) => actions.order.capture().then(details => {
+        alert("Grazie " + details.payer.name.given_name + "! Acquisto completato.");
+      })
+    }).render('#paypal-content');
+  </script>
+</div>
+</body>
+</html>
