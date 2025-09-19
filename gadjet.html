@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PixelUp • Template</title>
+  <title>PixelUp • Gadget IA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
@@ -43,24 +43,38 @@
       text-align: center;
       transition: 0.2s ease;
       overflow: hidden;
+      padding-bottom: 15px;
     }
     .card:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transform: translateY(-4px);
     }
-    .card img {
+
+    /* nuovo wrapper immagine */
+    .thumb {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      aspect-ratio: 4 / 3;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
+    .thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;  /* così l’immagine non si taglia */
+      display: block;
+    }
+
     .card h3 {
-      margin: 10px 0 4px;
+      margin: 15px 0 5px;
       font-size: 18px;
     }
     .card p {
       font-size: 14px;
       color: #555;
-      margin-bottom: 16px;
+      margin: 0;
     }
     .card a {
       display: block;
@@ -70,37 +84,37 @@
   </style>
 </head>
 <body>
+  <header>
+    <a href="index.html"><img src="logopixelup.png" alt="Logo PixelUp"></a>
+  </header>
 
-<header>
-  <a href="index.html"><img src="logopixelup.png" alt="Logo PixelUp"></a>
-</header>
+  <div class="container">
+    <h1>GADGET IA</h1>
+    <div class="grid">
 
-<div class="container">
-  <h1>GADJET IA</h1>
-  <div class="grid">
-    
-    <!-- Template 1 -->
-    <div class="card">
-      <a href="/cardpixelup.html">
-        <img src="card.png" alt="Card PixelUp">
-        <h3>Card PixelUp</h3>
-        <p>€ 9,99</p>
-      </a>
+      <!-- Prodotto 1 -->
+      <div class="card">
+        <a href="cardpixelup.html">
+          <div class="thumb">
+            <img src="card.png" alt="Card PixelUp" loading="lazy">
+          </div>
+          <h3>Card PixelUp</h3>
+          <p>€ 9,99</p>
+        </a>
+      </div>
+
+      <!-- Prodotto 2 -->
+      <div class="card">
+        <a href="portapixelup.html">
+          <div class="thumb">
+            <img src="porta.png" alt="Porta PixelUp IA" loading="lazy">
+          </div>
+          <h3>Porta PixelUp IA</h3>
+          <p>€ 9,99</p>
+        </a>
+      </div>
+
     </div>
-
-    <!-- Template 2 -->
-    <div class="card">
-      <a href="/portapixelup.html">
-        <img src="porta.png" alt="Porta PixelUp IA">
-        <h3>Porta PixelUp IA</h3>
-        <p>€ 9,99</p>
-      </a>
-    </div>
-
-
-
   </div>
-</div>
-
 </body>
 </html>
