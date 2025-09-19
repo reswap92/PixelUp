@@ -133,69 +133,84 @@ const STORIES = {
   drago: {
     title: "Il viaggio del Drago Gentile",
     scenes: [
-      {
-        title: "Capitolo 1",
-        text: "In una valle luminosa viveva un drago dalle scaglie cangianti, curioso e coraggioso.",
-        image: "./img/drago-0.png",
-        audio: "./audio/drago-0.mp3"
-      },
-      {
-        title: "Capitolo 2",
-        text: "Amava ascoltare il vento tra gli alberi e aiutare gli animali smarriti a ritrovare casa.",
-        image: "./img/drago-1.png",
-        audio: "./audio/drago-1.mp3"
-      },
-      {
-        title: "Capitolo 3",
-        text: "Un mattino ricevette un invito misterioso: una porta gentile attendeva chi scegliesse la bontà.",
-        image: "./img/drago-2.png",
-        audio: "./audio/drago-2.mp3"
-      },
-      {
-        title: "Capitolo 4",
-        text: "Con un respiro profondo, decise di mettersi in cammino verso la foresta incantata.",
-        image: "./img/drago-3.png",
-        audio: "./audio/drago-3.mp3"
-      },
-      {
-        title: "Capitolo 5",
-        text: "Sul sentiero s’intravedevano luci che sembravano parole, e ogni passo rendeva l’aria più dolce.",
-        image: "./img/drago-4.png",
-        audio: "./audio/drago-4.mp3"
-      },
-      {
-        title: "Capitolo 6",
-        text: "Vicino a un ruscello trovò altri viaggiatori, e il drago li accompagnò con storie di amicizia.",
-        image: "./img/drago-5.png",
-        audio: "./audio/drago-5.mp3"
-      },
-      {
-        title: "Capitolo 7",
-        text: "Quando il sole tramontò, il cielo si riempì di stelle che guidavano il suo cammino.",
-        image: "./img/drago-6.png",
-        audio: "./audio/drago-6.mp3"
-      },
-      {
-        title: "Capitolo 8",
-        text: "Un ponte di pietra apparve davanti a lui, e solo con coraggio e gentilezza poteva attraversarlo.",
-        image: "./img/drago-7.png",
-        audio: "./audio/drago-7.mp3"
-      },
-      {
-        title: "Capitolo 9",
-        text: "Dall’altra parte trovò un villaggio che lo accolse come un amico, non come un mostro.",
-        image: "./img/drago-8.png",
-        audio: "./audio/drago-8.mp3"
-      },
-      {
-        title: "Capitolo 10",
-        text: "E così il drago capì che la sua forza non era nel fuoco, ma nel cuore gentile che sapeva donare.",
-        image: "./img/drago-9.png",
-        audio: "./audio/drago-9.mp3"
-      }
+      { title: "Capitolo 1",  text: "In una valle luminosa viveva un drago dalle scaglie cangianti, curioso e coraggioso.", image: "./img/drago-0.png",  audio: "./audio/drago-0.mp3" },
+      { title: "Capitolo 2",  text: "Amava ascoltare il vento tra gli alberi e aiutare gli animali smarriti a ritrovare casa.",                         image: "./img/drago-1.png",  audio: "./audio/drago-1.mp3" },
+      { title: "Capitolo 3",  text: "Un mattino ricevette un invito misterioso: una porta gentile attendeva chi scegliesse la bontà.",                 image: "./img/drago-2.png",  audio: "./audio/drago-2.mp3" },
+      { title: "Capitolo 4",  text: "Con un respiro profondo, decise di mettersi in cammino verso la foresta incantata.",                               image: "./img/drago-3.png",  audio: "./audio/drago-3.mp3" },
+      { title: "Capitolo 5",  text: "Sul sentiero s’intravedevano luci che sembravano parole, e ogni passo rendeva l’aria più dolce.",                  image: "./img/drago-4.png",  audio: "./audio/drago-4.mp3" },
+      { title: "Capitolo 6",  text: "Vicino a un ruscello trovò altri viaggiatori, e il drago li accompagnò con storie di amicizia.",                  image: "./img/drago-5.png",  audio: "./audio/drago-5.mp3" },
+      { title: "Capitolo 7",  text: "Quando il sole tramontò, il cielo si riempì di stelle che guidavano il suo cammino.",                             image: "./img/drago-6.png",  audio: "./audio/drago-6.mp3" },
+      { title: "Capitolo 8",  text: "Un ponte di pietra apparve davanti a lui, e solo con coraggio e gentilezza poteva attraversarlo.",                image: "./img/drago-7.png",  audio: "./audio/drago-7.mp3" },
+      { title: "Capitolo 9",  text: "Dall’altra parte trovò un villaggio che lo accolse come un amico, non come un mostro.",                           image: "./img/drago-8.png",  audio: "./audio/drago-8.mp3" },
+      { title: "Capitolo 10", text: "E così il drago capì che la sua forza non era nel fuoco, ma nel cuore gentile che sapeva donare.",                 image: "./img/drago-9.png",  audio: "./audio/drago-9.mp3" }
     ]
+  },
+
+  cavaliere: {
+    title: "Il Cavaliere del Ponte di Luce",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Un giovane cavaliere sognava un regno di pace: la sua spada brillava solo quando difendeva i deboli.",
+        "Il ponte di luce appariva a chi non cercava gloria, ma amicizia e lealtà.",
+        "Davanti a lui, due strade: correre oltre le paure o fermarsi per aiutare un passero bagnato.",
+        "Scelse la gentilezza, e il ponte diventò più luminoso, come un sorriso nel cielo.",
+        "Ogni passo svelava un ricordo felice, e il cuore batteva al ritmo della speranza."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `./img/cavaliere-${i}.png`,
+      audio: `./audio/cavaliere-${i}.mp3`
+    }))
+  },
+
+  astronauta: {
+    title: "L’Astronauta delle Stelle Amiche",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Tra pianeti di zucchero filato e comete danzanti, l’astronauta cercava una costellazione nascosta.",
+        "Il suo casco rifletteva stelle come lucciole, e il silenzio dello spazio sembrava una ninna nanna.",
+        "Una sonda inviò un messaggio: chi condivide la luce trova sempre la rotta.",
+        "Decise di aiutare una piccola navetta in panne: le stelle applaudirono con lampi gentili.",
+        "La rotta segreta si accese, disegnando un sentiero verso un sogno da custodire."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `./img/astronauta-${i}.png`,
+      audio: `./audio/astronauta-${i}.mp3`
+    }))
+  },
+
+  fata: {
+    title: "La Fata e la Porta dei Ricordi Felici",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Nella radura dei petali cantanti, una fata custodiva il segreto della porta dei ricordi felici.",
+        "Il suo volo lasciava scie di polvere di stelle e piccole risate di rugiada.",
+        "Una bimba aveva perso un sogno; la fata decise di illuminarle la strada con una lanterna gentile.",
+        "Ogni gesto cortese apriva una fessura di luce nella porta, come un cuore che si schiude.",
+        "Quando la porta si aprì, l’aria profumò di biscotti alla cannella e abbracci sinceri."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `./img/fata-${i}.png`,
+      audio: `./audio/fata-${i}.mp3`
+    }))
+  },
+
+  cagnolino: {
+    title: "Il Cagnolino e il Sentiero dei Sorrisi",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Un cagnolino dal naso curioso trovava sempre amici dove gli altri vedevano ostacoli.",
+        "Seguiva tracce di risate e riportava a casa palline di sole cadute tra i fiori.",
+        "Un giorno scoprì un sentiero di impronte a forma di cuore: conduceva a un piccolo mistero.",
+        "Divise il suo biscottino con un riccio timido, e il bosco applaudì frusciando piano.",
+        "Alla fine del sentiero, c’era un premio: un abbraccio che scaldava più del sole."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `./img/cagnolino-${i}.png`,
+      audio: `./audio/cagnolino-${i}.mp3`
+    }))
   }
 };
+
 
   cavaliere: {
     title: "Il Cavaliere del Ponte di Luce",
