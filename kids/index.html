@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PixelUp Kids – Crea la tua Favola IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink:#ff7ecb; --blue:#6fb6ff; --bg:#f7f8ff; --text:#16223a; --muted:#4a5670; --card:#ffffff;
+      --accent:#7c4dff; --good:#10b981; --bad:#ef4444; --yellow:#f59e0b;
+      --radius:22px; --shadow:0 10px 30px rgba(20, 20, 60, .12);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{
+      font-family: Fredoka, Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 10% -10%, rgba(255,126,203,.35) 0, rgba(255,126,203,0) 60%),
+        radial-gradient(900px 600px at 110% 10%, rgba(111,182,255,.35) 0, rgba(111,182,255,0) 60%),
+        linear-gradient(135deg, #ffe7f7 0%, #eaf3ff 100%);
+      min-height:100%;
+    }
+    .container{max-width:1080px;margin:0 auto;padding:20px 18px 80px}
+    header{display:flex;align-items:center;gap:12px}
+    header img.logo{height:42px;width:auto;border-radius:12px;box-shadow:var(--shadow)}
+    header .brand{font-weight:800;font-size:20px;letter-spacing:.2px}
+
+    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;margin:18px 0 10px}
+    h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:8px 0}
+    .subtitle{color:var(--muted);max-width:760px}
+
+    /* Card */
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+
+    /* Steps */
+    .steps{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px}
+    .col{grid-column:span 12}
+    @media (min-width:900px){.col{grid-column:span 6}}
+
+    .label{font-weight:700;margin:8px 0 6px}
+    .input-row{display:flex;align-items:center;gap:10px}
+    input[type=text], select, textarea{
+      width:100%;border:2px solid rgba(22,34,58,.08);background:#fff;border-radius:16px;padding:12px 14px;font-size:16px;
+      outline:none;transition:border-color .2s ease, box-shadow .2s ease; box-shadow:inset 0 2px 0 rgba(22,34,58,.03)
+    }
+    input[type=text]:focus, select:focus, textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(111,182,255,.18)}
+
+    .mic-btn, .btn{
+      border:0;border-radius:16px;padding:12px 16px;font-weight:800;cursor:pointer;transition:transform .15s ease, filter .15s ease;
+      display:inline-flex;align-items:center;gap:8px
+    }
+    .mic-btn{background:#fff;border:2px dashed rgba(22,34,58,.15)}
+    .mic-btn.recording{border-color:var(--bad);box-shadow:0 0 0 4px rgba(239,68,68,.15)}
+    .btn.primary{background:linear-gradient(135deg,var(--pink),var(--blue));color:#0b0f1a}
+    .btn.secondary{background:#0b0f1a;color:#fff}
+    .btn:active{transform:translateY(1px)}
+
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .chip{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .chip.active{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,77,255,.15)}
+
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+
+    /* Voice bar */
+    .voicebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+    .voicebar select{border:2px solid rgba(22,34,58,.12);border-radius:12px;padding:10px 12px;background:#fff}
+
+    /* Story viewer */
+    .viewer{margin-top:24px;display:none}
+    .scene{position:relative;overflow:hidden;border-radius:24px;background:#fff;box-shadow:var(--shadow)}
+    .scene .bg{position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,126,203,.15), rgba(111,182,255,.15));filter:saturate(120%)}
+    .scene .content{position:relative;z-index:2;padding:28px}
+    .scene h2{margin:0 0 6px;font-size:26px}
+    .scene p{font-size:18px}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .pill{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700}
+
+    .choices{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+    .choice{flex:1 1 240px;background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:18px;padding:12px 14px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
+    .choice:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(20,20,60,.08)}
+
+    /* Quiz */
+    .quiz{display:none;margin-top:24px}
+    .q-item{background:#fff;border:2px solid rgba(22,34,58,.08);border-radius:18px;padding:14px 16px;margin:10px 0}
+    .q-item.correct{border-color:var(--good)}
+    .q-item.wrong{border-color:var(--bad)}
+
+    .reward{display:none;margin-top:16px;padding:16px;background:#fff;border-radius:18px;border:2px dashed rgba(22,34,58,.12)}
+    .icons{display:flex;gap:10px;flex-wrap:wrap}
+    .icon-badge{font-size:28px;border:2px solid rgba(22,34,58,.12);border-radius:14px;padding:10px 12px}
+
+    footer{margin-top:40px;color:var(--muted);text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img class="logo" src="logo.pixelup.png" alt="PixelUp logo" />
+      <div class="brand">PixelUp Kids</div>
+    </header>
+
+    <div class="hero">
+      <h1>Crea la tua Favola Magica ✨</h1>
+      <p class="subtitle">Scegli personaggio, luogo e tema: l'IA racconterà una storia unica! Puoi scrivere o parlare al microfono 🎤</p>
+    </div>
+
+    <!-- START CARD -->
+    <section id="starter" class="card">
+      <div class="steps">
+        <div class="col">
+          <div class="label">Il tuo nome</div>
+          <div class="input-row">
+            <input id="kidName" type="text" placeholder="Es. Martina, Luca..." />
+            <button class="mic-btn" data-target="kidName" title="Detta il nome" aria-label="Detta il nome">🎤</button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="label">Personaggio</div>
+          <div class="input-row">
+            <input id="character" type="text" placeholder="Es. Drago, Principessa, Cane coraggioso..." />
+            <button class="mic-btn" data-target="character" title="Detta il personaggio" aria-label="Detta il personaggio">🎤</button>
+          </div>
+          <div class="chips" data-bind="character">
+            <span class="chip">Drago</span>
+            <span class="chip">Cavaliere</span>
+            <span class="chip">Astronauta</span>
+            <span class="chip">Fata</span>
+            <span class="chip">Cagnolino</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="label">Ambientazione</div>
+          <div class="input-row">
+            <input id="setting" type="text" placeholder="Es. Foresta, Castello, Spazio, Mare..." />
+            <button class="mic-btn" data-target="setting" title="Detta l'ambientazione" aria-label="Detta l'ambientazione">🎤</button>
+          </div>
+          <div class="chips" data-bind="setting">
+            <span class="chip">Foresta</span>
+            <span class="chip">Castello</span>
+            <span class="chip">Spazio</span>
+            <span class="chip">Mare</span>
+            <span class="chip">Montagna</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="label">Tema / Emozione</div>
+          <div class="input-row">
+            <input id="theme" type="text" placeholder="Es. Amicizia, Mistero, Coraggio..." />
+            <button class="mic-btn" data-target="theme" title="Detta il tema" aria-label="Detta il tema">🎤</button>
+          </div>
+          <div class="chips" data-bind="theme">
+            <span class="chip">Amicizia</span>
+            <span class="chip">Coraggio</span>
+            <span class="chip">Magia</span>
+            <span class="chip">Mistero</span>
+            <span class="chip">Avventura</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="label">Colpo di scena (facoltativo)</div>
+          <div class="input-row">
+            <input id="twist" type="text" placeholder="Es. Una porta segreta, una stella cadente..." />
+            <button class="mic-btn" data-target="twist" title="Detta il colpo di scena" aria-label="Detta il colpo di scena">🎤</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="voicebar">
+        <strong>Voce narrante:</strong>
+        <select id="voicePreset">
+          <option value="narratrice">Narratrice (IT)</option>
+          <option value="narratore">Narratore (IT)</option>
+          <option value="bimba">Voce bimba (cartoon)</option>
+          <option value="bimbo">Voce bimbo (cartoon)</option>
+        </select>
+        <small style="color:var(--muted)">Le voci dipendono dal dispositivo. Usiamo la migliore italiana disponibile e modifichiamo tono/velocità per effetto cartoon.</small>
+      </div>
+
+      <div class="actions">
+        <button id="btnGenerate" class="btn primary">🎉 Inizia la favola</button>
+        <button id="btnDemo" class="btn secondary">✨ Prova una demo</button>
+      </div>
+    </section>
+
+    <!-- VIEWER -->
+    <section id="viewer" class="viewer">
+      <div class="scene">
+        <div class="bg" id="bgKen"></div>
+        <div class="content">
+          <div class="toolbar">
+            <span class="pill" id="pillTitle">Favola di <span id="kidNameOut">Bimbo</span></span>
+            <span class="pill">👤 <span id="pillCharacter">Personaggio</span></span>
+            <span class="pill">🏞️ <span id="pillSetting">Ambientazione</span></span>
+            <span class="pill">💫 <span id="pillTheme">Tema</span></span>
+          </div>
+          <h2 id="sceneTitle">La storia ha inizio…</h2>
+          <p id="sceneText">…</p>
+          <div class="choices" id="choices"></div>
+          <div class="actions">
+            <button id="btnSpeak" class="btn primary">🔊 Ascolta</button>
+            <button id="btnNext" class="btn secondary" style="display:none">Avanti ▶</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="quiz" class="quiz card">
+        <h3>Mini‑Quiz 🧠</h3>
+        <p>Hai ascoltato bene la favola? Rispondi a 5 domande!</p>
+        <div id="quizList"></div>
+        <div class="actions">
+          <button id="btnSubmitQuiz" class="btn primary">Verifica risposte</button>
+        </div>
+      </div>
+
+      <!-- REWARD -->
+      <div id="reward" class="reward">
+        <h3>Premio della Favola 🎁</h3>
+        <p id="rewardText">Sei stato bravissimo!</p>
+        <div class="icons" id="rewardIcons"></div>
+        <div class="actions">
+          <a class="btn secondary" href="#shop">Vai allo Shop PixelUp Toys</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © PixelUp – Favole IA per bambini · <a href="#shop">Shop</a>
+    </footer>
+  </div>
+
+  <script>
+    // ===== CONFIG =====
+    const API_URL = "https://pixelup.it/api/ai"; // usa lo stesso endpoint dei template
+    const API_MODE = "kids-story";               // lato server: ramifica il prompt su questo mode
+
+    // ===== DOM Helpers =====
+    const $ = (s)=>document.querySelector(s);
+    const $$ = (s)=>Array.from(document.querySelectorAll(s));
+
+    // ===== Chips → riempiono input
+    $$(".chips").forEach(group=>{
+      group.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('chip')){
+          const field = group.getAttribute('data-bind');
+          const input = document.getElementById(field);
+          input.value = e.target.textContent.trim();
+          $$(".chip", group).forEach(c=>c.classList.remove('active'));
+          e.target.classList.add('active');
+        }
+      });
+    });
+
+    // ===== Speech Recognition (detta)
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    function startDictation(targetId, btn){
+      if(!SR){ alert('Il tuo browser non supporta il riconoscimento vocale.'); return; }
+      const rec = new SR();
+      rec.lang = 'it-IT'; rec.interimResults = false; rec.maxAlternatives = 1;
+      btn.classList.add('recording');
+      rec.onresult = (e)=>{ document.getElementById(targetId).value = e.results[0][0].transcript; };
+      rec.onerror = ()=>{};
+      rec.onend = ()=> btn.classList.remove('recording');
+      rec.start();
+    }
+    $$(".mic-btn").forEach(btn=> btn.addEventListener('click', ()=> startDictation(btn.dataset.target, btn)));
+
+    // ===== Text‑to‑Speech (voci cartoon)
+    let voices = [];
+    function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    function pickItalianVoice(pref="f"){
+      if(!voices || !voices.length) return null;
+      // Priorità: voci italiane
+      const itVoices = voices.filter(v=> (v.lang||"").toLowerCase().startsWith('it'));
+      if(!itVoices.length) return voices[0];
+      // Preferenze per nome
+      const females = itVoices.filter(v=> /fem|silvia|elena|sofia|lucia|female/i.test(v.name));
+      const males   = itVoices.filter(v=> /mas|luca|marco|paolo|giorgio|male/i.test(v.name));
+      if(pref==="f" && females[0]) return females[0];
+      if(pref==="m" && males[0]) return males[0];
+      return itVoices[0];
+    }
+
+    function speak(text){
+      if(!('speechSynthesis' in window)) { alert('Sintesi vocale non supportata.'); return; }
+      const preset = $('#voicePreset').value; // narratrice|narratore|bimba|bimbo
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'it-IT';
+      let pref = 'f';
+      if(preset==='narratore' || preset==='bimbo') pref = 'm';
+      u.voice = pickItalianVoice(pref);
+      // Cartoon feel: pitch e rate
+      if(preset==='bimba'){ u.pitch = 1.35; u.rate = 1.02; }
+      else if(preset==='bimbo'){ u.pitch = 1.15; u.rate = 1.05; }
+      else if(preset==='narratrice'){ u.pitch = 1.08; u.rate = 0.98; }
+      else { /* narratore */ u.pitch = 0.96; u.rate = 0.98; }
+      u.volume = 1;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+
+    // Ken Burns bg
+    (function ken(){ const el = document.getElementById('bgKen'); let t=0; setInterval(()=>{ t+=1; el.style.transform = `scale(1.1) translate(${Math.sin(t/30)*6}px, ${Math.cos(t/40)*6}px)`; el.style.transition = 'transform 1.2s ease'; }, 1200); })();
+
+    // ===== Story Engine =====
+    let story=null; let current=0; let answers=[];
+
+    async function generateStoryWithAPI(data){
+      const payload = { mode: API_MODE, input: data };
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Errore API PixelUp');
+      return await res.json();
+    }
+
+    // Fallback demo se l'API non risponde
+    function fallbackStory(data){
+      const kid = data.name || 'Amico';
+      const ch = data.character || 'Drago';
+      const st = data.setting || 'Foresta';
+      const th = data.theme || 'Amicizia';
+      const tw = data.twist || 'una porta segreta';
+      const scene1 = `${kid} quel giorno camminava nella ${st.toLowerCase()} quando incontrò un ${ch.toLowerCase()} molto curioso...`;
+      const scene2 = `Dentro ${tw} trovarono disegni antichi che raccontavano storie della ${st.toLowerCase()}...`;
+      const scene3 = `Alla fine del ponte, ${kid} e il ${ch.toLowerCase()} arrivarono a una radura...`;
+      const quiz = [
+        { q:`Dove inizia l'avventura di ${kid}?`, a:['Nel castello','Nella foresta','Sulla spiaggia'], c:1 },
+        { q:`Chi accompagna ${kid}?`, a:[`${ch}`,'Un lupo','Un robot'], c:0 },
+        { q:`Cosa trovano legato a ${tw}?`, a:['Un drappo rosso','Disegni antichi','Una barca'], c:1 },
+        { q:`Qual è il messaggio delle lucine?`, a:['Chi corre vince','Chi è gentile riceve aiuto','Meglio stare soli'], c:1 },
+        { q:`Come superano l’ostacolo principale?`, a:['Con fiducia e coraggio','Volando via','Chiamando la polizia'], c:0 }
+      ];
+      return { title:`${ch} e ${kid} nella ${st}`, scenes:[{title:'Capitolo 1',text:scene1,choices:[{label:`Entrare in ${tw} subito`,goto:1},{label:`Cercare indizi attorno`,goto:1}]},{title:'Capitolo 2',text:scene2,choices:[{label:'Attraversare il ponte',goto:2},{label:'Costruire un passaggio',goto:2}]},{title:'Finale',text:scene3,choices:[]}], quiz, rewards:['🌟','🗝️','🛡️','🦄','🐲','🚀'] };
+    }
+
+    function startStory(demo=false){
+      const data = demo ?
+        {name:'Giulia', character:'Drago', setting:'Foresta', theme:'Amicizia', twist:'una porta segreta'} :
+        {name:$('#kidName').value.trim(), character:$('#character').value.trim(), setting:$('#setting').value.trim(), theme:$('#theme').value.trim(), twist:$('#twist').value.trim()};
+      if(!demo && (!data.name || !data.character || !data.setting || !data.theme)){
+        alert('Per iniziare, inserisci nome, personaggio, ambientazione e tema. Puoi anche usare il microfono!');
+        return;
+      }
+      $('#starter').style.display='none';
+      $('#viewer').style.display='block';
+
+      // Fill header pills
+      $('#kidNameOut').textContent = data.name || 'Bimbo';
+      $('#pillCharacter').textContent = data.character || 'Personaggio';
+      $('#pillSetting').textContent = data.setting || 'Luogo';
+      $('#pillTheme').textContent = data.theme || 'Tema';
+
+      // Chiama API PixelUp; se fallisce usa fallback
+      generateStoryWithAPI(data)
+        .then(json=>{ story = normalizeStory(json); renderScene(0); })
+        .catch(err=>{ console.warn(err); story = fallbackStory(data); renderScene(0); });
+    }
+
+    function normalizeStory(json){
+      // Accetta sia il formato già corretto sia una stringa JSON
+      try{ if(typeof json === 'string') return JSON.parse(json); }catch(e){}
+      // Assicura campi minimi
+      json.scenes = json.scenes || [];
+      json.quiz = json.quiz || [];
+      json.rewards = json.rewards || ['🌟'];
+      return json;
+    }
+
+    function renderScene(index){
+      current = index;
+      const s = story.scenes[index];
+      $('#sceneTitle').textContent = s.title || `Scena ${index+1}`;
+      $('#sceneText').textContent = s.text || '';
+      const choicesEl = $('#choices');
+      choicesEl.innerHTML = '';
+      if(s.choices && s.choices.length){
+        s.choices.forEach((c)=>{
+          const btn = document.createElement('button');
+          btn.className = 'choice';
+          btn.textContent = c.label;
+          btn.onclick = ()=> renderScene(c.goto);
+          choicesEl.appendChild(btn);
+        });
+        $('#btnNext').style.display='none';
+      } else {
+        $('#btnNext').style.display='inline-flex';
+        $('#btnNext').onclick = ()=> showQuiz();
+      }
+    }
+
+    function showQuiz(){
+      $('#quiz').style.display='block';
+      const ql = $('#quizList'); ql.innerHTML=''; answers=[];
+      story.quiz.forEach((q,idx)=>{
+        const wrap = document.createElement('div'); wrap.className='q-item';
+        const title = document.createElement('div'); title.style.fontWeight='800'; title.style.marginBottom='6px';
+        title.textContent = `${idx+1}. ${q.q}`; wrap.appendChild(title);
+        q.a.forEach((opt,i)=>{
+          const id = `q${idx}_${i}`;
+          const lbl = document.createElement('label'); lbl.style.display='flex'; lbl.style.alignItems='center'; lbl.style.gap='8px'; lbl.style.margin='6px 0';
+          const radio = document.createElement('input'); radio.type='radio'; radio.name=`q${idx}`; radio.value=i; radio.id=id;
+          lbl.appendChild(radio);
+          const span = document.createElement('span'); span.textContent = opt; lbl.appendChild(span);
+          wrap.appendChild(lbl);
+        });
+        ql.appendChild(wrap);
+      });
+    }
+
+    function submitQuiz(){
+      const items = $$('#quizList .q-item');
+      let score=0;
+      items.forEach((el,idx)=>{
+        const picked = el.querySelector('input[type=radio]:checked');
+        const ans = picked ? parseInt(picked.value,10) : -1;
+        if(ans === story.quiz[idx].c){ score++; el.classList.add('correct'); }
+        else { el.classList.add('wrong'); }
+      });
+      const ok = score>=3;
+      $('#rewardText').textContent = ok ? `Bravissimo! Hai risposto correttamente a ${score}/5: ecco il tuo premio!` : `Hai fatto ${score}/5. Ritenta per sbloccare un premio!`;
+      $('#reward').style.display='block';
+      const box = $('#rewardIcons'); box.innerHTML='';
+      story.rewards.forEach((ico)=>{ const span=document.createElement('span'); span.className='icon-badge'; span.textContent=ico; box.appendChild(span); });
+    }
+
+    // Events
+    document.getElementById('btnGenerate').addEventListener('click', ()=> startStory(false));
+    document.getElementById('btnDemo').addEventListener('click', ()=> startStory(true));
+    document.getElementById('btnSpeak').addEventListener('click', ()=> speak(document.getElementById('sceneText').textContent));
+    document.getElementById('btnSubmitQuiz').addEventListener('click', submitQuiz);
+  </script>
+</body>
+</html>
