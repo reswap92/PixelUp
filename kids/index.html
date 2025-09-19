@@ -33,22 +33,17 @@
     h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:8px 0}
     .subtitle{color:var(--muted);max-width:760px}
 
-    /* Card */
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
-
-    /* Steps */
     .steps{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px}
     .col{grid-column:span 12}
     @media (min-width:900px){.col{grid-column:span 6}}
-
     .label{font-weight:700;margin:8px 0 6px}
     .input-row{display:flex;align-items:center;gap:10px}
-    input[type=text], select, textarea{
+    input[type=text], select{
       width:100%;border:2px solid rgba(22,34,58,.08);background:#fff;border-radius:16px;padding:12px 14px;font-size:16px;
       outline:none;transition:border-color .2s ease, box-shadow .2s ease; box-shadow:inset 0 2px 0 rgba(22,34,58,.03)
     }
-    input[type=text]:focus, select:focus, textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(111,182,255,.18)}
-
+    input[type=text]:focus, select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(111,182,255,.18)}
     .mic-btn, .btn{
       border:0;border-radius:16px;padding:12px 16px;font-weight:800;cursor:pointer;transition:transform .15s ease, filter .15s ease;
       display:inline-flex;align-items:center;gap:8px
@@ -58,18 +53,14 @@
     .btn.primary{background:linear-gradient(135deg,var(--pink),var(--blue));color:#0b0f1a}
     .btn.secondary{background:#0b0f1a;color:#fff}
     .btn:active{transform:translateY(1px)}
-
     .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
     .chip{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
     .chip.active{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,77,255,.15)}
-
     .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
 
-    /* Voice bar */
     .voicebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
     .voicebar select{border:2px solid rgba(22,34,58,.12);border-radius:12px;padding:10px 12px;background:#fff}
 
-    /* Story viewer */
     .viewer{margin-top:24px;display:none}
     .scene{position:relative;overflow:hidden;border-radius:24px;background:#fff;box-shadow:var(--shadow)}
     .scene .bg{position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,126,203,.15), rgba(111,182,255,.15));filter:saturate(120%)}
@@ -80,11 +71,26 @@
     .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
     .pill{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700}
 
+    /* immagine scena */
+    .art{
+      width:100%;
+      aspect-ratio:16/9;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:#f3f4f6;
+      margin:14px 0;
+    }
+    .art img{
+      width:100%; height:100%; object-fit:cover;
+      transform:scale(1.03); transition:transform 1.2s ease;
+    }
+    .art:hover img{ transform:scale(1.06); }
+
     .choices{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
     .choice{flex:1 1 240px;background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:18px;padding:12px 14px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
     .choice:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(20,20,60,.08)}
 
-    /* Quiz */
     .quiz{display:none;margin-top:24px}
     .q-item{background:#fff;border:2px solid rgba(22,34,58,.08);border-radius:18px;padding:14px 16px;margin:10px 0}
     .q-item.correct{border-color:var(--good)}
@@ -100,7 +106,7 @@
 <body>
   <div class="container">
     <header>
-      <img class="logo" src="logo.pixelup.png" alt="PixelUp logo" />
+      <img class="logo" src="logopixelup.png" alt="PixelUp logo" />
       <div class="brand">PixelUp Kids</div>
     </header>
 
@@ -178,7 +184,12 @@
           <option value="bimba">Voce bimba (cartoon)</option>
           <option value="bimbo">Voce bimbo (cartoon)</option>
         </select>
-        <small style="color:var(--muted)">Le voci dipendono dal dispositivo. Usiamo la migliore italiana disponibile e modifichiamo tono/velocità per effetto cartoon.</small>
+        <span style="margin:0 8px;">•</span>
+        <label for="voiceSelect">Voce dispositivo:</label>
+        <select id="voiceSelect"><option value="">(automatica)</option></select>
+        <small style="color:var(--muted);display:block">
+          Suggerimento: scegli una voce “Google italiano/it-IT” se disponibile. Il preset regola tono/velocità in stile cartoon.
+        </small>
       </div>
 
       <div class="actions">
@@ -198,6 +209,12 @@
             <span class="pill">🏞️ <span id="pillSetting">Ambientazione</span></span>
             <span class="pill">💫 <span id="pillTheme">Tema</span></span>
           </div>
+
+          <!-- immagine scena -->
+          <div class="art">
+            <img id="sceneImg" alt="Illustrazione della scena" />
+          </div>
+
           <h2 id="sceneTitle">La storia ha inizio…</h2>
           <p id="sceneText">…</p>
           <div class="choices" id="choices"></div>
@@ -210,7 +227,7 @@
 
       <!-- QUIZ -->
       <div id="quiz" class="quiz card">
-        <h3>Mini‑Quiz 🧠</h3>
+        <h3>Mini-Quiz 🧠</h3>
         <p>Hai ascoltato bene la favola? Rispondi a 5 domande!</p>
         <div id="quizList"></div>
         <div class="actions">
@@ -236,14 +253,14 @@
 
   <script>
     // ===== CONFIG =====
-    const API_URL = "https://pixelup.it/api/ai"; // usa lo stesso endpoint dei template
-    const API_MODE = "kids-story";               // lato server: ramifica il prompt su questo mode
+    const API_URL = "https://pixelup.it/api/ai"; // stesso endpoint che usi per i template
+    const API_MODE = "kids-story";
 
-    // ===== DOM Helpers =====
-    const $ = (s)=>document.querySelector(s);
+    // ===== DOM helpers =====
+    const $  = (s)=>document.querySelector(s);
     const $$ = (s)=>Array.from(document.querySelectorAll(s));
 
-    // ===== Chips → riempiono input
+    // Chips → riempiono input
     $$(".chips").forEach(group=>{
       group.addEventListener('click', (e)=>{
         if(e.target.classList.contains('chip')){
@@ -256,7 +273,7 @@
       });
     });
 
-    // ===== Speech Recognition (detta)
+    // ===== Speech Recognition (detta) =====
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     function startDictation(targetId, btn){
       if(!SR){ alert('Il tuo browser non supporta il riconoscimento vocale.'); return; }
@@ -270,51 +287,66 @@
     }
     $$(".mic-btn").forEach(btn=> btn.addEventListener('click', ()=> startDictation(btn.dataset.target, btn)));
 
-    // ===== Text‑to‑Speech (voci cartoon)
+    // ===== Text-to-Speech (lista voci + cartoon) =====
     let voices = [];
-    function loadVoices(){ voices = window.speechSynthesis.getVoices(); }
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+    function loadVoices(){
+      voices = window.speechSynthesis.getVoices() || [];
+      const sel = document.getElementById('voiceSelect');
+      if(!sel) return;
+      const current = sel.value;
+      sel.innerHTML = '<option value="">(automatica)</option>';
+      voices.forEach((v, i)=>{
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = `${v.name} — ${v.lang}`;
+        sel.appendChild(opt);
+      });
+      if (current && sel.querySelector(`option[value="${current}"]`)) sel.value = current;
+    }
+    if ('speechSynthesis' in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
 
     function pickItalianVoice(pref="f"){
       if(!voices || !voices.length) return null;
-      // Priorità: voci italiane
+      const idx = document.getElementById('voiceSelect')?.value;
+      if (idx && voices[Number(idx)]) return voices[Number(idx)];
       const itVoices = voices.filter(v=> (v.lang||"").toLowerCase().startsWith('it'));
       if(!itVoices.length) return voices[0];
-      // Preferenze per nome
       const females = itVoices.filter(v=> /fem|silvia|elena|sofia|lucia|female/i.test(v.name));
       const males   = itVoices.filter(v=> /mas|luca|marco|paolo|giorgio|male/i.test(v.name));
       if(pref==="f" && females[0]) return females[0];
-      if(pref==="m" && males[0]) return males[0];
+      if(pref==="m" && males[0])   return males[0];
       return itVoices[0];
     }
 
     function speak(text){
       if(!('speechSynthesis' in window)) { alert('Sintesi vocale non supportata.'); return; }
-      const preset = $('#voicePreset').value; // narratrice|narratore|bimba|bimbo
+      const preset = $('#voicePreset').value;
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'it-IT';
-      let pref = 'f';
-      if(preset==='narratore' || preset==='bimbo') pref = 'm';
+      let pref = (preset==='narratore' || preset==='bimbo') ? 'm' : 'f';
       u.voice = pickItalianVoice(pref);
-      // Cartoon feel: pitch e rate
       if(preset==='bimba'){ u.pitch = 1.35; u.rate = 1.02; }
       else if(preset==='bimbo'){ u.pitch = 1.15; u.rate = 1.05; }
       else if(preset==='narratrice'){ u.pitch = 1.08; u.rate = 0.98; }
-      else { /* narratore */ u.pitch = 0.96; u.rate = 0.98; }
+      else { u.pitch = 0.96; u.rate = 0.98; }
       u.volume = 1;
       window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
+      setTimeout(()=> window.speechSynthesis.speak(u), 120);
     }
 
     // Ken Burns bg
     (function ken(){ const el = document.getElementById('bgKen'); let t=0; setInterval(()=>{ t+=1; el.style.transform = `scale(1.1) translate(${Math.sin(t/30)*6}px, ${Math.cos(t/40)*6}px)`; el.style.transition = 'transform 1.2s ease'; }, 1200); })();
 
-    // ===== Story Engine =====
-    let story=null; let current=0; let answers=[];
-
+    // ===== API =====
     async function generateStoryWithAPI(data){
-      const payload = { mode: API_MODE, input: data };
+      const payload = {
+        mode: API_MODE,
+        input: data,
+        options: { length: "long", scenes: 5, quiz: 5, requireChoices: true, tone: "kids-5-8" }
+      };
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type':'application/json' },
@@ -324,64 +356,147 @@
       return await res.json();
     }
 
-    // Fallback demo se l'API non risponde
-    function fallbackStory(data){
-      const kid = data.name || 'Amico';
-      const ch = data.character || 'Drago';
-      const st = data.setting || 'Foresta';
-      const th = data.theme || 'Amicizia';
-      const tw = data.twist || 'una porta segreta';
-      const scene1 = `${kid} quel giorno camminava nella ${st.toLowerCase()} quando incontrò un ${ch.toLowerCase()} molto curioso...`;
-      const scene2 = `Dentro ${tw} trovarono disegni antichi che raccontavano storie della ${st.toLowerCase()}...`;
-      const scene3 = `Alla fine del ponte, ${kid} e il ${ch.toLowerCase()} arrivarono a una radura...`;
-      const quiz = [
-        { q:`Dove inizia l'avventura di ${kid}?`, a:['Nel castello','Nella foresta','Sulla spiaggia'], c:1 },
-        { q:`Chi accompagna ${kid}?`, a:[`${ch}`,'Un lupo','Un robot'], c:0 },
-        { q:`Cosa trovano legato a ${tw}?`, a:['Un drappo rosso','Disegni antichi','Una barca'], c:1 },
-        { q:`Qual è il messaggio delle lucine?`, a:['Chi corre vince','Chi è gentile riceve aiuto','Meglio stare soli'], c:1 },
-        { q:`Come superano l’ostacolo principale?`, a:['Con fiducia e coraggio','Volando via','Chiamando la polizia'], c:0 }
-      ];
-      return { title:`${ch} e ${kid} nella ${st}`, scenes:[{title:'Capitolo 1',text:scene1,choices:[{label:`Entrare in ${tw} subito`,goto:1},{label:`Cercare indizi attorno`,goto:1}]},{title:'Capitolo 2',text:scene2,choices:[{label:'Attraversare il ponte',goto:2},{label:'Costruire un passaggio',goto:2}]},{title:'Finale',text:scene3,choices:[]}], quiz, rewards:['🌟','🗝️','🛡️','🦄','🐲','🚀'] };
+    // ===== Immagini 3D-like (Unsplash -> fallback picsum -> fallback locale) =====
+    function buildSceneImageURL(data, index){
+      const q1 = (data.character || 'personaggio').trim();
+      const q2 = (data.setting   || 'luogo').trim();
+      // keywords per look 3D/cartoon
+      const query = `${q1}, ${q2}, 3d render, pixar style, blender, colorful, kids illustration`;
+      // Unsplash random coerente (può essere bloccato da alcune CSP)
+      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(query)}`;
+    }
+    function buildSceneImageFallbackSeed(data, index){
+      const q1 = (data.character || 'personaggio').trim().toLowerCase().replace(/\s+/g,'-');
+      const q2 = (data.setting   || 'luogo').trim().toLowerCase().replace(/\s+/g,'-');
+      return `https://picsum.photos/seed/${encodeURIComponent(q1+'-'+q2+'-'+index)}/1600/900`;
     }
 
-    function startStory(demo=false){
+    // ===== Fallback story (più lunga: 4 scene + finale, >10 frasi) =====
+    function fallbackStory(data){
+      const kid = data.name || 'Amico';
+      const ch  = data.character || 'Drago';
+      const st  = data.setting || 'Foresta Incantata';
+      const th  = data.theme || 'Amicizia';
+      const tw  = data.twist || 'una porta segreta che appare solo ai cuori gentili';
+
+      const s1 = `${kid} camminava nella ${st.toLowerCase()} quando vide ${ch.toLowerCase()} uscire da dietro un albero luminoso. 
+Il ${ch.toLowerCase()} non aveva un aspetto minaccioso: le sue scaglie riflettevano i colori come un arcobaleno. 
+“Ciao!” disse il ${ch.toLowerCase()} con voce curiosa. “Sto cercando ${tw}.” 
+${kid} si fermò un istante, poi sorrise: “Possiamo cercarla insieme, ma promettimi che resteremo uniti: l’${th.toLowerCase()} rende tutto più semplice.” 
+Le foglie frusciarono come se stessero applaudendo, e un sentierino apparve tra i cespugli, invitandoli a iniziare l’avventura.`;
+
+      const s2 = `Il sentiero li guidò verso un vecchio ponte di legno sospeso su un ruscello scintillante. 
+Ogni asse scricchiolava, ma il ${ch.toLowerCase()} teneva la coda stretta vicino a ${kid} per farlo sentire al sicuro. 
+A metà del ponte, comparvero delle lucciole che formarono parole nell’aria: “Chi è gentile trova la strada”. 
+“Che significa?” chiese ${kid}. 
+“Che forse la porta segreta appare solo a chi aiuta gli altri,” rispose il ${ch.toLowerCase()} con un batter d’ali. 
+All’improvviso due possibilità: attraversare il ponte velocemente oppure fermarsi ad aiutare un uccellino con l’ala bagnata che tremava vicino.`;
+
+      const s3 = `Dopo aver scelto di aiutare l’uccellino, il ruscello sembrò cantare una melodia più dolce. 
+L’uccellino volò in cerchio e caddero dal cielo piccole piume luminose, come fiocchi di neve calda. 
+“Grazie,” cinguettò la creaturina, “vi guiderò io.” 
+Li portò in una radura dove le pietre disegnavano un cerchio perfetto, e al centro c’era un tronco con una fessura a forma di cuore. 
+“Prova a toccarla pensando a un ricordo felice,” disse il ${ch.toLowerCase()}. 
+${kid} pensò al sorriso di chi gli vuole bene, e la fessura si illuminò di rosa e azzurro, come l’alba sul mare.`;
+
+      const s4 = `Dalla fessura uscì un piccolo vento che profumava di biscotti e cannella, e apparve davvero ${tw}. 
+La porta aveva intarsi dorati e al centro un simbolo che sembrava battere come un cuore. 
+“Credo si apra se la attraversiamo insieme,” disse ${kid}. 
+Il ${ch.toLowerCase()} annuì e posò una zampa vicino alla mano di ${kid}. 
+Quando varcarono la soglia, videro un corridoio di luci danzanti e ascoltarono il suono di una risata… era la foresta stessa, felice della loro scelta. 
+Alla fine del corridoio c’era un balcone che dava su tutta la ${st.toLowerCase()}, come un castello tra le nuvole.`;
+
+      const s5 = `“Ogni volta che sceglierete la gentilezza,” sussurrò una voce, “questa porta vi condurrà dove serve coraggio e amicizia.” 
+${kid} guardò il ${ch.toLowerCase()} e rise: “Allora non saremo mai soli.” 
+Il ${ch.toLowerCase()} fece un piccolo inchino: “Con te ho imparato che l’${th.toLowerCase()} rende grandi anche i passi più piccoli.” 
+Tornarono a casa con una piuma luminosa e la promessa di rivedere la porta quando qualcuno avrà bisogno di aiuto. 
+Da quel giorno, ${kid} non ebbe più paura dei ponti scricchiolanti: sapeva che dall’altra parte c’era sempre una nuova meraviglia.`;
+
+      const quiz = [
+        { q:`Dove inizia l’avventura di ${kid}?`, a:['Nel deserto','Nella foresta incantata','In una città rumorosa'], c:1 },
+        { q:`Com’è il ${ch.toLowerCase()} che incontra ${kid}?`, a:['Spaventoso','Gentile e colorato','Invisibile'], c:1 },
+        { q:`Cosa mostrano le lucciole sul ponte?`, a:['Una mappa','Un indovinello','Una frase sulla gentilezza'], c:2 },
+        { q:`Cosa fa ${kid} quando vede l’uccellino bagnato?`, a:['Lo ignora','Lo aiuta','Scappa via'], c:1 },
+        { q:`Come si apre la porta segreta?`, a:['Con una chiave','Pensando a un ricordo felice','Dicendo una password'], c:1 }
+      ];
+
+      return {
+        title:`${ch} e ${kid} nella ${st}`,
+        scenes:[
+          { title:'Capitolo 1 – L’incontro', text:s1, choices:[{label:`Seguire il sentiero di foglie luccicanti`, goto:1},{label:`Parlare ancora con il ${ch.toLowerCase()}`, goto:1}] },
+          { title:'Capitolo 2 – Il ponte e le lucciole', text:s2, choices:[{label:'Attraversare di corsa il ponte', goto:2},{label:'Aiutare l’uccellino prima', goto:2}] },
+          { title:'Capitolo 3 – La radura del cuore', text:s3, choices:[{label:'Toccare la fessura pensando a un ricordo felice', goto:3},{label:'Cercare un altro indizio tra le pietre', goto:3}] },
+          { title:'Capitolo 4 – La porta gentile', text:s4, choices:[{label:'Attraversare la porta insieme', goto:4},{label:'Chiamare le lucciole per un consiglio', goto:4}] },
+          { title:'Finale – La promessa della Foresta', text:s5, choices:[] }
+        ],
+        quiz,
+        rewards:['🌟','🗝️','🦄','🐲','💎','🚀']
+      };
+    }
+
+    // ===== Stato & rendering =====
+    let story=null; let current=0;
+
+    async function startStory(demo=false){
       const data = demo ?
-        {name:'Giulia', character:'Drago', setting:'Foresta', theme:'Amicizia', twist:'una porta segreta'} :
+        {name:'Giulia', character:'Drago', setting:'Foresta Incantata', theme:'Amicizia', twist:'una porta segreta che appare solo ai cuori gentili'} :
         {name:$('#kidName').value.trim(), character:$('#character').value.trim(), setting:$('#setting').value.trim(), theme:$('#theme').value.trim(), twist:$('#twist').value.trim()};
       if(!demo && (!data.name || !data.character || !data.setting || !data.theme)){
         alert('Per iniziare, inserisci nome, personaggio, ambientazione e tema. Puoi anche usare il microfono!');
         return;
       }
+
       $('#starter').style.display='none';
       $('#viewer').style.display='block';
 
-      // Fill header pills
       $('#kidNameOut').textContent = data.name || 'Bimbo';
       $('#pillCharacter').textContent = data.character || 'Personaggio';
       $('#pillSetting').textContent = data.setting || 'Luogo';
       $('#pillTheme').textContent = data.theme || 'Tema';
 
-      // Chiama API PixelUp; se fallisce usa fallback
-      generateStoryWithAPI(data)
-        .then(json=>{ story = normalizeStory(json); renderScene(0); })
-        .catch(err=>{ console.warn(err); story = fallbackStory(data); renderScene(0); });
+      try{
+        const json = await generateStoryWithAPI(data);
+        story = normalizeStory(json);
+      }catch(e){
+        console.warn('API non disponibile, uso fallback lungo:', e);
+        story = fallbackStory(data);
+      }
+      renderScene(0, data);
+      window.scrollTo({top:0, behavior:'smooth'});
     }
 
     function normalizeStory(json){
-      // Accetta sia il formato già corretto sia una stringa JSON
-      try{ if(typeof json === 'string') return JSON.parse(json); }catch(e){}
-      // Assicura campi minimi
-      json.scenes = json.scenes || [];
-      json.quiz = json.quiz || [];
+      try{ if(typeof json==='string') return JSON.parse(json); }catch(e){}
+      json.scenes  = json.scenes  || [];
+      json.quiz    = json.quiz    || [];
       json.rewards = json.rewards || ['🌟'];
       return json;
     }
 
-    function renderScene(index){
+    function setSceneImage(dataForImg, index, scene){
+      const imgEl = document.getElementById('sceneImg');
+      imgEl.onerror = ()=> {
+        // fallback su picsum (seed coerente)
+        imgEl.onerror = ()=> { imgEl.src = '/kids/img/default-0.jpg'; }; // ultimo fallback locale (metti un file tuo qui)
+        imgEl.src = buildSceneImageFallbackSeed(dataForImg, index);
+      };
+      if (scene && scene.image){
+        imgEl.src = scene.image;
+      } else {
+        imgEl.src = buildSceneImageURL(dataForImg, index);
+      }
+    }
+
+    function renderScene(index, dataForImg){
       current = index;
       const s = story.scenes[index];
       $('#sceneTitle').textContent = s.title || `Scena ${index+1}`;
-      $('#sceneText').textContent = s.text || '';
+      $('#sceneText').textContent  = s.text  || '';
+      setSceneImage(dataForImg || {
+        character: $('#pillCharacter').textContent,
+        setting:   $('#pillSetting').textContent
+      }, index, s);
+
       const choicesEl = $('#choices');
       choicesEl.innerHTML = '';
       if(s.choices && s.choices.length){
@@ -389,7 +504,7 @@
           const btn = document.createElement('button');
           btn.className = 'choice';
           btn.textContent = c.label;
-          btn.onclick = ()=> renderScene(c.goto);
+          btn.onclick = ()=> renderScene(c.goto, dataForImg);
           choicesEl.appendChild(btn);
         });
         $('#btnNext').style.display='none';
@@ -401,7 +516,7 @@
 
     function showQuiz(){
       $('#quiz').style.display='block';
-      const ql = $('#quizList'); ql.innerHTML=''; answers=[];
+      const ql = $('#quizList'); ql.innerHTML='';
       story.quiz.forEach((q,idx)=>{
         const wrap = document.createElement('div'); wrap.className='q-item';
         const title = document.createElement('div'); title.style.fontWeight='800'; title.style.marginBottom='6px';
@@ -416,6 +531,7 @@
         });
         ql.appendChild(wrap);
       });
+      window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
     }
 
     function submitQuiz(){
@@ -428,10 +544,11 @@
         else { el.classList.add('wrong'); }
       });
       const ok = score>=3;
-      $('#rewardText').textContent = ok ? `Bravissimo! Hai risposto correttamente a ${score}/5: ecco il tuo premio!` : `Hai fatto ${score}/5. Ritenta per sbloccare un premio!`;
+      $('#rewardText').textContent = ok ? `Bravissimo! Hai risposto correttamente a ${score}/${items.length}: ecco il tuo premio!` : `Hai fatto ${score}/${items.length}. Ritenta per sbloccare un premio!`;
       $('#reward').style.display='block';
       const box = $('#rewardIcons'); box.innerHTML='';
-      story.rewards.forEach((ico)=>{ const span=document.createElement('span'); span.className='icon-badge'; span.textContent=ico; box.appendChild(span); });
+      (story.rewards||['🌟']).forEach((ico)=>{ const span=document.createElement('span'); span.className='icon-badge'; span.textContent=ico; box.appendChild(span); });
+      window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
     }
 
     // Events
