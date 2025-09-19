@@ -1,561 +1,303 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PixelUp Kids – Crea la tua Favola IA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --pink:#ff7ecb; --blue:#6fb6ff; --bg:#f7f8ff; --text:#16223a; --muted:#4a5670; --card:#ffffff;
-      --accent:#7c4dff; --good:#10b981; --bad:#ef4444; --yellow:#f59e0b;
-      --radius:22px; --shadow:0 10px 30px rgba(20, 20, 60, .12);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{
-      font-family: Fredoka, Nunito, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(900px 600px at 10% -10%, rgba(255,126,203,.35) 0, rgba(255,126,203,0) 60%),
-        radial-gradient(900px 600px at 110% 10%, rgba(111,182,255,.35) 0, rgba(111,182,255,0) 60%),
-        linear-gradient(135deg, #ffe7f7 0%, #eaf3ff 100%);
-      min-height:100%;
-    }
-    .container{max-width:1080px;margin:0 auto;padding:20px 18px 80px}
-    header{display:flex;align-items:center;gap:12px}
-    header img.logo{height:42px;width:auto;border-radius:12px;box-shadow:var(--shadow)}
-    header .brand{font-weight:800;font-size:20px;letter-spacing:.2px}
-
-    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;margin:18px 0 10px}
-    h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1;margin:8px 0}
-    .subtitle{color:var(--muted);max-width:760px}
-
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
-    .steps{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px}
-    .col{grid-column:span 12}
-    @media (min-width:900px){.col{grid-column:span 6}}
-    .label{font-weight:700;margin:8px 0 6px}
-    .input-row{display:flex;align-items:center;gap:10px}
-    input[type=text], select{
-      width:100%;border:2px solid rgba(22,34,58,.08);background:#fff;border-radius:16px;padding:12px 14px;font-size:16px;
-      outline:none;transition:border-color .2s ease, box-shadow .2s ease; box-shadow:inset 0 2px 0 rgba(22,34,58,.03)
-    }
-    input[type=text]:focus, select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(111,182,255,.18)}
-    .mic-btn, .btn{
-      border:0;border-radius:16px;padding:12px 16px;font-weight:800;cursor:pointer;transition:transform .15s ease, filter .15s ease;
-      display:inline-flex;align-items:center;gap:8px
-    }
-    .mic-btn{background:#fff;border:2px dashed rgba(22,34,58,.15)}
-    .mic-btn.recording{border-color:var(--bad);box-shadow:0 0 0 4px rgba(239,68,68,.15)}
-    .btn.primary{background:linear-gradient(135deg,var(--pink),var(--blue));color:#0b0f1a}
-    .btn.secondary{background:#0b0f1a;color:#fff}
-    .btn:active{transform:translateY(1px)}
-    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-    .chip{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
-    .chip.active{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,77,255,.15)}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
-
-    .voicebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
-    .voicebar select{border:2px solid rgba(22,34,58,.12);border-radius:12px;padding:10px 12px;background:#fff}
-
-    .viewer{margin-top:24px;display:none}
-    .scene{position:relative;overflow:hidden;border-radius:24px;background:#fff;box-shadow:var(--shadow)}
-    .scene .bg{position:absolute;inset:0;background:linear-gradient(135deg, rgba(255,126,203,.15), rgba(111,182,255,.15));filter:saturate(120%)}
-    .scene .content{position:relative;z-index:2;padding:28px}
-    .scene h2{margin:0 0 6px;font-size:26px}
-    .scene p{font-size:18px}
-
-    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .pill{background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:999px;padding:8px 12px;font-weight:700}
-
-    /* immagine scena */
-    .art{
-      width:100%;
-      aspect-ratio:16/9;
-      border-radius:20px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      background:#f3f4f6;
-      margin:14px 0;
-    }
-    .art img{
-      width:100%; height:100%; object-fit:cover;
-      transform:scale(1.03); transition:transform 1.2s ease;
-    }
-    .art:hover img{ transform:scale(1.06); }
-
-    .choices{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
-    .choice{flex:1 1 240px;background:#fff;border:2px solid rgba(22,34,58,.12);border-radius:18px;padding:12px 14px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
-    .choice:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(20,20,60,.08)}
-
-    .quiz{display:none;margin-top:24px}
-    .q-item{background:#fff;border:2px solid rgba(22,34,58,.08);border-radius:18px;padding:14px 16px;margin:10px 0}
-    .q-item.correct{border-color:var(--good)}
-    .q-item.wrong{border-color:var(--bad)}
-
-    .reward{display:none;margin-top:16px;padding:16px;background:#fff;border-radius:18px;border:2px dashed rgba(22,34,58,.12)}
-    .icons{display:flex;gap:10px;flex-wrap:wrap}
-    .icon-badge{font-size:28px;border:2px solid rgba(22,34,58,.12);border-radius:14px;padding:10px 12px}
-
-    footer{margin-top:40px;color:var(--muted);text-align:center}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PixelUp Kids – Favole IA (5 storie × 10 scene)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff7ecb; --blue:#6fb6ff; --text:#16223a; --muted:#51607a; --card:#fff;
+  --radius:20px; --shadow:0 10px 30px rgba(20,20,60,.12);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{
+  font-family:Fredoka, Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(900px 600px at 10% -10%, rgba(255,126,203,.35) 0, rgba(255,126,203,0) 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(111,182,255,.35) 0, rgba(111,182,255,0) 60%),
+    linear-gradient(135deg, #ffe7f7 0%, #eaf3ff 100%);
+  min-height:100vh;
+}
+.container{max-width:1080px;margin:0 auto;padding:20px 18px 64px}
+header{display:flex;align-items:center;gap:12px}
+header img.logo{height:42px;border-radius:12px;box-shadow:var(--shadow)}
+header .brand{font-weight:800;font-size:20px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-top:16px}
+h1{font-size:clamp(26px,4.6vw,44px);margin:10px 0}
+.subtitle{color:var(--muted)}
+.controls{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:10px}
+.controls .col{grid-column:span 12}
+@media(min-width:900px){.controls .col{grid-column:span 6}}
+select,input,button{
+  width:100%;border:2px solid #e8ecff;border-radius:14px;padding:12px 14px;font-size:16px;outline:none;
+}
+button{cursor:pointer;font-weight:800}
+.primary{background:linear-gradient(135deg,var(--pink),var(--blue));border:0}
+.viewer{display:none;margin-top:16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.pill{background:#fff;border:2px solid #e8ecff;border-radius:999px;padding:8px 12px;font-weight:700}
+.art{width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#f3f4f6}
+.art img{width:100%;height:100%;object-fit:cover;transform:scale(1.03);transition:transform 1.2s ease}
+.art:hover img{transform:scale(1.06)}
+#sceneTitle{margin:12px 0 4px}
+#sceneText{font-size:18px;line-height:1.45}
+.actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:8px}
+audio{width:100%}
+footer{margin-top:24px;text-align:center;color:var(--muted)}
+</style>
 </head>
 <body>
   <div class="container">
     <header>
-      <img class="logo" src="logopixelup.png" alt="PixelUp logo" />
+      <img class="logo" src="logopixelup.png" alt="PixelUp" />
       <div class="brand">PixelUp Kids</div>
     </header>
 
-    <div class="hero">
-      <h1>Crea la tua Favola Magica ✨</h1>
-      <p class="subtitle">Scegli personaggio, luogo e tema: l'IA racconterà una storia unica! Puoi scrivere o parlare al microfono 🎤</p>
-    </div>
+    <section class="card">
+      <h1>Favole Magiche – 5 storie × 10 scene</h1>
+      <p class="subtitle">Scegli un personaggio, inserisci il nome e goditi 10 capitoli con immagini locali e voce dolce (mamma, papà, bimba o bimbo) tramite audio MP3.</p>
 
-    <!-- START CARD -->
-    <section id="starter" class="card">
-      <div class="steps">
+      <div class="controls">
         <div class="col">
-          <div class="label">Il tuo nome</div>
-          <div class="input-row">
-            <input id="kidName" type="text" placeholder="Es. Martina, Luca..." />
-            <button class="mic-btn" data-target="kidName" title="Detta il nome" aria-label="Detta il nome">🎤</button>
-          </div>
+          <label>Il tuo nome</label>
+          <input id="kidName" type="text" placeholder="Es. Martina, Luca..." />
         </div>
         <div class="col">
-          <div class="label">Personaggio</div>
-          <div class="input-row">
-            <input id="character" type="text" placeholder="Es. Drago, Principessa, Cane coraggioso..." />
-            <button class="mic-btn" data-target="character" title="Detta il personaggio" aria-label="Detta il personaggio">🎤</button>
-          </div>
-          <div class="chips" data-bind="character">
-            <span class="chip">Drago</span>
-            <span class="chip">Cavaliere</span>
-            <span class="chip">Astronauta</span>
-            <span class="chip">Fata</span>
-            <span class="chip">Cagnolino</span>
-          </div>
+          <label>Personaggio</label>
+          <select id="character">
+            <option value="drago">🐲 Drago</option>
+            <option value="cavaliere">🛡️ Cavaliere</option>
+            <option value="astronauta">🚀 Astronauta</option>
+            <option value="fata">🧚‍♀️ Fata</option>
+            <option value="cagnolino">🐶 Cagnolino</option>
+          </select>
         </div>
         <div class="col">
-          <div class="label">Ambientazione</div>
-          <div class="input-row">
-            <input id="setting" type="text" placeholder="Es. Foresta, Castello, Spazio, Mare..." />
-            <button class="mic-btn" data-target="setting" title="Detta l'ambientazione" aria-label="Detta l'ambientazione">🎤</button>
-          </div>
-          <div class="chips" data-bind="setting">
-            <span class="chip">Foresta</span>
-            <span class="chip">Castello</span>
-            <span class="chip">Spazio</span>
-            <span class="chip">Mare</span>
-            <span class="chip">Montagna</span>
-          </div>
+          <label>Voce (server)</label>
+          <select id="voiceServer">
+            <option value="mamma">👩‍🍼 Mamma</option>
+            <option value="papa">👨‍🍼 Papà</option>
+            <option value="bimba">👧 Bimba</option>
+            <option value="bimbo">👦 Bimbo</option>
+          </select>
         </div>
         <div class="col">
-          <div class="label">Tema / Emozione</div>
-          <div class="input-row">
-            <input id="theme" type="text" placeholder="Es. Amicizia, Mistero, Coraggio..." />
-            <button class="mic-btn" data-target="theme" title="Detta il tema" aria-label="Detta il tema">🎤</button>
-          </div>
-          <div class="chips" data-bind="theme">
-            <span class="chip">Amicizia</span>
-            <span class="chip">Coraggio</span>
-            <span class="chip">Magia</span>
-            <span class="chip">Mistero</span>
-            <span class="chip">Avventura</span>
-          </div>
+          <label>Voce fallback (browser)</label>
+          <select id="voicePreset">
+            <option value="narratrice">Narratrice</option>
+            <option value="narratore">Narratore</option>
+            <option value="bimba">Bimba (cartoon)</option>
+            <option value="bimbo">Bimbo (cartoon)</option>
+          </select>
         </div>
-        <div class="col">
-          <div class="label">Colpo di scena (facoltativo)</div>
-          <div class="input-row">
-            <input id="twist" type="text" placeholder="Es. Una porta segreta, una stella cadente..." />
-            <button class="mic-btn" data-target="twist" title="Detta il colpo di scena" aria-label="Detta il colpo di scena">🎤</button>
-          </div>
+        <div class="col" style="grid-column:span 12">
+          <button id="btnStart" class="primary">🎉 Inizia la favola</button>
         </div>
       </div>
+    </section>
 
-      <div class="voicebar">
-        <strong>Voce narrante:</strong>
-        <select id="voicePreset">
-          <option value="narratrice">Narratrice (IT)</option>
-          <option value="narratore">Narratore (IT)</option>
-          <option value="bimba">Voce bimba (cartoon)</option>
-          <option value="bimbo">Voce bimbo (cartoon)</option>
-        </select>
-        <span style="margin:0 8px;">•</span>
-        <label for="voiceSelect">Voce dispositivo:</label>
-        <select id="voiceSelect"><option value="">(automatica)</option></select>
-        <small style="color:var(--muted);display:block">
-          Suggerimento: scegli una voce “Google italiano/it-IT” se disponibile. Il preset regola tono/velocità in stile cartoon.
-        </small>
+    <section id="viewer" class="viewer card">
+      <div class="toolbar">
+        <span class="pill">👤 <b id="pillKid">Bimbo</b></span>
+        <span class="pill">📚 <b id="pillStory">Drago</b></span>
+        <span class="pill badge">🔊 <b id="pillVoice">Voce: Mamma</b></span>
       </div>
+
+      <h2 id="sceneTitle">Titolo scena</h2>
+      <div class="art"><img id="sceneImg" alt="Illustrazione scena"></div>
+      <p id="sceneText">Testo scena…</p>
+      <audio id="sceneAudio" controls></audio>
 
       <div class="actions">
-        <button id="btnGenerate" class="btn primary">🎉 Inizia la favola</button>
-        <button id="btnDemo" class="btn secondary">✨ Prova una demo</button>
+        <button id="btnPrev">⬅️ Indietro</button>
+        <button id="btnSpeak">🔊 Ascolta</button>
+        <button id="btnNext" class="primary">Avanti ➡️</button>
       </div>
     </section>
 
-    <!-- VIEWER -->
-    <section id="viewer" class="viewer">
-      <div class="scene">
-        <div class="bg" id="bgKen"></div>
-        <div class="content">
-          <div class="toolbar">
-            <span class="pill" id="pillTitle">Favola di <span id="kidNameOut">Bimbo</span></span>
-            <span class="pill">👤 <span id="pillCharacter">Personaggio</span></span>
-            <span class="pill">🏞️ <span id="pillSetting">Ambientazione</span></span>
-            <span class="pill">💫 <span id="pillTheme">Tema</span></span>
-          </div>
-
-          <!-- immagine scena -->
-          <div class="art">
-            <img id="sceneImg" alt="Illustrazione della scena" />
-          </div>
-
-          <h2 id="sceneTitle">La storia ha inizio…</h2>
-          <p id="sceneText">…</p>
-          <div class="choices" id="choices"></div>
-          <div class="actions">
-            <button id="btnSpeak" class="btn primary">🔊 Ascolta</button>
-            <button id="btnNext" class="btn secondary" style="display:none">Avanti ▶</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- QUIZ -->
-      <div id="quiz" class="quiz card">
-        <h3>Mini-Quiz 🧠</h3>
-        <p>Hai ascoltato bene la favola? Rispondi a 5 domande!</p>
-        <div id="quizList"></div>
-        <div class="actions">
-          <button id="btnSubmitQuiz" class="btn primary">Verifica risposte</button>
-        </div>
-      </div>
-
-      <!-- REWARD -->
-      <div id="reward" class="reward">
-        <h3>Premio della Favola 🎁</h3>
-        <p id="rewardText">Sei stato bravissimo!</p>
-        <div class="icons" id="rewardIcons"></div>
-        <div class="actions">
-          <a class="btn secondary" href="#shop">Vai allo Shop PixelUp Toys</a>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      © PixelUp – Favole IA per bambini · <a href="#shop">Shop</a>
-    </footer>
+    <footer>© PixelUp Kids · Immagini in <code>/kids/img/</code> · Audio in <code>/kids/audio/</code></footer>
   </div>
 
-  <script>
-    // ===== CONFIG =====
-    const API_URL = "https://pixelup.it/api/ai"; // stesso endpoint che usi per i template
-    const API_MODE = "kids-story";
+<script>
+// ====== CONTENUTI (5 favole × 10 scene) ======
+// Ogni scena punta a un'immagine locale PNG e a un audio MP3 (se disponibile).
+// Percorso immagini: /kids/img/<slug>-<index>.png
+// Percorso audio:   /kids/audio/<slug>-<index>.mp3  (voce dolce generata dal tuo backend)
 
-    // ===== DOM helpers =====
-    const $  = (s)=>document.querySelector(s);
-    const $$ = (s)=>Array.from(document.querySelectorAll(s));
+const STORIES = {
+  drago: {
+    title: "Il viaggio del Drago Gentile",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "In una valle luminosa viveva un drago dalle scaglie cangianti, curioso e coraggioso.",
+        "Amava ascoltare il vento tra gli alberi e aiutare gli animali smarriti a ritrovare casa.",
+        "Un mattino ricevette un invito misterioso: una porta gentile attendeva chi scegliesse la bontà.",
+        "Con un respiro profondo, decise di mettersi in cammino verso la foresta incantata.",
+        "Sul sentiero s’intravedevano luci che sembravano parole, e ogni passo rendeva l’aria più dolce."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `/kids/img/drago-${i}.png`,
+      audio: `/kids/audio/drago-${i}.mp3`
+    }))
+  },
+  cavaliere: {
+    title: "Il Cavaliere del Ponte di Luce",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Un giovane cavaliere sognava un regno di pace: la sua spada brillava solo quando difendeva i deboli.",
+        "Il ponte di luce appariva a chi non cercava gloria, ma amicizia e lealtà.",
+        "Davanti a lui, due strade: correre oltre le paure o fermarsi per aiutare un passero bagnato.",
+        "Scelse la gentilezza, e il ponte diventò più luminoso, come un sorriso nel cielo.",
+        "Ogni passo svelava un ricordo felice, e il cuore batteva al ritmo della speranza."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `/kids/img/cavaliere-${i}.png`,
+      audio: `/kids/audio/cavaliere-${i}.mp3`
+    }))
+  },
+  astronauta: {
+    title: "L’Astronauta delle Stelle Amiche",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Tra pianeti di zucchero filato e comete danzanti, l’astronauta cercava una costellazione nascosta.",
+        "Il suo casco rifletteva stelle come lucciole, e il silenzio dello spazio sembrava una ninna nanna.",
+        "Una sonda inviò un messaggio: chi condivide la luce trova sempre la rotta.",
+        "Decise di aiutare una piccola navetta in panne: le stelle applaudirono con lampi gentili.",
+        "La rotta segreta si accese, disegnando un sentiero verso un sogno da custodire."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `/kids/img/astronauta-${i}.png`,
+      audio: `/kids/audio/astronauta-${i}.mp3`
+    }))
+  },
+  fata: {
+    title: "La Fata e la Porta dei Ricordi Felici",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Nella radura dei petali cantanti, una fata custodiva il segreto della porta dei ricordi felici.",
+        "Il suo volo lasciava scie di polvere di stelle e piccole risate di rugiada.",
+        "Una bimba aveva perso un sogno; la fata decise di illuminarle la strada con una lanterna gentile.",
+        "Ogni gesto cortese apriva una fessura di luce nella porta, come un cuore che si schiude.",
+        "Quando la porta si aprì, l’aria profumò di biscotti alla cannella e abbracci sinceri."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `/kids/img/fata-${i}.png`,
+      audio: `/kids/audio/fata-${i}.mp3`
+    }))
+  },
+  cagnolino: {
+    title: "Il Cagnolino e il Sentiero dei Sorrisi",
+    scenes: Array.from({length:10}).map((_,i)=>({
+      title: `Capitolo ${i+1}`,
+      text: [
+        "Un cagnolino dal naso curioso trovava sempre amici dove gli altri vedevano ostacoli.",
+        "Seguiva tracce di risate e riportava a casa palline di sole cadute tra i fiori.",
+        "Un giorno scoprì un sentiero di impronte a forma di cuore: conduceva a un piccolo mistero.",
+        "Divise il suo biscottino con un riccio timido, e il bosco applaudì frusciando piano.",
+        "Alla fine del sentiero, c’era un premio: un abbraccio che scaldava più del sole."
+      ][i%5] + ` (${i+1}/10)`,
+      image: `/kids/img/cagnolino-${i}.png`,
+      audio: `/kids/audio/cagnolino-${i}.mp3`
+    }))
+  }
+};
 
-    // Chips → riempiono input
-    $$(".chips").forEach(group=>{
-      group.addEventListener('click', (e)=>{
-        if(e.target.classList.contains('chip')){
-          const field = group.getAttribute('data-bind');
-          const input = document.getElementById(field);
-          input.value = e.target.textContent.trim();
-          $$(".chip", group).forEach(c=>c.classList.remove('active'));
-          e.target.classList.add('active');
-        }
-      });
-    });
+// ====== STATO ======
+let current = 0;
+let activeKey = "drago";
+let kidName = "Amico";
+let voiceServer = "mamma"; // mamma | papa | bimba | bimbo
 
-    // ===== Speech Recognition (detta) =====
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    function startDictation(targetId, btn){
-      if(!SR){ alert('Il tuo browser non supporta il riconoscimento vocale.'); return; }
-      const rec = new SR();
-      rec.lang = 'it-IT'; rec.interimResults = false; rec.maxAlternatives = 1;
-      btn.classList.add('recording');
-      rec.onresult = (e)=>{ document.getElementById(targetId).value = e.results[0][0].transcript; };
-      rec.onerror = ()=>{};
-      rec.onend = ()=> btn.classList.remove('recording');
-      rec.start();
-    }
-    $$(".mic-btn").forEach(btn=> btn.addEventListener('click', ()=> startDictation(btn.dataset.target, btn)));
+// ====== UI ELEMENTS ======
+const $ = s => document.querySelector(s);
+const sceneTitle = $('#sceneTitle');
+const sceneText  = $('#sceneText');
+const sceneImg   = $('#sceneImg');
+const sceneAudio = $('#sceneAudio');
 
-    // ===== Text-to-Speech (lista voci + cartoon) =====
-    let voices = [];
-    function loadVoices(){
-      voices = window.speechSynthesis.getVoices() || [];
-      const sel = document.getElementById('voiceSelect');
-      if(!sel) return;
-      const current = sel.value;
-      sel.innerHTML = '<option value="">(automatica)</option>';
-      voices.forEach((v, i)=>{
-        const opt = document.createElement('option');
-        opt.value = String(i);
-        opt.textContent = `${v.name} — ${v.lang}`;
-        sel.appendChild(opt);
-      });
-      if (current && sel.querySelector(`option[value="${current}"]`)) sel.value = current;
-    }
-    if ('speechSynthesis' in window) {
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
+// ====== AVVIO ======
+$('#btnStart').addEventListener('click', ()=>{
+  kidName = $('#kidName').value.trim() || "Amico";
+  activeKey = $('#character').value;
+  voiceServer = $('#voiceServer').value;
 
-    function pickItalianVoice(pref="f"){
-      if(!voices || !voices.length) return null;
-      const idx = document.getElementById('voiceSelect')?.value;
-      if (idx && voices[Number(idx)]) return voices[Number(idx)];
-      const itVoices = voices.filter(v=> (v.lang||"").toLowerCase().startsWith('it'));
-      if(!itVoices.length) return voices[0];
-      const females = itVoices.filter(v=> /fem|silvia|elena|sofia|lucia|female/i.test(v.name));
-      const males   = itVoices.filter(v=> /mas|luca|marco|paolo|giorgio|male/i.test(v.name));
-      if(pref==="f" && females[0]) return females[0];
-      if(pref==="m" && males[0])   return males[0];
-      return itVoices[0];
-    }
+  $('#pillKid').textContent = kidName;
+  $('#pillStory').textContent = STORIES[activeKey].title;
+  $('#pillVoice').textContent = `Voce: ${voiceServer.charAt(0).toUpperCase()+voiceServer.slice(1)}`;
 
-    function speak(text){
-      if(!('speechSynthesis' in window)) { alert('Sintesi vocale non supportata.'); return; }
-      const preset = $('#voicePreset').value;
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'it-IT';
-      let pref = (preset==='narratore' || preset==='bimbo') ? 'm' : 'f';
-      u.voice = pickItalianVoice(pref);
-      if(preset==='bimba'){ u.pitch = 1.35; u.rate = 1.02; }
-      else if(preset==='bimbo'){ u.pitch = 1.15; u.rate = 1.05; }
-      else if(preset==='narratrice'){ u.pitch = 1.08; u.rate = 0.98; }
-      else { u.pitch = 0.96; u.rate = 0.98; }
-      u.volume = 1;
-      window.speechSynthesis.cancel();
-      setTimeout(()=> window.speechSynthesis.speak(u), 120);
-    }
+  current = 0;
+  render();
+  $('#viewer').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
 
-    // Ken Burns bg
-    (function ken(){ const el = document.getElementById('bgKen'); let t=0; setInterval(()=>{ t+=1; el.style.transform = `scale(1.1) translate(${Math.sin(t/30)*6}px, ${Math.cos(t/40)*6}px)`; el.style.transition = 'transform 1.2s ease'; }, 1200); })();
+// ====== RENDER SCENA ======
+function render(){
+  const story = STORIES[activeKey];
+  const s = story.scenes[current];
 
-    // ===== API =====
-    async function generateStoryWithAPI(data){
-      const payload = {
-        mode: API_MODE,
-        input: data,
-        options: { length: "long", scenes: 5, quiz: 5, requireChoices: true, tone: "kids-5-8" }
-      };
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if(!res.ok) throw new Error('Errore API PixelUp');
-      return await res.json();
-    }
+  sceneTitle.textContent = s.title;
+  // Personalizza leggermente il testo con il nome
+  sceneText.textContent  = s.text.replaceAll(" bimba ", ` ${kidName} `).replaceAll(" bimbo ", ` ${kidName} `);
+  sceneImg.src = s.image;
+  // Audio server: se presente, lo usa; altrimenti lascia vuoto (fallback TTS su click Ascolta)
+  sceneAudio.src = s.audio || "";
+  sceneAudio.onerror = ()=> { sceneAudio.removeAttribute('src'); }; // se manca il file, non bloccare
+}
 
-    // ===== Immagini 3D-like (Unsplash -> fallback picsum -> fallback locale) =====
-    function buildSceneImageURL(data, index){
-      const q1 = (data.character || 'personaggio').trim();
-      const q2 = (data.setting   || 'luogo').trim();
-      // keywords per look 3D/cartoon
-      const query = `${q1}, ${q2}, 3d render, pixar style, blender, colorful, kids illustration`;
-      // Unsplash random coerente (può essere bloccato da alcune CSP)
-      return `https://source.unsplash.com/1600x900/?${encodeURIComponent(query)}`;
-    }
-    function buildSceneImageFallbackSeed(data, index){
-      const q1 = (data.character || 'personaggio').trim().toLowerCase().replace(/\s+/g,'-');
-      const q2 = (data.setting   || 'luogo').trim().toLowerCase().replace(/\s+/g,'-');
-      return `https://picsum.photos/seed/${encodeURIComponent(q1+'-'+q2+'-'+index)}/1600/900`;
-    }
+// ====== NAVIGAZIONE ======
+$('#btnNext').addEventListener('click', ()=>{
+  const arr = STORIES[activeKey].scenes;
+  if(current < arr.length-1){ current++; render(); }
+});
+$('#btnPrev').addEventListener('click', ()=>{
+  if(current > 0){ current--; render(); }
+});
 
-    // ===== Fallback story (più lunga: 4 scene + finale, >10 frasi) =====
-    function fallbackStory(data){
-      const kid = data.name || 'Amico';
-      const ch  = data.character || 'Drago';
-      const st  = data.setting || 'Foresta Incantata';
-      const th  = data.theme || 'Amicizia';
-      const tw  = data.twist || 'una porta segreta che appare solo ai cuori gentili';
+// ====== ASCOLTO: audio server → fallback TTS browser ======
+$('#btnSpeak').addEventListener('click', ()=>{
+  if(sceneAudio && sceneAudio.src){
+    sceneAudio.play().catch(()=> fallbackSpeak());
+  } else {
+    fallbackSpeak();
+  }
+});
 
-      const s1 = `${kid} camminava nella ${st.toLowerCase()} quando vide ${ch.toLowerCase()} uscire da dietro un albero luminoso. 
-Il ${ch.toLowerCase()} non aveva un aspetto minaccioso: le sue scaglie riflettevano i colori come un arcobaleno. 
-“Ciao!” disse il ${ch.toLowerCase()} con voce curiosa. “Sto cercando ${tw}.” 
-${kid} si fermò un istante, poi sorrise: “Possiamo cercarla insieme, ma promettimi che resteremo uniti: l’${th.toLowerCase()} rende tutto più semplice.” 
-Le foglie frusciarono come se stessero applaudendo, e un sentierino apparve tra i cespugli, invitandoli a iniziare l’avventura.`;
-
-      const s2 = `Il sentiero li guidò verso un vecchio ponte di legno sospeso su un ruscello scintillante. 
-Ogni asse scricchiolava, ma il ${ch.toLowerCase()} teneva la coda stretta vicino a ${kid} per farlo sentire al sicuro. 
-A metà del ponte, comparvero delle lucciole che formarono parole nell’aria: “Chi è gentile trova la strada”. 
-“Che significa?” chiese ${kid}. 
-“Che forse la porta segreta appare solo a chi aiuta gli altri,” rispose il ${ch.toLowerCase()} con un batter d’ali. 
-All’improvviso due possibilità: attraversare il ponte velocemente oppure fermarsi ad aiutare un uccellino con l’ala bagnata che tremava vicino.`;
-
-      const s3 = `Dopo aver scelto di aiutare l’uccellino, il ruscello sembrò cantare una melodia più dolce. 
-L’uccellino volò in cerchio e caddero dal cielo piccole piume luminose, come fiocchi di neve calda. 
-“Grazie,” cinguettò la creaturina, “vi guiderò io.” 
-Li portò in una radura dove le pietre disegnavano un cerchio perfetto, e al centro c’era un tronco con una fessura a forma di cuore. 
-“Prova a toccarla pensando a un ricordo felice,” disse il ${ch.toLowerCase()}. 
-${kid} pensò al sorriso di chi gli vuole bene, e la fessura si illuminò di rosa e azzurro, come l’alba sul mare.`;
-
-      const s4 = `Dalla fessura uscì un piccolo vento che profumava di biscotti e cannella, e apparve davvero ${tw}. 
-La porta aveva intarsi dorati e al centro un simbolo che sembrava battere come un cuore. 
-“Credo si apra se la attraversiamo insieme,” disse ${kid}. 
-Il ${ch.toLowerCase()} annuì e posò una zampa vicino alla mano di ${kid}. 
-Quando varcarono la soglia, videro un corridoio di luci danzanti e ascoltarono il suono di una risata… era la foresta stessa, felice della loro scelta. 
-Alla fine del corridoio c’era un balcone che dava su tutta la ${st.toLowerCase()}, come un castello tra le nuvole.`;
-
-      const s5 = `“Ogni volta che sceglierete la gentilezza,” sussurrò una voce, “questa porta vi condurrà dove serve coraggio e amicizia.” 
-${kid} guardò il ${ch.toLowerCase()} e rise: “Allora non saremo mai soli.” 
-Il ${ch.toLowerCase()} fece un piccolo inchino: “Con te ho imparato che l’${th.toLowerCase()} rende grandi anche i passi più piccoli.” 
-Tornarono a casa con una piuma luminosa e la promessa di rivedere la porta quando qualcuno avrà bisogno di aiuto. 
-Da quel giorno, ${kid} non ebbe più paura dei ponti scricchiolanti: sapeva che dall’altra parte c’era sempre una nuova meraviglia.`;
-
-      const quiz = [
-        { q:`Dove inizia l’avventura di ${kid}?`, a:['Nel deserto','Nella foresta incantata','In una città rumorosa'], c:1 },
-        { q:`Com’è il ${ch.toLowerCase()} che incontra ${kid}?`, a:['Spaventoso','Gentile e colorato','Invisibile'], c:1 },
-        { q:`Cosa mostrano le lucciole sul ponte?`, a:['Una mappa','Un indovinello','Una frase sulla gentilezza'], c:2 },
-        { q:`Cosa fa ${kid} quando vede l’uccellino bagnato?`, a:['Lo ignora','Lo aiuta','Scappa via'], c:1 },
-        { q:`Come si apre la porta segreta?`, a:['Con una chiave','Pensando a un ricordo felice','Dicendo una password'], c:1 }
-      ];
-
-      return {
-        title:`${ch} e ${kid} nella ${st}`,
-        scenes:[
-          { title:'Capitolo 1 – L’incontro', text:s1, choices:[{label:`Seguire il sentiero di foglie luccicanti`, goto:1},{label:`Parlare ancora con il ${ch.toLowerCase()}`, goto:1}] },
-          { title:'Capitolo 2 – Il ponte e le lucciole', text:s2, choices:[{label:'Attraversare di corsa il ponte', goto:2},{label:'Aiutare l’uccellino prima', goto:2}] },
-          { title:'Capitolo 3 – La radura del cuore', text:s3, choices:[{label:'Toccare la fessura pensando a un ricordo felice', goto:3},{label:'Cercare un altro indizio tra le pietre', goto:3}] },
-          { title:'Capitolo 4 – La porta gentile', text:s4, choices:[{label:'Attraversare la porta insieme', goto:4},{label:'Chiamare le lucciole per un consiglio', goto:4}] },
-          { title:'Finale – La promessa della Foresta', text:s5, choices:[] }
-        ],
-        quiz,
-        rewards:['🌟','🗝️','🦄','🐲','💎','🚀']
-      };
-    }
-
-    // ===== Stato & rendering =====
-    let story=null; let current=0;
-
-    async function startStory(demo=false){
-      const data = demo ?
-        {name:'Giulia', character:'Drago', setting:'Foresta Incantata', theme:'Amicizia', twist:'una porta segreta che appare solo ai cuori gentili'} :
-        {name:$('#kidName').value.trim(), character:$('#character').value.trim(), setting:$('#setting').value.trim(), theme:$('#theme').value.trim(), twist:$('#twist').value.trim()};
-      if(!demo && (!data.name || !data.character || !data.setting || !data.theme)){
-        alert('Per iniziare, inserisci nome, personaggio, ambientazione e tema. Puoi anche usare il microfono!');
-        return;
-      }
-
-      $('#starter').style.display='none';
-      $('#viewer').style.display='block';
-
-      $('#kidNameOut').textContent = data.name || 'Bimbo';
-      $('#pillCharacter').textContent = data.character || 'Personaggio';
-      $('#pillSetting').textContent = data.setting || 'Luogo';
-      $('#pillTheme').textContent = data.theme || 'Tema';
-
-      try{
-        const json = await generateStoryWithAPI(data);
-        story = normalizeStory(json);
-      }catch(e){
-        console.warn('API non disponibile, uso fallback lungo:', e);
-        story = fallbackStory(data);
-      }
-      renderScene(0, data);
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    function normalizeStory(json){
-      try{ if(typeof json==='string') return JSON.parse(json); }catch(e){}
-      json.scenes  = json.scenes  || [];
-      json.quiz    = json.quiz    || [];
-      json.rewards = json.rewards || ['🌟'];
-      return json;
-    }
-
-    function setSceneImage(dataForImg, index, scene){
-      const imgEl = document.getElementById('sceneImg');
-      imgEl.onerror = ()=> {
-        // fallback su picsum (seed coerente)
-        imgEl.onerror = ()=> { imgEl.src = '/kids/img/default-0.jpg'; }; // ultimo fallback locale (metti un file tuo qui)
-        imgEl.src = buildSceneImageFallbackSeed(dataForImg, index);
-      };
-      if (scene && scene.image){
-        imgEl.src = scene.image;
-      } else {
-        imgEl.src = buildSceneImageURL(dataForImg, index);
-      }
-    }
-
-    function renderScene(index, dataForImg){
-      current = index;
-      const s = story.scenes[index];
-      $('#sceneTitle').textContent = s.title || `Scena ${index+1}`;
-      $('#sceneText').textContent  = s.text  || '';
-      setSceneImage(dataForImg || {
-        character: $('#pillCharacter').textContent,
-        setting:   $('#pillSetting').textContent
-      }, index, s);
-
-      const choicesEl = $('#choices');
-      choicesEl.innerHTML = '';
-      if(s.choices && s.choices.length){
-        s.choices.forEach((c)=>{
-          const btn = document.createElement('button');
-          btn.className = 'choice';
-          btn.textContent = c.label;
-          btn.onclick = ()=> renderScene(c.goto, dataForImg);
-          choicesEl.appendChild(btn);
-        });
-        $('#btnNext').style.display='none';
-      } else {
-        $('#btnNext').style.display='inline-flex';
-        $('#btnNext').onclick = ()=> showQuiz();
-      }
-    }
-
-    function showQuiz(){
-      $('#quiz').style.display='block';
-      const ql = $('#quizList'); ql.innerHTML='';
-      story.quiz.forEach((q,idx)=>{
-        const wrap = document.createElement('div'); wrap.className='q-item';
-        const title = document.createElement('div'); title.style.fontWeight='800'; title.style.marginBottom='6px';
-        title.textContent = `${idx+1}. ${q.q}`; wrap.appendChild(title);
-        q.a.forEach((opt,i)=>{
-          const id = `q${idx}_${i}`;
-          const lbl = document.createElement('label'); lbl.style.display='flex'; lbl.style.alignItems='center'; lbl.style.gap='8px'; lbl.style.margin='6px 0';
-          const radio = document.createElement('input'); radio.type='radio'; radio.name=`q${idx}`; radio.value=i; radio.id=id;
-          lbl.appendChild(radio);
-          const span = document.createElement('span'); span.textContent = opt; lbl.appendChild(span);
-          wrap.appendChild(lbl);
-        });
-        ql.appendChild(wrap);
-      });
-      window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
-    }
-
-    function submitQuiz(){
-      const items = $$('#quizList .q-item');
-      let score=0;
-      items.forEach((el,idx)=>{
-        const picked = el.querySelector('input[type=radio]:checked');
-        const ans = picked ? parseInt(picked.value,10) : -1;
-        if(ans === story.quiz[idx].c){ score++; el.classList.add('correct'); }
-        else { el.classList.add('wrong'); }
-      });
-      const ok = score>=3;
-      $('#rewardText').textContent = ok ? `Bravissimo! Hai risposto correttamente a ${score}/${items.length}: ecco il tuo premio!` : `Hai fatto ${score}/${items.length}. Ritenta per sbloccare un premio!`;
-      $('#reward').style.display='block';
-      const box = $('#rewardIcons'); box.innerHTML='';
-      (story.rewards||['🌟']).forEach((ico)=>{ const span=document.createElement('span'); span.className='icon-badge'; span.textContent=ico; box.appendChild(span); });
-      window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
-    }
-
-    // Events
-    document.getElementById('btnGenerate').addEventListener('click', ()=> startStory(false));
-    document.getElementById('btnDemo').addEventListener('click', ()=> startStory(true));
-    document.getElementById('btnSpeak').addEventListener('click', ()=> speak(document.getElementById('sceneText').textContent));
-    document.getElementById('btnSubmitQuiz').addEventListener('click', submitQuiz);
-  </script>
+// Fallback TTS (browser) con preset cartoon
+let voices = [];
+if('speechSynthesis' in window){
+  const load = ()=> voices = window.speechSynthesis.getVoices() || [];
+  load(); window.speechSynthesis.onvoiceschanged = load;
+}
+function pickItalianVoice(pref="f"){
+  if(!voices.length) return null;
+  const it = voices.filter(v=> (v.lang||"").toLowerCase().startsWith('it'));
+  if(!it.length) return voices[0];
+  const fem = it.find(v=> /fem|silvia|elena|sofia|lucia|female/i.test(v.name));
+  const mas = it.find(v=> /mas|luca|marco|paolo|giorgio|male/i.test(v.name));
+  if(pref==="f" && fem) return fem;
+  if(pref==="m" && mas) return mas;
+  return it[0];
+}
+function fallbackSpeak(){
+  if(!('speechSynthesis' in window)) { alert('Audio non disponibile.'); return; }
+  const preset = $('#voicePreset').value || 'narratrice';
+  const u = new SpeechSynthesisUtterance(sceneText.textContent);
+  u.lang = 'it-IT';
+  let pref = (preset==='narratore' || preset==='bimbo') ? 'm' : 'f';
+  u.voice = pickItalianVoice(pref);
+  if(preset==='bimba'){ u.pitch = 1.35; u.rate = 1.02; }
+  else if(preset==='bimbo'){ u.pitch = 1.15; u.rate = 1.05; }
+  else if(preset==='narratrice'){ u.pitch = 1.08; u.rate = 0.98; }
+  else { u.pitch = 0.96; u.rate = 0.98; }
+  window.speechSynthesis.cancel();
+  setTimeout(()=> window.speechSynthesis.speak(u), 120);
+}
+</script>
 </body>
 </html>
