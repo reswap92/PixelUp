@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelUp • Card IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --ink:#1f2630;
+      --muted:#5d6b7a;
+      --line:#e6e9ef;
+      --brand:#4f46e5;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0; color:var(--ink); background:var(--bg);
+    }
+    header{
+      background:#fff; border-bottom:1px solid var(--line); text-align:center; padding:18px;
+    }
+    header img{ width:180px; }
+
+    .wrap{ max-width:1100px; margin:24px auto; padding: 0 16px; }
+
+    .hero{
+      display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start;
+    }
+    @media (max-width: 920px){ .hero{ grid-template-columns:1fr; } }
+
+    .panel{
+      background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px;
+      box-shadow:0 2px 10px rgba(20,20,20,.04);
+    }
+
+    h1{ font-size:32px; margin:0 0 8px; }
+    .subtitle{ color:var(--muted); margin:0 0 18px; }
+
+    .bullets{ margin: 14px 0 0; padding:0 0 0 18px; color:var(--ink); }
+    .bullets li{ margin:8px 0; }
+
+    .gallery{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:14px;
+    }
+    @media (max-width: 640px){ .gallery{ grid-template-columns:1fr 1fr; } }
+    .thumb{
+      background:#f2f3f7; border:1px solid var(--line); border-radius:12px;
+      aspect-ratio: 4/3; display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .thumb img{ max-width:100%; max-height:100%; object-fit:contain; display:block; }
+
+    .buyBox h2{ font-size:22px; margin:0 0 12px; }
+    .priceRow{
+      display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    }
+    @media (max-width:640px){ .priceRow{ grid-template-columns:1fr; } }
+
+    .option{
+      border:1px solid var(--line); border-radius:14px; padding:16px; background:#fff;
+    }
+    .option h3{ margin:0 0 6px; font-size:18px; }
+    .option p{ margin:0 0 12px; color:var(--muted); font-size:14px; }
+    .price{ font-weight:800; font-size:20px; margin-bottom:10px; }
+    .note{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+    .howto{ margin-top:22px; }
+    .howto h3{ margin:0 0 8px; }
+    .howto ol{ margin:8px 0 0 18px; }
+    .howto li{ margin:6px 0; }
+
+    .faq{ margin-top:22px; }
+    details{ border:1px solid var(--line); border-radius:12px; background:#fff; padding:12px 14px; margin:10px 0; }
+    summary{ cursor:pointer; font-weight:600; }
+
+    .divider{ height:1px; background:var(--line); margin:18px 0; }
+    a.clean{ color:inherit; text-decoration:none; }
+
+    /* piccolo badge */
+    .badge{
+      display:inline-block; background:rgba(79,70,229,.08); color:var(--brand);
+      border:1px solid rgba(79,70,229,.2); border-radius:999px; padding:6px 10px; font-size:12px; font-weight:600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="gadget.html" class="clean"><img src="logopixelup.png" alt="PixelUp"></a>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <!-- Testo + Gallery -->
+      <div class="panel">
+        <span class="badge">Gadget IA • NFC + QR</span>
+        <h1>Card IA PixelUp</h1>
+        <p class="subtitle">La tua <strong>IA tascabile</strong>: avvicini lo smartphone (NFC) o scansi il QR e accedi al tuo assistente personale. Disponibile in versione
+          <em>singolo tema</em> (es. Neo Mamme, Fitness…) o <em>All-in</em> con tutti i template.</p>
+
+        <ul class="bullets">
+          <li>Accesso immediato alla tua IA via <strong>NFC</strong> o <strong>QR</strong>.</li>
+          <li>Personalizzabile con il tuo nome e il template preferito.</li>
+          <li>Funziona su qualsiasi smartphone moderno (iOS/Android).</li>
+          <li>Aggiornabile: puoi cambiare il template collegato quando vuoi.</li>
+        </ul>
+
+        <div class="gallery">
+          <!-- Sostituisci i file immagine qui sotto -->
+          <div class="thumb"><img src="img/card-front.png" alt="Card IA – Fronte" loading="lazy"></div>
+          <div class="thumb"><img src="img/card-back.png"  alt="Card IA – Retro"  loading="lazy"></div>
+          <div class="thumb"><img src="img/card-nfc.png"   alt="Card IA – Tap NFC" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Box acquisto -->
+      <div class="panel buyBox">
+        <h2>Scegli la tua Card</h2>
+
+        <div class="priceRow">
+          <!-- Variante: Singolo Tema -->
+          <div class="option">
+            <h3>Card IA — Singolo Tema</h3>
+            <p>Scegli il tuo coach IA (Neo Mamme, Fitness, Studio, ecc.).</p>
+            <div class="price">€ 4,99</div>
+            <div id="pp-single"></div>
+            <div class="note">Pagamento sicuro con PayPal o Carta.</div>
+          </div>
+
+          <!-- Variante: All-in -->
+          <div class="option">
+            <h3>Card IA — All-in</h3>
+            <p>Una card per accedere a <strong>tutti</strong> i template IA PixelUp.</p>
+            <div class="price">€ 9,99</div>
+            <div id="pp-allin"></div>
+            <div class="note">Include tutti i temi attuali + futuri aggiornamenti.</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="howto">
+          <h3>Come funziona</h3>
+          <ol>
+            <li>Acquista la card che preferisci.</li>
+            <li>Dopo il pagamento, ti chiediamo il <strong>tema</strong> (o “All-in”) e il <strong>nome</strong> da stampare.</li>
+            <li>Ricevi la tua Card IA: tocca con lo smartphone (NFC) o scansiona il QR per aprire l’assistente.</li>
+          </ol>
+        </div>
+
+        <div class="faq">
+          <h3>Domande frequenti</h3>
+          <details>
+            <summary>Posso pagare con carta?</summary>
+            <p>Sì. I pulsanti PayPal qui sotto permettono il pagamento anche con <strong>carta di debito/credito</strong> senza avere un account PayPal.</p>
+          </details>
+          <details>
+            <summary>Posso cambiare tema dopo l’acquisto?</summary>
+            <p>Sì, puoi chiedere la modifica del template collegato in qualsiasi momento.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PAYPAL SMART BUTTONS -->
+  <!-- Sostituisci YOUR_CLIENT_ID con il tuo Client ID PayPal -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=EUR&intent=capture&enable-funding=card"></script>
+  <script>
+    // Config comune
+    const purchaseConfig = (amount, description) => ({
+      purchase_units: [{ amount: { value: amount }, description }]
+    });
+
+    // Render pulsante per la Card Singolo Tema (4,99)
+    paypal.Buttons({
+      style: { shape: 'pill', label: 'buynow' },
+      createOrder: (data, actions) =>
+        actions.order.create(purchaseConfig('4.99', 'PixelUp • Card IA (Singolo Tema)')),
+      onApprove: (data, actions) =>
+        actions.order.capture().then(details => {
+          alert('Grazie ' + (details.payer?.name?.given_name || '') + '! Acquisto completato: Card IA (Singolo Tema).');
+          // opzionale: redirect a pagina di conferma
+          // window.location.href = 'grazie.html?order=' + data.orderID;
+        }),
+      onError: (err) => { console.error(err); alert('Si è verificato un problema con il pagamento.'); }
+    }).render('#pp-single');
+
+    // Render pulsante per la Card All-in (9,99)
+    paypal.Buttons({
+      style: { shape: 'pill', label: 'buynow' },
+      createOrder: (data, actions) =>
+        actions.order.create(purchaseConfig('9.99', 'PixelUp • Card IA (All-in)')),
+      onApprove: (data, actions) =>
+        actions.order.capture().then(details => {
+          alert('Grazie ' + (details.payer?.name?.given_name || '') + '! Acquisto completato: Card IA (All-in).');
+          // opzionale: redirect a pagina di conferma
+          // window.location.href = 'grazie.html?order=' + data.orderID;
+        }),
+      onError: (err) => { console.error(err); alert('Si è verificato un problema con il pagamento.'); }
+    }).render('#pp-allin');
+  </script>
+</body>
+</html>
