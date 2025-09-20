@@ -3,129 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PixelUp • Template</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>PixelUp - Template</title>
   <style>
     body {
-      font-family: Inter, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      background: #f9fafb;
-      color: #222;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+      text-align: center;
     }
     header {
-      text-align: center;
       padding: 20px;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
+      background: #111;
+      color: #fff;
     }
     header img {
-      width: 200px; /* logo */
+      width: 200px;
     }
     .container {
       max-width: 1200px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .grid {
+      margin: 40px auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      padding: 0 20px;
     }
     .card {
       background: #fff;
-      border: 1px solid #ddd;
       border-radius: 12px;
-      text-align: center;
-      transition: 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       overflow: hidden;
+      transition: transform 0.2s;
     }
     .card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
     .card img {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      height: auto;
+      display: block;
     }
     .card h3 {
-      margin: 10px 0 4px;
-      font-size: 18px;
+      margin: 16px 0;
     }
-    .card p {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 16px;
+    /* Banner Etsy */
+    .etsy-banner {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 48px;
+      border-radius: 24px;
+      background: linear-gradient(135deg,#ff8c00,#ff2d55);
+      color: #fff;
+      text-align: center;
     }
-    .card a {
-      display: block;
-      color: inherit;
+    .etsy-banner h2 {
+      font-size: 2.2rem;
+      margin: 0 0 12px;
+    }
+    .etsy-banner p {
+      font-size: 1.1rem;
+      opacity: .95;
+      margin: 0 0 24px;
+    }
+    .etsy-banner a {
+      display: inline-block;
+      background: #fff;
+      color: #ff2d55;
+      padding: 14px 26px;
+      border-radius: 12px;
+      font-weight: 700;
       text-decoration: none;
+      font-size: 1.2rem;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="index.html"><img src="logopixelup.png" alt="Logo PixelUp"></a>
-</header>
+  <header>
+    <img src="logo.png" alt="PixelUp Logo">
+  </header>
 
-<div class="container">
-  <h1>I nostri Template</h1>
-  <div class="grid">
-    
-    <!-- Template 1 -->
-    <div class="card">
-      <a href="/neo-mamme.html">
-        <img src="template1.png" alt="Template Neo-Mamma">
-        <h3>Template Neo-Mamma</h3>
-        <p>€ 2,99</p>
-      </a>
+  <main>
+    <h1>I nostri Template</h1>
+    <div class="container">
+      <!-- Esempio di card template -->
+      <div class="card">
+        <img src="template1.png" alt="Template 1">
+        <h3>Template 1</h3>
+      </div>
+      <div class="card">
+        <img src="template2.png" alt="Template 2">
+        <h3>Template 2</h3>
+      </div>
+      <div class="card">
+        <img src="template3.png" alt="Template 3">
+        <h3>Template 3</h3>
+      </div>
+      <!-- Puoi aggiungerne altri -->
     </div>
 
-    <!-- Template 2 -->
-    <div class="card">
-      <a href="/coach.html">
-        <img src="template2.png" alt="Template Coach IA">
-        <h3>Template Coach IA</h3>
-        <p>€ 1,99</p>
+    <!-- Banner Etsy -->
+    <section class="etsy-banner">
+      <h2>Acquista i nostri Template anche su Etsy</h2>
+      <p>Planner digitali, pack con IA e risorse pronte all’uso.</p>
+      <a href="https://www.etsy.com/shop/Pixelupofficial" target="_blank" rel="noopener">
+        Vai allo Shop Etsy 🚀
       </a>
-    </div>
-
-    <!-- Template 3 -->
-    <div class="card">
-      <a href="/cv.html">
-        <img src="template3.jpeg" alt="Template CV">
-        <h3>Template CV</h3>
-        <p>€ 1,99</p>
-      </a>
-    </div>
-
-    <!-- Template 4 -->
-    <div class="card">
-      <a href="/business.html">
-        <img src="template5.png" alt="Template Business Plan">
-        <h3>Template Business Plan</h3>
-        <p>€ 2,99</p>
-      </a>
-    </div>
-
-    <!-- Template 5 -->
-    <div class="card">
-      <a href="/fitness.html">
-        <img src="template4.jpeg" alt="Template Fitness">
-        <h3>Template Fitness</h3>
-        <p>€ 1,99</p>
-      </a>
-    </div>
-
-  </div>
-</div>
+    </section>
+  </main>
 
 </body>
 </html>
