@@ -13,7 +13,6 @@
       --muted:#5b5f66;
       --accent:#2d7ef7;
       --accent-hover:#1f6ae0;
-      --ring: 0 0 0 3px rgba(45,126,247,.25);
       --radius:18px;
       --shadow: 0 10px 30px rgba(0,0,0,.06);
     }
@@ -36,133 +35,71 @@
       text-align:center;
       padding:20px 0;
     }
-    .brand img{
-      height:300px; /* 👈 logo grande */
-      width:auto;
-      margin:0 auto; /* centrato */
-      display:block;
-    }
-    .menu{
-      margin-top:14px;
-      display:flex;
-      justify-content:center;
-      gap:22px;
-    }
-    .menu a{
-      font-size:.96rem;
-      color:var(--muted);
-      padding:8px 10px;
-      border-radius:10px;
-    }
+    .brand img{height:300px;width:auto;margin:0 auto;display:block;}
+    .menu{margin-top:14px;display:flex;justify-content:center;gap:22px;}
+    .menu a{font-size:.96rem;color:var(--muted);padding:8px 10px;border-radius:10px;}
     .menu a:hover{color:var(--ink)}
 
     /* Hero */
     .hero{padding:60px 0 28px;text-align:center}
-    .hero h1{
-      font-size:clamp(1.8rem,3.2vw,2.4rem);
-      line-height:1.18;
-      margin:0 0 22px 0;
-      max-width:48ch;
-      margin-inline:auto;
-    }
+    .hero h1{font-size:clamp(1.8rem,3.2vw,2.4rem);line-height:1.18;margin:0 0 22px;max-width:48ch;margin-inline:auto;}
     .actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;
-      padding:14px 18px;
-      border-radius:14px;
-      font-weight:700;
-      border:1px solid #d6dae1;
-      background:#fff;
-      box-shadow:var(--shadow);
+      padding:14px 18px;border-radius:14px;font-weight:700;
+      border:1px solid #d6dae1;background:#fff;box-shadow:var(--shadow);
       transition:.2s transform,.2s background,.2s border-color;
     }
     .btn:hover{transform:translateY(-1px)}
-    .btn-primary{
-      background:var(--accent);color:#fff;border-color:var(--accent);
-    }
+    .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
     .btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
 
     /* Progetti */
     .section{padding:34px 0}
     .section h2{text-align:center;font-size:1.8rem;margin:0 0 16px}
-    .grid{
-      display:grid;gap:18px;
-      grid-template-columns:repeat(3,1fr);
-    }
+    .grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr);}
     @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.grid{grid-template-columns:1fr}}
 
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      display:block;
-      transition:transform .2s, box-shadow .2s;
-    }
+    .card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:block;transition:transform .2s, box-shadow .2s;}
     .card:hover{transform:translateY(-2px)}
-    .thumb{
-      aspect-ratio:1/1;
-      background:linear-gradient(135deg,#dfe3e7,#cfd6dc);
-      display:grid;place-items:center;
-    }
+    .thumb{aspect-ratio:1/1;background:linear-gradient(135deg,#dfe3e7,#cfd6dc);display:grid;place-items:center;}
 
     /* CTA */
-    .cta{
-      padding:48px 0 36px;
-      text-align:center;
-    }
-    .cta h3{
-      font-size:clamp(1.4rem,2.8vw,2rem);margin:0 0 8px;
-    }
+    .cta{padding:48px 0 36px;text-align:center;}
+    .cta h3{font-size:clamp(1.4rem,2.8vw,2rem);margin:0 0 8px;}
     .cta p{color:var(--muted);margin:0 0 18px}
 
     /* Footer */
-    footer{
-      margin-top:28px;border-top:1px solid #e5e7eb;background:#eef1f4;
-    }
-    .foot{
-      display:flex;gap:18px;justify-content:center;align-items:center;
-      padding:18px 0;flex-wrap:wrap
-    }
-    .foot a{
-      color:#42464d;background:#fff;border:1px solid #d6dae1;
-      padding:8px 12px;border-radius:12px;box-shadow:var(--shadow);
-      font-weight:600;font-size:.95rem;
-    }
+    footer{margin-top:28px;border-top:1px solid #e5e7eb;background:#eef1f4;}
+    .foot{display:flex;gap:18px;justify-content:center;align-items:center;padding:18px 0;flex-wrap:wrap}
+    .foot a{color:#42464d;background:#fff;border:1px solid #d6dae1;padding:8px 12px;border-radius:12px;box-shadow:var(--shadow);font-weight:600;font-size:.95rem;}
     .foot a:hover{background:#f9fafb}
 
     /* Banner Etsy */
-    .etsy-banner{
-      max-width:1000px;
-      margin:40px auto;
-      padding:40px;
-      border-radius:20px;
-      background:linear-gradient(135deg,#ff8c00,#ff2d55);
-      color:#fff;
-      text-align:center;
-    }
+    .etsy-banner{max-width:1000px;margin:40px auto;padding:40px;border-radius:20px;background:linear-gradient(135deg,#ff8c00,#ff2d55);color:#fff;text-align:center;}
     .etsy-banner h2{font-size:2rem;margin:0 0 12px}
     .etsy-banner p{font-size:1.1rem;opacity:.95;margin:0 0 24px}
-    .etsy-banner a{
-      display:inline-block;
-      background:#fff;
-      color:#ff2d55;
-      padding:14px 26px;
-      border-radius:12px;
-      font-weight:700;
-      text-decoration:none;
-      font-size:1.2rem;
-    }
+    .etsy-banner a{display:inline-block;background:#fff;color:#ff2d55;padding:14px 26px;border-radius:12px;font-weight:700;text-decoration:none;font-size:1.2rem;}
+
+    /* === BLOCCO PixelUp === */
+    .features{padding:32px 0;}
+    .features h2{text-align:center;font-size:clamp(22px,4vw,34px);margin:0 0 18px;}
+    .grid-quad{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .card-feature{background:#fff;border:1px solid #EAEAEA;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.06);padding:14px;display:flex;flex-direction:column;transition:transform .15s ease, box-shadow .15s ease;}
+    .card-feature:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.08);}
+    .icon-feature{width:28px;height:28px;margin-bottom:10px;}
+    .card-feature h3{font-size:15px;line-height:1.25;margin:0 0 6px;}
+    .card-feature p{font-size:13px;line-height:1.5;color:#444;margin:0 0 12px;flex:1;}
+    .btn-dark{display:inline-block;background:#0F0F0F;color:#fff;padding:9px 12px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;text-align:center;transition:opacity .15s ease, transform .05s ease;}
+    .btn-dark:hover{opacity:.9}.btn-dark:active{transform:translateY(1px)}
   </style>
 </head>
 <body>
 
   <!-- Header -->
   <header>
-    <a class="brand" href="/">
-      <img src="logopixelup.png" alt="Logo PixelUp">
-    </a>
+    <a class="brand" href="/"><img src="logopixelup.png" alt="Logo PixelUp"></a>
     <nav class="menu" aria-label="Sezioni">
       <a href="chi-siamo.html">Chi siamo</a>
       <a href="gadjet.html">I nostri Gadjet IA</a>
@@ -172,48 +109,33 @@
     </nav>
   </header>
 
-
   <main>
-
-/* === Blocco "Cosa puoi fare con PixelUp" — 4 colonne fisse === */
-.features{ padding:32px 0; }
-.features h2{
-  text-align:center; font-size:clamp(22px,4vw,34px); margin:0 0 18px;
-}
-
-/* sempre 4 colonne, anche su mobile */
-.grid-quad{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap:16px;
-}
-
-/* card con bordi arrotondati */
-.card-feature{
-  background:#fff;
-  border:1px solid #EAEAEA;
-  border-radius:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.06);
-  padding:14px;
-  display:flex;
-  flex-direction:column;
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.card-feature:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,.08); }
-
-.icon-feature{ width:28px; height:28px; margin-bottom:10px; }
-.card-feature h3{ font-size:15px; line-height:1.25; margin:0 0 6px; }
-.card-feature p{ font-size:13px; line-height:1.5; color:#444; margin:0 0 12px; flex:1; }
-
-/* pulsante nero */
-.btn-dark{
-  display:inline-block; background:#0F0F0F; color:#fff;
-  padding:9px 12px; border-radius:10px; text-decoration:none; font-weight:700;
-  font-size:13px; text-align:center; transition:opacity .15s ease, transform .05s ease;
-}
-.btn-dark:hover{ opacity:.9 } .btn-dark:active{ transform:translateY(1px) }
-
-
+    <!-- BLOCCO PixelUp subito sotto il menu -->
+    <section class="container features">
+      <h2>Cosa puoi fare con PixelUp</h2>
+      <div class="grid-quad">
+        <article class="card-feature">
+          <h3>Template & Planner con IA</h3>
+          <p>Soluzioni digitali già pronte che ti guidano passo dopo passo grazie all’intelligenza artificiale.</p>
+          <a class="btn-dark" href="template.html">Scopri i template</a>
+        </article>
+        <article class="card-feature">
+          <h3>PixelUp Toys – Giochi educativi IA</h3>
+          <p>Giochi digitali interattivi per bambini che uniscono divertimento e apprendimento.</p>
+          <a class="btn-dark" href="giochi.html">Prova i giochi</a>
+        </article>
+        <article class="card-feature">
+          <h3>Gadget IA – Il futuro in tasca</h3>
+          <p>Card, portachiavi e sticker intelligenti per portare le tue IA sempre con te.</p>
+          <a class="btn-dark" href="gadget.html">Vedi i gadget</a>
+        </article>
+        <article class="card-feature">
+          <h3>PixelUp AI Pass</h3>
+          <p>Un abbonamento che ti dà accesso a tutte le IA verticali della piattaforma.</p>
+          <a class="btn-dark" href="ia.html">Unisciti ora</a>
+        </article>
+      </div>
+    </section>
 
     <!-- Hero -->
     <section class="container hero">
@@ -228,47 +150,19 @@
     <section class="container section" id="progetti">
       <h2>Progetti</h2>
       <div class="grid" role="list">
-        <a class="card" href="progetto-backtag.html" aria-label="Apri progetto BackTag">
-          <div class="thumb">
-            <img src="backtag.png" alt="BackTag" style="width:100%; height:100%; object-fit:cover;">
-          </div>
-        </a>
-        <a class="card" href="https://www.emiliarussoevents.com/" target="_blank" rel="noopener" aria-label="Apri Emilia Russo Events">
-          <div class="thumb">
-            <img src="progetto2.jpeg" alt="Emilia Russo Events" loading="lazy" decoding="async">
-          </div>
-        </a>
-        <!-- Progetto 3 → Template One-Page -->
-        <a class="card" href="progetto-template-onepage.html" aria-label="Apri Template One-Page">
-          <div class="thumb">
-            <img src="template-onepage.png" alt="Template One-Page" loading="lazy" decoding="async">
-          </div>
-        </a>
+        <a class="card" href="progetto-backtag.html"><div class="thumb"><img src="backtag.png" alt="BackTag"></div></a>
+        <a class="card" href="https://www.emiliarussoevents.com/" target="_blank" rel="noopener"><div class="thumb"><img src="progetto2.jpeg" alt="Emilia Russo Events"></div></a>
+        <a class="card" href="progetto-template-onepage.html"><div class="thumb"><img src="template-onepage.png" alt="Template One-Page"></div></a>
       </div>
     </section>
 
     <!-- Template IA -->
-    <section class="container section" id="progetti">
+    <section class="container section">
       <h2>Template IA</h2>
-      <div class="grid" role="list">
-        <!-- Template 1 -->
-        <a class="card" href="template.html" aria-label="Apri template">
-          <div class="thumb">
-            <img src="template1.png" alt="template" style="width:100%; height:100%; object-fit:cover;">
-          </div>
-        </a>
-        <!-- Template 2 -->
-        <a class="card" href="template.html" aria-label="Apri template">
-          <div class="thumb">
-            <img src="template2.png" alt="template" style="width:100%; height:100%; object-fit:cover;">
-          </div>
-        </a> 
-        <!-- Template 3 -->
-        <a class="card" href="template.html" aria-label="Apri template">
-          <div class="thumb">
-            <img src="template5.png" alt="template" style="width:100%; height:100%; object-fit:cover;">
-          </div>
-        </a>
+      <div class="grid">
+        <a class="card" href="template.html"><div class="thumb"><img src="template1.png" alt="template"></div></a>
+        <a class="card" href="template.html"><div class="thumb"><img src="template2.png" alt="template"></div></a> 
+        <a class="card" href="template.html"><div class="thumb"><img src="template5.png" alt="template"></div></a>
       </div>
     </section>
 
@@ -276,9 +170,7 @@
     <section class="etsy-banner">
       <h2>Acquista i nostri Template anche su Etsy</h2>
       <p>Planner digitali, pack con IA e risorse pronte all’uso.</p>
-      <a href="https://www.etsy.com/shop/Pixelupofficial" target="_blank" rel="noopener">
-        Vai allo Shop Etsy 🚀
-      </a>
+      <a href="https://www.etsy.com/shop/Pixelupofficial" target="_blank" rel="noopener">Vai allo Shop Etsy 🚀</a>
     </section>
 
     <!-- Call to action -->
