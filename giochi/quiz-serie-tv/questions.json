@@ -1,0 +1,3752 @@
+[
+  {
+    "id": 1,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "easy",
+    "question": "Qual è la professione di Walter White all’inizio della serie?",
+    "options": [
+      "Medico",
+      "Insegnante di chimica",
+      "Avvocato",
+      "Agente immobiliare"
+    ],
+    "correct_index": 1,
+    "explanation": "Walter è un insegnante di chimica al liceo."
+  },
+  {
+    "id": 2,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "easy",
+    "question": "Come si chiama il socio principale di Walter nella produzione?",
+    "options": [
+      "Jesse Pinkman",
+      "Saul Goodman",
+      "Gus Fring",
+      "Mike Ehrmantraut"
+    ],
+    "correct_index": 0,
+    "explanation": "Walter collabora con Jesse Pinkman."
+  },
+  {
+    "id": 3,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "easy",
+    "question": "Qual è il colore caratteristico del prodotto che producono?",
+    "options": [
+      "Trasparente",
+      "Azzurro",
+      "Rosa",
+      "Verde"
+    ],
+    "correct_index": 1,
+    "explanation": "La metanfetamina di alta purezza è azzurra."
+  },
+  {
+    "id": 4,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "easy",
+    "question": "Come si chiama il cognato agente della DEA?",
+    "options": [
+      "Hank Schrader",
+      "Gomez",
+      "Todd Alquist",
+      "Chuck McGill"
+    ],
+    "correct_index": 0,
+    "explanation": "Hank Schrader è l’agente della DEA e cognato di Walter."
+  },
+  {
+    "id": 5,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "easy",
+    "question": "In quale città è ambientata principalmente la serie?",
+    "options": [
+      "Phoenix",
+      "Albuquerque",
+      "El Paso",
+      "Santa Fe"
+    ],
+    "correct_index": 1,
+    "explanation": "La serie si svolge ad Albuquerque, New Mexico."
+  },
+  {
+    "id": 6,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 7,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 8,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 9,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 10,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 11,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Breaking Bad?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 12,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Breaking Bad?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per colore azzurro e chimica."
+  },
+  {
+    "id": 13,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Breaking Bad?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 14,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 15,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 16,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 17,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 18,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 19,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Breaking Bad?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 20,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Breaking Bad?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per colore azzurro e chimica."
+  },
+  {
+    "id": 21,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Breaking Bad?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 22,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 23,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 24,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 25,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 26,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 27,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Breaking Bad?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 28,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Breaking Bad?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per colore azzurro e chimica."
+  },
+  {
+    "id": 29,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Breaking Bad?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 30,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 31,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 32,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 33,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 34,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 35,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Breaking Bad?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 36,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Breaking Bad?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per colore azzurro e chimica."
+  },
+  {
+    "id": 37,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Breaking Bad?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 38,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 39,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 40,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 41,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 42,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 43,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Cosa motiva spesso i protagonisti in Breaking Bad?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 44,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Breaking Bad?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per colore azzurro e chimica."
+  },
+  {
+    "id": 45,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Breaking Bad?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 46,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Chi è Breaking Bad in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 47,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Breaking Bad ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 48,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 49,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Breaking Bad?",
+    "options": [
+      "New Mexico",
+      "Arizona",
+      "Colorado",
+      "Utah"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 50,
+    "show_key": "breaking_bad",
+    "show": "Breaking Bad",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Breaking Bad?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 1,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "easy",
+    "question": "Qual è il motto della Casa Stark?",
+    "options": [
+      "Fire and Blood",
+      "Family, Duty, Honor",
+      "Winter is Coming",
+      "Hear Me Roar!"
+    ],
+    "correct_index": 2,
+    "explanation": "Il motto degli Stark è 'Winter is Coming'."
+  },
+  {
+    "id": 2,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "easy",
+    "question": "Come si chiama il drago principale di Daenerys?",
+    "options": [
+      "Drogon",
+      "Rhaegal",
+      "Viserion",
+      "Balerion"
+    ],
+    "correct_index": 0,
+    "explanation": "Drogon è il drago più grande di Daenerys."
+  },
+  {
+    "id": 3,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "easy",
+    "question": "Chi è chiamato ‘il Folletto’?",
+    "options": [
+      "Jaime Lannister",
+      "Sandor Clegane",
+      "Tyrion Lannister",
+      "Petyr Baelish"
+    ],
+    "correct_index": 2,
+    "explanation": "Tyrion Lannister è soprannominato il Folletto."
+  },
+  {
+    "id": 4,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "easy",
+    "question": "Come si chiama la capitale dei Sette Regni per gran parte della serie?",
+    "options": [
+      "Approdo del Re",
+      "Grande Inverno",
+      "Alto Giardino",
+      "Delta delle Acque"
+    ],
+    "correct_index": 0,
+    "explanation": "La capitale è Approdo del Re."
+  },
+  {
+    "id": 5,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "easy",
+    "question": "Quale metallo è efficace contro gli Estranei?",
+    "options": [
+      "Acciaio valyriano",
+      "Ottone",
+      "Rame",
+      "Piombo"
+    ],
+    "correct_index": 0,
+    "explanation": "Acciaio valyriano e vetro di drago sono efficaci."
+  },
+  {
+    "id": 6,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 7,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 8,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 9,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 10,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 11,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Game of Thrones?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 12,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Game of Thrones?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per draghi e intrighi politici."
+  },
+  {
+    "id": 13,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Game of Thrones?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 14,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 15,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 16,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 17,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 18,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 19,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Game of Thrones?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 20,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Game of Thrones?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per draghi e intrighi politici."
+  },
+  {
+    "id": 21,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Game of Thrones?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 22,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 23,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 24,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 25,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 26,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 27,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Game of Thrones?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 28,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Game of Thrones?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per draghi e intrighi politici."
+  },
+  {
+    "id": 29,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Game of Thrones?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 30,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 31,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 32,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 33,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 34,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 35,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Game of Thrones?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 36,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Game of Thrones?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per draghi e intrighi politici."
+  },
+  {
+    "id": 37,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Game of Thrones?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 38,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 39,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 40,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 41,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 42,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 43,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Cosa motiva spesso i protagonisti in Game of Thrones?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 44,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Game of Thrones?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per draghi e intrighi politici."
+  },
+  {
+    "id": 45,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Game of Thrones?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 46,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Chi è Game of Thrones in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 47,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Game of Thrones ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 48,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 49,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Game of Thrones?",
+    "options": [
+      "Westeros",
+      "Essos",
+      "Narnia",
+      "Hogwarts"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 50,
+    "show_key": "game_of_thrones",
+    "show": "Game of Thrones",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Game of Thrones?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 1,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "easy",
+    "question": "Come si chiama la ragazza con poteri telecinetici?",
+    "options": [
+      "Max",
+      "Nancy",
+      "Eleven (Undici)",
+      "Robin"
+    ],
+    "correct_index": 2,
+    "explanation": "Eleven (Undici) è la ragazza con poteri."
+  },
+  {
+    "id": 2,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "easy",
+    "question": "In quale cittadina è ambientata la serie?",
+    "options": [
+      "Derry",
+      "Hawkins",
+      "Sunnydale",
+      "Hill Valley"
+    ],
+    "correct_index": 1,
+    "explanation": "La storia si svolge a Hawkins, Indiana."
+  },
+  {
+    "id": 3,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "easy",
+    "question": "Come si chiama la dimensione parallela che minaccia la città?",
+    "options": [
+      "Il Sottosuolo",
+      "Il Sottosopra",
+      "La Zona Oscura",
+      "La Frattura"
+    ],
+    "correct_index": 1,
+    "explanation": "Il Sottosopra (Upside Down) è la dimensione parallela."
+  },
+  {
+    "id": 4,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "easy",
+    "question": "Qual è l’hobby iniziale del gruppo di amici?",
+    "options": [
+      "Dungeons & Dragons",
+      "Videogiochi arcade",
+      "Football",
+      "Modellismo"
+    ],
+    "correct_index": 0,
+    "explanation": "Giocano spesso a Dungeons & Dragons."
+  },
+  {
+    "id": 5,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "easy",
+    "question": "Come si chiama lo sceriffo che aiuta i ragazzi?",
+    "options": [
+      "Jim Hopper",
+      "Dale Cooper",
+      "Joel Miller",
+      "Rick Grimes"
+    ],
+    "correct_index": 0,
+    "explanation": "Jim Hopper è lo sceriffo di Hawkins."
+  },
+  {
+    "id": 6,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 7,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 8,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 9,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 10,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 11,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Stranger Things?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 12,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Stranger Things?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per il Sottosopra e atmosfera anni '80."
+  },
+  {
+    "id": 13,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Stranger Things?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 14,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 15,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 16,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 17,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 18,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 19,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Stranger Things?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 20,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Stranger Things?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per il Sottosopra e atmosfera anni '80."
+  },
+  {
+    "id": 21,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Stranger Things?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 22,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 23,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 24,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 25,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 26,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 27,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Stranger Things?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 28,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Stranger Things?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per il Sottosopra e atmosfera anni '80."
+  },
+  {
+    "id": 29,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Stranger Things?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 30,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 31,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 32,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 33,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 34,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 35,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Stranger Things?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 36,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Stranger Things?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per il Sottosopra e atmosfera anni '80."
+  },
+  {
+    "id": 37,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Stranger Things?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 38,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 39,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 40,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 41,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 42,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 43,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Cosa motiva spesso i protagonisti in Stranger Things?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 44,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Stranger Things?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per il Sottosopra e atmosfera anni '80."
+  },
+  {
+    "id": 45,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Stranger Things?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 46,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Chi è Stranger Things in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 47,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Stranger Things ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 48,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 49,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Stranger Things?",
+    "options": [
+      "Hawkins",
+      "Gotham",
+      "Smallville",
+      "Springfield"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 50,
+    "show_key": "stranger_things",
+    "show": "Stranger Things",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Stranger Things?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 1,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "easy",
+    "question": "Come viene chiamato il leader della banda?",
+    "options": [
+      "Il Professore",
+      "Il Rettore",
+      "Il Direttore",
+      "Il Maestro"
+    ],
+    "correct_index": 0,
+    "explanation": "La mente del piano è chiamata Il Professore."
+  },
+  {
+    "id": 2,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "easy",
+    "question": "Qual è il travestimento caratteristico della banda?",
+    "options": [
+      "Maschere Dalí e tute rosse",
+      "Maschere bianche e cappelli",
+      "Cappucci neri",
+      "Maschere da clown"
+    ],
+    "correct_index": 0,
+    "explanation": "Usano maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 3,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "easy",
+    "question": "In quale edificio avviene la prima rapina?",
+    "options": [
+      "Zecca di Stato",
+      "Banca di Spagna",
+      "Museo del Prado",
+      "Congresso"
+    ],
+    "correct_index": 0,
+    "explanation": "La prima rapina è alla Zecca di Stato."
+  },
+  {
+    "id": 4,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "easy",
+    "question": "Quale città è un nome in codice di un membro della banda?",
+    "options": [
+      "Roma",
+      "Tokyo",
+      "Parigi",
+      "Lisbona"
+    ],
+    "correct_index": 1,
+    "explanation": "I membri usano nomi di città; Tokyo è una protagonista."
+  },
+  {
+    "id": 5,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "easy",
+    "question": "Chi NON è un membro originale della prima rapina?",
+    "options": [
+      "Berlino",
+      "Denver",
+      "Lisbona",
+      "Nairobi"
+    ],
+    "correct_index": 2,
+    "explanation": "Lisbona (Raquel) non fa parte del gruppo iniziale."
+  },
+  {
+    "id": 6,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 7,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 8,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 9,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 10,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 11,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in La Casa de Papel?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 12,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica La Casa de Papel?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 13,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a La Casa de Papel?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 14,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 15,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 16,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 17,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 18,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 19,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in La Casa de Papel?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 20,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica La Casa de Papel?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 21,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a La Casa de Papel?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 22,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 23,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 24,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 25,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 26,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 27,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in La Casa de Papel?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 28,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica La Casa de Papel?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 29,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a La Casa de Papel?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 30,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 31,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 32,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 33,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 34,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 35,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in La Casa de Papel?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 36,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica La Casa de Papel?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 37,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a La Casa de Papel?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 38,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 39,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 40,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 41,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 42,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 43,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Cosa motiva spesso i protagonisti in La Casa de Papel?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 44,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica La Casa de Papel?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per maschere di Dalí e tute rosse."
+  },
+  {
+    "id": 45,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a La Casa de Papel?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 46,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Chi è La Casa de Papel in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 47,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale personaggio di La Casa de Papel ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 48,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 49,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in La Casa de Papel?",
+    "options": [
+      "Madrid",
+      "Barcellona",
+      "Siviglia",
+      "Valencia"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 50,
+    "show_key": "la_casa_de_papel",
+    "show": "La Casa de Papel",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di La Casa de Papel?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 1,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "easy",
+    "question": "Qual è il nome del fratello che Michael vuole far evadere?",
+    "options": [
+      "Lincoln Burrows",
+      "Fernando Sucre",
+      "T-Bag",
+      "Paul Kellerman"
+    ],
+    "correct_index": 0,
+    "explanation": "Michael vuole salvare suo fratello Lincoln."
+  },
+  {
+    "id": 2,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "easy",
+    "question": "Come si chiama la prigione della prima stagione?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "Litchfield",
+      "Shawshank"
+    ],
+    "correct_index": 0,
+    "explanation": "La prima stagione è ambientata a Fox River."
+  },
+  {
+    "id": 3,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "easy",
+    "question": "Che professione ha Michael Scofield?",
+    "options": [
+      "Ingegnere strutturale",
+      "Avvocato",
+      "Medico",
+      "Agente FBI"
+    ],
+    "correct_index": 0,
+    "explanation": "Michael è un ingegnere strutturale."
+  },
+  {
+    "id": 4,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "easy",
+    "question": "Come si chiama la dottoressa coinvolta nella fuga?",
+    "options": [
+      "Sara Tancredi",
+      "Meredith Grey",
+      "Allison Cameron",
+      "Sarah Linden"
+    ],
+    "correct_index": 0,
+    "explanation": "Sara Tancredi lavora nell’infermeria della prigione."
+  },
+  {
+    "id": 5,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "easy",
+    "question": "Qual è il soprannome di Theodore Bagwell?",
+    "options": [
+      "The Wolf",
+      "T-Bag",
+      "Red",
+      "Snake"
+    ],
+    "correct_index": 1,
+    "explanation": "Theodore Bagwell è noto come T‑Bag."
+  },
+  {
+    "id": 6,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 7,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 8,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 9,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 10,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 11,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Prison Break?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 12,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Prison Break?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per tatuaggi e piani di evasione."
+  },
+  {
+    "id": 13,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Prison Break?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 14,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 15,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 16,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 17,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 18,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 19,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Prison Break?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 20,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Prison Break?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per tatuaggi e piani di evasione."
+  },
+  {
+    "id": 21,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Prison Break?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 22,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 23,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 24,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 25,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 26,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 27,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Prison Break?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 28,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa rende iconica Prison Break?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per tatuaggi e piani di evasione."
+  },
+  {
+    "id": 29,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale elemento stilistico è spesso associato a Prison Break?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 30,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 31,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 32,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 33,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 34,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 35,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "medium",
+    "question": "Cosa motiva spesso i protagonisti in Prison Break?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 36,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Prison Break?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per tatuaggi e piani di evasione."
+  },
+  {
+    "id": 37,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Prison Break?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 38,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 39,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 40,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 41,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 42,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  },
+  {
+    "id": 43,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Cosa motiva spesso i protagonisti in Prison Break?",
+    "options": [
+      "sopravvivenza",
+      "fama",
+      "viaggi",
+      "studio"
+    ],
+    "correct_index": 0,
+    "explanation": "Motivazioni forti e personali."
+  },
+  {
+    "id": 44,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Cosa rende iconica Prison Break?",
+    "options": [
+      "stile visivo",
+      "uso di CGI",
+      "assenza di dialoghi",
+      "riprese in bianco e nero"
+    ],
+    "correct_index": 0,
+    "explanation": "Iconica per tatuaggi e piani di evasione."
+  },
+  {
+    "id": 45,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale elemento stilistico è spesso associato a Prison Break?",
+    "options": [
+      "colore specifico",
+      "costumi storici",
+      "musica classica",
+      "ambienti marittimi"
+    ],
+    "correct_index": 0,
+    "explanation": "Elemento estetico ricorrente."
+  },
+  {
+    "id": 46,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Chi è Prison Break in questa serie?",
+    "options": [
+      "protagonista",
+      "antagonista",
+      "comparsa",
+      "regista"
+    ],
+    "correct_index": 0,
+    "explanation": "È uno dei personaggi principali."
+  },
+  {
+    "id": 47,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale personaggio di Prison Break ha un ruolo di supporto importante?",
+    "options": [
+      "Personaggio A",
+      "Personaggio B",
+      "Personaggio C",
+      "Personaggio D"
+    ],
+    "correct_index": 1,
+    "explanation": "Figura chiave di supporto."
+  },
+  {
+    "id": 48,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "In quale ambientazione principale si svolge Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Ambientazione principale ben riconoscibile."
+  },
+  {
+    "id": 49,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Quale luogo ricorre spesso in Prison Break?",
+    "options": [
+      "Fox River",
+      "Sona",
+      "San Quentin",
+      "Alcatraz"
+    ],
+    "correct_index": 0,
+    "explanation": "Un luogo simbolo della serie."
+  },
+  {
+    "id": 50,
+    "show_key": "prison_break",
+    "show": "Prison Break",
+    "difficulty": "hard",
+    "question": "Qual è un tema centrale di Prison Break?",
+    "options": [
+      "famiglia",
+      "viaggi spaziali",
+      "pirateria",
+      "medioevo"
+    ],
+    "correct_index": 0,
+    "explanation": "Tema ricorrente e portante."
+  }
+]
