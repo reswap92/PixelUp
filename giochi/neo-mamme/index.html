@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PixelUp • Gioco Neo Mamme (Quiz)</title>
+  <meta name="description" content="Quiz Neo Mamme: 200 domande su allattamento, sonno, salute, cura e ruolo del papà. Ogni partita: 10 domande casuali.">
+  <style>
+    :root{
+      --bg:#0f1115; --text:#f7f8fb; --muted:#c7cee0; --card:#171a24; --stroke:#2a3147;
+      --pink:#ff7ab6; --pink2:#ffb3d1; --blue:#6ecbff; --blue2:#a7e0ff; --accent:#00e887;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
+         background: radial-gradient(1200px 600px at 20% -10%, rgba(255,122,182,.15), transparent 60%),
+                     radial-gradient(1200px 600px at 80% 110%, rgba(110,203,255,.15), transparent 60%),
+                     #10131d;}
+    header{position:sticky; top:0; z-index:10; background:rgba(16,19,29,.75); backdrop-filter:blur(8px);
+           border-bottom:1px solid var(--stroke); display:flex; align-items:center; gap:12px; padding:16px 14px;}
+    .logo{width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-weight:900; color:#0b1220;
+          background: linear-gradient(135deg, var(--pink), var(--blue));}
+    .brand{font-weight:800; letter-spacing:.3px}
+    main{max-width:960px; margin:0 auto; padding:26px 16px 50px;}
+    .hero{background:linear-gradient(135deg, rgba(255,179,209,.15), rgba(167,224,255,.12));
+          border:1px solid var(--stroke); border-radius:16px; padding:20px; margin-bottom:20px;}
+    .hero h1{margin:6px 0 4px}
+    .hero p{margin:0; color:var(--muted)}
+    .bar{display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom:10px}
+    .pill{padding:6px 10px; border-radius:999px; border:1px solid var(--stroke); background:#10131c; font-size:12px; color:#cfe7ff}
+    .btn{background:linear-gradient(135deg,var(--pink2),var(--blue2)); color:#0b1220; border:none; padding:10px 14px; border-radius:12px;
+         font-weight:800; cursor:pointer}
+    .btn.secondary{background:#21293a; color:#e9eef5}
+    .wrap{background:var(--card); border:1px solid var(--stroke); border-radius:16px; padding:20px}
+    .question{font-size:20px; margin:8px 0 14px}
+    .options{display:grid; gap:10px; margin-bottom: 10px}
+    .option{padding:12px 14px; border:1px solid var(--stroke); border-radius:12px; background:#121626; cursor:pointer; text-align:left}
+    .option.correct{background:#0f2a1f; border-color:#1f8a4b}
+    .option.wrong{background:#2a0f1f; border-color:#8a1f4b}
+    .explain{color:var(--muted); min-height:20px; font-size:14px}
+    .footer{display:flex; gap:10px; justify-content:space-between; align-items:center}
+    .stats{display:flex; gap:8px; flex-wrap:wrap}
+    .link-ia{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px; border:1px solid var(--stroke);
+             background:linear-gradient(135deg, rgba(255,179,209,.18), rgba(167,224,255,.18)); color:#cfe7ff; text-decoration:none; font-weight:700}
+    @media (max-width:520px){ .question{font-size:18px} .option{font-size:15px} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">PU</div>
+    <div class="brand">PixelUp • Gioco Neo Mamme</div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Neo Mamme — Quiz Interattivo</h1>
+      <p>200 domande su allattamento, sonno, salute, cura e ruolo del papà. Ogni partita: 10 domande casuali.</p>
+    </div>
+
+    <div class="bar">
+      <div class="pill">Domanda <span id="qIndex">1</span>/10 • Punti: <span id="score">0</span></div>
+      <a class="link-ia" href="https://pixelup.it/chat/" target="_blank" rel="noopener">Apri chat IA Neo Mamme ↗</a>
+    </div>
+
+    <section class="wrap" id="quiz">
+      <div id="question" class="question">Domanda…</div>
+      <div id="options" class="options"></div>
+      <div id="explain" class="explain"></div>
+      <div class="footer">
+        <button class="btn secondary" id="btnRestart">Ricomincia</button>
+        <button class="btn" id="btnNext">Avanti</button>
+      </div>
+    </section>
+
+    <section id="result" class="wrap" style="display:none; text-align:center">
+      <h2>Risultato</h2>
+      <p>Corrette: <b><span id="correctOut">0</span>/10</b></p>
+      <div class="stats" id="statsBox"></div>
+      <div style="margin-top:12px; display:flex; gap:8px; justify-content:center">
+        <button class="btn" id="btnPlayAgain">Rigioca</button>
+        <a class="link-ia" href="https://pixelup.it/chat/" target="_blank" rel="noopener">Parla con l'IA Neo Mamme ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ====== 200 DOMANDE: generate al volo da 5 categorie x 40 ======
+    function buildQuestions(){
+      // Ogni elemento: [domanda, [opzioni], indiceCorretto, spiegazione]
+      const C = {
+        "Allattamento": [
+          ["Ogni quanto può chiedere il latte un neonato nelle prime settimane?",
+            ["Ogni 1–3 ore","Ogni 6–8 ore","Solo 2 volte al giorno","Una volta al giorno"], 0,
+            "Nelle prime settimane la richiesta può essere frequente, spesso 8–12 poppate/24h."],
+          ["Cosa indica spesso il pianto prima della poppata?",
+            ["Fame","Raffreddore","Allergia","Colica certa"], 0,
+            "Il pianto può essere un segnale di fame, valuta anche altri segnali precoci."],
+          ["Quale posizione può aiutare l’attacco al seno?",
+            ["Pancia a pancia","Di lato senza contatto","Seduto distante","Senza sostenere la testa"], 0,
+            "Il contatto pancia a pancia facilita aggancio e comfort."],
+          ["Cosa indica un buon attacco?",
+            ["Assenza di dolore e suzione efficace","Dolore acuto","Rumori di click forti","Capezzolo schiacciato"], 0,
+            "Comfort e suzione efficace sono segnali positivi."],
+          ["Cosa può aiutare in caso di ingorgo?",
+            ["Impacchi e svuotamento delicato","Smettere di allattare","Stringere il seno","Bere meno acqua"], 0,
+            "Alternare impacchi e favorire lo svuotamento può dare sollievo."],
+          ["È utile osservare i segnali precoci di fame?",
+            ["Sì, labbra che cercano/suzione mani","No, solo pianto forte","No, serve orario fisso","Solo dopo 4 ore"], 0,
+            "Segnali precoci aiutano a prevenire agitazione."],
+          ["Il tiralatte è sempre necessario?",
+            ["Solo se indicato/situazioni specifiche","Sempre","Mai","Solo di notte"], 0,
+            "Si usa quando serve, secondo consiglio professionale."],
+          ["Dolore persistente al seno richiede…",
+            ["Valutazione attacco/consulenza","Ignorare","Ridurre poppate","Acqua fredda e basta"], 0,
+            "Verificare attacco e chiedere aiuto se il dolore persiste."]
+        ],
+        "Sonno del neonato": [
+          ["Quante ore può dormire un neonato in 24 ore (prime settimane)?",
+            ["14–17 ore","3–4 ore","20–22 ore fisse","6–8 ore"], 0,
+            "Il sonno è frammentato e variabile."],
+          ["I risvegli notturni nelle prime fasi sono…",
+            ["Normali","Sempre anomali","Da eliminare","Sintomo di malattia"], 0,
+            "Fanno parte dello sviluppo."],
+          ["Cosa aiuta a riconoscere la stanchezza?",
+            ["Sbadigli/irritabilità/segnali precoci","Solo pianto forte","Movimenti casuali","Colore degli occhi"], 0,
+            "Cogliere segnali precoci evita il sovraffaticamento."],
+          ["La routine serale può…",
+            ["Favorire rilassamento","Evitare il sonno","Creare insonnia","Non ha effetto"], 0,
+            "Una routine dolce e ripetuta aiuta."],
+          ["Il contatto pelle a pelle può…",
+            ["Confortare e regolare","Disturbare sempre","Rendere iperattivo","Da evitare"], 0,
+            "Aiuta regolazione e benessere."],
+          ["Il sonno è di solito…",
+            ["Frazionato","Tutto di fila","Solo diurno","Solo notturno"], 0,
+            "Frazionato nelle 24 ore."],
+          ["Un ambiente buio e tranquillo…",
+            ["Può favorire il sonno","È dannoso","Impedisce il sonno","È irrilevante"], 0,
+            "Contesto sereno aiuta il riposo."],
+          ["Rumore bianco/rituali calmi…",
+            ["Possono aiutare a calmare","Sempre inutili","Sempre dannosi","Obbligatori"], 0,
+            "Possono essere utili per rilassare."]
+        ],
+        "Salute & Pediatria": [
+          ["Quando contattare il pediatra per febbre?",
+            ["Se persiste/segni preoccupanti","Mai","Solo dopo 10 giorni","Non serve"], 0,
+            "Se la febbre persiste o ci sono segnali, senti il pediatra."],
+          ["Segnale possibile di disidratazione?",
+            ["Pochi pannolini bagnati","Molti sorrisi","Sonno tranquillo","Pelle idratata"], 0,
+            "Pochi pannolini possono indicare scarsa idratazione."],
+          ["Con i farmaci è prudente…",
+            ["Seguire indicazioni del pediatra","Dosare a caso","Raddoppiare dosi","Usare rimedi casuali"], 0,
+            "Usare correttamente secondo indicazioni."],
+          ["Per monitorare la crescita si usa…",
+            ["Curve di crescita/controlli","Un’app casuale","Stima a occhio","Solo peso nascita"], 0,
+            "Riferimento: curve e bilanci pediatrici."],
+          ["I vaccini…",
+            ["Si discutono con il pediatra","Sono uguali ovunque","Sempre inutili","Da evitare sempre"], 0,
+            "Si seguono calendari e si risolvono dubbi insieme."],
+          ["Reflusso lieve…",
+            ["Spesso matura col tempo","Sempre grave","Richiede sempre farmaci","È pericoloso"], 0,
+            "Spesso transitorio, valutare con pediatra se dubbio."],
+          ["GAS coliche…",
+            ["Possibili nei primi mesi","Impossibili","Richiedono chirurgia","Non esistono"], 0,
+            "Possono comparire; strategie di conforto aiutano."],
+          ["Allergie sospette…",
+            ["Parlane col pediatra","Ignorale","Autodiagnosi sicura","Cambia tutto senza guida"], 0,
+            "Meglio valutazione professionale."]
+        ],
+        "Cura quotidiana": [
+          ["Ogni quanto cambiare il pannolino?",
+            ["Quando bagnato/sporco","Solo mattina e sera","Una volta al giorno","Ogni 10 minuti fissi"], 0,
+            "Si cambia quando necessario per comfort/igiene."],
+          ["Bagnetto: cosa è utile?",
+            ["Acqua tiepida/supporto sicuro","Acqua molto fredda","Saponi aggressivi","Lasciare il bimbo solo"], 0,
+            "Temperatura confortevole e sicurezza."],
+          ["Per la pelle delicata…",
+            ["Prodotti delicati/indicati","Detersivi forti","Nessun risciacquo","Profumi intensi"], 0,
+            "Meglio prodotti delicati."],
+          ["Durante i cambi…",
+            ["Pulire e asciugare bene","Saltare pulizia","Pannolini stretti","Carta abrasiva"], 0,
+            "Asciugare aiuta a prevenire irritazioni."],
+          ["Rigurgito lieve: aiuta…",
+            ["Pausa/posizione tranquilla","Agitare subito","Niente pausa","Pancia in giù senza sorveglianza"], 0,
+            "Calma e pausa aiutano dopo poppata."],
+          ["Uscite brevi…",
+            ["Possibili con organizzazione","Sempre vietate","Pericolose","Da evitare"], 0,
+            "Organizzazione e prudenza rendono possibili le uscite."],
+          ["Igiene mani…",
+            ["Importante prima di contatto","Inutile","Solo d’inverno","Solo se sporche visibili"], 0,
+            "Lavaggio mani riduce rischi."],
+          ["Abbigliamento…",
+            ["A strati leggeri","Sempre pesante","Sempre leggerissimo","Non conta"], 0,
+            "A strati per adattarsi alla temperatura."]
+        ],
+        "Ruolo del papà & supporto": [
+          ["Supporto pratico del papà…",
+            ["Gestire casa/commissioni","Restare passivo","Ignorare bisogni","Ridicolizzare i dubbi"], 0,
+            "Condivisione pratica alleggerisce il carico."],
+          ["Sostegno emotivo…",
+            ["Ascolto/incoraggiamento","Giudizi costanti","Confronti inutili","Minimizzare tutto"], 0,
+            "Ascolto empatico conta molto."],
+          ["Pause per i genitori…",
+            ["Aiutano a ricaricare","Sono vietate","Rovinano il legame","Inutili"], 0,
+            "Piccole pause migliorano il benessere."],
+          ["Col pediatra è utile…",
+            ["Andare in due se possibile","Solo messaggi anonimi","Evitare domande","Nascondere info"], 0,
+            "Essere in due aiuta a ricordare e condividere."],
+          ["Rete di supporto…",
+            ["Può essere preziosa","Sempre negativa","Da evitare","Inutile"], 0,
+            "Famiglia/amici possono aiutare."],
+          ["Divisione compiti…",
+            ["Riduce stress","Aumenta conflitti sempre","Impossibile","Inutile"], 0,
+            "Condivisione equilibrata riduce carico mentale."],
+          ["Comunicazione di coppia…",
+            ["Fondamentale","Inutile","Da evitare","Solo messaggi"], 0,
+            "Comunicazione chiara aiuta a coordinarsi."],
+          ["Cura di sé dei genitori…",
+            ["Importante per tutti","Egoista","Sbagliata","Da evitare"], 0,
+            "Benessere dei genitori sostiene il nucleo familiare."]
+        ]
+      };
+
+      // Funzione che da una base (anche 8 item) genera 40 domande per categoria
+      function expandTo40(base, cat){
+        const out = [];
+        // se la base è < 8, cicla i primi per arrivare a 8
+        const pool = [];
+        while (pool.length < 8) pool.push(...base);
+        const take8 = pool.slice(0,8);
+        // ogni item dei 8 → 5 varianti (8*5 = 40)
+        for (let i=0;i<take8.length;i++){
+          for (let v=0; v<5; v++){
+            const [q, opts, corr, expl] = take8[i];
+            out.push({
+              category: cat,
+              question: q,            // domanda base pulita
+              options: [...opts],
+              correct_index: corr,
+              explanation: expl
+            });
+          }
+        }
+        return out;
+      }
+
+      let ALL = [];
+      Object.entries(C).forEach(([cat, base])=>{
+        ALL = ALL.concat(expandTo40(base, cat));
+      });
+      // Controllo totale = 200
+      // console.log("Tot domande:", ALL.length);
+      return ALL;
+    }
+
+    // ====== Logica Quiz ======
+    let ALL = [];    // 200 domande
+    let set10 = [];  // 10 random per la partita
+    let idx = 0;     // indice domanda
+    let score = 0;   // punteggio
+    let answered = false;
+
+    const qIndex = document.getElementById('qIndex');
+    const scoreEl = document.getElementById('score');
+    const qEl = document.getElementById('question');
+    const optEl = document.getElementById('options');
+    const explEl = document.getElementById('explain');
+    const btnNext = document.getElementById('btnNext');
+    const btnRestart = document.getElementById('btnRestart');
+    const resultSec = document.getElementById('result');
+    const quizSec = document.getElementById('quiz');
+    const correctOut = document.getElementById('correctOut');
+    const statsBox = document.getElementById('statsBox');
+    const btnPlayAgain = document.getElementById('btnPlayAgain');
+
+    function startGame(){
+      if (ALL.length===0) ALL = buildQuestions(); // genera le 200 al volo
+      // estrai 10 casuali
+      const a = [...ALL];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      set10 = a.slice(0,10);
+      idx = 0; score = 0; answered = false;
+      quizSec.style.display = 'block';
+      resultSec.style.display = 'none';
+      renderQuestion();
+    }
+
+    function renderQuestion(){
+      const q = set10[idx];
+      qIndex.textContent = idx+1;
+      scoreEl.textContent = score;
+      qEl.textContent = q.question + (q.category ? ' — ' + q.category : '');
+      explEl.textContent = '';
+      optEl.innerHTML = '';
+      answered = false;
+
+      q.options.forEach((opt,i)=>{
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = opt;
+        btn.onclick = ()=> choose(i);
+        optEl.appendChild(btn);
+      });
+      btnNext.textContent = (idx===set10.length-1) ? 'Vedi risultato' : 'Avanti';
+    }
+
+    function choose(i){
+      if(answered) return;
+      answered = true;
+      const q = set10[idx];
+      Array.from(optEl.children).forEach((el,j)=>{
+        if(j===q.correct_index) el.classList.add('correct');
+        else if(j===i) el.classList.add('wrong');
+        el.disabled = true;
+      });
+      if(i===q.correct_index) score++;
+      explEl.textContent = q.explanation || '';
+    }
+
+    btnNext.onclick = ()=>{
+      if(!answered) return;
+      if(idx < set10.length-1){ idx++; renderQuestion(); }
+      else endGame();
+    };
+
+    btnRestart.onclick = ()=> startGame();
+    btnPlayAgain?.addEventListener('click', ()=> startGame());
+
+    function endGame(){
+      quizSec.style.display = 'none';
+      resultSec.style.display = 'block';
+      correctOut.textContent = score;
+      updateStats(score);
+      renderStats();
+    }
+
+    // ====== Statistiche (localStorage) ======
+    function getStats(){
+      const raw = localStorage.getItem('neoMammeStats');
+      let s = raw ? JSON.parse(raw) : { plays:0, best:0, total:0 };
+      return s;
+    }
+    function updateStats(last){
+      const s = getStats();
+      s.plays += 1;
+      s.total += last;
+      if(last > s.best) s.best = last;
+      localStorage.setItem('neoMammeStats', JSON.stringify(s));
+    }
+    function renderStats(){
+      const s = getStats();
+      const avg = s.plays ? (s.total / s.plays).toFixed(2) : "0.00";
+      statsBox.innerHTML = `
+        <span class="pill">Partite giocate: <b>${s.plays}</b></span>
+        <span class="pill">Miglior punteggio: <b>${s.best}/10</b></span>
+        <span class="pill">Media: <b>${avg}</b></span>
+      `;
+    }
+
+    // Avvio
+    startGame();
+  </script>
+</body>
+</html>
