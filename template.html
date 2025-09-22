@@ -41,10 +41,12 @@ header img {
       transform: translateY(-5px);
     }
     .card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+  width: 100%;
+  aspect-ratio: 4 / 5;   /* stessa proporzione per tutte le anteprime */
+  object-fit: cover;     /* riempie il riquadro tagliando i bordi se serve */
+  display: block;
+}
+
     .card h3 {
       margin: 16px 0;
     }
