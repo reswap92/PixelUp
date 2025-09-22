@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PixelUp • Quiz Serie TV</title>
+  <style>
+    :root { --accent:#00e887; --bg:#0f1115; --card:#151822; --text:#e9eef5; --muted:#9aa7b6; }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:24px 20px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #232838;position:sticky;top:0;background:rgba(15,17,21,.8);backdrop-filter:blur(8px);z-index:10}
+    .logo{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(135deg,#00ffa3,#00d1ff);color:#0b1220;font-weight:800}
+    .brand{font-weight:700;letter-spacing:.3px}
+    main{padding:30px 20px;max-width:980px;margin:0 auto}
+    .hero{background:#121522;border:1px solid #232838;border-radius:18px;padding:24px;margin-bottom:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid #232838;border-radius:16px;padding:18px;cursor:pointer;transition:transform .15s,box-shadow .2s,border .2s;min-height:140px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+    .card:hover{transform:translateY(-4px);border-color:#2f3a55;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card h3{margin:0;font-size:18px} .card small{color:var(--muted)}
+    .badge{position:absolute;top:12px;right:12px;padding:6px 10px;border-radius:999px;font-size:12px;background:#10131c;border:1px solid #2a3147}
+    .hidden{display:none}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid #2a3147;background:#10131c;font-size:12px;color:#9eb3ca}
+    .quiz-wrap{background:var(--card);border:1px solid #232838;border-radius:18px;padding:24px}
+    .question{font-size:20px;margin:8px 0 14px}
+    .options{display:grid;gap:10px;margin-bottom:12px}
+    .option{padding:12px 14px;border:1px solid #2a3147;border-radius:12px;background:#111524;cursor:pointer;text-align:left}
+    .option.correct{background:#0e2a1c;border-color:#1f8a4b}
+    .option.wrong{background:#2a0e0e;border-color:#8a1f1f}
+    .explain{color:var(--muted);font-size:14px;min-height:18px}
+    .footer-controls{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:8px}
+    .btn{background:var(--accent);color:#0b1220;padding:12px 18px;border:none;border-radius:12px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#21293a;color:#e9eef5}
+    /* responsive tweak */
+    @media (max-width:520px){ .question{font-size:18px} .option{font-size:15px} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">PU</div>
+    <div>
+      <div class="brand">PixelUp • Quiz Serie TV</div>
+      <div style="color:#9aa7b6;font-size:13px">Scegli un telefilm e rispondi a 10 domande casuali su 50</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home">
+      <div class="hero">
+        <h2>Seleziona un Telefilm</h2>
+        <p style="color:#9aa7b6">Ogni quiz estrae <b>10 domande casuali</b> da un set di 50 per serie. Niente spoiler pesanti né materiale protetto da copyright.</p>
+      </div>
+      <div class="grid" id="showGrid"></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="hidden">
+      <div class="quiz-wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div id="quizShowName" class="pill">Telefilm</div>
+          <div class="pill">Domanda <span id="qIndex">1</span>/10 • Punti: <span id="score">0</span></div>
+        </div>
+        <div id="question" class="question">Domanda…</div>
+        <div id="options" class="options"></div>
+        <div id="explain" class="explain"></div>
+        <div class="footer-controls">
+          <button class="btn secondary" id="btnBack">Indietro</button>
+          <div style="display:flex;gap:10px">
+            <button class="btn secondary" id="btnRestart">Ricomincia</button>
+            <button class="btn" id="btnNext">Avanti</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RISULTATO -->
+    <section id="result" class="hidden">
+      <div class="hero">
+        <h2>Risultato</h2>
+        <p>Hai risposto correttamente a <b><span id="correctOut">0</span>/10</b> domande.</p>
+        <p id="msgOut" style="color:#9aa7b6"></p>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn" id="btnChoose">Scegli un altro telefilm</button>
+          <button class="btn secondary" id="btnPlayAgain">Rigioca</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 5 telefilm con sfondi a tema (gradient)
+    const SHOWS = [
+      { key:'breaking_bad',    name:'Breaking Bad',     bg:'linear-gradient(135deg,#0b3d2e,#1e824c)' },
+      { key:'game_of_thrones', name:'Game of Thrones',  bg:'linear-gradient(135deg,#1f1f1f,#5a5a5a)' },
+      { key:'stranger_things', name:'Stranger Things',  bg:'linear-gradient(135deg,#1b002b,#a30000)' },
+      { key:'la_casa_de_papel',name:'La Casa de Papel', bg:'linear-gradient(135deg,#3d0000,#b30000)' },
+      { key:'prison_break',    name:'Prison Break',     bg:'linear-gradient(135deg,#00263a,#00627a)' }
+    ];
+
+    // stato
+    let ALL = [];            // tutte le domande (caricate da questions.json)
+    let currentShow = null;  // show selezionato
+    let set10 = [];          // 10 domande estratte
+    let idx = 0;             // indice domanda corrente
+    let score = 0;           // punteggio
+    let answered = false;    // già risposta la domanda corrente?
+
+    // elementi DOM
+    const home = document.getElementById('home');
+    const quiz = document.getElementById('quiz');
+    const result = document.getElementById('result');
+
+    const showGrid = document.getElementById('showGrid');
+    const quizShowName = document.getElementById('quizShowName');
+    const qIndex = document.getElementById('qIndex');
+    const scoreEl = document.getElementById('score');
+    const qEl = document.getElementById('question');
+    const optEl = document.getElementById('options');
+    const explEl = document.getElementById('explain');
+
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnRestart = document.getElementById('btnRestart');
+    const btnChoose = document.getElementById('btnChoose');
+    const btnPlayAgain = document.getElementById('btnPlayAgain');
+
+    const correctOut = document.getElementById('correctOut');
+    const msgOut = document.getElementById('msgOut');
+
+    // HOME: render cards
+    function renderHome(){
+      showGrid.innerHTML = '';
+      SHOWS.forEach(s=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="badge">${s.name}</div>
+          <div style="position:absolute;inset:0;background:${s.bg};opacity:.25"></div>
+          <h3>${s.name}</h3>
+          <small>50 domande disponibili</small>
+        `;
+        card.onclick = ()=> startShow(s.key);
+        showGrid.appendChild(card);
+      });
+      document.body.style.background = 'var(--bg)';
+      home.classList.remove('hidden');
+      quiz.classList.add('hidden');
+      result.classList.add('hidden');
+    }
+
+    // carica JSON
+    async function loadData(){
+      const res = await fetch('questions.json');
+      ALL = await res.json();
+    }
+
+    // estrai 10 random
+    function random10(arr){
+      const a = [...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a.slice(0,10);
+    }
+
+    // avvio quiz per uno show
+    function startShow(key){
+      currentShow = SHOWS.find(s=>s.key===key);
+      const subset = ALL.filter(q=>q.show_key===key);
+      set10 = random10(subset);
+      idx=0; score=0; answered=false;
+      document.body.style.background = currentShow.bg;
+      renderQuestion();
+      home.classList.add('hidden');
+      quiz.classList.remove('hidden');
+      result.classList.add('hidden');
+    }
+
+    // render domanda
+    function renderQuestion(){
+      const q = set10[idx];
+      quizShowName.textContent = q.show;
+      qIndex.textContent = idx+1;
+      scoreEl.textContent = score;
+      qEl.textContent = q.question;
+      explEl.textContent = '';
+      optEl.innerHTML = '';
+      answered = false;
+
+      q.options.forEach((opt,i)=>{
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = opt;
+        btn.onclick = ()=>choose(i);
+        optEl.appendChild(btn);
+      });
+      btnNext.textContent = (idx===set10.length-1) ? 'Vedi risultato' : 'Avanti';
+    }
+
+    // scelta risposta
+    function choose(i){
+      if(answered) return;
+      answered = true;
+      const q = set10[idx];
+      Array.from(optEl.children).forEach((el,j)=>{
+        if(j===q.correct_index) el.classList.add('correct');
+        else if(j===i) el.classList.add('wrong');
+        el.disabled = true;
+      });
+      if(i===q.correct_index) score++;
+      explEl.textContent = q.explanation || '';
+    }
+
+    // pulsanti
+    btnNext.onclick = ()=>{
+      if(!answered) return;
+      if(idx < set10.length-1){ idx++; renderQuestion(); }
+      else showResult();
+    };
+    btnRestart.onclick = ()=> startShow(currentShow.key);
+    btnBack.onclick = ()=> renderHome();
+    btnChoose.onclick = ()=> renderHome();
+    btnPlayAgain.onclick = ()=> startShow(currentShow.key);
+
+    function showResult(){
+      correctOut.textContent = score;
+      msgOut.textContent = (score>=8) ? 'Sei un vero fan! 🔥' : (score>=5) ? 'Buono! Riprova per salire 💪' : 'Si può migliorare 😉';
+      quiz.classList.add('hidden');
+      result.classList.remove('hidden');
+    }
+
+    // init
+    loadData().then(renderHome);
+  </script>
+</body>
+</html>
