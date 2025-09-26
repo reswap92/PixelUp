@@ -1,186 +1,243 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PixelUp - Template</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PixelUp – Template con IA</title>
+  <meta name="description" content="Planner digitali e risorse creative con IA integrata. Scarica subito i template PixelUp." />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
-      text-align: center;
+    :root{
+      --bg:#f7f7fb;
+      --surface:#fff;
+      --text-1:#121314;
+      --text-2:#565c62;
+      --brand:#6c5ce7; /* viola PixelUp style */
+      --ring:#6c5ce7;
+      --radius:18px;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --shadow-lg:0 14px 34px rgba(0,0,0,.14);
     }
-  header {
-  padding: 20px;
-  background: #fff;   /* bianco */
-  color: #17181A;     /* testo scuro (quasi nero, lo stesso del logo) */
-}
-header img {
-  width: 200px;
-}
-.container {
-  max-width: 1200px;
-  margin: 40px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 0 20px;
-}
 
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: transform 0.2s;
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
+      background:var(--bg);
+      color:var(--text-1);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .card img {
-  width: 100%;
-  aspect-ratio: 4 / 5;   /* stessa proporzione per tutte le anteprime */
-  object-fit: cover;     /* riempie il riquadro tagliando i bordi se serve */
-  display: block;
-}
+    a{color:inherit;text-decoration:none}
 
-    .card h3 {
-      margin: 16px 0;
+    /* Header */
+    header{
+      background:#fff;
+      position:sticky; top:0; z-index:10;
+      border-bottom:1px solid rgba(0,0,0,.05);
     }
-    /* Banner Etsy */
-    .etsy-banner {
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 48px;
-      border-radius: 24px;
-      background: linear-gradient(135deg,#ff8c00,#ff2d55);
-      color: #fff;
-      text-align: center;
+    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;
     }
-    .etsy-banner h2 {
-      font-size: 2.2rem;
-      margin: 0 0 12px;
+    .nav img{width:168px;height:auto;display:block}
+    .menu{display:flex;gap:18px}
+    .menu a{
+      font-size:.95rem; color:#2b2f33; opacity:.9; padding:8px 10px; border-radius:10px;
     }
-    .etsy-banner p {
-      font-size: 1.1rem;
-      opacity: .95;
-      margin: 0 0 24px;
+    .menu a:hover{background:rgba(108,92,231,.08)}
+
+    /* Hero */
+    .hero{
+      padding:28px 0 6px; text-align:center;
     }
-    .etsy-banner a {
-      display: inline-block;
-      background: #fff;
-      color: #ff2d55;
-      padding: 14px 26px;
-      border-radius: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      font-size: 1.2rem;
+    .hero h1{
+      margin:8px 0 6px;
+      font-size:clamp(1.4rem,2.3vw,2rem);
+      font-weight:800;
+    }
+    .hero p{
+      margin:0 auto 10px;
+      color:var(--text-2); max-width:680px; line-height:1.5;
+      font-size:1rem;
+    }
+
+    /* Grid */
+    .grid{
+      max-width:1120px;margin:10px auto 40px;padding:0 16px;
+      display:grid; gap:22px;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    }
+
+    /* Card */
+    .card{
+      display:flex;flex-direction:column; position:relative; overflow:hidden;
+      background:var(--surface); border-radius:var(--radius);
+      box-shadow:var(--shadow); transition:transform .22s ease, box-shadow .22s ease;
+      outline:0;
+    }
+    .card:hover{ transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+    .card:focus-visible{ box-shadow:0 0 0 4px color-mix(in oklab, var(--ring) 35%, white); }
+
+    .badge{
+      position:absolute; top:10px; right:10px; z-index:2;
+      background:rgba(255,255,255,.92); border:1px solid rgba(0,0,0,.06);
+      padding:6px 10px; border-radius:999px; font-size:.8rem; backdrop-filter:blur(6px);
+    }
+
+    .media{ aspect-ratio:4/5; width:100%; overflow:hidden; background:#eef0f6; }
+    .media img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .body{ padding:14px 14px 16px; text-align:center; }
+    .title{ margin:0 0 6px; font-size:1.06rem; font-weight:800; color:var(--text-1); }
+    .desc{ margin:0; font-size:.92rem; color:var(--text-2); line-height:1.35; }
+
+    /* Etsy banner */
+    .etsy{
+      max-width:1040px;margin:56px auto;padding:0 16px;
+    }
+    .etsy__box{
+      border-radius:26px;
+      background:linear-gradient(135deg,#ff8c00,#ff2d55);
+      color:#fff; text-align:center; padding:46px 22px;
+    }
+    .etsy h2{ margin:0 0 10px; font-size:clamp(1.2rem,2.2vw,2rem); }
+    .etsy p{ margin:0 0 22px; opacity:.95; font-size:1.05rem; }
+    .etsy a{
+      display:inline-block; background:#fff; color:#ff2d55;
+      padding:14px 26px; border-radius:14px; font-weight:800; font-size:1.08rem;
+    }
+
+    /* Trust row */
+    .trust{
+      max-width:920px;margin:26px auto 64px;padding:0 16px;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center;color:var(--text-2);
+    }
+    .trust span{ background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 10px; }
+
+    /* Footer */
+    footer{
+      border-top:1px solid rgba(0,0,0,.06); background:#fff; color:var(--text-2);
+      margin-top:26px;
+    }
+    .foot{max-width:1120px;margin:0 auto;padding:18px 16px;text-align:center;font-size:.92rem}
+
+    @media (prefers-reduced-motion: reduce){
+      .card{transition:none}
+      .card:hover{transform:none}
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
-      <a href="index.html"><img src="logopixelup.png" alt="Logo PixelUp"></a>
+    <div class="wrap nav">
+      <a href="index.html" aria-label="Home PixelUp">
+        <img src="logopixelup.png" alt="PixelUp Logo">
+      </a>
+      <nav class="menu" aria-label="Navigazione principale">
+        <a href="index.html">Home</a>
+        <a href="template.html" aria-current="page">Template</a>
+        <a href="giochi.html">Giochi</a>
+        <a href="gadget.html">Gadget</a>
+        <a href="contatti.html">Contatti</a>
+      </nav>
+    </div>
   </header>
-  
-  <main>
-  <!-- ===== Templates Grid (PixelUp) ===== -->
-<section class="templates">
-  <h2 class="templates__title">Scopri i nostri Template con IA</h2>
 
-  <div class="templates__grid">
+  <!-- Hero -->
+  <section class="hero wrap">
+    <h1>Planner e risorse digitali con IA integrata</h1>
+    <p>Template pronti all’uso per organizzare lavoro, famiglia e progetti creativi.
+       Scarica, personalizza e ottieni risultati subito.</p>
+  </section>
+
+  <!-- Grid -->
+  <main class="grid" aria-label="Catalogo Template">
     <a class="card" href="#" aria-label="Neo-Mamme+IA">
-      <span class="card__badge">👶 Family</span>
-      <div class="card__media">
-        <img src="template1.png" alt="Template Neo-Mamme+IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Neo-Mamme+IA</h3>
-        <p class="card__desc">Routine smart per neo-genitori.</p>
+      <span class="badge">👶 Family</span>
+      <div class="media"><img src="template1.png" alt="Template Neo-Mamme+IA"></div>
+      <div class="body">
+        <h3 class="title">Neo-Mamme+IA</h3>
+        <p class="desc">Routine smart per neo-genitori.</p>
       </div>
     </a>
 
     <a class="card" href="#" aria-label="Coach IA">
-      <span class="card__badge">🏋️ Fitness</span>
-      <div class="card__media">
-        <img src="template2.png" alt="Template Coach IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Coach IA</h3>
-        <p class="card__desc">Allenatore digitale sempre con te.</p>
+      <span class="badge">🏋️ Fitness</span>
+      <div class="media"><img src="template2.png" alt="Template Coach IA"></div>
+      <div class="body">
+        <h3 class="title">Coach IA</h3>
+        <p class="desc">Allenatore digitale sempre con te.</p>
       </div>
     </a>
 
-    <a class="card" href="#" aria-label="Business Plann+IA">
-      <span class="card__badge">💼 Business</span>
-      <div class="card__media">
-        <img src="template5.png" alt="Template Business Plan+IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Business Plan+IA</h3>
-        <p class="card__desc">Modelli professionali da 1,99€.</p>
+    <a class="card" href="#" aria-label="Business Plan+IA">
+      <span class="badge">💼 Business</span>
+      <div class="media"><img src="template5.png" alt="Template Business Plan+IA"></div>
+      <div class="body">
+        <h3 class="title">Business Plan+IA</h3>
+        <p class="desc">Modelli professionali da 1,99€.</p>
       </div>
     </a>
 
     <a class="card" href="#" aria-label="Wedding Planner+IA">
-      <span class="card__badge">💍 Eventi</span>
-      <div class="card__media">
-        <img src="template6.png" alt="Template Wedding Planner+IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Wedding Planner+IA</h3>
-        <p class="card__desc">Organizza il tuo grande giorno.</p>
+      <span class="badge">💍 Eventi</span>
+      <div class="media"><img src="template6.png" alt="Template Wedding Planner+IA"></div>
+      <div class="body">
+        <h3 class="title">Wedding Planner+IA</h3>
+        <p class="desc">Organizza il tuo grande giorno.</p>
       </div>
     </a>
 
     <a class="card" href="#" aria-label="Planner Finanziario+IA">
-      <span class="card__badge">💸 Finance</span>
-      <div class="card__media">
-        <img src="template8.png" alt="Template Planner Finanziario+IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Planner Finanziario+IA</h3>
-        <p class="card__desc">Entrate, spese e investimenti.</p>
+      <span class="badge">💸 Finance</span>
+      <div class="media"><img src="template8.png" alt="Template Planner Finanziario+IA"></div>
+      <div class="body">
+        <h3 class="title">Planner Finanziario+IA</h3>
+        <p class="desc">Entrate, spese e investimenti.</p>
       </div>
     </a>
 
     <a class="card" href="#" aria-label="Content Creator+IA">
-      <span class="card__badge">📣 Social</span>
-      <div class="card__media">
-        <img src="image1.png" alt="Template Content Creator+IA">
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">Content Creator+IA</h3>
-        <p class="card__desc">Calendario e strategie social.</p>
+      <span class="badge">📣 Social</span>
+      <div class="media"><img src="image1.png" alt="Template Content Creator+IA"></div>
+      <div class="body">
+        <h3 class="title">Content Creator+IA</h3>
+        <p class="desc">Calendario e strategie social.</p>
       </div>
     </a>
 
     <a class="card" href="#" aria-label="Guida Vinted+IA">
-      <span class="card__badge">🛒 E-commerce</span>
-      <div class="card__media">
-        <img src="image2.png" alt="Template Guida Vinted+IA">
+      <span class="badge">🛒 E-commerce</span>
+      <div class="media"><img src="image2.png" alt="Template Guida Vinted+IA"></div>
+      <div class="body">
+        <h3 class="title">Guida Vinted+IA</h3>
+        <p class="desc">Tecniche per vendere di più.</p>
       </div>
-      <div class="card__body">
-        <h3 class="card__title">Guida Vinted+IA</h3>
-        <p class="card__desc">Tecniche per vendere di più.</p>
-      </div>
-      </a>
-      <!-- Puoi aggiungerne altri -->
-    </div>
-
-    <!-- Banner Etsy -->
-    <section class="etsy-banner">
-      <h2>Acquista i nostri Template anche su Etsy</h2>
-      <p>Planner digitali, pack con IA e risorse pronte all’uso.</p>
-      <a href="https://www.etsy.com/shop/Pixelupofficial" target="_blank" rel="noopener">
-        Vai allo Shop Etsy 🚀
-      </a>
-    </section>
+    </a>
   </main>
 
+  <!-- Trust -->
+  <section class="trust" aria-label="Garanzie PixelUp">
+    <span>✅ Download immediato</span>
+    <span>✅ IA integrata</span>
+    <span>✅ Prezzi accessibili</span>
+  </section>
+
+  <!-- Etsy Banner -->
+  <section class="etsy">
+    <div class="etsy__box">
+      <h2>Acquista i nostri Template anche su Etsy</h2>
+      <p>Planner digitali, pack con IA e risorse pronte all’uso.</p>
+      <a href="https://www.etsy.com/shop/Pixelupofficial" target="_blank" rel="noopener">Vai allo Shop Etsy 🚀</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">© 2025 PixelUp – Tutti i diritti riservati</div>
+  </footer>
 </body>
 </html>
