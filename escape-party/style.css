@@ -11,3 +11,18 @@
 .center{text-align:center}.img{width:100%;border-radius:12px;border:1px solid #242938}
 .notice{color:var(--muted)}.timer{font-weight:800;color:var(--accent)}
 .media{max-height:58vh;object-fit:contain;width:100%;border-radius:12px;border:1px solid #242938}
+/* Sfondo solo per index */
+body.index-page{
+  background: url('room1.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+/* Velo scuro per leggibilità (solo index) */
+body.index-page::before{
+  content:"";
+  position:fixed; inset:0;
+  background: rgba(0,0,0,.6);
+  z-index:-1;
+}
+
