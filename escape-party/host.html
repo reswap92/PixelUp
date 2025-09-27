@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOST • Escape Party</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="container">
+  <div class="header">
+    <div class="badge">HOST</div>
+    <div class="badge">⏱️ <span id="timer" class="timer">--:--</span></div>
+  </div>
+  <div class="card center">
+    <h2 id="title">Caricamento…</h2>
+    <div id="mediaWrap"></div>
+    <div class="hr" style="margin:18px 0;height:1px;background:#2a3140"></div>
+    <p id="prompt">—</p>
+    <p class="notice">Giocatori: <span id="count">0</span> (min 4, max 8) • Stanza <span id="code">---</span></p>
+    <div class="row center">
+      <button id="startBtn" class="btn btn-primary" disabled>Avvia</button>
+      <button id="nextBtn" class="btn">Forza passo ➜</button>
+      <button id="resetBtn" class="btn">Reset</button>
+    </div>
+    <audio id="bg" src="assets/bg.mp3" preload="auto" loop></audio>
+    <p class="notice">Suggerimento: attiva l’audio della TV per musica & indizi sonori.</p>
+  </div>
+</div>
+
+<script type="module">
+import { watchRoom, getRoom, startGame, nextStep, resetRoom } from './app.js';
+import { SCENARIOS, SCENARIO_ORDER, DURATION_MIN } from './scenarios.js';
+
+const q = new URLSearchParams(location.search);
+const code = q.get('code'); document.getElementById('code').textContent = code || '---';
+
+function fmt(ms){ const s=Math.max(0,Math.floor(ms/1000)); const m=Math.floor(s/60),sec=s%60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
+let tickInt=null;
+
+watchRoom(code, async st=>{
+  if(!st) return;
+  document.getElementById('count').textContent = st.playersCount||0;
+
+  // abilita "Avvia"
+  const canStart = !st.started && (st.playersCount>=4 && st.playersCount<=8);
+  document.getElementById('startBtn').disabled = !canStart;
+
+  // timer
+  const tEl = document.getElementById('timer');
+  clearInterval(tickInt);
+  tickInt = setInterval(()=>{
+    const base = st.startTs||0;
+    const left = base ? Math.max(0, base + st.durationMs - Date.now()) : DURATION_MIN*60*1000;
+    tEl.textContent = fmt(left);
+  }, 1000);
+
+  // media + prompt
+  const scen = SCENARIOS.find(s=>s.id === (st.order||SCENARIO_ORDER)[st.scenarioIndex]);
+  document.getElementById('title').textContent = scen.title;
+  const step = scen.steps[st.stepIndex];
+  const m = document.getElementById('mediaWrap'); m.innerHTML='';
+  if(step.type==='image'){
+    const img=document.createElement('img'); img.src=step.src; img.className='media'; img.alt='media'; m.appendChild(img);
+  }else if(step.type==='video'){
+    const v=document.createElement('video'); v.src=step.src; v.className='media'; v.autoplay=true; v.loop=true; v.muted=true; m.appendChild(v);
+  }else if(step.type==='audio'){
+    const a=document.createElement('audio'); a.src=step.src; a.controls=true; a.className='media'; m.appendChild(a);
+  }
+  document.getElementById('prompt').textContent = step.prompt;
+
+  // musica auto
+  if(st.started) document.getElementById('bg').play();
+  if(st.finished){ document.getElementById('prompt').textContent = '🏁 COMPLETATO! Scansiona il QR premio sullo schermo del Player.'; }
+});
+
+document.getElementById('startBtn').onclick = ()=> startGame(code);
+document.getElementById('nextBtn').onclick  = ()=> nextStep(code);
+document.getElementById('resetBtn').onclick = ()=> resetRoom(code);
+</script>
+</body></html>
