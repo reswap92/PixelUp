@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escape Party • Attiva & Crea Stanza</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="container">
+  <div class="card">
+    <h1>Escape Room PixelUp — Party Edition</h1>
+    <p class="notice">Scansiona il QR ufficiale per arrivare qui. Min <strong>4</strong>, max <strong>8</strong> giocatori.</p>
+    <div class="row">
+      <div class="col">
+        <label>Token di attivazione</label>
+        <input id="token" class="input" placeholder="Incolla il token dal QR" />
+      </div>
+      <div class="col center">
+        <button id="validateBtn" class="btn">Valida</button>
+        <button id="createBtn" class="btn btn-primary" disabled>Crea Stanza</button>
+      </div>
+    </div>
+    <div id="status" class="notice" style="margin-top:10px"></div>
+    <div id="qrBox" class="center" style="display:none">
+      <div class="hr" style="margin:18px 0;height:1px;background:#2a3140"></div>
+      <p>Condividi questo QR ai giocatori per unirsi con il telefono:</p>
+      <img id="roomQR" class="img" style="max-width:280px" alt="QR join">
+      <p class="notice">Oppure link: <a id="joinLink" href="#" target="_blank" rel="noopener">apri Player</a></p>
+      <p><a id="hostLink" class="btn btn-primary">Apri Host (TV)</a></p>
+      <p class="notice">Quando sarete in <strong>4–8</strong> giocatori, dalla TV premete “Avvia”.</p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { validateTicket, createRoom } from './app.js';
+
+const p = new URLSearchParams(location.search);
+const tokenEl = document.getElementById('token');
+tokenEl.value = p.get('token') || '';
+
+let ticketRef = null, roomCode = null;
+
+document.getElementById('validateBtn').onclick = async ()=>{
+  const t = tokenEl.value.trim();
+  const res = await validateTicket(t);
+  const s = document.getElementById('status');
+  if(!res.ok){ s.textContent = 'Token non valido o già usato.'; return; }
+  ticketRef = res.ref;
+  s.textContent = 'Token valido ✔️ Puoi creare la stanza.';
+  document.getElementById('createBtn').disabled = false;
+};
+
+document.getElementById('createBtn').onclick = async ()=>{
+  roomCode = await createRoom({ token: ticketRef });
+  const joinURL = `${location.origin}${location.pathname.replace('index.html','')}player.html?code=${roomCode}`;
+  const hostURL = `${location.origin}${location.pathname.replace('index.html','')}host.html?code=${roomCode}`;
+  document.getElementById('qrBox').style.display='block';
+  document.getElementById('joinLink').href = joinURL;
+  document.getElementById('hostLink').href = hostURL;
+  document.getElementById('hostLink').setAttribute('target','_blank');
+  document.getElementById('roomQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(joinURL)}`;
+};
+</script>
+</body></html>
