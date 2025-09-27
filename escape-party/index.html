@@ -6,7 +6,7 @@
   <title>Escape Party • Crea Stanza</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="index-page"> <!-- 👈 AGGIUNTA LA CLASSE -->
+<body class="index-page">
   <div class="container">
     <div class="card">
       <h1>Escape Room PixelUp — Party Edition</h1>
@@ -32,8 +32,9 @@
 
     document.getElementById('createBtn').onclick = async ()=>{
       const code = await createRoom({});
-      const joinURL = `${location.origin}${location.pathname.replace('index.html','')}player.html?code=${code}`;
-      const hostURL = `${location.origin}${location.pathname.replace('index.html','')}host.html?code=${code}`;
+      const base = location.origin + location.pathname.replace('index.html','');
+      const joinURL = `${base}player.html?code=${code}`;
+      const hostURL = `${base}host.html?code=${code}`;
 
       document.getElementById('qrBox').style.display='block';
       document.getElementById('joinLink').href = joinURL;
