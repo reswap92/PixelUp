@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PLAYER • Escape Party</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="container">
+  <div class="card">
+    <h2>Unisciti alla stanza</h2>
+    <div class="row">
+      <input id="code" class="input" placeholder="Codice (ABCDE)" style="max-width:160px">
+      <input id="name" class="input" placeholder="Il tuo nome">
+      <button id="joinBtn" class="btn btn-primary">Entra</button>
+    </div>
+    <p id="joinInfo" class="notice"></p>
+  </div>
+
+  <div id="game" class="card" style="display:none">
+    <div class="header">
+      <div class="badge">Stanza: <span id="roomCode"></span></div>
+      <div class="badge">⏱️ <span id="timer" class="timer">--:--</span></div>
+    </div>
+
+    <p id="roleBox" class="notice"></p>
+    <h3 id="prompt">—</h3>
+    <form id="answerForm" class="row">
+      <input id="answer" class="input" placeholder="Risposta…" autocomplete="off">
+      <button class="btn btn-primary">Invia risposta</button>
+    </form>
+    <p id="ansInfo" class="notice"></p>
+
+    <div class="hr" style="margin:18px 0;height:1px;background:#2a3140"></div>
+    <h3>Chat</h3>
+    <div id="chat" style="max-height:260px;overflow:auto;border:1px solid #2a3140;border-radius:12px;padding:12px;background:#0f131a"></div>
+    <form id="chatForm" class="row" style="margin-top:8px">
+      <input id="msg" class="input" placeholder="Scrivi un messaggio…">
+      <button class="btn">Invia</button>
+    </form>
+
+    <div id="rivalTools" style="display:none;margin-top:12px">
+      <div class="hr" style="margin:18px 0;height:1px;background:#2a3140"></div>
+      <h3>Strumento del Rivale</h3>
+      <button id="fakeHintBtn" class="btn">Invia Falso Indizio (1× per step)</button>
+      <p class="notice">Il messaggio apparirà come “Suggerimento”. Usalo con astuzia.</p>
+    </div>
+
+    <div id="prizeBox" class="center" style="display:none;margin-top:16px">
+      <div class="hr" style="margin:18px 0;height:1px;background:#2a3140"></div>
+      <p>🎁 Premio sbloccato: <a id="prizeLink" class="btn btn-primary" href="#" target="_blank" rel="noopener">Scarica Escape Room Vol. 2</a></p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { db, watchRoom, getRoom, joinRoom, leaveRoom, nextStep } from './app.js';
+import { SCENARIOS, SCENARIO_ORDER, DURATION_MIN, norm } from './scenarios.js';
+import { collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+let ROOM=null, PID=null, IS_RIVAL=false, USED_FAKE=false, TICK=null;
+
+window.addEventListener('beforeunload', async ()=>{ try{ if(ROOM&&PID) await leaveRoom(ROOM, PID); }catch{} });
+
+$('joinBtn').onclick = async ()=>{
+  ROOM = $('code').value.trim().toUpperCase();
+  const name = $('name').value.trim()||'Player';
+  const st = await getRoom(ROOM);
+  if(!st){ $('joinInfo').textContent = 'Stanza non trovata.'; return; }
+  PID = await joinRoom(ROOM, name);
+  $('joinInfo').textContent = 'Sei dentro!'; $('game').style.display='block'; $('roomCode').textContent = ROOM;
+
+  // Stato & timer
+  watchRoom(ROOM, s=>{
+    if(!s) return;
+    const order = s.order||SCENARIO_ORDER;
+    const scen = SCENARIOS.find(x=>x.id===order[s.scenarioIndex]);
+    const step = scen.steps[s.stepIndex];
+    $('prompt').textContent = step.prompt;
+
+    // role segreto
+    IS_RIVAL = (s.rivalUid===PID);
+    $('roleBox').textContent = IS_RIVAL ? '🔒 Sei il Rivale (ruolo segreto)' : '🤝 Sei un Sopravvissuto';
+    $('rivalTools').style.display = IS_RIVAL ? 'block' : 'none';
+    if(s.finished){
+      $('ansInfo').textContent='🏁 Gioco completato!';
+      $('prizeBox').style.display='block';
+      $('prizeLink').href = 'https://pixelup.it/prize/escape-vol2'; // sostituisci con tuo premio
+    }
+
+    clearInterval(TICK);
+    TICK=setInterval(()=>{
+      const base=s.startTs||0, left = base? Math.max(0, base + s.durationMs - Date.now()) : DURATION_MIN*60*1000;
+      $('timer').textContent = fmt(left);
+    },1000);
+  });
+
+  // Chat live
+  const chatRef = collection(db,'rooms',ROOM,'chat');
+  const q = query(chatRef, orderBy('ts')); onSnapshot(q, snap=>{
+    const html=[]; snap.forEach(d=>{
+      const m=d.data(); const role=m.role||'user';
+      const tag = role==='hint' ? `<span class="badge">Suggerimento</span>` : `<strong>${m.name||'Anon'}:</strong>`;
+      html.push(`<p>${tag} ${m.text||''}</p>`);
+    });
+    $('chat').innerHTML = html.join(''); $('chat').scrollTop = $('chat').scrollHeight;
+  });
+
+  $('chatForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const t = $('msg').value; if(!t.trim()) return;
+    await addDoc(chatRef, { name, text:t, role:'user', ts: serverTimestamp() });
+    $('msg').value='';
+  });
+
+  // Risposta
+  $('answerForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const s = await getRoom(ROOM);
+    const scen = SCENARIOS.find(x=>x.id === (s.order||SCENARIO_ORDER)[s.scenarioIndex]);
+    const step = scen.steps[s.stepIndex];
+    const ok = norm($('answer').value) === norm(step.answer);
+    if(ok){ $('ansInfo').textContent='✅ Corretto!'; $('answer').value=''; await nextStep(ROOM); }
+    else  { $('ansInfo').textContent='❌ No, riprova.'; }
+  });
+
+  // Strumento del Rivale
+  $('fakeHintBtn').onclick = async ()=>{
+    if(!IS_RIVAL) return;
+    if(USED_FAKE){ $('ansInfo').textContent='Hai già usato il falso indizio in questo step.'; return; }
+    USED_FAKE=true;
+    await addDoc(chatRef, { name:'Guardiano', text:'Prova con 3142…', role:'hint', ts: serverTimestamp() });
+    setTimeout(()=> USED_FAKE=false, 15000); // reset sul prossimo step idealmente via watchRoom
+  };
+};
+
+function fmt(ms){ const s=Math.max(0,Math.floor(ms/1000)); const m=Math.floor(s/60),sec=s%60; return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`; }
+</script>
+</body></html>
