@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Conferma presenza | Marco & Giulia</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-light: #fffaf1;
+      --card: rgba(255, 252, 246, 0.94);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --gold-soft: #d8c498;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --line: rgba(177, 145, 85, 0.35);
+      --border: rgba(218, 205, 184, 0.85);
+      --shadow: 0 18px 40px rgba(60, 45, 28, 0.13);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+
+      /*
+        Cambia questa immagine se vuoi usare una foto reale degli sposi.
+        Deve essere orizzontale, elegante, luminosa.
+      */
+      --hero-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 255px;
+      padding: 22px 24px 0;
+      position: relative;
+      color: #fff;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(20, 22, 18, 0.20) 0%,
+          rgba(20, 22, 18, 0.24) 46%,
+          rgba(255, 246, 230, 0.92) 100%
+        ),
+        var(--hero-image) center top / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      text-align: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -10%;
+      bottom: -1px;
+      width: 120%;
+      height: 72px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+      box-shadow: 0 -10px 28px rgba(255, 246, 230, 0.72);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.96);
+      color: #1f211c;
+      display: grid;
+      place-items: center;
+      font-size: 31px;
+      line-height: 1;
+      z-index: 4;
+      box-shadow: 0 10px 22px rgba(39, 33, 25, 0.15);
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .back-btn:active {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 3;
+      padding-top: 78px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .couple {
+      font-size: 25px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .date {
+      margin-top: 11px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #fff;
+    }
+
+    .content {
+      position: relative;
+      z-index: 3;
+      padding: 0 22px 32px;
+      margin-top: -6px;
+    }
+
+    .title-block {
+      text-align: center;
+      padding-top: 8px;
+      margin-bottom: 22px;
+    }
+
+    .title-block h1 {
+      font-size: 31px;
+      line-height: 1.1;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .subtitle span {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+    }
+
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 18px 16px;
+      margin-bottom: 18px;
+    }
+
+    .question-card {
+      background: rgba(255, 252, 246, 0.90);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--soft-shadow);
+      padding: 17px 14px 16px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .question-title {
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .attendance-options {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 11px;
+    }
+
+    .choice-btn {
+      min-height: 50px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 252, 246, 0.94);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      box-shadow: 0 8px 18px rgba(60, 45, 28, 0.08);
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .choice-btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .choice-btn.active {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      border-color: rgba(214, 193, 145, 0.95);
+      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.22);
+    }
+
+    .choice-icon {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      border: 1.3px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .form-row {
+      border-bottom: 1px solid rgba(177, 145, 85, 0.22);
+      padding: 17px 0;
+    }
+
+    .form-row:first-of-type {
+      padding-top: 4px;
+    }
+
+    .form-row:last-of-type {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .label-line {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: center;
+      column-gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .label-icon {
+      color: var(--gold);
+      font-size: 23px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    label {
+      color: var(--text);
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .text-input,
+    .text-area {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      border: 1px solid rgba(190, 178, 158, 0.75);
+      background: rgba(255, 252, 246, 0.75);
+      border-radius: 13px;
+      min-height: 50px;
+      padding: 0 17px;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(60, 45, 28, 0.04);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .text-area {
+      resize: none;
+      padding-top: 14px;
+      min-height: 58px;
+    }
+
+    .text-input::placeholder,
+    .text-area::placeholder {
+      color: rgba(75, 72, 67, 0.52);
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    .text-input:focus,
+    .text-area:focus {
+      border-color: rgba(177, 145, 85, 0.85);
+      box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
+    }
+
+    .guest-options {
+      display: flex;
+      gap: 14px;
+      margin-left: 44px;
+      flex-wrap: wrap;
+    }
+
+    .guest-btn {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255, 252, 246, 0.95);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 7px 16px rgba(60, 45, 28, 0.10);
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .guest-btn:active {
+      transform: scale(0.94);
+    }
+
+    .guest-btn.active {
+      background: var(--green);
+      color: #fff;
+      border-color: rgba(214, 193, 145, 0.95);
+    }
+
+    .submit-btn {
+      width: 100%;
+      min-height: 58px;
+      border: 1.5px solid rgba(214, 193, 145, 0.95);
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 12px 25px rgba(54, 64, 42, 0.24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.985);
+      opacity: 0.92;
+    }
+
+    .submit-heart {
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    .footer-note {
+      margin-top: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .footer-note .leaf {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+    }
+
+    .bottom-floral {
+      position: absolute;
+      left: 12px;
+      bottom: 8px;
+      color: rgba(177, 145, 85, 0.42);
+      font-size: 36px;
+      pointer-events: none;
+      transform: rotate(-18deg);
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 16px;
+      background: rgba(77, 90, 58, 0.10);
+      border: 1px solid rgba(77, 90, 58, 0.25);
+      color: var(--green-dark);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    @media (max-width: 390px) {
+      .hero {
+        min-height: 244px;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .back-btn {
+        top: 18px;
+        left: 18px;
+        width: 43px;
+        height: 43px;
+      }
+
+      .content {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .couple {
+        font-size: 23px;
+      }
+
+      .title-block h1 {
+        font-size: 28px;
+      }
+
+      .attendance-options {
+        grid-template-columns: 1fr;
+      }
+
+      .choice-btn {
+        font-size: 13px;
+      }
+
+      .guest-options {
+        gap: 10px;
+      }
+
+      .guest-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+
+      .text-input,
+      .text-area {
+        width: calc(100% - 38px);
+        margin-left: 38px;
+      }
+
+      .label-line {
+        grid-template-columns: 28px 1fr;
+      }
+
+      .label-icon {
+        font-size: 21px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <!-- HERO SUPERIORE -->
+    <section class="hero">
+
+      <a class="back-btn" href="index.html" aria-label="Torna all'evento">‹</a>
+
+      <div class="hero-text">
+        <div class="couple">Marco &amp; Giulia</div>
+        <div class="date">24 Maggio 2025</div>
+      </div>
+
+    </section>
+
+    <!-- CONTENUTO -->
+    <section class="content">
+
+      <div class="title-block">
+        <h1>Conferma la tua presenza</h1>
+
+        <div class="subtitle">
+          <span>♡</span>
+          <p>La tua presenza renderà il nostro giorno ancora più speciale</p>
+        </div>
+      </div>
+
+      <form class="form-card" id="rsvpForm">
+
+        <!-- DOMANDA PRESENZA -->
+        <div class="question-card">
+          <div class="question-title">Confermi la tua presenza?</div>
+
+          <div class="attendance-options">
+            <button type="button" class="choice-btn active" data-attendance="si">
+              <span class="choice-icon">✓</span>
+              <span>Sì, ci sarò!</span>
+            </button>
+
+            <button type="button" class="choice-btn" data-attendance="no">
+              <span class="choice-icon">×</span>
+              <span>Non posso partecipare</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- NOME -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">♙</div>
+            <label for="nome">Nome e Cognome</label>
+          </div>
+
+          <input
+            id="nome"
+            name="nome"
+            class="text-input"
+            type="text"
+            placeholder="Scrivi qui il tuo nome"
+            autocomplete="name"
+          />
+        </div>
+
+        <!-- ACCOMPAGNATORI -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">♧</div>
+            <label>N. di accompagnatori</label>
+          </div>
+
+          <div class="guest-options">
+            <button type="button" class="guest-btn" data-guests="0">0</button>
+            <button type="button" class="guest-btn active" data-guests="1">1</button>
+            <button type="button" class="guest-btn" data-guests="2">2</button>
+            <button type="button" class="guest-btn" data-guests="3">3</button>
+            <button type="button" class="guest-btn" data-guests="4+">4+</button>
+          </div>
+        </div>
+
+        <!-- ALLERGIE -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">❧</div>
+            <label for="allergie">Allergie o intolleranze</label>
+          </div>
+
+          <input
+            id="allergie"
+            name="allergie"
+            class="text-input"
+            type="text"
+            placeholder="Scrivi eventuali allergie o intolleranze alimentari"
+          />
+        </div>
+
+        <!-- NOTE -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">♢</div>
+            <label for="note">Note <span style="text-transform:none; color:#7b6f62;">(opzionale)</span></label>
+          </div>
+
+          <textarea
+            id="note"
+            name="note"
+            class="text-area"
+            placeholder="Scrivi qui eventuali note"
+          ></textarea>
+        </div>
+
+        <!-- INVIA -->
+        <button class="submit-btn" type="submit">
+          <span>Invia conferma</span>
+          <span class="submit-heart">♡</span>
+        </button>
+
+        <div class="success-message" id="successMessage">
+          Grazie, la tua conferma è stata registrata.<br>
+          In una versione reale questi dati verranno inviati agli sposi o alla wedding planner.
+        </div>
+
+      </form>
+
+      <div class="footer-note">
+        <span class="leaf">❧</span>
+        <p>Ti ringraziamo di confermare entro il 30 Aprile 2025</p>
+      </div>
+
+      <div class="bottom-floral">❧</div>
+
+    </section>
+
+  </main>
+
+  <script>
+    /*
+      Funzionamento demo:
+      - selezione presenza sì/no
+      - selezione accompagnatori
+      - messaggio finale al click su invia
+
+      In una versione reale qui collegheremo:
+      - Google Forms
+      - Firebase
+      - EmailJS
+      - oppure un backend PixelUp
+    */
+
+    const attendanceButtons = document.querySelectorAll(".choice-btn");
+    const guestButtons = document.querySelectorAll(".guest-btn");
+    const form = document.getElementById("rsvpForm");
+    const successMessage = document.getElementById("successMessage");
+
+    let attendanceValue = "si";
+    let guestsValue = "1";
+
+    attendanceButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        attendanceButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        attendanceValue = button.dataset.attendance;
+      });
+    });
+
+    guestButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        guestButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        guestsValue = button.dataset.guests;
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const allergie = document.getElementById("allergie").value.trim();
+      const note = document.getElementById("note").value.trim();
+
+      console.log({
+        presenza: attendanceValue,
+        accompagnatori: guestsValue,
+        nome: nome,
+        allergie: allergie,
+        note: note
+      });
+
+      successMessage.classList.add("show");
+
+      setTimeout(() => {
+        successMessage.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }, 150);
+    });
+  </script>
+
+</body>
+</html>
