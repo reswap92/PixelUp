@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Segnala intolleranze | Marco & Giulia</title>
+  <title>Segnala intolleranze | Robrta & Alessandro</title>
 
   <style>
     :root {
@@ -457,8 +457,8 @@
         <h1>Intolleranze</h1>
         <div class="hero-subtitle">Segnala esigenze alimentari</div>
         <div class="ornament"><span>♡</span></div>
-        <div class="couple">Marco &amp; Giulia</div>
-        <div class="date">12 Settembre 2027</div>
+        <div class="couple">Roberta &amp; Alessandro</div>
+        <div class="date">27 Agosto 2026</div>
       </div>
     </section>
 
@@ -469,7 +469,7 @@
         <h2>Aiutaci a prenderci cura di te</h2>
         <p>
           Compila questo modulo per segnalare allergie, intolleranze o preferenze alimentari.
-          La comunicazione verrà inviata alla wedding planner.
+          
         </p>
       </div>
 
@@ -531,12 +531,12 @@
         </div>
 
         <button class="submit-btn" type="submit">
-          <span>Invia alla wedding planner</span>
+          <span>Invia </span>
           <span>♡</span>
         </button>
 
         <div class="success-message" id="successMessage">
-          Messaggio pronto. Si aprirà WhatsApp con il testo già compilato per la wedding planner.
+         Email pronta. Si aprirà l’app email con il testo già compilato per la wedding planner.
         </div>
 
       </form>
@@ -554,52 +554,57 @@
 
   </main>
 
-  <script>
-    /*
-      IMPORTANTE:
-      Sostituisci questo numero con quello della wedding planner.
-      Formato corretto WhatsApp:
-      prefisso internazionale senza +, quindi Italia = 39
-      Esempio: +39 334 123 4567 diventa 393341234567
-    */
+ <script>
+  /*
+    Invio tramite email:
+    quando l'utente clicca "Invia alla wedding planner",
+    si apre l'app email con destinatario, oggetto e testo già compilati.
 
-    const weddingPlannerNumber = "393341234567";
+    Nota:
+    con HTML semplice non si può inviare una email automaticamente senza backend.
+    Questo metodo apre la mail pronta da inviare.
+  */
 
-    const radioButtons = document.querySelectorAll(".radio-btn");
-    const form = document.getElementById("allergyForm");
-    const successMessage = document.getElementById("successMessage");
+  const weddingPlannerEmail = "emiliaweddingevents@libero.it";
 
-    let personeValue = "1";
+  const radioButtons = document.querySelectorAll(".radio-btn");
+  const form = document.getElementById("allergyForm");
+  const successMessage = document.getElementById("successMessage");
 
-    radioButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        radioButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        personeValue = button.dataset.persone;
-      });
+  let personeValue = "1";
+
+  radioButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      radioButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      personeValue = button.dataset.persone;
     });
+  });
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-      const nome = document.getElementById("nome").value.trim();
-      const intolleranza = document.getElementById("intolleranza").value.trim();
-      const note = document.getElementById("note").value.trim();
+    const nome = document.getElementById("nome").value.trim();
+    const intolleranza = document.getElementById("intolleranza").value.trim();
+    const note = document.getElementById("note").value.trim();
 
-      const messaggio =
-        "Segnalazione intolleranze - Matrimonio Marco & Giulia%0A%0A" +
-        "Nome: " + encodeURIComponent(nome || "Non indicato") + "%0A" +
-        "Persone interessate: " + encodeURIComponent(personeValue) + "%0A" +
-        "Allergia/intolleranza: " + encodeURIComponent(intolleranza || "Non indicata") + "%0A" +
-        "Note: " + encodeURIComponent(note || "Nessuna nota");
+    const subject = "Segnalazione intolleranze - Matrimonio Roberta & Alessandro";
 
-      successMessage.classList.add("show");
+    const body =
+      "Segnalazione intolleranze - Matrimonio  Roberta & Alessandro\n\n" +
+      "Nome: " + (nome || "Non indicato") + "\n" +
+      "Persone interessate: " + personeValue + "\n" +
+      "Allergia/intolleranza: " + (intolleranza || "Non indicata") + "\n" +
+      "Note: " + (note || "Nessuna nota") + "\n\n" +
+      "Messaggio inviato dalla pagina evento PixelUp Events.";
 
-      setTimeout(() => {
-        window.location.href = "https://wa.me/" + weddingPlannerNumber + "?text=" + messaggio;
-      }, 700);
-    });
-  </script>
+    successMessage.classList.add("show");
 
-</body>
-</html>
+    setTimeout(() => {
+      window.location.href =
+        "mailto:" + weddingPlannerEmail +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    }, 700);
+  });
+</script>
