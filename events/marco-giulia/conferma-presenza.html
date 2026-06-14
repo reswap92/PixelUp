@@ -647,69 +647,62 @@
 
   </main>
 
-  <script>
-    /*
-      Funzionamento demo:
-      - selezione presenza sì/no
-      - selezione accompagnatori
-      - messaggio finale al click su invia
+ <script>
+  const attendanceButtons = document.querySelectorAll(".choice-btn");
+  const guestButtons = document.querySelectorAll(".guest-btn");
+  const form = document.getElementById("rsvpForm");
+  const successMessage = document.getElementById("successMessage");
 
-      In una versione reale qui collegheremo:
-      - Google Forms
-      - Firebase
-      - EmailJS
-      - oppure un backend PixelUp
-    */
+  let attendanceValue = "si";
+  let guestsValue = "1";
 
-    const attendanceButtons = document.querySelectorAll(".choice-btn");
-    const guestButtons = document.querySelectorAll(".guest-btn");
-    const form = document.getElementById("rsvpForm");
-    const successMessage = document.getElementById("successMessage");
-
-    let attendanceValue = "si";
-    let guestsValue = "1";
-
-    attendanceButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        attendanceButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        attendanceValue = button.dataset.attendance;
-      });
+  attendanceButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      attendanceButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      attendanceValue = button.dataset.attendance;
     });
+  });
 
-    guestButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        guestButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        guestsValue = button.dataset.guests;
-      });
+  guestButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      guestButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      guestsValue = button.dataset.guests;
     });
+  });
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-      const nome = document.getElementById("nome").value.trim();
-      const allergie = document.getElementById("allergie").value.trim();
-      const note = document.getElementById("note").value.trim();
+    const nome = document.getElementById("nome").value.trim();
+    const allergie = document.getElementById("allergie").value.trim();
+    const note = document.getElementById("note").value.trim();
 
-      console.log({
-        presenza: attendanceValue,
-        accompagnatori: guestsValue,
-        nome: nome,
-        allergie: allergie,
-        note: note
-      });
+    const destinatario = "emiliaweddingevents@libero.it";
+    const copia = "robertagallo1995@gmail.com";
 
-      successMessage.classList.add("show");
+    const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
 
-      setTimeout(() => {
-        successMessage.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-      }, 150);
-    });
-  </script>
+    const body =
+      "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
+      "Nome e cognome: " + (nome || "Non indicato") + "\n" +
+      "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
+      "Numero accompagnatori: " + guestsValue + "\n" +
+      "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
+      "Note: " + (note || "Nessuna nota") + "\n\n" +
+      "Messaggio inviato dalla pagina evento PixelUp Events.";
 
+    successMessage.classList.add("show");
+
+    setTimeout(() => {
+      window.location.href =
+        "mailto:" + destinatario +
+        "?cc=" + encodeURIComponent(copia) +
+        "&subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    }, 700);
+  });
+</script>
 </body>
 </html>
