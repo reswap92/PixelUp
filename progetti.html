@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PixelUp | Progetti su misura</title>
+
+  <style>
+    :root {
+      --bg: #140b2d;
+      --bg-soft: #21113f;
+      --purple: #7c3cff;
+      --purple-light: #a988ff;
+      --white: #ffffff;
+      --text: #f4f0ff;
+      --muted: #c7bde6;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 28px;
+      --green: #50ffb1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(124,60,255,0.45), transparent 35%),
+        radial-gradient(circle at top right, rgba(169,136,255,0.25), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(20, 11, 45, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(124,60,255,0.35);
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      color: var(--white);
+    }
+
+    .nav-btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 54px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .badge span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 10%, #bca8ff 50%, #7c3cff 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      box-shadow: 0 16px 34px rgba(124,60,255,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(124,60,255,0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.14);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .project-preview {
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 38px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .preview-screen {
+      background: #f8f5ff;
+      color: #21113f;
+      border-radius: 30px;
+      padding: 24px;
+      min-height: 520px;
+    }
+
+    .preview-header {
+      background: #21113f;
+      color: white;
+      border-radius: 26px;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .preview-header small {
+      color: #c7bde6;
+      font-weight: 700;
+    }
+
+    .preview-header h3 {
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+      margin: 8px 0;
+    }
+
+    .preview-header p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: #d9d0ff;
+      line-height: 1.5;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .preview-card {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 12px 25px rgba(45,23,82,0.08);
+    }
+
+    .preview-card span {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .preview-card strong {
+      display: block;
+      font-size: 0.98rem;
+      color: #4d348f;
+      margin-bottom: 4px;
+    }
+
+    .preview-card small {
+      color: #75689a;
+      line-height: 1.4;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 42px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.11);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      font-size: 1.35rem;
+      margin-bottom: 22px;
+      box-shadow: 0 15px 35px rgba(124,60,255,0.3);
+    }
+
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .process {
+      background: rgba(255,255,255,0.045);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 26px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .feature-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 34px;
+      padding: 36px;
+    }
+
+    .feature-box h2 {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin-bottom: 18px;
+    }
+
+    .feature-box p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .feature-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 18px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin: 14px 0;
+    }
+
+    .price small {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin: 20px 0 26px;
+      color: var(--muted);
+    }
+
+    li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .packages .card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card .btn {
+      margin-top: auto;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(124,60,255,0.36), transparent 52%),
+        transparent;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 36px;
+      padding: 56px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 34px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .preview-grid,
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .feature-box,
+      .step {
+        padding: 24px;
+      }
+
+      .preview-screen {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">P</div>
+        <span>PixelUp</span>
+      </a>
+
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="eventi.html">Eventi</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="progetti.html" class="active">Progetti</a>
+        <a href="contatti.html">Contatti</a>
+      </nav>
+
+      <a href="contatti.html" class="nav-btn">Richiedi demo</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container hero-grid">
+
+      <div>
+        <div class="badge">
+          <span></span>
+          Idee digitali trasformate in prodotti veri
+        </div>
+
+        <h1>
+          Hai un’idea?
+          <span class="gradient-text">La trasformiamo online.</span>
+        </h1>
+
+        <p>
+          PixelUp crea mini siti, landing page, QR interattivi, strumenti IA,
+          dashboard e soluzioni digitali personalizzate per attività, creator,
+          professionisti e piccoli progetti.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Racconta la tua idea</a>
+          <a href="#soluzioni" class="btn btn-secondary">Scopri cosa creare</a>
+        </div>
+      </div>
+
+      <div class="project-preview">
+        <div class="preview-screen">
+
+          <div class="preview-header">
+            <small>PixelUp Project Builder</small>
+            <h3>Da idea a progetto digitale</h3>
+            <p>
+              Scegli il tipo di progetto, definiamo struttura, stile,
+              funzioni e creiamo una soluzione pronta da condividere.
+            </p>
+          </div>
+
+          <div class="preview-grid">
+            <div class="preview-card">
+              <span>🌐</span>
+              <strong>Mini sito</strong>
+              <small>Pagina elegante per presentarti o vendere un servizio.</small>
+            </div>
+
+            <div class="preview-card">
+              <span>📲</span>
+              <strong>QR interattivo</strong>
+              <small>Un QR che porta a contenuti, form, contatti o dashboard.</small>
+            </div>
+
+            <div class="preview-card">
+              <span>🧠</span>
+              <strong>IA guidata</strong>
+              <small>Una piccola IA verticale per aiutare i tuoi clienti.</small>
+            </div>
+
+            <div class="preview-card">
+              <span>📊</span>
+              <strong>Dashboard</strong>
+              <small>Un’area semplice per tenere sotto controllo i dati.</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <section id="soluzioni">
+    <div class="container">
+      <div class="section-head">
+        <h2>Cosa possiamo creare</h2>
+        <p>
+          PixelUp è pensato per chi ha un’idea, un’attività o un servizio
+          e vuole trasformarlo in qualcosa di digitale, semplice e vendibile.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">🌐</div>
+          <h3>Mini siti</h3>
+          <p>
+            Siti semplici e moderni per presentare attività, servizi,
+            eventi, prodotti, progetti personali o idee da testare online.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🚀</div>
+          <h3>Landing page</h3>
+          <p>
+            Pagine pensate per vendere un servizio, raccogliere contatti,
+            presentare un’offerta o portare utenti verso WhatsApp.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📲</div>
+          <h3>QR interattivi</h3>
+          <p>
+            QR collegati a pagine personalizzate, form, contatti,
+            menù, mappe, prodotti, dashboard o contenuti digitali.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>Strumenti IA</h3>
+          <p>
+            Piccole IA guidate per eventi, idee, clienti, preventivi,
+            domande frequenti o supporto semplice sul tuo sito.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>Dashboard</h3>
+          <p>
+            Aree digitali per organizzare budget, scadenze, clienti,
+            ordini, fornitori, vendite, eventi e progetti personali.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">✨</div>
+          <h3>Idee personalizzate</h3>
+          <p>
+            Hai un’idea diversa? La analizziamo insieme e costruiamo
+            una prima versione digitale semplice, bella e utilizzabile.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="container">
+      <div class="section-head">
+        <h2>Come funziona</h2>
+        <p>
+          Il processo è semplice: parti dalla tua idea e arriviamo a una
+          pagina o strumento digitale pronto da usare.
+        </p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Racconti l’idea</h3>
+          <p>
+            Ci spieghi cosa vuoi creare, a chi serve e quale risultato vuoi ottenere.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Creiamo la struttura</h3>
+          <p>
+            Definiamo pagine, funzioni, testi, pulsanti, stile e percorso utente.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Costruiamo la demo</h3>
+          <p>
+            Realizziamo una prima versione digitale chiara, moderna e responsive.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Vai online</h3>
+          <p>
+            Il progetto viene pubblicato e puoi iniziare a condividerlo o venderlo.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container feature-grid">
+
+      <div class="feature-box">
+        <h2>Non solo siti. Strumenti digitali utili.</h2>
+        <p>
+          PixelUp non crea semplici pagine statiche. L’obiettivo è costruire
+          strumenti facili da usare che aiutano davvero: vendere, organizzare,
+          raccogliere dati, presentare un’idea o semplificare un servizio.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Parlaci del progetto</a>
+        </div>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-item">Design mobile</div>
+        <div class="feature-item">Testi personalizzati</div>
+        <div class="feature-item">Pulsanti WhatsApp</div>
+        <div class="feature-item">Form contatto</div>
+        <div class="feature-item">QR collegabile</div>
+        <div class="feature-item">Demo rapida</div>
+        <div class="feature-item">Sezioni su misura</div>
+        <div class="feature-item">Stile moderno</div>
+        <div class="feature-item">Struttura vendibile</div>
+        <div class="feature-item">Supporto modifiche</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="packages">
+    <div class="container">
+      <div class="section-head">
+        <h2>Pacchetti Progetti</h2>
+        <p>
+          Tre livelli semplici per trasformare la tua idea in una prima versione
+          digitale, da una pagina base fino a un progetto completo.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">🌱</div>
+          <h3>Starter</h3>
+          <div class="price">199€</div>
+          <p>Perfetto per iniziare con una pagina semplice e professionale.</p>
+
+          <ul>
+            <li>Mini sito 1 pagina</li>
+            <li>Design mobile</li>
+            <li>Testi base</li>
+            <li>Pulsante WhatsApp</li>
+            <li>Pubblicazione online</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Starter</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">🚀</div>
+          <h3>Smart Project</h3>
+          <div class="price">399€</div>
+          <p>Per chi vuole una struttura più completa e vendibile.</p>
+
+          <ul>
+            <li>Sito fino a 3 pagine</li>
+            <li>Landing page completa</li>
+            <li>QR collegabile</li>
+            <li>Form o sezione contatti</li>
+            <li>Struttura commerciale</li>
+            <li>Modifiche incluse</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-primary">Richiedi Smart</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">✨</div>
+          <h3>Custom</h3>
+          <div class="price">da 699€</div>
+          <p>Per progetti più particolari, dashboard o strumenti personalizzati.</p>
+
+          <ul>
+            <li>Progetto su misura</li>
+            <li>Più pagine o sezioni</li>
+            <li>Dashboard opzionale</li>
+            <li>Funzioni personalizzate</li>
+            <li>Strumenti IA opzionali</li>
+            <li>Supporto dedicato</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Custom</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Hai un’idea da trasformare in digitale?</h2>
+        <p>
+          Raccontaci cosa vuoi creare. Ti aiutiamo a capire quale struttura,
+          pagina, dashboard o strumento digitale può funzionare meglio.
+        </p>
+
+        <div class="actions" style="justify-content:center;">
+          <a href="contatti.html" class="btn btn-primary">Racconta la tua idea</a>
+          <a href="dashboard.html" class="btn btn-secondary">Scopri Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 PixelUp · Eventi digitali, dashboard e progetti su misura
+  </footer>
+
+</body>
+</html>
