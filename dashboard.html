@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PixelUp | Dashboard Smart</title>
+
+  <style>
+    :root {
+      --bg: #140b2d;
+      --bg-soft: #21113f;
+      --purple: #7c3cff;
+      --purple-light: #a988ff;
+      --white: #ffffff;
+      --text: #f4f0ff;
+      --muted: #c7bde6;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 28px;
+      --green: #50ffb1;
+      --orange: #ffcc66;
+      --red: #ff7b7b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(124,60,255,0.45), transparent 35%),
+        radial-gradient(circle at top right, rgba(169,136,255,0.25), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(20, 11, 45, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(124,60,255,0.35);
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      color: var(--white);
+    }
+
+    .nav-btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 54px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .badge span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 10%, #bca8ff 50%, #7c3cff 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      box-shadow: 0 16px 34px rgba(124,60,255,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(124,60,255,0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.14);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    /* DASHBOARD PREVIEW */
+
+    .dashboard-preview {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 38px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .preview-screen {
+      background: #f8f5ff;
+      color: #21113f;
+      border-radius: 30px;
+      padding: 24px;
+      min-height: 540px;
+    }
+
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .preview-title h3 {
+      font-size: 1.45rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .preview-title p {
+      margin: 0;
+      color: #75689a;
+      font-size: 0.9rem;
+    }
+
+    .status-pill {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #e8ddff;
+      color: #5a38aa;
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 25px rgba(45,23,82,0.08);
+    }
+
+    .stat small {
+      color: #75689a;
+      font-weight: 700;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-top: 8px;
+      letter-spacing: -0.04em;
+    }
+
+    .progress-card {
+      background: #21113f;
+      color: white;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: #d9d0ff;
+      font-size: 0.9rem;
+    }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      width: 72%;
+      background: linear-gradient(90deg, var(--purple), var(--purple-light));
+      border-radius: inherit;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task {
+      background: white;
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: #4d3b7c;
+      box-shadow: 0 10px 20px rgba(45,23,82,0.06);
+    }
+
+    .task span {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f0eaff;
+      color: #6c45d9;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 42px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.11);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      font-size: 1.35rem;
+      margin-bottom: 22px;
+      box-shadow: 0 15px 35px rgba(124,60,255,0.3);
+    }
+
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .features {
+      background: rgba(255,255,255,0.045);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .feature-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 34px;
+      padding: 36px;
+    }
+
+    .feature-box h2 {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin-bottom: 18px;
+    }
+
+    .feature-box p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .feature-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 18px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin: 14px 0;
+    }
+
+    .price small {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin: 20px 0 26px;
+      color: var(--muted);
+    }
+
+    li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .card .btn {
+      margin-top: auto;
+    }
+
+    .packages .card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(124,60,255,0.36), transparent 52%),
+        transparent;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 36px;
+      padding: 56px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 34px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .stats-grid,
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .feature-box {
+        padding: 24px;
+      }
+
+      .preview-screen {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">P</div>
+        <span>PixelUp</span>
+      </a>
+
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="eventi.html">Eventi</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="progetti.html">Progetti</a>
+        <a href="contatti.html">Contatti</a>
+      </nav>
+
+      <a href="contatti.html" class="nav-btn">Richiedi demo</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container hero-grid">
+
+      <div>
+        <div class="badge">
+          <span></span>
+          Dashboard personalizzate per organizzare tutto
+        </div>
+
+        <h1>
+          Crea la tua
+          <span class="gradient-text">dashboard smart.</span>
+        </h1>
+
+        <p>
+          Una dashboard semplice, bella e accessibile da telefono per gestire
+          budget, scadenze, pagamenti, clienti, invitati, fornitori, vendite
+          o qualsiasi progetto da tenere sotto controllo.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Crea la tua dashboard</a>
+          <a href="#esempi" class="btn btn-secondary">Guarda esempi</a>
+        </div>
+      </div>
+
+      <div class="dashboard-preview">
+        <div class="preview-screen">
+
+          <div class="preview-top">
+            <div class="preview-title">
+              <h3>Dashboard Evento</h3>
+              <p>Marco & Giulia · Agosto 2026</p>
+            </div>
+            <div class="status-pill">Live</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat">
+              <small>Budget totale</small>
+              <strong>€ 12.500</strong>
+            </div>
+
+            <div class="stat">
+              <small>Pagato</small>
+              <strong>€ 6.800</strong>
+            </div>
+
+            <div class="stat">
+              <small>Invitati</small>
+              <strong>87/120</strong>
+            </div>
+
+            <div class="stat">
+              <small>Scadenze</small>
+              <strong>5</strong>
+            </div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-row">
+              <span>Completamento evento</span>
+              <strong>72%</strong>
+            </div>
+            <div class="bar"><span></span></div>
+          </div>
+
+          <div class="task-list">
+            <div class="task">
+              <strong>Saldo catering</strong>
+              <span>15 Luglio</span>
+            </div>
+
+            <div class="task">
+              <strong>Conferma fiori</strong>
+              <span>Da fare</span>
+            </div>
+
+            <div class="task">
+              <strong>Tavoli invitati</strong>
+              <span>In corso</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <section id="esempi">
+    <div class="container">
+      <div class="section-head">
+        <h2>Dashboard per ogni tipo di progetto</h2>
+        <p>
+          Non solo matrimoni. PixelUp può creare dashboard personalizzate
+          per attività, eventi, clienti, lavori, vendite e organizzazione personale.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">💍</div>
+          <h3>Dashboard matrimonio</h3>
+          <p>
+            Budget, invitati, tavoli, fornitori, scadenze, pagamenti,
+            menù, intolleranze e stato generale dell’evento.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📦</div>
+          <h3>Dashboard vendite</h3>
+          <p>
+            Monitora prodotti, incassi, ordini, margini, clienti,
+            obiettivi mensili e andamento della tua piccola attività.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🏡</div>
+          <h3>Dashboard casa</h3>
+          <p>
+            Tieni sotto controllo lavori, preventivi, pagamenti,
+            documenti, scadenze, bonus e spese di ristrutturazione.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">👥</div>
+          <h3>Dashboard clienti</h3>
+          <p>
+            Gestisci contatti, richieste, appuntamenti, preventivi,
+            attività aperte e stato dei progetti dei tuoi clienti.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🎉</div>
+          <h3>Dashboard evento</h3>
+          <p>
+            Perfetta per feste, compleanni, eventi aziendali,
+            open day, cerimonie, raccolta dati e conferme.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>Dashboard personale</h3>
+          <p>
+            Organizza obiettivi, spese, attività, idee, routine,
+            allenamenti o progetti personali in una pagina chiara.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container feature-grid">
+
+      <div class="feature-box">
+        <h2>Tutto sotto controllo, senza complicazioni.</h2>
+        <p>
+          La dashboard viene costruita intorno al tuo progetto. Può essere
+          una semplice pagina riepilogativa oppure una vera area privata
+          con dati, tabelle, scadenze e pulsanti rapidi.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Richiedi una demo</a>
+        </div>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-item">Budget totale</div>
+        <div class="feature-item">Pagamenti</div>
+        <div class="feature-item">Scadenze</div>
+        <div class="feature-item">Clienti</div>
+        <div class="feature-item">Fornitori</div>
+        <div class="feature-item">Invitati</div>
+        <div class="feature-item">Tabelle semplici</div>
+        <div class="feature-item">Stato avanzamento</div>
+        <div class="feature-item">Note operative</div>
+        <div class="feature-item">Vista mobile</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="packages">
+    <div class="container">
+      <div class="section-head">
+        <h2>Pacchetti Dashboard</h2>
+        <p>
+          Puoi partire da una dashboard semplice oppure creare una soluzione
+          più completa collegata a un evento, un’attività o un progetto.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">📋</div>
+          <h3>Dashboard Base</h3>
+          <div class="price">199€</div>
+          <p>Per chi vuole una pagina chiara per controllare dati e attività.</p>
+
+          <ul>
+            <li>Dashboard personalizzata</li>
+            <li>Card riepilogo</li>
+            <li>Sezione scadenze</li>
+            <li>Sezione note</li>
+            <li>Design mobile</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Base</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>Dashboard Smart</h3>
+          <div class="price">299€</div>
+          <p>La soluzione più adatta per eventi, clienti e piccole attività.</p>
+
+          <ul>
+            <li>Tutto il pacchetto Base</li>
+            <li>Budget e pagamenti</li>
+            <li>Tabelle organizzate</li>
+            <li>Stato avanzamento</li>
+            <li>Sezione fornitori/clienti</li>
+            <li>Pulsanti rapidi</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-primary">Richiedi Smart</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">🚀</div>
+          <h3>Dashboard Pro</h3>
+          <div class="price">499€</div>
+          <p>Per chi vuole una dashboard più completa e strutturata.</p>
+
+          <ul>
+            <li>Tutto il pacchetto Smart</li>
+            <li>Area riservata</li>
+            <li>Gestione dati avanzata</li>
+            <li>Più sezioni personalizzate</li>
+            <li>Collegamento a form</li>
+            <li>Supporto modifiche</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Pro</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Hai qualcosa da organizzare?</h2>
+        <p>
+          Raccontaci cosa vuoi gestire: evento, budget, clienti, vendite,
+          lavori o progetto personale. Ti prepariamo una dashboard semplice,
+          elegante e pronta da usare.
+        </p>
+
+        <div class="actions" style="justify-content:center;">
+          <a href="contatti.html" class="btn btn-primary">Crea la tua dashboard</a>
+          <a href="eventi.html" class="btn btn-secondary">Scopri Eventi Digitali</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 PixelUp · Eventi digitali, dashboard e progetti su misura
+  </footer>
+
+</body>
+</html>
