@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PixelUp | Contatti</title>
+
+  <style>
+    :root {
+      --bg: #140b2d;
+      --purple: #7c3cff;
+      --purple-light: #a988ff;
+      --white: #ffffff;
+      --text: #f4f0ff;
+      --muted: #c7bde6;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 28px;
+      --green: #50ffb1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(124,60,255,0.45), transparent 35%),
+        radial-gradient(circle at top right, rgba(169,136,255,0.25), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(20, 11, 45, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(124,60,255,0.35);
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      color: var(--white);
+    }
+
+    .nav-btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 90px 0 58px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .badge span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 5.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 10%, #bca8ff 50%, #7c3cff 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 auto 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      box-shadow: 0 16px 34px rgba(124,60,255,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(124,60,255,0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.14);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .contact-card,
+    .form-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 36px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-card h2,
+    .form-card h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 14px;
+    }
+
+    .contact-card p,
+    .form-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .contact-options {
+      display: grid;
+      gap: 14px;
+    }
+
+    .option {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px;
+      padding: 18px;
+      transition: 0.25s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .option-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      flex: 0 0 auto;
+    }
+
+    .option strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .option small {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.09);
+      color: var(--white);
+      border-radius: 18px;
+      padding: 15px 16px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    select option {
+      background: #21113f;
+      color: white;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .form-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    .quick {
+      background: rgba(255,255,255,0.045);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 42px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      font-size: 1.35rem;
+      margin-bottom: 22px;
+      box-shadow: 0 15px 35px rgba(124,60,255,0.3);
+    }
+
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(124,60,255,0.36), transparent 52%),
+        transparent;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 36px;
+      padding: 56px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 34px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .contact-card,
+      .form-card,
+      .card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">P</div>
+        <span>PixelUp</span>
+      </a>
+
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="eventi.html">Eventi</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="progetti.html">Progetti</a>
+        <a href="contatti.html" class="active">Contatti</a>
+      </nav>
+
+      <a href="contatti.html" class="nav-btn">Richiedi demo</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container">
+      <div class="badge">
+        <span></span>
+        Parliamo del tuo progetto digitale
+      </div>
+
+      <h1>
+        Raccontaci cosa vuoi
+        <span class="gradient-text">creare.</span>
+      </h1>
+
+      <p>
+        Che sia un evento digitale, una dashboard o un progetto su misura,
+        PixelUp ti aiuta a trasformare la tua idea in una pagina semplice,
+        elegante e pronta da condividere.
+      </p>
+
+      <div class="actions">
+        <a href="https://wa.me/393519780804?text=Ciao%20PixelUp%2C%20vorrei%20richiedere%20una%20demo" class="btn btn-primary">
+          Scrivici su WhatsApp
+        </a>
+        <a href="mailto: info@pixelup.it?subject=Richiesta%20demo%20PixelUp" class="btn btn-secondary">
+          Invia email
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <section>
+    <div class="container contact-grid">
+
+      <div class="contact-card">
+        <h2>Contatti rapidi</h2>
+        <p>
+          Scegli il modo più comodo per contattarci. Se vuoi andare veloce,
+          WhatsApp è il canale migliore per richiedere una demo o un preventivo.
+        </p>
+
+        <div class="contact-options">
+
+          <a href="https://wa.me/393519780804?text=Ciao%20PixelUp%2C%20vorrei%20informazioni%20su%20un%20progetto" class="option">
+            <div class="option-icon">💬</div>
+            <div>
+              <strong>WhatsApp</strong>
+              <small>Scrivici per demo, preventivi e idee da trasformare in digitale.</small>
+            </div>
+          </a>
+
+          <a href="mailto: info@pixelup.it" class="option">
+            <div class="option-icon">✉️</div>
+            <div>
+              <strong>Email</strong>
+              <small>Invia una richiesta più dettagliata con informazioni e materiali.</small>
+            </div>
+          </a>
+
+          <a href="eventi.html" class="option">
+            <div class="option-icon">🎉</div>
+            <div>
+              <strong>Eventi Digitali</strong>
+              <small>Scopri pagine evento con QR, RSVP, menù, mappa e foto.</small>
+            </div>
+          </a>
+
+          <a href="dashboard.html" class="option">
+            <div class="option-icon">📊</div>
+            <div>
+              <strong>Dashboard Smart</strong>
+              <small>Organizza budget, scadenze, pagamenti, clienti o invitati.</small>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h2>Richiedi una demo</h2>
+        <p>
+          Compila il modulo con le informazioni principali. Per ora il form è
+          pronto graficamente; puoi collegarlo poi a EmailJS, Formspree o Firebase.
+        </p>
+
+        <form onsubmit="sendRequest(event)">
+          <div class="field">
+            <label for="name">Nome</label>
+            <input id="name" type="text" placeholder="Il tuo nome" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email o telefono</label>
+            <input id="email" type="text" placeholder="Email o numero WhatsApp" required />
+          </div>
+
+          <div class="field">
+            <label for="service">Cosa vuoi creare?</label>
+            <select id="service" required>
+              <option value="">Seleziona un servizio</option>
+              <option>Evento digitale</option>
+              <option>Dashboard smart</option>
+              <option>Progetto su misura</option>
+              <option>Non lo so, vorrei un consiglio</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Messaggio</label>
+            <textarea id="message" placeholder="Esempio: vorrei creare un sito per un matrimonio con QR, RSVP, menù e mappa..." required></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="submit">
+            Invia richiesta
+          </button>
+
+          <div class="form-note">
+            Cliccando su “Invia richiesta” verrà aperta una bozza email con i dati inseriti.
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="quick">
+    <div class="container">
+      <div class="section-head">
+        <h2>Dimmi cosa vuoi creare</h2>
+        <p>
+          Per aiutarti a partire più velocemente, scegli una delle tre strade principali.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">🎉</div>
+          <h3>Ho un evento</h3>
+          <p>
+            Matrimonio, compleanno, battesimo, festa privata o evento aziendale.
+            Possiamo creare una pagina digitale con QR e funzioni utili.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>Mi serve una dashboard</h3>
+          <p>
+            Vuoi organizzare budget, scadenze, pagamenti, clienti, invitati,
+            vendite o un progetto personale in modo chiaro.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">✨</div>
+          <h3>Ho un’idea diversa</h3>
+          <p>
+            Hai un prodotto, un servizio o un’idea digitale da testare?
+            PixelUp può aiutarti a costruire una prima versione online.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Partiamo da una demo semplice.</h2>
+        <p>
+          Non serve avere tutto chiaro. Raccontaci l’idea e ti aiutiamo
+          a capire quale pagina, dashboard o progetto digitale può funzionare meglio.
+        </p>
+
+        <div class="actions">
+          <a href="https://wa.me/393519780804?text=Ciao%20PixelUp%2C%20vorrei%20partire%20da%20una%20demo" class="btn btn-primary">
+            Richiedi demo su WhatsApp
+          </a>
+          <a href="progetti.html" class="btn btn-secondary">
+            Guarda Progetti
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 PixelUp · Eventi digitali, dashboard e progetti su misura
+  </footer>
+
+  <script>
+    function sendRequest(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const service = document.getElementById("service").value;
+      const message = document.getElementById("message").value.trim();
+
+      const subject = encodeURIComponent("Richiesta demo PixelUp");
+      const body = encodeURIComponent(
+        "Nome: " + name + "\n" +
+        "Email/Telefono: " + email + "\n" +
+        "Servizio richiesto: " + service + "\n\n" +
+        "Messaggio:\n" + message
+      );
+
+      window.location.href = "mailto:info@pixelup.it?subject=" + subject + "&body=" + body;
+    }
+  </script>
+
+</body>
+</html>
