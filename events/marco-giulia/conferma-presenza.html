@@ -368,6 +368,60 @@
       border-color: rgba(214, 193, 145, 0.95);
     }
 
+    /* CAMPI ACCOMPAGNATORI AGGIUNTI */
+    .companions-container {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      margin-top: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .companion-card {
+      background: rgba(255, 252, 246, 0.72);
+      border: 1px solid rgba(190, 178, 158, 0.65);
+      border-radius: 15px;
+      padding: 13px;
+      box-shadow: 0 6px 15px rgba(60, 45, 28, 0.06);
+    }
+
+    .companion-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+
+    .companion-fields {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      gap: 10px;
+    }
+
+    .companion-input {
+      width: 100%;
+      border: 1px solid rgba(190, 178, 158, 0.75);
+      background: rgba(255, 252, 246, 0.85);
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 0 13px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .companion-input::placeholder {
+      color: rgba(75, 72, 67, 0.52);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .companion-input:focus {
+      border-color: rgba(177, 145, 85, 0.85);
+      box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
+    }
+
     .submit-btn {
       width: 100%;
       min-height: 58px;
@@ -508,6 +562,15 @@
       label {
         font-size: 14px;
       }
+
+      .companions-container {
+        width: calc(100% - 38px);
+        margin-left: 38px;
+      }
+
+      .companion-fields {
+        grid-template-columns: 1fr 78px;
+      }
     }
   </style>
 </head>
@@ -590,6 +653,9 @@
             <button type="button" class="guest-btn" data-guests="3">3</button>
             <button type="button" class="guest-btn" data-guests="4+">4+</button>
           </div>
+
+          <!-- QUI ESCONO AUTOMATICAMENTE NOME + ETÀ ACCOMPAGNATORI -->
+          <div class="companions-container" id="companionsContainer"></div>
         </div>
 
         <!-- ALLERGIE -->
@@ -630,8 +696,8 @@
         </button>
 
         <div class="success-message" id="successMessage">
-          Grazie, la tua conferma è stata registrata.<br>
-          In una versione reale questi dati verranno inviati agli sposi o alla wedding planner.
+          Email pronta. Si aprirà l’app email con il messaggio già compilato.<br>
+          Ti basterà premere “Invia”.
         </div>
 
       </form>
@@ -647,62 +713,133 @@
 
   </main>
 
- <script>
-  const attendanceButtons = document.querySelectorAll(".choice-btn");
-  const guestButtons = document.querySelectorAll(".guest-btn");
-  const form = document.getElementById("rsvpForm");
-  const successMessage = document.getElementById("successMessage");
+  <script>
+    const attendanceButtons = document.querySelectorAll(".choice-btn");
+    const guestButtons = document.querySelectorAll(".guest-btn");
+    const form = document.getElementById("rsvpForm");
+    const successMessage = document.getElementById("successMessage");
+    const companionsContainer = document.getElementById("companionsContainer");
 
-  let attendanceValue = "si";
-  let guestsValue = "1";
+    let attendanceValue = "si";
+    let guestsValue = "1";
 
-  attendanceButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      attendanceButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-      attendanceValue = button.dataset.attendance;
+    function getGuestNumber(value) {
+      if (value === "4+") return 4;
+      return parseInt(value, 10);
+    }
+
+    function renderCompanionFields(value) {
+      const number = getGuestNumber(value);
+
+      companionsContainer.innerHTML = "";
+
+      if (number === 0) {
+        return;
+      }
+
+      for (let i = 1; i <= number; i++) {
+        const card = document.createElement("div");
+        card.className = "companion-card";
+
+        card.innerHTML = `
+          <div class="companion-title">Accompagnatore ${i}</div>
+
+          <div class="companion-fields">
+            <input
+              class="companion-input companion-name"
+              type="text"
+              placeholder="Nome e cognome"
+              data-index="${i}"
+            />
+
+            <input
+              class="companion-input companion-age"
+              type="number"
+              min="0"
+              placeholder="Età"
+              data-index="${i}"
+            />
+          </div>
+        `;
+
+        companionsContainer.appendChild(card);
+      }
+    }
+
+    attendanceButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        attendanceButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        attendanceValue = button.dataset.attendance;
+      });
     });
-  });
 
-  guestButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      guestButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
-      guestsValue = button.dataset.guests;
+    guestButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        guestButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        guestsValue = button.dataset.guests;
+
+        renderCompanionFields(guestsValue);
+      });
     });
-  });
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+    renderCompanionFields(guestsValue);
 
-    const nome = document.getElementById("nome").value.trim();
-    const allergie = document.getElementById("allergie").value.trim();
-    const note = document.getElementById("note").value.trim();
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-    const destinatario = "emiliaweddingevents@libero.it";
-   
+      const nome = document.getElementById("nome").value.trim();
+      const allergie = document.getElementById("allergie").value.trim();
+      const note = document.getElementById("note").value.trim();
 
-    const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
+      const companionCards = document.querySelectorAll(".companion-card");
 
-    const body =
-      "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
-      "Nome e cognome: " + (nome || "Non indicato") + "\n" +
-      "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
-      "Numero accompagnatori: " + guestsValue + "\n" +
-      "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
-      "Note: " + (note || "Nessuna nota") + "\n\n" +
-      "Messaggio inviato dalla pagina evento PixelUp Events.";
+      let accompagnatoriText = "";
 
-    successMessage.classList.add("show");
+      companionCards.forEach((card, index) => {
+        const nomeAcc = card.querySelector(".companion-name").value.trim();
+        const etaAcc = card.querySelector(".companion-age").value.trim();
 
-    setTimeout(() => {
-      window.location.href =
-        "mailto:" + destinatario +
-        "?cc=" + encodeURIComponent(copia) +
-        "&subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-    }, 700);
-  });
-</script>
+        accompagnatoriText +=
+          "Accompagnatore " + (index + 1) + ": " +
+          (nomeAcc || "Nome non indicato") +
+          " - Età: " +
+          (etaAcc || "Non indicata") +
+          "\n";
+      });
+
+      if (!accompagnatoriText) {
+        accompagnatoriText = "Nessun accompagnatore indicato\n";
+      }
+
+      const destinatario = "emiliaweddingevents@libero.it";
+      const copia = "robertagallo1995@gmail.com";
+
+      const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
+
+      const body =
+        "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
+        "Nome e cognome: " + (nome || "Non indicato") + "\n" +
+        "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
+        "Numero accompagnatori: " + guestsValue + "\n\n" +
+        "Dettaglio accompagnatori:\n" +
+        accompagnatoriText + "\n" +
+        "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
+        "Note: " + (note || "Nessuna nota") + "\n\n" +
+        "Messaggio inviato dalla pagina evento PixelUp Events.";
+
+      successMessage.classList.add("show");
+
+      setTimeout(() => {
+        window.location.href =
+          "mailto:" + destinatario +
+          "?cc=" + encodeURIComponent(copia) +
+          "&subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
+      }, 700);
+    });
+  </script>
+
 </body>
 </html>
