@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PixelUp | Eventi Digitali</title>
+
+  <style>
+    :root {
+      --bg: #140b2d;
+      --bg-soft: #21113f;
+      --purple: #7c3cff;
+      --purple-light: #a988ff;
+      --white: #ffffff;
+      --text: #f4f0ff;
+      --muted: #c7bde6;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.14);
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 28px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(124,60,255,0.45), transparent 35%),
+        radial-gradient(circle at top right, rgba(169,136,255,0.25), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(20, 11, 45, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(124,60,255,0.35);
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      color: var(--white);
+    }
+
+    .nav-btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 54px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .badge span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #50ffb1;
+      box-shadow: 0 0 18px #50ffb1;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 10%, #bca8ff 50%, #7c3cff 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: white;
+      box-shadow: 0 16px 34px rgba(124,60,255,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(124,60,255,0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.14);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.14);
+    }
+
+    .event-preview {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 38px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .preview-screen {
+      background: #f8f5ff;
+      color: #21113f;
+      border-radius: 30px;
+      padding: 26px;
+      min-height: 520px;
+    }
+
+    .wedding-card {
+      background: white;
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 18px 40px rgba(45, 23, 82, 0.12);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .couple {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin: 0 auto 18px;
+    }
+
+    .wedding-card h3 {
+      font-size: 1.65rem;
+      margin-bottom: 6px;
+    }
+
+    .wedding-card p {
+      color: #75689a;
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .app-btn {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      color: #4d348f;
+      font-weight: 800;
+      box-shadow: 0 12px 25px rgba(45,23,82,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .app-btn span {
+      font-size: 1.4rem;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 42px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.11);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      font-size: 1.35rem;
+      margin-bottom: 22px;
+      box-shadow: 0 15px 35px rgba(124,60,255,0.3);
+    }
+
+    .card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .features {
+      background: rgba(255,255,255,0.045);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .feature-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 34px;
+      padding: 36px;
+    }
+
+    .feature-box h2 {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin-bottom: 18px;
+    }
+
+    .feature-box p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .feature-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 18px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .packages .card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin: 14px 0;
+    }
+
+    .price small {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin: 20px 0 26px;
+      color: var(--muted);
+    }
+
+    li::before {
+      content: "✓";
+      color: #50ffb1;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .card .btn {
+      margin-top: auto;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(124,60,255,0.36), transparent 52%),
+        transparent;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 36px;
+      padding: 56px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      letter-spacing: -0.055em;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 34px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 58px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .app-grid,
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .feature-box {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">P</div>
+        <span>PixelUp</span>
+      </a>
+
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="eventi.html" class="active">Eventi</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="progetti.html">Progetti</a>
+        <a href="contatti.html">Contatti</a>
+      </nav>
+
+      <a href="contatti.html" class="nav-btn">Richiedi demo</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="container hero-grid">
+
+      <div>
+        <div class="badge">
+          <span></span>
+          Eventi digitali con QR e pagina personalizzata
+        </div>
+
+        <h1>
+          Il tuo evento
+          <span class="gradient-text">in un QR.</span>
+        </h1>
+
+        <p>
+          Crea una pagina elegante per matrimoni, compleanni, battesimi,
+          baby shower, feste private ed eventi aziendali. Gli invitati
+          scansionano il QR e trovano tutto in un unico posto.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Richiedi il tuo evento</a>
+          <a href="#pacchetti" class="btn btn-secondary">Vedi pacchetti</a>
+        </div>
+      </div>
+
+      <div class="event-preview">
+        <div class="preview-screen">
+
+          <div class="wedding-card">
+            <div class="couple">M&G</div>
+            <h3>Marco & Giulia</h3>
+            <p>28 Agosto 2026 · Villa Elegance</p>
+          </div>
+
+          <div class="app-grid">
+            <div class="app-btn">
+              <span>✅</span>
+              RSVP
+            </div>
+
+            <div class="app-btn">
+              <span>🍽️</span>
+              Menù
+            </div>
+
+            <div class="app-btn">
+              <span>📍</span>
+              Mappa
+            </div>
+
+            <div class="app-btn">
+              <span>🎁</span>
+              Lista regalo
+            </div>
+
+            <div class="app-btn">
+              <span>📸</span>
+              Carica foto
+            </div>
+
+            <div class="app-btn">
+              <span>👗</span>
+              Dress code
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>Per quali eventi è perfetto?</h2>
+        <p>
+          PixelUp può creare una pagina digitale personalizzata per tanti tipi di eventi,
+          con funzioni semplici e utili per invitati, organizzatori e clienti.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">💍</div>
+          <h3>Matrimoni</h3>
+          <p>
+            Pagina elegante per gli sposi con RSVP, menù, mappa, lista regalo,
+            dress code, foto e informazioni per gli invitati.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🎂</div>
+          <h3>Compleanni e feste</h3>
+          <p>
+            Inviti digitali, programma della festa, posizione, conferme,
+            note per gli invitati e raccolta foto dell’evento.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">👶</div>
+          <h3>Battesimi e baby shower</h3>
+          <p>
+            Una pagina dolce e ordinata per condividere informazioni,
+            lista regalo, location, orari e conferme presenza.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🏢</div>
+          <h3>Eventi aziendali</h3>
+          <p>
+            Pagina evento per meeting, inaugurazioni, presentazioni,
+            open day, eventi locali e giornate dedicate ai clienti.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🎓</div>
+          <h3>Lauree e cerimonie</h3>
+          <p>
+            Invito digitale con dettagli della giornata, luogo, orari,
+            contatti, conferme e galleria foto condivisa.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🕊️</div>
+          <h3>Cerimonie private</h3>
+          <p>
+            Pagine riservate, eleganti e semplici per comunicare informazioni
+            importanti in modo ordinato e rispettoso.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container feature-grid">
+
+      <div class="feature-box">
+        <h2>Tutto quello che serve, in una sola pagina.</h2>
+        <p>
+          La pagina evento diventa il punto unico dove gli invitati trovano
+          tutte le informazioni, senza dover cercare messaggi su WhatsApp
+          o chiedere continuamente agli organizzatori.
+        </p>
+
+        <div class="actions">
+          <a href="contatti.html" class="btn btn-primary">Richiedi demo</a>
+        </div>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-item">QR personalizzato</div>
+        <div class="feature-item">Conferma presenza</div>
+        <div class="feature-item">Menù e intolleranze</div>
+        <div class="feature-item">Mappa location</div>
+        <div class="feature-item">Lista regalo</div>
+        <div class="feature-item">Caricamento foto</div>
+        <div class="feature-item">Dress code</div>
+        <div class="feature-item">Contatti rapidi</div>
+        <div class="feature-item">Programma evento</div>
+        <div class="feature-item">Dashboard opzionale</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="packages" id="pacchetti">
+    <div class="container">
+      <div class="section-head">
+        <h2>Pacchetti Eventi Digitali</h2>
+        <p>
+          Puoi partire da una pagina semplice oppure aggiungere funzioni più avanzate,
+          come RSVP, caricamento foto e dashboard privata.
+        </p>
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">🌟</div>
+          <h3>Evento Base</h3>
+          <div class="price">149€ <small>/ lancio</small></div>
+          <p>Per chi vuole una pagina elegante e facile da condividere.</p>
+
+          <ul>
+            <li>Pagina evento personalizzata</li>
+            <li>QR code condivisibile</li>
+            <li>Programma della giornata</li>
+            <li>Mappa e contatti</li>
+            <li>Menù o informazioni base</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Base</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">💜</div>
+          <h3>Evento Smart</h3>
+          <div class="price">299€</div>
+          <p>Il pacchetto più completo per matrimoni, feste ed eventi.</p>
+
+          <ul>
+            <li>Tutto il pacchetto Base</li>
+            <li>RSVP online</li>
+            <li>Menù e intolleranze</li>
+            <li>Lista regalo</li>
+            <li>Caricamento foto</li>
+            <li>Dress code</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-primary">Richiedi Smart</a>
+        </div>
+
+        <div class="card">
+          <div class="icon">🚀</div>
+          <h3>Evento Pro</h3>
+          <div class="price">499€</div>
+          <p>Per chi vuole anche una gestione privata dell’evento.</p>
+
+          <ul>
+            <li>Tutto il pacchetto Smart</li>
+            <li>Dashboard privata</li>
+            <li>Gestione invitati</li>
+            <li>Budget e scadenze</li>
+            <li>Fornitori e pagamenti</li>
+            <li>Supporto modifiche</li>
+          </ul>
+
+          <a href="contatti.html" class="btn btn-secondary">Richiedi Pro</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Vuoi creare il tuo evento digitale?</h2>
+        <p>
+          Raccontaci che evento stai organizzando. Ti prepariamo una demo
+          con stile, funzioni e struttura adatte al tuo progetto.
+        </p>
+
+        <div class="actions" style="justify-content:center;">
+          <a href="contatti.html" class="btn btn-primary">Richiedi una demo</a>
+          <a href="dashboard.html" class="btn btn-secondary">Scopri la dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 PixelUp · Eventi digitali, dashboard e progetti su misura
+  </footer>
+
+</body>
+</html>
