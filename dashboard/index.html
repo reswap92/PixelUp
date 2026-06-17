@@ -666,435 +666,530 @@
 
   </main>
 
-  <script>
-    const storageKey = "pixelup_dashboard_wedding_sister_v2";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    const defaultData = {
-      budget: 38000,
-      due: 24500,
-      paid: 13500,
-      deadlines: [
-        {
-          name: "Location",
-          supplier: "Villa Mattioli",
-          total: 8000,
-          paid: 2000,
-          date: "2026-06-15",
-          status: "Primo acconto"
-        },
-        {
-          name: "Catering",
-          supplier: "Bon Appétit",
-          total: 10000,
-          paid: 3000,
-          date: "2026-07-10",
-          status: "Primo acconto"
-        },
-        {
-          name: "Fioraio",
-          supplier: "Floral Design",
-          total: 500,
-          paid: 300,
-          date: "2026-07-20",
-          status: "Acconto versato"
-        },
-        {
-          name: "Musica",
-          supplier: "DJ Set",
-          total: 1200,
-          paid: 400,
-          date: "2026-08-01",
-          status: "Primo acconto"
-        }
-      ],
-      suppliers: [
-        {
-          service: "Location",
-          name: "Villa Mattioli",
-          phone: "039 0000000",
-          email: "info@villamattioli.it",
-          notes: "Confermare saldo e orari di ingresso fornitori."
-        },
-        {
-          service: "Catering",
-          name: "Bon Appétit",
-          phone: "333 0000001",
-          email: "catering@email.it",
-          notes: "Verificare menù finale e numero ospiti."
-        },
-        {
-          service: "Fioraio",
-          name: "Floral Design",
-          phone: "333 0000002",
-          email: "fiori@email.it",
-          notes: "Centrotavola, bouquet e allestimento rito."
-        },
-        {
-          service: "Fotografo",
-          name: "Studio Foto",
-          phone: "333 0000003",
-          email: "foto@email.it",
-          notes: "Arrivo previsto preparazione sposa."
-        },
-        {
-          service: "Videomaker",
-          name: "Video Wedding Studio",
-          phone: "333 0000004",
-          email: "video@email.it",
-          notes: "Riprese rito, villa e party."
-        },
-        {
-          service: "Musica",
-          name: "DJ Set",
-          phone: "333 0000005",
-          email: "dj@email.it",
-          notes: "Confermare playlist e orario montaggio."
-        },
-        {
-          service: "Make-up",
-          name: "Make-up Artist",
-          phone: "333 0000006",
-          email: "makeup@email.it",
-          notes: "Prova trucco già effettuata."
-        },
-        {
-          service: "Parrucchiere",
-          name: "Hair Stylist",
-          phone: "333 0000007",
-          email: "hair@email.it",
-          notes: "Preparazione sposa e testimoni."
-        },
-        {
-          service: "Bomboniere",
-          name: "Fornitore bomboniere",
-          phone: "333 0000008",
-          email: "bomboniere@email.it",
-          notes: "Confermare numero finale."
-        },
-        {
-          service: "Transfer",
-          name: "Servizio NCC",
-          phone: "333 0000009",
-          email: "transfer@email.it",
-          notes: "Valutare navetta ospiti da hotel."
-        }
-      ]
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+    authDomain: "backtag-16de3.firebaseapp.com",
+    projectId: "backtag-16de3",
+    storageBucket: "backtag-16de3.firebasestorage.app",
+    messagingSenderId: "415455463905",
+    appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+    measurementId: "G-6565LXTZW7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const eventRef = doc(db, "weddingEvents", "roberta-alessandro");
+
+  const defaultData = {
+    budget: 38000,
+    due: 24500,
+    paid: 13500,
+    deadlines: [
+      {
+        name: "Location",
+        supplier: "Villa Mattioli",
+        total: 8000,
+        paid: 2000,
+        date: "2026-06-15",
+        status: "Primo acconto"
+      },
+      {
+        name: "Catering",
+        supplier: "Bon Appétit",
+        total: 10000,
+        paid: 3000,
+        date: "2026-07-10",
+        status: "Primo acconto"
+      },
+      {
+        name: "Fioraio",
+        supplier: "Floral Design",
+        total: 500,
+        paid: 300,
+        date: "2026-07-20",
+        status: "Acconto versato"
+      },
+      {
+        name: "Musica",
+        supplier: "DJ Set",
+        total: 1200,
+        paid: 400,
+        date: "2026-08-01",
+        status: "Primo acconto"
+      }
+    ],
+    suppliers: [
+      {
+        service: "Location",
+        name: "Villa Mattioli",
+        phone: "039 0000000",
+        email: "info@villamattioli.it",
+        notes: "Confermare saldo e orari di ingresso fornitori."
+      },
+      {
+        service: "Catering",
+        name: "Bon Appétit",
+        phone: "333 0000001",
+        email: "catering@email.it",
+        notes: "Verificare menù finale e numero ospiti."
+      },
+      {
+        service: "Fioraio",
+        name: "Floral Design",
+        phone: "333 0000002",
+        email: "fiori@email.it",
+        notes: "Centrotavola, bouquet e allestimento rito."
+      },
+      {
+        service: "Fotografo",
+        name: "Studio Foto",
+        phone: "333 0000003",
+        email: "foto@email.it",
+        notes: "Arrivo previsto preparazione sposa."
+      },
+      {
+        service: "Videomaker",
+        name: "Video Wedding Studio",
+        phone: "333 0000004",
+        email: "video@email.it",
+        notes: "Riprese rito, villa e party."
+      },
+      {
+        service: "Musica",
+        name: "DJ Set",
+        phone: "333 0000005",
+        email: "dj@email.it",
+        notes: "Confermare playlist e orario montaggio."
+      },
+      {
+        service: "Make-up",
+        name: "Make-up Artist",
+        phone: "333 0000006",
+        email: "makeup@email.it",
+        notes: "Prova trucco già effettuata."
+      },
+      {
+        service: "Parrucchiere",
+        name: "Hair Stylist",
+        phone: "333 0000007",
+        email: "hair@email.it",
+        notes: "Preparazione sposa e testimoni."
+      },
+      {
+        service: "Bomboniere",
+        name: "Fornitore bomboniere",
+        phone: "333 0000008",
+        email: "bomboniere@email.it",
+        notes: "Confermare numero finale."
+      },
+      {
+        service: "Transfer",
+        name: "Servizio NCC",
+        phone: "333 0000009",
+        email: "transfer@email.it",
+        notes: "Valutare navetta ospiti da hotel."
+      }
+    ]
+  };
+
+  let data = structuredClone(defaultData);
+  let firebaseReady = false;
+
+  function normalizeData(remoteData) {
+    const merged = {
+      ...defaultData,
+      ...remoteData
     };
 
-    let data = JSON.parse(localStorage.getItem(storageKey)) || defaultData;
-
-    function saveData() {
-      localStorage.setItem(storageKey, JSON.stringify(data));
+    if (!Array.isArray(remoteData.deadlines)) {
+      merged.deadlines = defaultData.deadlines;
     }
 
-    function euro(value) {
-      return "€ " + Number(value).toLocaleString("it-IT", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      });
+    if (!Array.isArray(remoteData.suppliers)) {
+      merged.suppliers = defaultData.suppliers;
     }
 
-    function formatDate(dateString) {
-      const date = new Date(dateString);
+    merged.budget = Number(merged.budget) || 0;
+    merged.due = Number(merged.due) || 0;
+    merged.paid = Number(merged.paid) || 0;
 
-      if (isNaN(date)) {
-        return { day: "--", month: "---" };
-      }
+    merged.deadlines = merged.deadlines.map((item) => ({
+      name: item.name || "",
+      supplier: item.supplier || "",
+      total: Number(item.total) || 0,
+      paid: Number(item.paid) || 0,
+      date: item.date || "",
+      status: item.status || "Da saldare"
+    }));
 
-      const months = ["GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"];
+    merged.suppliers = merged.suppliers.map((item) => ({
+      service: item.service || "",
+      name: item.name || "",
+      phone: item.phone || "",
+      email: item.email || "",
+      notes: item.notes || ""
+    }));
 
-      return {
-        day: String(date.getDate()).padStart(2, "0"),
-        month: months[date.getMonth()]
-      };
+    return merged;
+  }
+
+  async function saveData() {
+    if (!firebaseReady) return;
+
+    try {
+      await setDoc(eventRef, data, { merge: true });
+    } catch (error) {
+      console.error("Errore salvataggio Firebase:", error);
+      alert("Errore nel salvataggio online. Controlla le regole Firebase.");
+    }
+  }
+
+  function euro(value) {
+    return "€ " + Number(value).toLocaleString("it-IT", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    if (isNaN(date)) {
+      return { day: "--", month: "---" };
     }
 
-    function updateTotalsFromDeadlines() {
-      const totalDue = data.deadlines.reduce((sum, item) => {
-        return sum + Math.max(Number(item.total) - Number(item.paid), 0);
-      }, 0);
+    const months = ["GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"];
 
-      const totalPaid = data.deadlines.reduce((sum, item) => {
-        return sum + Number(item.paid);
-      }, 0);
+    return {
+      day: String(date.getDate()).padStart(2, "0"),
+      month: months[date.getMonth()]
+    };
+  }
 
-      data.due = totalDue;
-      data.paid = totalPaid;
+  function updateTotalsFromDeadlines() {
+    const totalDue = data.deadlines.reduce((sum, item) => {
+      return sum + Math.max(Number(item.total) - Number(item.paid), 0);
+    }, 0);
+
+    const totalPaid = data.deadlines.reduce((sum, item) => {
+      return sum + Number(item.paid);
+    }, 0);
+
+    data.due = totalDue;
+    data.paid = totalPaid;
+  }
+
+  function renderSummary() {
+    document.getElementById("budgetValue").textContent = euro(data.budget);
+    document.getElementById("dueValue").textContent = euro(data.due);
+    document.getElementById("paidValue").textContent = euro(data.paid);
+
+    const percent = data.budget > 0 ? Math.round((data.paid / data.budget) * 100) : 0;
+
+    document.getElementById("paidPercent").textContent = percent + "%";
+    document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
+  }
+
+  function editSummary(type) {
+    let label = "";
+    let currentValue = 0;
+
+    if (type === "budget") {
+      label = "Budget totale";
+      currentValue = data.budget;
     }
 
-    function renderSummary() {
-      document.getElementById("budgetValue").textContent = euro(data.budget);
-      document.getElementById("dueValue").textContent = euro(data.due);
-      document.getElementById("paidValue").textContent = euro(data.paid);
-
-      const percent = data.budget > 0 ? Math.round((data.paid / data.budget) * 100) : 0;
-
-      document.getElementById("paidPercent").textContent = percent + "%";
-      document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
+    if (type === "due") {
+      label = "Da saldare";
+      currentValue = data.due;
     }
 
-    function editSummary(type) {
-      let label = "";
-      let currentValue = 0;
-
-      if (type === "budget") {
-        label = "Budget totale";
-        currentValue = data.budget;
-      }
-
-      if (type === "due") {
-        label = "Da saldare";
-        currentValue = data.due;
-      }
-
-      if (type === "paid") {
-        label = "Saldato";
-        currentValue = data.paid;
-      }
-
-      const newValue = prompt("Modifica " + label + ":", currentValue);
-
-      if (newValue === null) return;
-
-      const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
-
-      if (isNaN(cleanValue) || cleanValue < 0) {
-        alert("Inserisci un importo valido.");
-        return;
-      }
-
-      if (type === "budget") {
-        data.budget = cleanValue;
-
-        if (data.paid > data.budget) {
-          data.paid = data.budget;
-        }
-
-        data.due = Math.max(data.budget - data.paid, 0);
-      }
-
-      if (type === "paid") {
-        data.paid = Math.min(cleanValue, data.budget);
-        data.due = Math.max(data.budget - data.paid, 0);
-      }
-
-      if (type === "due") {
-        data.due = Math.min(cleanValue, data.budget);
-        data.paid = Math.max(data.budget - data.due, 0);
-      }
-
-      saveData();
-      renderSummary();
+    if (type === "paid") {
+      label = "Saldato";
+      currentValue = data.paid;
     }
 
-    function toggleDeadlines() {
-      const section = document.getElementById("deadlineSection");
-      section.classList.toggle("show");
+    const newValue = prompt("Modifica " + label + ":", currentValue);
 
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
-      }
+    if (newValue === null) return;
+
+    const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
+
+    if (isNaN(cleanValue) || cleanValue < 0) {
+      alert("Inserisci un importo valido.");
+      return;
     }
 
-    function toggleSuppliers() {
-      const section = document.getElementById("supplierSection");
-      section.classList.toggle("show");
+    if (type === "budget") {
+      data.budget = cleanValue;
 
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
+      if (data.paid > data.budget) {
+        data.paid = data.budget;
       }
+
+      data.due = Math.max(data.budget - data.paid, 0);
     }
 
-    function renderDeadlines() {
-      const list = document.getElementById("deadlineList");
+    if (type === "paid") {
+      data.paid = Math.min(cleanValue, data.budget);
+      data.due = Math.max(data.budget - data.paid, 0);
+    }
 
-      list.innerHTML = data.deadlines.map((item, index) => {
-        const date = formatDate(item.date);
-        const missing = Math.max(Number(item.total) - Number(item.paid), 0);
-        const isPaid = missing <= 0;
+    if (type === "due") {
+      data.due = Math.min(cleanValue, data.budget);
+      data.paid = Math.max(data.budget - data.due, 0);
+    }
 
-        return `
-          <div class="deadline-row">
-            <div class="date-box">
-              <strong>${date.day}</strong>
-              <small>${date.month}</small>
-            </div>
+    renderSummary();
+    saveData();
+  }
 
-            <div class="row-info">
-              <h3>${item.name}</h3>
-              <p>${item.supplier}</p>
-              <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
-              <span class="status ${isPaid ? "paid" : ""}">
-                ${isPaid ? "Saldato" : item.status}
-              </span>
-            </div>
+  function toggleDeadlines() {
+    const section = document.getElementById("deadlineSection");
+    section.classList.toggle("show");
 
-            <div class="row-right">
-              <strong>${euro(missing)}</strong>
-              <small>${isPaid ? "saldato" : "da saldare"}</small>
-              <button class="edit-btn" type="button" onclick="editDeadline(${index})">Modifica</button>
-            </div>
+    if (section.classList.contains("show")) {
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
+  }
+
+  function toggleSuppliers() {
+    const section = document.getElementById("supplierSection");
+    section.classList.toggle("show");
+
+    if (section.classList.contains("show")) {
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
+  }
+
+  function renderDeadlines() {
+    const list = document.getElementById("deadlineList");
+
+    list.innerHTML = data.deadlines.map((item, index) => {
+      const date = formatDate(item.date);
+      const missing = Math.max(Number(item.total) - Number(item.paid), 0);
+      const isPaid = missing <= 0;
+
+      return `
+        <div class="deadline-row">
+          <div class="date-box">
+            <strong>${date.day}</strong>
+            <small>${date.month}</small>
           </div>
-        `;
-      }).join("");
-    }
 
-    function editDeadline(index) {
-      const item = data.deadlines[index];
-
-      const name = prompt("Voce / servizio:", item.name);
-      if (name === null) return;
-
-      const supplier = prompt("Fornitore:", item.supplier);
-      if (supplier === null) return;
-
-      const total = prompt("Importo totale:", item.total);
-      if (total === null) return;
-
-      const paid = prompt("Importo già pagato / saldato:", item.paid);
-      if (paid === null) return;
-
-      const date = prompt("Data scadenza formato AAAA-MM-GG:", item.date);
-      if (date === null) return;
-
-      const cleanTotal = Number(total.replace(".", "").replace(",", "."));
-      const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
-
-      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
-        alert("Importi non validi.");
-        return;
-      }
-
-      const finalPaid = Math.min(cleanPaid, cleanTotal);
-      const missing = Math.max(cleanTotal - finalPaid, 0);
-
-      let automaticStatus = "Da saldare";
-
-      if (finalPaid <= 0) {
-        automaticStatus = "Da saldare";
-      } else if (missing > 0) {
-        automaticStatus = "Acconto versato";
-      } else {
-        automaticStatus = "Saldato";
-      }
-
-      data.deadlines[index] = {
-        name: name || item.name,
-        supplier: supplier || item.supplier,
-        total: cleanTotal,
-        paid: finalPaid,
-        date: date || item.date,
-        status: automaticStatus
-      };
-
-      updateTotalsFromDeadlines();
-
-      saveData();
-      renderSummary();
-      renderDeadlines();
-    }
-
-    function renderSuppliers() {
-      const list = document.getElementById("supplierList");
-
-      list.innerHTML = data.suppliers.map((item, index) => {
-        return `
-          <div class="supplier-row">
-            <div class="supplier-icon">☏</div>
-
-            <div class="row-info">
-              <h3>${item.service}</h3>
-              <p><strong>${item.name}</strong></p>
-              <p>Tel: ${item.phone}</p>
-              <p>Email: ${item.email}</p>
-              <p>Note: ${item.notes}</p>
-            </div>
-
-            <div class="row-right">
-              <strong>Contatto</strong>
-              <small>fornitore</small>
-              <button class="edit-btn" type="button" onclick="editSupplier(${index})">Modifica</button>
-            </div>
+          <div class="row-info">
+            <h3>${item.name}</h3>
+            <p>${item.supplier}</p>
+            <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
+            <span class="status ${isPaid ? "paid" : ""}">
+              ${isPaid ? "Saldato" : item.status}
+            </span>
           </div>
-        `;
-      }).join("");
+
+          <div class="row-right">
+            <strong>${euro(missing)}</strong>
+            <small>${isPaid ? "saldato" : "da saldare"}</small>
+            <button class="edit-btn" type="button" onclick="editDeadline(${index})">Modifica</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function editDeadline(index) {
+    const item = data.deadlines[index];
+
+    const name = prompt("Voce / servizio:", item.name);
+    if (name === null) return;
+
+    const supplier = prompt("Fornitore:", item.supplier);
+    if (supplier === null) return;
+
+    const total = prompt("Importo totale:", item.total);
+    if (total === null) return;
+
+    const paid = prompt("Importo già pagato / saldato:", item.paid);
+    if (paid === null) return;
+
+    const date = prompt("Data scadenza formato AAAA-MM-GG:", item.date);
+    if (date === null) return;
+
+    const cleanTotal = Number(total.replace(".", "").replace(",", "."));
+    const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+
+    if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+      alert("Importi non validi.");
+      return;
     }
 
-    function editSupplier(index) {
-      const item = data.suppliers[index];
+    const finalPaid = Math.min(cleanPaid, cleanTotal);
+    const missing = Math.max(cleanTotal - finalPaid, 0);
 
-      const service = prompt("Servizio:", item.service);
-      if (service === null) return;
+    let automaticStatus = "Da saldare";
 
-      const name = prompt("Nome fornitore:", item.name);
-      if (name === null) return;
-
-      const phone = prompt("Numero di telefono:", item.phone);
-      if (phone === null) return;
-
-      const email = prompt("Email:", item.email);
-      if (email === null) return;
-
-      const notes = prompt("Note:", item.notes);
-      if (notes === null) return;
-
-      data.suppliers[index] = {
-        service: service || item.service,
-        name: name || item.name,
-        phone: phone || item.phone,
-        email: email || item.email,
-        notes: notes || item.notes
-      };
-
-      saveData();
-      renderSuppliers();
+    if (finalPaid <= 0) {
+      automaticStatus = "Da saldare";
+    } else if (missing > 0) {
+      automaticStatus = "Acconto versato";
+    } else {
+      automaticStatus = "Saldato";
     }
 
-    function updateCountdown() {
-      const weddingDate = new Date("2026-08-27T15:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = weddingDate - now;
+    data.deadlines[index] = {
+      name: name || item.name,
+      supplier: supplier || item.supplier,
+      total: cleanTotal,
+      paid: finalPaid,
+      date: date || item.date,
+      status: automaticStatus
+    };
 
-      const daysEl = document.getElementById("days");
-      const hoursEl = document.getElementById("hours");
-      const minutesEl = document.getElementById("minutes");
-      const secondsEl = document.getElementById("seconds");
+    updateTotalsFromDeadlines();
 
-      if (distance <= 0) {
-        daysEl.textContent = "000";
-        hoursEl.textContent = "00";
-        minutesEl.textContent = "00";
-        secondsEl.textContent = "00";
-        return;
+    renderSummary();
+    renderDeadlines();
+    saveData();
+  }
+
+  function renderSuppliers() {
+    const list = document.getElementById("supplierList");
+
+    list.innerHTML = data.suppliers.map((item, index) => {
+      return `
+        <div class="supplier-row">
+          <div class="supplier-icon">☏</div>
+
+          <div class="row-info">
+            <h3>${item.service}</h3>
+            <p><strong>${item.name}</strong></p>
+            <p>Tel: ${item.phone}</p>
+            <p>Email: ${item.email}</p>
+            <p>Note: ${item.notes}</p>
+          </div>
+
+          <div class="row-right">
+            <strong>Contatto</strong>
+            <small>fornitore</small>
+            <button class="edit-btn" type="button" onclick="editSupplier(${index})">Modifica</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function editSupplier(index) {
+    const item = data.suppliers[index];
+
+    const service = prompt("Servizio:", item.service);
+    if (service === null) return;
+
+    const name = prompt("Nome fornitore:", item.name);
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", item.phone);
+    if (phone === null) return;
+
+    const email = prompt("Email:", item.email);
+    if (email === null) return;
+
+    const notes = prompt("Note:", item.notes);
+    if (notes === null) return;
+
+    data.suppliers[index] = {
+      service: service || item.service,
+      name: name || item.name,
+      phone: phone || item.phone,
+      email: email || item.email,
+      notes: notes || item.notes
+    };
+
+    renderSuppliers();
+    saveData();
+  }
+
+  function updateCountdown() {
+    const weddingDate = new Date("2026-08-27T15:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    if (distance <= 0) {
+      daysEl.textContent = "000";
+      hoursEl.textContent = "00";
+      minutesEl.textContent = "00";
+      secondsEl.textContent = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    daysEl.textContent = String(days).padStart(3, "0");
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
+  }
+
+  onSnapshot(eventRef, async (snapshot) => {
+    if (snapshot.exists()) {
+      const remoteData = snapshot.data();
+
+      data = normalizeData(remoteData);
+
+      const needsInitialData =
+        remoteData.budget === undefined ||
+        remoteData.due === undefined ||
+        remoteData.paid === undefined ||
+        !Array.isArray(remoteData.deadlines) ||
+        !Array.isArray(remoteData.suppliers);
+
+      if (needsInitialData) {
+        await setDoc(eventRef, data, { merge: true });
       }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((distance / (1000 * 60)) % 60);
-      const seconds = Math.floor((distance / 1000) % 60);
-
-      daysEl.textContent = String(days).padStart(3, "0");
-      hoursEl.textContent = String(hours).padStart(2, "0");
-      minutesEl.textContent = String(minutes).padStart(2, "0");
-      secondsEl.textContent = String(seconds).padStart(2, "0");
+    } else {
+      data = structuredClone(defaultData);
+      await setDoc(eventRef, data, { merge: true });
     }
+
+    firebaseReady = true;
 
     renderSummary();
     renderDeadlines();
     renderSuppliers();
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
+  });
 
-</body>
-</html>
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  window.editSummary = editSummary;
+  window.toggleDeadlines = toggleDeadlines;
+  window.toggleSuppliers = toggleSuppliers;
+  window.editDeadline = editDeadline;
+  window.editSupplier = editSupplier;
+</script>
