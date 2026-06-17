@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Area Sposi | Roberta & Alessandro</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-light: #fffaf2;
+      --card: rgba(255, 252, 246, 0.95);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --border: rgba(223, 212, 193, 0.85);
+      --shadow: 0 18px 35px rgba(60, 45, 28, 0.12);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.08);
+      --hero-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 30px;
+    }
+
+    .topbar {
+      height: 66px;
+      padding: 0 20px;
+      background: rgba(255, 252, 246, 0.96);
+      border-bottom: 1px solid rgba(223, 212, 193, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    .circle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(177, 145, 85, 0.45);
+      background: rgba(255, 255, 255, 0.55);
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-size: 22px;
+    }
+
+    .top-title {
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .top-title h1 {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .top-title p {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .hero {
+      min-height: 260px;
+      background:
+        linear-gradient(180deg, rgba(35, 38, 28, 0.18), rgba(35, 38, 28, 0.38)),
+        var(--hero-image) center / cover no-repeat;
+      color: white;
+      padding: 34px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 54px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .monogram {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 22px;
+      letter-spacing: 2px;
+      background: rgba(255, 250, 241, 0.28);
+      border: 1px solid rgba(177, 145, 85, 0.75);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero h2 {
+      font-size: 34px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .hero p {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      opacity: 0.95;
+      max-width: 390px;
+      margin: 0 auto;
+    }
+
+    .countdown-card {
+      width: 88%;
+      margin: 24px auto 0;
+      background: rgba(255, 252, 246, 0.92);
+      border: 1px solid rgba(223, 212, 193, 0.85);
+      border-radius: 20px;
+      padding: 16px 14px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .countdown-label {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green-dark);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .count-box {
+      text-align: center;
+    }
+
+    .count-box strong {
+      display: block;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .count-box small {
+      display: block;
+      margin-top: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      text-transform: uppercase;
+      color: var(--gold);
+      letter-spacing: 1.2px;
+    }
+
+    .content {
+      padding: 18px 20px 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0 12px;
+      gap: 12px;
+    }
+
+    .section-title h2 {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .section-title span {
+      font-family: Arial, sans-serif;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--soft-shadow);
+      border-radius: 18px;
+      padding: 15px 8px;
+      text-align: center;
+      min-height: 118px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .summary-card .icon {
+      color: var(--gold);
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .summary-card p {
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .summary-card strong {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .summary-card small {
+      margin-top: 4px;
+      color: var(--gold);
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+    }
+
+    .progress-card,
+    .list-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--soft-shadow);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 11px;
+      font-size: 14px;
+      color: var(--green-dark);
+    }
+
+    .bar {
+      height: 10px;
+      background: rgba(177, 145, 85, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .main-action {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 17px;
+      border: 1.5px solid rgba(214, 193, 145, 0.95);
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: white;
+      box-shadow: 0 12px 25px rgba(54, 64, 42, 0.22);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-size: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+    }
+
+    .secondary-action {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 17px;
+      border: 1.5px solid var(--gold);
+      background: rgba(255, 252, 246, 0.92);
+      color: var(--text);
+      box-shadow: var(--soft-shadow);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+    }
+
+    .deadline-section,
+    .supplier-section {
+      display: none;
+      animation: fade 0.22s ease;
+    }
+
+    .deadline-section.show,
+    .supplier-section.show {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .deadline-row,
+    .supplier-row {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(177, 145, 85, 0.18);
+    }
+
+    .deadline-row:last-child,
+    .supplier-row:last-child {
+      border-bottom: 0;
+    }
+
+    .date-box,
+    .supplier-icon {
+      width: 46px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(255, 252, 246, 0.90);
+      border: 1px solid rgba(223, 212, 193, 0.85);
+      box-shadow: 0 5px 12px rgba(60, 45, 28, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-dark);
+    }
+
+    .supplier-icon {
+      font-size: 22px;
+      color: var(--gold);
+    }
+
+    .date-box strong {
+      font-size: 19px;
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    .date-box small {
+      margin-top: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .row-info h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .row-info p {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .row-right {
+      text-align: right;
+      font-family: Arial, sans-serif;
+      min-width: 90px;
+    }
+
+    .row-right strong {
+      display: block;
+      font-size: 14px;
+      color: var(--green-dark);
+      margin-bottom: 4px;
+    }
+
+    .row-right small {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      border: 1px solid rgba(177, 145, 85, 0.28);
+      background: rgba(177, 145, 85, 0.12);
+      color: #8a6729;
+      white-space: nowrap;
+      margin-top: 6px;
+    }
+
+    .status.paid {
+      background: rgba(77, 90, 58, 0.12);
+      color: var(--green);
+      border-color: rgba(77, 90, 58, 0.28);
+    }
+
+    .bottom-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 390px) {
+      .content {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero h2 {
+        font-size: 30px;
+      }
+
+      .summary-grid {
+        gap: 8px;
+      }
+
+      .summary-card strong {
+        font-size: 18px;
+      }
+
+      .summary-card p {
+        font-size: 11px;
+      }
+
+      .deadline-row,
+      .supplier-row {
+        grid-template-columns: 44px 1fr;
+      }
+
+      .row-right {
+        grid-column: 2;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="topbar">
+      <a class="circle-btn" href="/" aria-label="Torna alla home">‹</a>
+
+      <div class="top-title">
+        <h1>Roberta & Alessandro</h1>
+        <p>Area privata sposi</p>
+      </div>
+
+      <button class="circle-btn" type="button">♡</button>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="monogram">R|A</div>
+        <h2>Area privata sposi</h2>
+        <p>
+          Qui potete seguire budget, pagamenti, scadenze e fornitori aggiornati dalla wedding planner.
+        </p>
+
+        <div class="countdown-card">
+          <div class="countdown-label">Mancano</div>
+
+          <div class="countdown-grid">
+            <div class="count-box">
+              <strong id="days">000</strong>
+              <small>Giorni</small>
+            </div>
+
+            <div class="count-box">
+              <strong id="hours">00</strong>
+              <small>Ore</small>
+            </div>
+
+            <div class="count-box">
+              <strong id="minutes">00</strong>
+              <small>Minuti</small>
+            </div>
+
+            <div class="count-box">
+              <strong id="seconds">00</strong>
+              <small>Secondi</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+
+      <div class="section-title">
+        <h2>Panoramica</h2>
+        <span>Aggiornata in tempo reale</span>
+      </div>
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <div class="icon">▣</div>
+          <p>Budget</p>
+          <strong id="budgetValue">€ 0</strong>
+          <small>totale evento</small>
+        </div>
+
+        <div class="summary-card">
+          <div class="icon">€</div>
+          <p>Da saldare</p>
+          <strong id="dueValue">€ 0</strong>
+          <small>saldo residuo</small>
+        </div>
+
+        <div class="summary-card">
+          <div class="icon">✓</div>
+          <p>Saldato</p>
+          <strong id="paidValue">€ 0</strong>
+          <small>già pagato</small>
+        </div>
+
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-head">
+          <span>Avanzamento pagamenti</span>
+          <strong id="paidPercent">0%</strong>
+        </div>
+
+        <div class="bar">
+          <div class="bar-fill" id="paidBar"></div>
+        </div>
+      </div>
+
+      <button class="main-action" type="button" onclick="toggleDeadlines()">
+        <span>▤</span>
+        <span>Scadenze prossime</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleSuppliers()">
+        <span>☏</span>
+        <span>Fornitori</span>
+      </button>
+
+      <div class="deadline-section" id="deadlineSection">
+
+        <div class="section-title">
+          <h2>Scadenze prossime</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="deadlineList"></div>
+
+      </div>
+
+      <div class="supplier-section" id="supplierSection">
+
+        <div class="section-title">
+          <h2>Fornitori</h2>
+          <span>Contatti utili</span>
+        </div>
+
+        <div class="list-card" id="supplierList"></div>
+
+      </div>
+
+      <div class="bottom-note">
+        Questa pagina è in sola lettura. Le modifiche vengono aggiornate dalla wedding planner.
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const eventRef = doc(db, "weddingEvents", "roberta-alessandro");
+
+    const defaultData = {
+      budget: 0,
+      due: 0,
+      paid: 0,
+      deadlines: [],
+      suppliers: []
+    };
+
+    let data = structuredClone(defaultData);
+
+    function normalizeData(remoteData) {
+      const merged = {
+        ...defaultData,
+        ...remoteData
+      };
+
+      if (!Array.isArray(merged.deadlines)) {
+        merged.deadlines = [];
+      }
+
+      if (!Array.isArray(merged.suppliers)) {
+        merged.suppliers = [];
+      }
+
+      merged.budget = Number(merged.budget) || 0;
+      merged.due = Number(merged.due) || 0;
+      merged.paid = Number(merged.paid) || 0;
+
+      merged.deadlines = merged.deadlines.map((item) => ({
+        name: item.name || "",
+        supplier: item.supplier || "",
+        total: Number(item.total) || 0,
+        paid: Number(item.paid) || 0,
+        date: item.date || "",
+        status: item.status || "Da saldare"
+      }));
+
+      merged.suppliers = merged.suppliers.map((item) => ({
+        service: item.service || "",
+        name: item.name || "",
+        phone: item.phone || "",
+        email: item.email || "",
+        notes: item.notes || ""
+      }));
+
+      return merged;
+    }
+
+    function euro(value) {
+      return "€ " + Number(value).toLocaleString("it-IT", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+
+      if (isNaN(date)) {
+        return { day: "--", month: "---" };
+      }
+
+      const months = ["GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"];
+
+      return {
+        day: String(date.getDate()).padStart(2, "0"),
+        month: months[date.getMonth()]
+      };
+    }
+
+    function renderSummary() {
+      document.getElementById("budgetValue").textContent = euro(data.budget);
+      document.getElementById("dueValue").textContent = euro(data.due);
+      document.getElementById("paidValue").textContent = euro(data.paid);
+
+      const percent = data.budget > 0 ? Math.round((data.paid / data.budget) * 100) : 0;
+
+      document.getElementById("paidPercent").textContent = percent + "%";
+      document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
+    }
+
+    function toggleDeadlines() {
+      const section = document.getElementById("deadlineSection");
+      section.classList.toggle("show");
+
+      if (section.classList.contains("show")) {
+        setTimeout(() => {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      }
+    }
+
+    function toggleSuppliers() {
+      const section = document.getElementById("supplierSection");
+      section.classList.toggle("show");
+
+      if (section.classList.contains("show")) {
+        setTimeout(() => {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      }
+    }
+
+    function renderDeadlines() {
+      const list = document.getElementById("deadlineList");
+
+      if (!data.deadlines.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>---</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna scadenza inserita</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>€ 0</strong>
+              <small>da saldare</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = data.deadlines.map((item) => {
+        const date = formatDate(item.date);
+        const missing = Math.max(Number(item.total) - Number(item.paid), 0);
+        const isPaid = missing <= 0;
+
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${date.day}</strong>
+              <small>${date.month}</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.name}</h3>
+              <p>${item.supplier}</p>
+              <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
+              <span class="status ${isPaid ? "paid" : ""}">
+                ${isPaid ? "Saldato" : item.status}
+              </span>
+            </div>
+
+            <div class="row-right">
+              <strong>${euro(missing)}</strong>
+              <small>${isPaid ? "saldato" : "da saldare"}</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderSuppliers() {
+      const list = document.getElementById("supplierList");
+
+      if (!data.suppliers.length) {
+        list.innerHTML = `
+          <div class="supplier-row">
+            <div class="supplier-icon">☏</div>
+            <div class="row-info">
+              <h3>Nessun fornitore inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>Contatti</strong>
+              <small>in arrivo</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = data.suppliers.map((item) => {
+        return `
+          <div class="supplier-row">
+            <div class="supplier-icon">☏</div>
+
+            <div class="row-info">
+              <h3>${item.service}</h3>
+              <p><strong>${item.name}</strong></p>
+              <p>Tel: ${item.phone}</p>
+              <p>Email: ${item.email}</p>
+              <p>Note: ${item.notes}</p>
+            </div>
+
+            <div class="row-right">
+              <strong>Contatto</strong>
+              <small>fornitore</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function updateCountdown() {
+      const weddingDate = new Date("2026-08-27T15:00:00").getTime();
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+
+      if (distance <= 0) {
+        daysEl.textContent = "000";
+        hoursEl.textContent = "00";
+        minutesEl.textContent = "00";
+        secondsEl.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      daysEl.textContent = String(days).padStart(3, "0");
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+    }
+
+    onSnapshot(eventRef, (snapshot) => {
+      if (!snapshot.exists()) {
+        renderSummary();
+        renderDeadlines();
+        renderSuppliers();
+        return;
+      }
+
+      data = normalizeData(snapshot.data());
+
+      renderSummary();
+      renderDeadlines();
+      renderSuppliers();
+    });
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    window.toggleDeadlines = toggleDeadlines;
+    window.toggleSuppliers = toggleSuppliers;
+  </script>
+
+</body>
+</html>
