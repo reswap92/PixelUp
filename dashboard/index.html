@@ -998,8 +998,35 @@
           </div>
 
           <div class="row-info">
-            <h3>${item.name}</h3>
-            <p>${item.supplier}</p>
+           <h3>
+  ${item.name}
+  ${item.name.toLowerCase().includes("musica") ? `
+    <a 
+      href="https://www.siae.it/it/utilizzatori/feste-private/matrimonio/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      style="
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        margin-left:6px;
+        padding:3px 8px;
+        border-radius:999px;
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        font-family:Arial,sans-serif;
+        font-size:10px;
+        letter-spacing:0.8px;
+        text-transform:uppercase;
+        vertical-align:middle;
+      "
+    >
+      SIAE
+    </a>
+  ` : ""}
+</h3>
+<p>${item.supplier}</p>
             <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
