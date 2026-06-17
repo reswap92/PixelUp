@@ -692,6 +692,19 @@
       };
     }
 
+    function updateTotalsFromDeadlines() {
+      const totalDue = data.deadlines.reduce((sum, item) => {
+        return sum + Math.max(Number(item.total) - Number(item.paid), 0);
+      }, 0);
+
+      const totalPaid = data.deadlines.reduce((sum, item) => {
+        return sum + Number(item.paid);
+      }, 0);
+
+      data.due = totalDue;
+      data.paid = totalPaid;
+    }
+
     function renderSummary() {
       document.getElementById("budgetValue").textContent = euro(data.budget);
       document.getElementById("dueValue").textContent = euro(data.due);
@@ -779,7 +792,7 @@
 
             <div class="row-right">
               <strong>${euro(missing)}</strong>
-              <small>da saldare</small>
+              <small>${isPaid ? "saldato" : "da saldare"}</small>
               <button class="edit-btn" type="button" onclick="editDeadline(${index})">Modifica</button>
             </div>
           </div>
@@ -799,14 +812,11 @@
       const total = prompt("Importo totale:", item.total);
       if (total === null) return;
 
-      const paid = prompt("Importo già pagato:", item.paid);
+      const paid = prompt("Importo già pagato / saldato:", item.paid);
       if (paid === null) return;
 
       const date = prompt("Data scadenza formato AAAA-MM-GG:", item.date);
       if (date === null) return;
-
-      const status = prompt("Stato pagamento:", item.status);
-      if (status === null) return;
 
       const cleanTotal = Number(total.replace(".", "").replace(",", "."));
       const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
@@ -816,25 +826,29 @@
         return;
       }
 
+      const finalPaid = Math.min(cleanPaid, cleanTotal);
+      const missing = Math.max(cleanTotal - finalPaid, 0);
+
+      let automaticStatus = "Da saldare";
+
+      if (finalPaid <= 0) {
+        automaticStatus = "Da saldare";
+      } else if (missing > 0) {
+        automaticStatus = "Acconto versato";
+      } else {
+        automaticStatus = "Saldato";
+      }
+
       data.deadlines[index] = {
         name: name || item.name,
         supplier: supplier || item.supplier,
         total: cleanTotal,
-        paid: cleanPaid,
+        paid: finalPaid,
         date: date || item.date,
-        status: status || item.status
+        status: automaticStatus
       };
 
-      const totalDue = data.deadlines.reduce((sum, item) => {
-        return sum + Math.max(Number(item.total) - Number(item.paid), 0);
-      }, 0);
-
-      const totalPaid = data.deadlines.reduce((sum, item) => {
-        return sum + Number(item.paid);
-      }, 0);
-
-      data.due = totalDue;
-      data.paid = totalPaid;
+      updateTotalsFromDeadlines();
 
       saveData();
       renderSummary();
@@ -870,6 +884,8 @@
       secondsEl.textContent = String(seconds).padStart(2, "0");
     }
 
+    updateTotalsFromDeadlines();
+    saveData();
     renderSummary();
     renderDeadlines();
     updateCountdown();
