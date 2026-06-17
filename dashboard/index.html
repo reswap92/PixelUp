@@ -716,41 +716,66 @@
       document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
     }
 
-    function editSummary(type) {
-      let label = "";
-      let currentValue = 0;
+function editSummary(type) {
+  let label = "";
+  let currentValue = 0;
 
-      if (type === "budget") {
-        label = "Budget totale";
-        currentValue = data.budget;
-      }
+  if (type === "budget") {
+    label = "Budget totale";
+    currentValue = data.budget;
+  }
 
-      if (type === "due") {
-        label = "Da saldare";
-        currentValue = data.due;
-      }
+  if (type === "due") {
+    label = "Da saldare";
+    currentValue = data.due;
+  }
 
-      if (type === "paid") {
-        label = "Saldato";
-        currentValue = data.paid;
-      }
+  if (type === "paid") {
+    label = "Saldato";
+    currentValue = data.paid;
+  }
 
-      const newValue = prompt("Modifica " + label + ":", currentValue);
+  const newValue = prompt("Modifica " + label + ":", currentValue);
 
-      if (newValue === null) return;
+  if (newValue === null) return;
 
-      const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
+  const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
 
-      if (isNaN(cleanValue) || cleanValue < 0) {
-        alert("Inserisci un importo valido.");
-        return;
-      }
+  if (isNaN(cleanValue) || cleanValue < 0) {
+    alert("Inserisci un importo valido.");
+    return;
+  }
 
-      data[type] = cleanValue;
+  /*
+    Calcolo automatico dei tre box:
+    Budget - Saldato = Da saldare
+    Budget - Da saldare = Saldato
+  */
 
-      saveData();
-      renderSummary();
+  if (type === "budget") {
+    data.budget = cleanValue;
+
+    // Se il saldato è maggiore del nuovo budget, lo blocca al massimo del budget
+    if (data.paid > data.budget) {
+      data.paid = data.budget;
     }
+
+    data.due = Math.max(data.budget - data.paid, 0);
+  }
+
+  if (type === "paid") {
+    data.paid = Math.min(cleanValue, data.budget);
+    data.due = Math.max(data.budget - data.paid, 0);
+  }
+
+  if (type === "due") {
+    data.due = Math.min(cleanValue, data.budget);
+    data.paid = Math.max(data.budget - data.due, 0);
+  }
+
+  saveData();
+  renderSummary();
+}
 
     function toggleDeadlines() {
       const section = document.getElementById("deadlineSection");
