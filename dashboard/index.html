@@ -1154,9 +1154,64 @@
   saveData();
 }
 
-  function renderSuppliers() {
-    const list = document.getElementById("supplierList");
+ function renderSuppliers() {
+  const list = document.getElementById("supplierList");
 
+  if (!data.suppliers || data.suppliers.length === 0) {
+    list.innerHTML = `
+      <div style="
+        padding:18px 0;
+        text-align:center;
+        color:#7b6f62;
+        font-family:Arial,sans-serif;
+        font-size:13px;
+        line-height:1.4;
+      ">
+        Nessun fornitore inserito.<br>
+        Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = data.suppliers.map((item, index) => {
+    return `
+      <div class="supplier-row">
+        <div class="supplier-icon">☏</div>
+
+        <div class="row-info">
+          <h3>${item.service}</h3>
+          <p><strong>${item.name}</strong></p>
+          <p>Tel: ${item.phone}</p>
+          <p>Email: ${item.email}</p>
+          <p>Note: ${item.notes}</p>
+        </div>
+
+        <div class="row-right">
+          <strong>Contatto</strong>
+          <small>fornitore</small>
+
+          <button class="edit-btn" type="button" onclick="editSupplier(${index})">
+            Modifica
+          </button>
+
+          <button 
+            class="edit-btn" 
+            type="button" 
+            onclick="deleteSupplier(${index})"
+            style="
+              color:#8a3d2c;
+              border-color:rgba(138,61,44,0.35);
+              margin-left:4px;
+            "
+          >
+            Elimina
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
     list.innerHTML = data.suppliers.map((item, index) => {
       return `
         <div class="supplier-row">
@@ -1209,6 +1264,21 @@
     renderSuppliers();
     saveData();
   }
+   function deleteSupplier(index) {
+  const item = data.suppliers[index];
+
+  const confirmDelete = confirm(
+    "Vuoi eliminare questo fornitore?\n\n" + 
+    item.service + " - " + item.name
+  );
+
+  if (!confirmDelete) return;
+
+  data.suppliers.splice(index, 1);
+
+  renderSuppliers();
+  saveData();
+}
 function addSupplier() {
   const service = prompt("Servizio:", "Nuovo fornitore");
   if (service === null) return;
@@ -1303,4 +1373,5 @@ function addSupplier() {
    window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
    window.addSupplier = addSupplier;
+   window.deleteSupplier = deleteSupplier;
 </script>
