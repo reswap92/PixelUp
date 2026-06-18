@@ -1114,6 +1114,59 @@
     saveData();
   }
 
+   function addDeadline() {
+  const name = prompt("Nuova voce / servizio:", "Nuova scadenza");
+  if (name === null) return;
+
+  const supplier = prompt("Fornitore:", "");
+  if (supplier === null) return;
+
+  const total = prompt("Importo totale:", "0");
+  if (total === null) return;
+
+  const paid = prompt("Importo già pagato / saldato:", "0");
+  if (paid === null) return;
+
+  const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+  if (date === null) return;
+
+  const cleanTotal = Number(total.replace(".", "").replace(",", "."));
+  const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+
+  if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+    alert("Importi non validi.");
+    return;
+  }
+
+  const finalPaid = Math.min(cleanPaid, cleanTotal);
+  const missing = Math.max(cleanTotal - finalPaid, 0);
+
+  let automaticStatus = "Da saldare";
+
+  if (finalPaid <= 0) {
+    automaticStatus = "Da saldare";
+  } else if (missing > 0) {
+    automaticStatus = "Acconto versato";
+  } else {
+    automaticStatus = "Saldato";
+  }
+
+  data.deadlines.push({
+    name: name || "Nuova scadenza",
+    supplier: supplier || "Fornitore non indicato",
+    total: cleanTotal,
+    paid: finalPaid,
+    date: date || "2026-08-01",
+    status: automaticStatus
+  });
+
+  updateTotalsFromDeadlines();
+
+  renderSummary();
+  renderDeadlines();
+  saveData();
+}
+
   function renderSuppliers() {
     const list = document.getElementById("supplierList");
 
@@ -1234,5 +1287,6 @@
   window.toggleDeadlines = toggleDeadlines;
   window.toggleSuppliers = toggleSuppliers;
   window.editDeadline = editDeadline;
+   window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
 </script>
