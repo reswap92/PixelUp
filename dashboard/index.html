@@ -1154,7 +1154,7 @@
   saveData();
 }
 
- function renderSuppliers() {
+function renderSuppliers() {
   const list = document.getElementById("supplierList");
 
   if (!data.suppliers || data.suppliers.length === 0) {
@@ -1212,28 +1212,6 @@
     `;
   }).join("");
 }
-    list.innerHTML = data.suppliers.map((item, index) => {
-      return `
-        <div class="supplier-row">
-          <div class="supplier-icon">☏</div>
-
-          <div class="row-info">
-            <h3>${item.service}</h3>
-            <p><strong>${item.name}</strong></p>
-            <p>Tel: ${item.phone}</p>
-            <p>Email: ${item.email}</p>
-            <p>Note: ${item.notes}</p>
-          </div>
-
-          <div class="row-right">
-            <strong>Contatto</strong>
-            <small>fornitore</small>
-            <button class="edit-btn" type="button" onclick="editSupplier(${index})">Modifica</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
 
   function editSupplier(index) {
     const item = data.suppliers[index];
