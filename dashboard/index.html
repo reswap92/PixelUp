@@ -497,6 +497,112 @@
       line-height: 1.4;
     }
 
+    .project-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(38, 49, 34, 0.42);
+  z-index: 100;
+  padding: 82px 20px 20px;
+}
+
+.project-menu.show {
+  display: block;
+}
+
+.project-menu-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(255, 252, 246, 0.98);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.project-menu-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.project-menu-title h3 {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--green-dark);
+}
+
+.project-menu-title button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,255,255,0.7);
+  color: var(--green-dark);
+  font-size: 22px;
+}
+
+.project-main-btn {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(214, 193, 145, 0.95);
+  background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+  color: white;
+  box-shadow: 0 12px 25px rgba(54, 64, 42, 0.18);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.project-main-btn.secondary {
+  background: rgba(255, 252, 246, 0.92);
+  color: var(--green-dark);
+}
+
+.projects-list {
+  margin-top: 14px;
+}
+
+.project-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(177, 145, 85, 0.18);
+}
+
+.project-item:last-child {
+  border-bottom: 0;
+}
+
+.project-item h4 {
+  font-size: 15px;
+  color: var(--green-dark);
+  margin-bottom: 4px;
+}
+
+.project-item p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.project-item a {
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
     @media (max-width: 390px) {
       .content {
         padding-left: 16px;
@@ -537,7 +643,7 @@
   <main class="app">
 
     <header class="topbar">
-      <button class="circle-btn" type="button">☰</button>
+   <button class="circle-btn" type="button" onclick="toggleProjectMenu()">☰</button>
 
       <div class="top-title">
         <h1>Roberta & Alessandro</h1>
@@ -546,6 +652,28 @@
 
       <button class="circle-btn" type="button">♡</button>
     </header>
+
+    <div class="project-menu" id="projectMenu">
+  <div class="project-menu-card">
+
+    <div class="project-menu-title">
+      <h3>Gestione progetti</h3>
+      <button type="button" onclick="toggleProjectMenu()">×</button>
+    </div>
+
+    <button class="project-main-btn" type="button" onclick="showProjectsList()">
+      I miei progetti
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="createNewProject()">
+      Nuovo progetto
+    </button>
+
+    <div class="projects-list" id="projectsList"></div>
+
+  </div>
+</div>
+    
 
     <section class="hero">
       <div class="hero-content">
@@ -699,13 +827,14 @@
 
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
+ import {
+  getFirestore,
+  doc,
+  setDoc,
+  onSnapshot,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
   const firebaseConfig = {
     apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
     authDomain: "backtag-16de3.firebaseapp.com",
@@ -719,9 +848,12 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const eventRef = doc(db, "weddingEvents", "roberta-alessandro");
+const urlParams = new URLSearchParams(window.location.search);
+const currentEventId = urlParams.get("event") || "roberta-alessandro";
 
+const eventRef = doc(db, "weddingEvents", currentEventId);
   const defaultData = {
+    projectName: "Roberta & Alessandro",
     budget: 38000,
     due: 24500,
     paid: 13500,
@@ -1284,6 +1416,137 @@ function addSupplier() {
   renderSuppliers();
   saveData();
 }
+   function toggleProjectMenu() {
+  const menu = document.getElementById("projectMenu");
+  menu.classList.toggle("show");
+}
+
+function makeProjectId(name) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replaceAll("à", "a")
+    .replaceAll("è", "e")
+    .replaceAll("é", "e")
+    .replaceAll("ì", "i")
+    .replaceAll("ò", "o")
+    .replaceAll("ù", "u")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+async function createNewProject() {
+  const projectName = prompt("Nome nuovo progetto:", "Nuovo matrimonio");
+
+  if (projectName === null) return;
+
+  const cleanName = projectName.trim();
+
+  if (!cleanName) {
+    alert("Inserisci un nome progetto valido.");
+    return;
+  }
+
+  const projectId = makeProjectId(cleanName);
+
+  if (!projectId) {
+    alert("Nome progetto non valido.");
+    return;
+  }
+
+  const emptyProject = {
+    projectName: cleanName,
+    budget: 0,
+    due: 0,
+    paid: 0,
+    deadlines: [],
+    suppliers: []
+  };
+
+  try {
+    await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
+
+    window.location.href = "/dashboard/?event=" + projectId;
+  } catch (error) {
+    console.error("Errore creazione progetto:", error);
+    alert("Errore nella creazione del progetto.");
+  }
+}
+
+async function showProjectsList() {
+  const list = document.getElementById("projectsList");
+
+  list.innerHTML = `
+    <div style="
+      padding:16px 0;
+      text-align:center;
+      color:#7b6f62;
+      font-family:Arial,sans-serif;
+      font-size:13px;
+    ">
+      Caricamento progetti...
+    </div>
+  `;
+
+  try {
+    const snapshot = await getDocs(collection(db, "weddingEvents"));
+
+    if (snapshot.empty) {
+      list.innerHTML = `
+        <div style="
+          padding:16px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+        ">
+          Nessun progetto trovato.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = "";
+
+    snapshot.forEach((docSnap) => {
+      const project = docSnap.data();
+      const id = docSnap.id;
+
+      const name = project.projectName || id;
+      const budget = Number(project.budget) || 0;
+      const paid = Number(project.paid) || 0;
+      const due = Number(project.due) || 0;
+
+      list.innerHTML += `
+        <div class="project-item">
+          <div>
+            <h4>${name}</h4>
+            <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+          </div>
+
+          <a href="/dashboard/?event=${id}">
+            Apri
+          </a>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error("Errore caricamento progetti:", error);
+
+    list.innerHTML = `
+      <div style="
+        padding:16px 0;
+        text-align:center;
+        color:#8a3d2c;
+        font-family:Arial,sans-serif;
+        font-size:13px;
+      ">
+        Errore nel caricamento dei progetti.
+      </div>
+    `;
+  }
+}
   function updateCountdown() {
     const weddingDate = new Date("2026-08-27T15:00:00").getTime();
     const now = new Date().getTime();
@@ -1352,4 +1615,7 @@ function addSupplier() {
   window.editSupplier = editSupplier;
    window.addSupplier = addSupplier;
    window.deleteSupplier = deleteSupplier;
+   window.toggleProjectMenu = toggleProjectMenu;
+window.showProjectsList = showProjectsList;
+window.createNewProject = createNewProject;
 </script>
