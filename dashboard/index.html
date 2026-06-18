@@ -827,13 +827,14 @@
 
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
- import {
+import {
   getFirestore,
   doc,
   setDoc,
   onSnapshot,
   collection,
-  getDocs
+  getDocs,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
   const firebaseConfig = {
     apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
@@ -852,11 +853,12 @@ const urlParams = new URLSearchParams(window.location.search);
 const currentEventId = urlParams.get("event") || "roberta-alessandro";
 
 const eventRef = doc(db, "weddingEvents", currentEventId);
-  const defaultData = {
-    projectName: "Roberta & Alessandro",
-    budget: 38000,
-    due: 24500,
-    paid: 13500,
+ const defaultData = {
+  projectName: "Roberta & Alessandro",
+  weddingDate: "2026-08-27T15:00:00",
+  budget: 38000,
+  due: 24500,
+  paid: 13500,
     deadlines: [
       {
         name: "Location",
@@ -1454,15 +1456,19 @@ async function createNewProject() {
     return;
   }
 
-  const emptyProject = {
-    projectName: cleanName,
-    budget: 0,
-    due: 0,
-    paid: 0,
-    deadlines: [],
-    suppliers: []
-  };
+const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "2026-08-27T15:00:00");
 
+if (weddingDate === null) return;
+
+const emptyProject = {
+  projectName: cleanName,
+  weddingDate: weddingDate || "2026-08-27T15:00:00",
+  budget: 0,
+  due: 0,
+  paid: 0,
+  deadlines: [],
+  suppliers: []
+};
   try {
     await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
 
@@ -1516,19 +1522,37 @@ async function showProjectsList() {
       const budget = Number(project.budget) || 0;
       const paid = Number(project.paid) || 0;
       const due = Number(project.due) || 0;
+list.innerHTML += `
+  <div class="project-item">
+    <div>
+      <h4>${name}</h4>
+      <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+    </div>
 
-      list.innerHTML += `
-        <div class="project-item">
-          <div>
-            <h4>${name}</h4>
-            <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-          </div>
+    <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
+      <a href="/dashboard/?event=${id}">
+        Apri
+      </a>
 
-          <a href="/dashboard/?event=${id}">
-            Apri
-          </a>
-        </div>
-      `;
+      <button 
+        type="button" 
+        onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
+        style="
+          border:1px solid rgba(138,61,44,0.35);
+          background:rgba(255,252,246,0.95);
+          color:#8a3d2c;
+          border-radius:999px;
+          padding:7px 11px;
+          font-family:Arial,sans-serif;
+          font-size:12px;
+          text-transform:uppercase;
+        "
+      >
+        Elimina
+      </button>
+    </div>
+  </div>
+`;
     });
 
   } catch (error) {
@@ -1547,34 +1571,60 @@ async function showProjectsList() {
     `;
   }
 }
-  function updateCountdown() {
-    const weddingDate = new Date("2026-08-27T15:00:00").getTime();
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-
-    const daysEl = document.getElementById("days");
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-
-    if (distance <= 0) {
-      daysEl.textContent = "000";
-      hoursEl.textContent = "00";
-      minutesEl.textContent = "00";
-      secondsEl.textContent = "00";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
-
-    daysEl.textContent = String(days).padStart(3, "0");
-    hoursEl.textContent = String(hours).padStart(2, "0");
-    minutesEl.textContent = String(minutes).padStart(2, "0");
-    secondsEl.textContent = String(seconds).padStart(2, "0");
+   async function deleteProject(projectId, projectName) {
+  if (projectId === currentEventId) {
+    alert("Non puoi eliminare il progetto che stai visualizzando ora. Aprine prima un altro.");
+    return;
   }
+
+  const confirmDelete = confirm(
+    "Vuoi eliminare questo progetto?\n\n" +
+    projectName +
+    "\n\nQuesta azione cancella la dashboard da Firebase."
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await deleteDoc(doc(db, "weddingEvents", projectId));
+    await showProjectsList();
+  } catch (error) {
+    console.error("Errore eliminazione progetto:", error);
+    alert("Errore durante l'eliminazione del progetto.");
+  }
+}
+function updateCountdown() {
+  const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
+  const weddingDate = new Date(weddingDateString).getTime();
+
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+
+  const daysEl = document.getElementById("days");
+  const hoursEl = document.getElementById("hours");
+  const minutesEl = document.getElementById("minutes");
+  const secondsEl = document.getElementById("seconds");
+
+  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+  if (isNaN(weddingDate) || distance <= 0) {
+    daysEl.textContent = "000";
+    hoursEl.textContent = "00";
+    minutesEl.textContent = "00";
+    secondsEl.textContent = "00";
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((distance / (1000 * 60)) % 60);
+  const seconds = Math.floor((distance / 1000) % 60);
+
+  daysEl.textContent = String(days).padStart(3, "0");
+  hoursEl.textContent = String(hours).padStart(2, "0");
+  minutesEl.textContent = String(minutes).padStart(2, "0");
+  secondsEl.textContent = String(seconds).padStart(2, "0");
+}
 
   onSnapshot(eventRef, async (snapshot) => {
     if (snapshot.exists()) {
@@ -1602,6 +1652,7 @@ async function showProjectsList() {
     renderSummary();
     renderDeadlines();
     renderSuppliers();
+    updateCountdown();
   });
 
   updateCountdown();
@@ -1618,4 +1669,5 @@ async function showProjectsList() {
    window.toggleProjectMenu = toggleProjectMenu;
 window.showProjectsList = showProjectsList;
 window.createNewProject = createNewProject;
+   window.deleteProject = deleteProject;
 </script>
