@@ -638,10 +638,26 @@
 
       <div class="deadline-section" id="deadlineSection">
 
-        <div class="section-title">
-          <h2>Scadenze prossime</h2>
-          <span>Modificabili</span>
-        </div>
+      <div class="section-title">
+  <h2>Scadenze prossime</h2>
+  <button 
+    type="button" 
+    onclick="addDeadline()" 
+    style="
+      border:1px solid rgba(177,145,85,0.45);
+      background:rgba(255,252,246,0.95);
+      color:#4d5a3a;
+      border-radius:999px;
+      padding:7px 11px;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    "
+  >
+    + Aggiungi
+  </button>
+</div>
 
         <div class="list-card" id="deadlineList"></div>
 
