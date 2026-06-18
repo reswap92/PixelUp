@@ -666,10 +666,25 @@
       <div class="supplier-section" id="supplierSection">
 
         <div class="section-title">
-          <h2>Fornitori</h2>
-          <span>10 contatti modificabili</span>
-        </div>
-
+  <h2>Fornitori</h2>
+  <button 
+    type="button" 
+    onclick="addSupplier()" 
+    style="
+      border:1px solid rgba(177,145,85,0.45);
+      background:rgba(255,252,246,0.95);
+      color:#4d5a3a;
+      border-radius:999px;
+      padding:7px 11px;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    "
+  >
+    + Aggiungi
+  </button>
+</div>
         <div class="list-card" id="supplierList"></div>
 
       </div>
@@ -1194,7 +1209,33 @@
     renderSuppliers();
     saveData();
   }
+function addSupplier() {
+  const service = prompt("Servizio:", "Nuovo fornitore");
+  if (service === null) return;
 
+  const name = prompt("Nome fornitore:", "");
+  if (name === null) return;
+
+  const phone = prompt("Numero di telefono:", "");
+  if (phone === null) return;
+
+  const email = prompt("Email:", "");
+  if (email === null) return;
+
+  const notes = prompt("Note:", "");
+  if (notes === null) return;
+
+  data.suppliers.push({
+    service: service || "Nuovo fornitore",
+    name: name || "Nome non indicato",
+    phone: phone || "Telefono non indicato",
+    email: email || "Email non indicata",
+    notes: notes || "Nessuna nota"
+  });
+
+  renderSuppliers();
+  saveData();
+}
   function updateCountdown() {
     const weddingDate = new Date("2026-08-27T15:00:00").getTime();
     const now = new Date().getTime();
@@ -1261,4 +1302,5 @@
   window.editDeadline = editDeadline;
    window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
+   window.addSupplier = addSupplier;
 </script>
