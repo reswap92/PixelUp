@@ -351,13 +351,15 @@
     }
 
     .deadline-section,
-    .supplier-section {
+    .supplier-section,
+    .agenda-section {
       display: none;
       animation: fade 0.22s ease;
     }
 
     .deadline-section.show,
-    .supplier-section.show {
+    .supplier-section.show,
+    .agenda-section.show {
       display: block;
     }
 
@@ -530,7 +532,7 @@
         <div class="monogram">R|A</div>
         <h2>Area privata sposi</h2>
         <p>
-          Qui potete seguire budget, pagamenti, scadenze e fornitori aggiornati dalla wedding planner.
+          Qui potete seguire budget, pagamenti, scadenze, fornitori e agenda aggiornati dalla wedding planner.
         </p>
 
         <div class="countdown-card">
@@ -614,6 +616,11 @@
         <span>Fornitori</span>
       </button>
 
+      <button class="secondary-action" type="button" onclick="toggleAgenda()">
+        <span>◇</span>
+        <span>Agenda</span>
+      </button>
+
       <div class="deadline-section" id="deadlineSection">
 
         <div class="section-title">
@@ -633,6 +640,17 @@
         </div>
 
         <div class="list-card" id="supplierList"></div>
+
+      </div>
+
+      <div class="agenda-section" id="agendaSection">
+
+        <div class="section-title">
+          <h2>Agenda</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="agendaList"></div>
 
       </div>
 
@@ -672,7 +690,8 @@
       due: 0,
       paid: 0,
       deadlines: [],
-      suppliers: []
+      suppliers: [],
+      agenda: []
     };
 
     let data = structuredClone(defaultData);
@@ -691,6 +710,10 @@
         merged.suppliers = [];
       }
 
+      if (!Array.isArray(merged.agenda)) {
+        merged.agenda = [];
+      }
+
       merged.budget = Number(merged.budget) || 0;
       merged.due = Number(merged.due) || 0;
       merged.paid = Number(merged.paid) || 0;
@@ -701,7 +724,8 @@
         total: Number(item.total) || 0,
         paid: Number(item.paid) || 0,
         date: item.date || "",
-        status: item.status || "Da saldare"
+        status: item.status || "Da saldare",
+        notes: item.notes || ""
       }));
 
       merged.suppliers = merged.suppliers.map((item) => ({
@@ -709,6 +733,14 @@
         name: item.name || "",
         phone: item.phone || "",
         email: item.email || "",
+        notes: item.notes || ""
+      }));
+
+      merged.agenda = merged.agenda.map((item) => ({
+        title: item.title || "",
+        place: item.place || "",
+        date: item.date || "",
+        time: item.time || "",
         notes: item.notes || ""
       }));
 
@@ -776,6 +808,20 @@
       }
     }
 
+    function toggleAgenda() {
+      const section = document.getElementById("agendaSection");
+      section.classList.toggle("show");
+
+      if (section.classList.contains("show")) {
+        setTimeout(() => {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      }
+    }
+
     function renderDeadlines() {
       const list = document.getElementById("deadlineList");
 
@@ -815,6 +861,7 @@
               <h3>${item.name}</h3>
               <p>${item.supplier}</p>
               <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
               <span class="status ${isPaid ? "paid" : ""}">
                 ${isPaid ? "Saldato" : item.status}
               </span>
@@ -859,12 +906,67 @@
               <p><strong>${item.name}</strong></p>
               <p>Tel: ${item.phone}</p>
               <p>Email: ${item.email}</p>
-              <p>Note: ${item.notes}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
             </div>
 
             <div class="row-right">
               <strong>Contatto</strong>
               <small>fornitore</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderAgenda() {
+      const list = document.getElementById("agendaList");
+
+      if (!data.agenda.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>---</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessun appuntamento inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--:--</strong>
+              <small>agenda</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const sortedAgenda = [...data.agenda].sort((a, b) => {
+        const dateA = new Date((a.date || "") + "T" + (a.time || "00:00"));
+        const dateB = new Date((b.date || "") + "T" + (b.time || "00:00"));
+        return dateA - dateB;
+      });
+
+      list.innerHTML = sortedAgenda.map((item) => {
+        const date = formatDate(item.date);
+
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${date.day}</strong>
+              <small>${date.month}</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.title}</h3>
+              <p>${item.place}</p>
+              <p>Ore: ${item.time || "--:--"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.time || "--:--"}</strong>
+              <small>appuntamento</small>
             </div>
           </div>
         `;
@@ -905,6 +1007,7 @@
         renderSummary();
         renderDeadlines();
         renderSuppliers();
+        renderAgenda();
         return;
       }
 
@@ -913,6 +1016,7 @@
       renderSummary();
       renderDeadlines();
       renderSuppliers();
+      renderAgenda();
     });
 
     updateCountdown();
@@ -920,6 +1024,7 @@
 
     window.toggleDeadlines = toggleDeadlines;
     window.toggleSuppliers = toggleSuppliers;
+    window.toggleAgenda = toggleAgenda;
   </script>
 
 </body>
