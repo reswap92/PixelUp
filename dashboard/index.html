@@ -361,16 +361,18 @@
       gap: 11px;
     }
 
-    .deadline-section,
-    .supplier-section {
-      display: none;
-      animation: fade 0.22s ease;
-    }
+  .deadline-section,
+.supplier-section,
+.agenda-section {
+  display: none;
+  animation: fade 0.22s ease;
+}
 
-    .deadline-section.show,
-    .supplier-section.show {
-      display: block;
-    }
+.deadline-section.show,
+.supplier-section.show,
+.agenda-section.show {
+  display: block;
+}
 
     @keyframes fade {
       from { opacity: 0; transform: translateY(6px); }
@@ -764,6 +766,11 @@
         <span>Fornitori</span>
       </button>
 
+      <button class="secondary-action" type="button" onclick="toggleAgenda()">
+  <span>◇</span>
+  <span>Agenda</span>
+</button>
+
       <div class="deadline-section" id="deadlineSection">
 
       <div class="section-title">
@@ -814,6 +821,33 @@
   </button>
 </div>
         <div class="list-card" id="supplierList"></div>
+
+        <div class="agenda-section" id="agendaSection">
+
+  <div class="section-title">
+    <h2>Agenda</h2>
+    <button 
+      type="button" 
+      onclick="addAgendaItem()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
+  </div>
+
+  <div class="list-card" id="agendaList"></div>
+
+</div>
 
       </div>
 
@@ -939,7 +973,23 @@
         phone: "333 0000005",
         email: "dj@email.it"
       }
-    ]
+    ],
+    agenda: [
+  {
+    title: "Prova menù",
+    place: "Villa Mattioli",
+    date: "2026-07-15",
+    time: "18:30",
+    notes: "Confermare menù finale e numero ospiti."
+  },
+  {
+    title: "Sopralluogo location",
+    place: "Villa Mattioli",
+    date: "2026-07-25",
+    time: "16:00",
+    notes: "Controllare allestimento, ingresso fornitori e piano tavoli."
+  }
+]
   };
 
   let data = structuredClone(defaultData);
@@ -960,6 +1010,10 @@
     if (!Array.isArray(safeRemoteData.suppliers)) {
       merged.suppliers = defaultData.suppliers;
     }
+    
+    if (!Array.isArray(safeRemoteData.agenda)) {
+  merged.agenda = defaultData.agenda;
+}
 
     merged.projectName = merged.projectName || "Wedding Board";
     merged.weddingDate = merged.weddingDate || "27-08-2026T15:00:00";
@@ -983,6 +1037,14 @@
       phone: item.phone || "",
       email: item.email || ""
     }));
+
+    merged.agenda = merged.agenda.map((item) => ({
+  title: item.title || "",
+  place: item.place || "",
+  date: item.date || "",
+  time: item.time || "",
+  notes: item.notes || ""
+}));
 
     return merged;
   }
@@ -1131,6 +1193,20 @@
       }, 120);
     }
   }
+
+  function toggleAgenda() {
+  const section = document.getElementById("agendaSection");
+  section.classList.toggle("show");
+
+  if (section.classList.contains("show")) {
+    setTimeout(() => {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 120);
+  }
+}
 
   function renderDeadlines() {
     const list = document.getElementById("deadlineList");
@@ -1329,6 +1405,149 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
     saveData();
   }
 
+  function renderAgenda() {
+  const list = document.getElementById("agendaList");
+
+  if (!data.agenda || data.agenda.length === 0) {
+    list.innerHTML = `
+      <div style="
+        padding:18px 0;
+        text-align:center;
+        color:#7b6f62;
+        font-family:Arial,sans-serif;
+        font-size:13px;
+        line-height:1.4;
+      ">
+        Nessun appuntamento inserito.<br>
+        Clicca su <strong>+ Aggiungi</strong> per creare il primo appuntamento.
+      </div>
+    `;
+    return;
+  }
+
+  const sortedAgenda = [...data.agenda].sort((a, b) => {
+    const dateA = new Date((a.date || "") + "T" + (a.time || "00:00"));
+    const dateB = new Date((b.date || "") + "T" + (b.time || "00:00"));
+    return dateA - dateB;
+  });
+
+  list.innerHTML = sortedAgenda.map((item) => {
+    const realIndex = data.agenda.indexOf(item);
+    const date = formatDate(item.date);
+
+    return `
+      <div class="deadline-row">
+        <div class="date-box">
+          <strong>${date.day}</strong>
+          <small>${date.month}</small>
+        </div>
+
+        <div class="row-info">
+          <h3>${item.title}</h3>
+          <p>${item.place}</p>
+          <p>Ore: ${item.time || "--:--"}</p>
+          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+        </div>
+
+        <div class="row-right">
+          <strong>${item.time || "--:--"}</strong>
+          <small>appuntamento</small>
+
+          <button class="edit-btn" type="button" onclick="editAgendaItem(${realIndex})">
+            Modifica
+          </button>
+
+          <button 
+            class="edit-btn" 
+            type="button" 
+            onclick="deleteAgendaItem(${realIndex})"
+            style="
+              color:#8a3d2c;
+              border-color:rgba(138,61,44,0.35);
+              margin-left:4px;
+            "
+          >
+            Elimina
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function addAgendaItem() {
+  const title = prompt("Titolo appuntamento:", "Nuovo appuntamento");
+  if (title === null) return;
+
+  const place = prompt("Luogo:", "");
+  if (place === null) return;
+
+  const date = prompt("Data formato AAAA-MM-GG:", "2026-08-01");
+  if (date === null) return;
+
+  const time = prompt("Ora formato HH:MM:", "18:00");
+  if (time === null) return;
+
+  const notes = prompt("Note:", "");
+  if (notes === null) return;
+
+  data.agenda.push({
+    title: title || "Nuovo appuntamento",
+    place: place || "Luogo non indicato",
+    date: date || "",
+    time: time || "",
+    notes: notes || ""
+  });
+
+  renderAgenda();
+  saveData();
+}
+
+function editAgendaItem(index) {
+  const item = data.agenda[index];
+
+  const title = prompt("Titolo appuntamento:", item.title);
+  if (title === null) return;
+
+  const place = prompt("Luogo:", item.place);
+  if (place === null) return;
+
+  const date = prompt("Data formato AAAA-MM-GG:", item.date);
+  if (date === null) return;
+
+  const time = prompt("Ora formato HH:MM:", item.time);
+  if (time === null) return;
+
+  const notes = prompt("Note:", item.notes);
+  if (notes === null) return;
+
+  data.agenda[index] = {
+    title: title || item.title,
+    place: place || item.place,
+    date: date || item.date,
+    time: time || item.time,
+    notes: notes || ""
+  };
+
+  renderAgenda();
+  saveData();
+}
+
+function deleteAgendaItem(index) {
+  const item = data.agenda[index];
+
+  const confirmDelete = confirm(
+    "Vuoi eliminare questo appuntamento?\n\n" +
+    item.title + " - " + item.date + " " + item.time
+  );
+
+  if (!confirmDelete) return;
+
+  data.agenda.splice(index, 1);
+
+  renderAgenda();
+  saveData();
+}
   function renderSuppliers() {
     const list = document.getElementById("supplierList");
 
@@ -1535,15 +1754,16 @@ const emailLink = item.email
 
     if (weddingDate === null) return;
 
-    const emptyProject = {
-      projectName: cleanName,
-      weddingDate: weddingDate || "27-08-2026T15:00:00",
-      budget: 0,
-      due: 0,
-      paid: 0,
-      deadlines: [],
-      suppliers: []
-    };
+   const emptyProject = {
+  projectName: cleanName,
+  weddingDate: weddingDate || "2026-08-27T15:00:00",
+  budget: 0,
+  due: 0,
+  paid: 0,
+  deadlines: [],
+  suppliers: [],
+  agenda: []
+};
 
     try {
       await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
@@ -1711,14 +1931,15 @@ const emailLink = item.email
 
       data = normalizeData(remoteData);
 
-      const needsInitialData =
-        remoteData.projectName === undefined ||
-        remoteData.weddingDate === undefined ||
-        remoteData.budget === undefined ||
-        remoteData.due === undefined ||
-        remoteData.paid === undefined ||
-        !Array.isArray(remoteData.deadlines) ||
-        !Array.isArray(remoteData.suppliers);
+    const needsInitialData =
+  remoteData.projectName === undefined ||
+  remoteData.weddingDate === undefined ||
+  remoteData.budget === undefined ||
+  remoteData.due === undefined ||
+  remoteData.paid === undefined ||
+  !Array.isArray(remoteData.deadlines) ||
+  !Array.isArray(remoteData.suppliers) ||
+  !Array.isArray(remoteData.agenda);
 
       if (needsInitialData) {
         await setDoc(eventRef, data, { merge: true });
@@ -1730,10 +1951,11 @@ const emailLink = item.email
 
     firebaseReady = true;
 
-    renderSummary();
-    renderDeadlines();
-    renderSuppliers();
-    updateCountdown();
+renderSummary();
+renderDeadlines();
+renderSuppliers();
+renderAgenda();
+updateCountdown();
   });
 
   updateCountdown();
