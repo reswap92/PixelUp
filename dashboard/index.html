@@ -858,7 +858,7 @@
 
   const defaultData = {
     projectName: "Roberta & Alessandro",
-    weddingDate: "2026-08-27T15:00:00",
+    weddingDate: "27-08-2026T15:00:00",
     budget: 38000,
     due: 24500,
     paid: 13500,
@@ -869,7 +869,7 @@
         supplier: "Villa Mattioli",
         total: 8000,
         paid: 2000,
-        date: "2026-06-15",
+        date: "15-06-2026",
         status: "Primo acconto",
         notes: "Confermare saldo e orari di ingresso fornitori."
       },
@@ -878,7 +878,7 @@
         supplier: "Bon Appétit",
         total: 10000,
         paid: 3000,
-        date: "2026-07-10",
+        date: "10-07-2026",
         status: "Primo acconto",
         notes: "Verificare menù finale, numero ospiti e saldo previsto."
       },
@@ -887,7 +887,7 @@
         supplier: "Floral Design",
         total: 500,
         paid: 300,
-        date: "2026-07-20",
+        date: "20-07-2026",
         status: "Acconto versato",
         notes: "Confermare centrotavola, bouquet e allestimento rito."
       },
@@ -896,7 +896,7 @@
         supplier: "DJ Set",
         total: 1200,
         paid: 400,
-        date: "2026-08-01",
+        date: "01-08-2026",
         status: "Primo acconto",
         notes: "Confermare playlist, SIAE e orario montaggio."
       }
@@ -962,7 +962,7 @@
     }
 
     merged.projectName = merged.projectName || "Wedding Board";
-    merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
+    merged.weddingDate = merged.weddingDate || "27-08-2026T15:00:00";
     merged.budget = Number(merged.budget) || 0;
     merged.due = Number(merged.due) || 0;
     merged.paid = Number(merged.paid) || 0;
@@ -1285,7 +1285,7 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
     const paid = prompt("Importo già pagato / saldato:", "0");
     if (paid === null) return;
 
-    const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+    const date = prompt("Data scadenza formato GG-MM-AAAA:", "01-08-2026");
     if (date === null) return;
 
     const notes = prompt("Note:", "");
@@ -1317,7 +1317,7 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
       supplier: supplier || "Fornitore non indicato",
       total: cleanTotal,
       paid: finalPaid,
-      date: date || "2026-08-01",
+      date: date || "01-08-2026",
       status: automaticStatus,
       notes: notes || ""
     });
@@ -1500,13 +1500,13 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
       return;
     }
 
-    const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "2026-08-27T15:00:00");
+    const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "27-08-2026T15:00:00");
 
     if (weddingDate === null) return;
 
     const emptyProject = {
       projectName: cleanName,
-      weddingDate: weddingDate || "2026-08-27T15:00:00",
+      weddingDate: weddingDate || "27-08-2026T15:00:00",
       budget: 0,
       due: 0,
       paid: 0,
@@ -1642,7 +1642,7 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
   }
 
   function updateCountdown() {
-    const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
+    const weddingDateString = data.weddingDate || "27-08-2026T15:00:00";
     const weddingDate = new Date(weddingDateString).getTime();
 
     const now = new Date().getTime();
