@@ -1983,99 +1983,134 @@ function deleteDocument(index) {
   }
 
   async function showProjectsList() {
-    const list = document.getElementById("projectsList");
+  const list = document.getElementById("projectsList");
+
+  list.innerHTML = `
+    <div style="
+      padding:16px 0;
+      text-align:center;
+      color:#7b6f62;
+      font-family:Arial,sans-serif;
+      font-size:13px;
+    ">
+      Caricamento progetti...
+    </div>
+  `;
+
+  try {
+    const snapshot = await getDocs(collection(db, "weddingEvents"));
+
+    if (snapshot.empty) {
+      list.innerHTML = `
+        <div style="
+          padding:16px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+        ">
+          Nessun progetto trovato.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = "";
+
+    snapshot.forEach((docSnap) => {
+      const project = docSnap.data();
+      const id = docSnap.id;
+
+      const name = project.projectName || id;
+      const budget = Number(project.budget) || 0;
+      const paid = Number(project.paid) || 0;
+      const due = Number(project.due) || 0;
+
+      list.innerHTML += `
+        <div class="project-item">
+          <div>
+            <h4>${name}</h4>
+            <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+          </div>
+
+          <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
+            <a href="/dashboard/?event=${id}">
+              Apri
+            </a>
+
+            <a href="/sposi/?event=${id}" target="_blank" rel="noopener noreferrer">
+              Link sposi
+            </a>
+
+            <button 
+              type="button" 
+              onclick="copySpousesLink('${id}')"
+              style="
+                border:1px solid rgba(177,145,85,0.45);
+                background:rgba(255,252,246,0.95);
+                color:#4d5a3a;
+                border-radius:999px;
+                padding:7px 11px;
+                font-family:Arial,sans-serif;
+                font-size:12px;
+                text-transform:uppercase;
+              "
+            >
+              Copia
+            </button>
+
+            <button 
+              type="button" 
+              onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
+              style="
+                border:1px solid rgba(138,61,44,0.35);
+                background:rgba(255,252,246,0.95);
+                color:#8a3d2c;
+                border-radius:999px;
+                padding:7px 11px;
+                font-family:Arial,sans-serif;
+                font-size:12px;
+                text-transform:uppercase;
+              "
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error("Errore caricamento progetti:", error);
 
     list.innerHTML = `
       <div style="
         padding:16px 0;
         text-align:center;
-        color:#7b6f62;
+        color:#8a3d2c;
         font-family:Arial,sans-serif;
         font-size:13px;
       ">
-        Caricamento progetti...
+        Errore nel caricamento dei progetti.
       </div>
     `;
-
-    try {
-      const snapshot = await getDocs(collection(db, "weddingEvents"));
-
-      if (snapshot.empty) {
-        list.innerHTML = `
-          <div style="
-            padding:16px 0;
-            text-align:center;
-            color:#7b6f62;
-            font-family:Arial,sans-serif;
-            font-size:13px;
-          ">
-            Nessun progetto trovato.
-          </div>
-        `;
-        return;
-      }
-
-      list.innerHTML = "";
-
-      snapshot.forEach((docSnap) => {
-        const project = docSnap.data();
-        const id = docSnap.id;
-
-        const name = project.projectName || id;
-        const budget = Number(project.budget) || 0;
-        const paid = Number(project.paid) || 0;
-        const due = Number(project.due) || 0;
-
-        list.innerHTML += `
-          <div class="project-item">
-            <div>
-              <h4>${name}</h4>
-              <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-            </div>
-
-            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-              <a href="/dashboard/?event=${id}">
-                Apri
-              </a>
-
-              <button 
-                type="button" 
-                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
-                style="
-                  border:1px solid rgba(138,61,44,0.35);
-                  background:rgba(255,252,246,0.95);
-                  color:#8a3d2c;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-family:Arial,sans-serif;
-                  font-size:12px;
-                  text-transform:uppercase;
-                "
-              >
-                Elimina
-              </button>
-            </div>
-          </div>
-        `;
-      });
-
-    } catch (error) {
-      console.error("Errore caricamento progetti:", error);
-
-      list.innerHTML = `
-        <div style="
-          padding:16px 0;
-          text-align:center;
-          color:#8a3d2c;
-          font-family:Arial,sans-serif;
-          font-size:13px;
-        ">
-          Errore nel caricamento dei progetti.
-        </div>
-      `;
-    }
   }
+}
+  function copySpousesLink(projectId) {
+  const link = window.location.origin + "/sposi/?event=" + projectId;
 
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        alert("Link sposi copiato:\n\n" + link);
+      })
+      .catch(() => {
+        prompt("Copia questo link sposi:", link);
+      });
+  } else {
+    prompt("Copia questo link sposi:", link);
+  }
+}
   async function deleteProject(projectId, projectName) {
     if (projectId === currentEventId) {
       alert("Non puoi eliminare il progetto che stai visualizzando ora. Aprine prima un altro.");
@@ -2190,4 +2225,5 @@ window.deleteAgendaItem = deleteAgendaItem;
 window.addDocument = addDocument;
 window.editDocument = editDocument;
 window.deleteDocument = deleteDocument;
+  window.copySpousesLink = copySpousesLink;
 </script>
