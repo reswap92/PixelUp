@@ -1189,25 +1189,18 @@
     }
 
     if (type === "budget") {
-      data.budget = cleanValue;
+  data.budget = cleanValue;
+}
 
-      if (data.paid > data.budget) {
-        data.paid = data.budget;
-      }
+if (type === "paid") {
+  data.paid = cleanValue;
+  data.due = Math.max(data.budget - data.paid, 0);
+}
 
-      data.due = Math.max(data.budget - data.paid, 0);
-    }
-
-    if (type === "paid") {
-      data.paid = Math.min(cleanValue, data.budget);
-      data.due = Math.max(data.budget - data.paid, 0);
-    }
-
-    if (type === "due") {
-      data.due = Math.min(cleanValue, data.budget);
-      data.paid = Math.max(data.budget - data.due, 0);
-    }
-
+if (type === "due") {
+  data.due = cleanValue;
+  data.paid = Math.max(data.budget - data.due, 0);
+}
     renderSummary();
     saveData();
   }
