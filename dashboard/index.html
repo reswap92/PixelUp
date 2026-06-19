@@ -1849,16 +1849,16 @@ function addDocument() {
   const category = prompt("Categoria:", "Preventivi");
   if (category === null) return;
 
-  const url = prompt("Link Google Drive / PDF:", "https://");
+  const url = prompt("Link Google Drive / PDF:", "");
   if (url === null) return;
 
   const notes = prompt("Note:", "");
   if (notes === null) return;
 
-  if (!url.trim() || url.trim() === "https://") {
-    alert("Inserisci un link valido al documento.");
-    return;
-  }
+  if (!url.trim()) {
+  alert("Inserisci un link valido al documento.");
+  return;
+}
 
   data.documents.push({
     name: name || "Nuovo documento",
