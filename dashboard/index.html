@@ -1141,69 +1141,69 @@
     data.paid = totalPaid;
   }
 
-  function renderSummary() {
-    const projectTitle = document.getElementById("projectTitle");
+ function renderSummary() {
+  const projectTitle = document.getElementById("projectTitle");
 
-    if (projectTitle) {
-      projectTitle.textContent = data.projectName || "Wedding Board";
-    }
-
-    document.getElementById("budgetValue").textContent = euro(data.budget);
-    document.getElementById("dueValue").textContent = euro(data.due);
-    document.getElementById("paidValue").textContent = euro(data.paid);
-
-    const percent = data.budget > 0 ? Math.round((data.paid / data.budget) * 100) : 0;
-
-    document.getElementById("paidPercent").textContent = percent + "%";
-    document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
+  if (projectTitle) {
+    projectTitle.textContent = data.projectName || "Wedding Board";
   }
 
-  function editSummary(type) {
-    let label = "";
-    let currentValue = 0;
+  document.getElementById("budgetValue").textContent = euro(data.budget);
+  document.getElementById("dueValue").textContent = euro(data.due);
+  document.getElementById("paidValue").textContent = euro(data.paid);
 
-    if (type === "budget") {
-      label = "Budget totale";
-      currentValue = data.budget;
-    }
+  const totalReal = Number(data.paid) + Number(data.due);
+  const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
 
-    if (type === "due") {
-      label = "Da saldare";
-      currentValue = data.due;
-    }
-
-    if (type === "paid") {
-      label = "Saldato";
-      currentValue = data.paid;
-    }
-
-    const newValue = prompt("Modifica " + label + ":", currentValue);
-
-    if (newValue === null) return;
-
-    const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
-
-    if (isNaN(cleanValue) || cleanValue < 0) {
-      alert("Inserisci un importo valido.");
-      return;
-    }
-
-    if (type === "budget") {
-  data.budget = cleanValue;
+  document.getElementById("paidPercent").textContent = percent + "%";
+  document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
 }
 
-if (type === "paid") {
-  data.paid = cleanValue;
-  data.due = Math.max(data.budget - data.paid, 0);
-}
+function editSummary(type) {
+  let label = "";
+  let currentValue = 0;
 
-if (type === "due") {
-  data.due = cleanValue;
-  data.paid = Math.max(data.budget - data.due, 0);
-}
-    renderSummary();
-    saveData();
+  if (type === "budget") {
+    label = "Budget totale";
+    currentValue = data.budget;
   }
+
+  if (type === "due") {
+    label = "Da saldare";
+    currentValue = data.due;
+  }
+
+  if (type === "paid") {
+    label = "Saldato";
+    currentValue = data.paid;
+  }
+
+  const newValue = prompt("Modifica " + label + ":", currentValue);
+
+  if (newValue === null) return;
+
+  const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
+
+  if (isNaN(cleanValue) || cleanValue < 0) {
+    alert("Inserisci un importo valido.");
+    return;
+  }
+
+  if (type === "budget") {
+    data.budget = cleanValue;
+  }
+
+  if (type === "paid") {
+    data.paid = cleanValue;
+  }
+
+  if (type === "due") {
+    data.due = cleanValue;
+  }
+
+  renderSummary();
+  saveData();
+}
   
  function toggleDeadlines() {
     const section = document.getElementById("deadlineSection");
