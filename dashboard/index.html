@@ -646,7 +646,7 @@
    <button class="circle-btn" type="button" onclick="toggleProjectMenu()">☰</button>
 
       <div class="top-title">
-        <h1>Roberta & Alessandro</h1>
+       <h1 id="projectTitle">Roberta & Alessandro</h1>
         <p>Dashboard Wedding Planner</p>
       </div>
 
@@ -1027,6 +1027,11 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
   }
 
   function renderSummary() {
+    const projectTitle = document.getElementById("projectTitle");
+
+if (projectTitle) {
+  projectTitle.textContent = data.projectName || "Wedding Board";
+}
     document.getElementById("budgetValue").textContent = euro(data.budget);
     document.getElementById("dueValue").textContent = euro(data.due);
     document.getElementById("paidValue").textContent = euro(data.paid);
