@@ -360,17 +360,18 @@
       justify-content: center;
       gap: 11px;
     }
-
-  .deadline-section,
+.deadline-section,
 .supplier-section,
-.agenda-section {
+.agenda-section,
+.document-section {
   display: none;
   animation: fade 0.22s ease;
 }
 
 .deadline-section.show,
 .supplier-section.show,
-.agenda-section.show {
+.agenda-section.show,
+.document-section.show {
   display: block;
 }
 
@@ -771,6 +772,11 @@
   <span>Agenda</span>
 </button>
 
+      <button class="secondary-action" type="button" onclick="toggleDocuments()">
+  <span>▧</span>
+  <span>Documenti</span>
+</button>
+
       <div class="deadline-section" id="deadlineSection">
 
       <div class="section-title">
@@ -846,6 +852,32 @@
       + Aggiungi
     </button>
   </div>
+          <div class="document-section" id="documentSection">
+
+  <div class="section-title">
+    <h2>Documenti</h2>
+    <button 
+      type="button" 
+      onclick="addDocument()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
+  </div>
+
+  <div class="list-card" id="documentList"></div>
+
+</div>
 
   <div class="list-card" id="agendaList"></div>
 
@@ -992,6 +1024,7 @@
     notes: "Controllare allestimento, ingresso fornitori e piano tavoli."
   }
 ]
+    documents: []
   };
 
   let data = structuredClone(defaultData);
@@ -1015,6 +1048,9 @@
     
     if (!Array.isArray(safeRemoteData.agenda)) {
   merged.agenda = defaultData.agenda;
+}
+    if (!Array.isArray(safeRemoteData.documents)) {
+  merged.documents = defaultData.documents || [];
 }
 
     merged.projectName = merged.projectName || "Wedding Board";
@@ -1045,6 +1081,13 @@
   place: item.place || "",
   date: item.date || "",
   time: item.time || "",
+  notes: item.notes || ""
+}));
+
+    merged.documents = merged.documents.map((item) => ({
+  name: item.name || "",
+  category: item.category || "",
+  url: item.url || "",
   notes: item.notes || ""
 }));
 
@@ -1167,8 +1210,8 @@
     renderSummary();
     saveData();
   }
-
-  function toggleDeadlines() {
+  
+ function toggleDeadlines() {
     const section = document.getElementById("deadlineSection");
     section.classList.toggle("show");
 
@@ -1713,6 +1756,166 @@ const emailLink = item.email
     renderSuppliers();
     saveData();
   }
+  function toggleDocuments() {
+  const section = document.getElementById("documentSection");
+  section.classList.toggle("show");
+
+  if (section.classList.contains("show")) {
+    setTimeout(() => {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 120);
+  }
+}
+
+function renderDocuments() {
+  const list = document.getElementById("documentList");
+
+  if (!data.documents || data.documents.length === 0) {
+    list.innerHTML = `
+      <div style="
+        padding:18px 0;
+        text-align:center;
+        color:#7b6f62;
+        font-family:Arial,sans-serif;
+        font-size:13px;
+        line-height:1.4;
+      ">
+        Nessun documento inserito.<br>
+        Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive o PDF.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = data.documents.map((item, index) => {
+    return `
+      <div class="deadline-row">
+        <div class="date-box">
+          <strong>PDF</strong>
+          <small>DOC</small>
+        </div>
+
+        <div class="row-info">
+          <h3>${item.name}</h3>
+          <p>Categoria: ${item.category || "Non indicata"}</p>
+          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+
+          <p style="margin-top:7px;">
+            <a 
+              href="${item.url}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style="color:#4d5a3a; font-weight:bold;"
+            >
+              Apri documento
+            </a>
+          </p>
+        </div>
+
+        <div class="row-right">
+          <strong>File</strong>
+          <small>documento</small>
+
+          <button class="edit-btn" type="button" onclick="editDocument(${index})">
+            Modifica
+          </button>
+
+          <button 
+            class="edit-btn" 
+            type="button" 
+            onclick="deleteDocument(${index})"
+            style="
+              color:#8a3d2c;
+              border-color:rgba(138,61,44,0.35);
+              margin-left:4px;
+            "
+          >
+            Elimina
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function addDocument() {
+  const name = prompt("Nome documento:", "Nuovo documento");
+  if (name === null) return;
+
+  const category = prompt("Categoria:", "Preventivi");
+  if (category === null) return;
+
+  const url = prompt("Link Google Drive / PDF:", "https://");
+  if (url === null) return;
+
+  const notes = prompt("Note:", "");
+  if (notes === null) return;
+
+  if (!url.trim() || url.trim() === "https://") {
+    alert("Inserisci un link valido al documento.");
+    return;
+  }
+
+  data.documents.push({
+    name: name || "Nuovo documento",
+    category: category || "Altro",
+    url: url.trim(),
+    notes: notes || ""
+  });
+
+  renderDocuments();
+  saveData();
+}
+
+function editDocument(index) {
+  const item = data.documents[index];
+
+  const name = prompt("Nome documento:", item.name);
+  if (name === null) return;
+
+  const category = prompt("Categoria:", item.category);
+  if (category === null) return;
+
+  const url = prompt("Link Google Drive / PDF:", item.url);
+  if (url === null) return;
+
+  const notes = prompt("Note:", item.notes);
+  if (notes === null) return;
+
+  if (!url.trim()) {
+    alert("Inserisci un link valido al documento.");
+    return;
+  }
+
+  data.documents[index] = {
+    name: name || item.name,
+    category: category || item.category,
+    url: url.trim(),
+    notes: notes || ""
+  };
+
+  renderDocuments();
+  saveData();
+}
+
+function deleteDocument(index) {
+  const item = data.documents[index];
+
+  const confirmDelete = confirm(
+    "Vuoi eliminare questo documento?\n\n" +
+    item.name
+  );
+
+  if (!confirmDelete) return;
+
+  data.documents.splice(index, 1);
+
+  renderDocuments();
+  saveData();
+}
 
   function toggleProjectMenu() {
     const menu = document.getElementById("projectMenu");
@@ -1756,7 +1959,7 @@ const emailLink = item.email
 
     if (weddingDate === null) return;
 
-   const emptyProject = {
+  const emptyProject = {
   projectName: cleanName,
   weddingDate: weddingDate || "2026-08-27T15:00:00",
   budget: 0,
@@ -1764,7 +1967,8 @@ const emailLink = item.email
   paid: 0,
   deadlines: [],
   suppliers: [],
-  agenda: []
+  agenda: [],
+  documents: []
 };
 
     try {
@@ -1933,7 +2137,7 @@ const emailLink = item.email
 
       data = normalizeData(remoteData);
 
-    const needsInitialData =
+   const needsInitialData =
   remoteData.projectName === undefined ||
   remoteData.weddingDate === undefined ||
   remoteData.budget === undefined ||
@@ -1941,7 +2145,8 @@ const emailLink = item.email
   remoteData.paid === undefined ||
   !Array.isArray(remoteData.deadlines) ||
   !Array.isArray(remoteData.suppliers) ||
-  !Array.isArray(remoteData.agenda);
+  !Array.isArray(remoteData.agenda) ||
+  !Array.isArray(remoteData.documents);
 
       if (needsInitialData) {
         await setDoc(eventRef, data, { merge: true });
@@ -1957,6 +2162,7 @@ renderSummary();
 renderDeadlines();
 renderSuppliers();
 renderAgenda();
+renderDocuments();
 updateCountdown();
   });
 
@@ -1979,4 +2185,8 @@ updateCountdown();
 window.addAgendaItem = addAgendaItem;
 window.editAgendaItem = editAgendaItem;
 window.deleteAgendaItem = deleteAgendaItem;
+  window.toggleDocuments = toggleDocuments;
+window.addDocument = addDocument;
+window.editDocument = editDocument;
+window.deleteDocument = deleteDocument;
 </script>
