@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Area Sposi | Roberta & Alessandro</title>
+  <title>Area Sposi | PixelUp Wedding</title>
 
   <style>
     :root {
@@ -350,20 +350,20 @@
       gap: 11px;
     }
 
-  .deadline-section,
-.supplier-section,
-.agenda-section,
-.document-section {
-  display: none;
-  animation: fade 0.22s ease;
-}
+    .deadline-section,
+    .supplier-section,
+    .agenda-section,
+    .document-section {
+      display: none;
+      animation: fade 0.22s ease;
+    }
 
-.deadline-section.show,
-.supplier-section.show,
-.agenda-section.show,
-.document-section.show {
-  display: block;
-}
+    .deadline-section.show,
+    .supplier-section.show,
+    .agenda-section.show,
+    .document-section.show {
+      display: block;
+    }
 
     @keyframes fade {
       from { opacity: 0; transform: translateY(6px); }
@@ -522,7 +522,7 @@
       <a class="circle-btn" href="/" aria-label="Torna alla home">‹</a>
 
       <div class="top-title">
-        <h1>Roberta & Alessandro</h1>
+        <h1 id="projectTitle">Roberta & Alessandro</h1>
         <p>Area privata sposi</p>
       </div>
 
@@ -531,10 +531,10 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="monogram">R|A</div>
+        <div class="monogram" id="projectMonogram">R|A</div>
         <h2>Area privata sposi</h2>
         <p>
-          Qui potete seguire budget, pagamenti, scadenze, fornitori e agenda aggiornati dalla wedding planner.
+          Qui potete seguire budget, pagamenti, scadenze, fornitori, agenda e documenti aggiornati dalla wedding planner.
         </p>
 
         <div class="countdown-card">
@@ -624,9 +624,9 @@
       </button>
 
       <button class="secondary-action" type="button" onclick="toggleDocuments()">
-  <span>▧</span>
-  <span>Documenti</span>
-</button>
+        <span>▧</span>
+        <span>Documenti</span>
+      </button>
 
       <div class="deadline-section" id="deadlineSection">
 
@@ -663,14 +663,14 @@
 
       <div class="document-section" id="documentSection">
 
-  <div class="section-title">
-    <h2>Documenti</h2>
-    <span>Sola lettura</span>
-  </div>
+        <div class="section-title">
+          <h2>Documenti</h2>
+          <span>Sola lettura</span>
+        </div>
 
-  <div class="list-card" id="documentList"></div>
+        <div class="list-card" id="documentList"></div>
 
-</div>
+      </div>
 
       <div class="bottom-note">
         Questa pagina è in sola lettura. Le modifiche vengono aggiornate dalla wedding planner.
@@ -701,26 +701,29 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-  const urlParams = new URLSearchParams(window.location.search);
-const currentEventId = urlParams.get("event") || "roberta-alessandro";
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentEventId = urlParams.get("event") || "roberta-alessandro";
 
-const eventRef = doc(db, "weddingEvents", currentEventId);
-   const defaultData = {
-  budget: 0,
-  due: 0,
-  paid: 0,
-  deadlines: [],
-  suppliers: [],
-  agenda: [],
-  documents: []
-};
+    const eventRef = doc(db, "weddingEvents", currentEventId);
+
+    const defaultData = {
+      projectName: "Roberta & Alessandro",
+      weddingDate: "2026-08-27T15:00:00",
+      budget: 0,
+      due: 0,
+      paid: 0,
+      deadlines: [],
+      suppliers: [],
+      agenda: [],
+      documents: []
+    };
 
     let data = structuredClone(defaultData);
 
     function normalizeData(remoteData) {
       const merged = {
         ...defaultData,
-        ...remoteData
+        ...(remoteData || {})
       };
 
       if (!Array.isArray(merged.deadlines)) {
@@ -734,10 +737,13 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
       if (!Array.isArray(merged.agenda)) {
         merged.agenda = [];
       }
-      if (!Array.isArray(merged.documents)) {
-  merged.documents = [];
-}
 
+      if (!Array.isArray(merged.documents)) {
+        merged.documents = [];
+      }
+
+      merged.projectName = merged.projectName || "Wedding Board";
+      merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
       merged.budget = Number(merged.budget) || 0;
       merged.due = Number(merged.due) || 0;
       merged.paid = Number(merged.paid) || 0;
@@ -767,12 +773,13 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         time: item.time || "",
         notes: item.notes || ""
       }));
+
       merged.documents = merged.documents.map((item) => ({
-  name: item.name || "",
-  category: item.category || "",
-  url: item.url || "",
-  notes: item.notes || ""
-}));
+        name: item.name || "",
+        category: item.category || "",
+        url: item.url || "",
+        notes: item.notes || ""
+      }));
 
       return merged;
     }
@@ -784,8 +791,24 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
       });
     }
 
+    function dateToISO(dateString) {
+      if (!dateString) return "";
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return dateString;
+      }
+
+      if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+        const parts = dateString.split("-");
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+
+      return dateString;
+    }
+
     function formatDate(dateString) {
-      const date = new Date(dateString);
+      const isoDate = dateToISO(dateString);
+      const date = new Date(isoDate + "T00:00:00");
 
       if (isNaN(date)) {
         return { day: "--", month: "---" };
@@ -799,7 +822,34 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
       };
     }
 
+    function makeMonogram(projectName) {
+      if (!projectName) return "♡";
+
+      const clean = projectName
+        .replaceAll("&", " ")
+        .replaceAll("|", " ")
+        .split(" ")
+        .filter(Boolean);
+
+      if (clean.length >= 2) {
+        return clean[0][0].toUpperCase() + "|" + clean[1][0].toUpperCase();
+      }
+
+      return projectName.substring(0, 2).toUpperCase();
+    }
+
     function renderSummary() {
+      const projectTitle = document.getElementById("projectTitle");
+      const projectMonogram = document.getElementById("projectMonogram");
+
+      if (projectTitle) {
+        projectTitle.textContent = data.projectName || "Wedding Board";
+      }
+
+      if (projectMonogram) {
+        projectMonogram.textContent = makeMonogram(data.projectName || "Wedding");
+      }
+
       document.getElementById("budgetValue").textContent = euro(data.budget);
       document.getElementById("dueValue").textContent = euro(data.due);
       document.getElementById("paidValue").textContent = euro(data.paid);
@@ -840,6 +890,20 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
 
     function toggleAgenda() {
       const section = document.getElementById("agendaSection");
+      section.classList.toggle("show");
+
+      if (section.classList.contains("show")) {
+        setTimeout(() => {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      }
+    }
+
+    function toggleDocuments() {
+      const section = document.getElementById("documentSection");
       section.classList.toggle("show");
 
       if (section.classList.contains("show")) {
@@ -972,8 +1036,8 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
       }
 
       const sortedAgenda = [...data.agenda].sort((a, b) => {
-        const dateA = new Date((a.date || "") + "T" + (a.time || "00:00"));
-        const dateB = new Date((b.date || "") + "T" + (b.time || "00:00"));
+        const dateA = new Date(dateToISO(a.date || "") + "T" + (a.time || "00:00"));
+        const dateB = new Date(dateToISO(b.date || "") + "T" + (b.time || "00:00"));
         return dateA - dateB;
       });
 
@@ -1002,78 +1066,67 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         `;
       }).join("");
     }
-function toggleDocuments() {
-  const section = document.getElementById("documentSection");
-  section.classList.toggle("show");
 
-  if (section.classList.contains("show")) {
-    setTimeout(() => {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 120);
-  }
-}
+    function renderDocuments() {
+      const list = document.getElementById("documentList");
 
-function renderDocuments() {
-  const list = document.getElementById("documentList");
+      if (!data.documents || data.documents.length === 0) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>DOC</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessun documento inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>File</strong>
+              <small>in arrivo</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
 
-  if (!data.documents || data.documents.length === 0) {
-    list.innerHTML = `
-      <div class="deadline-row">
-        <div class="date-box">
-          <strong>--</strong>
-          <small>DOC</small>
-        </div>
-        <div class="row-info">
-          <h3>Nessun documento inserito</h3>
-          <p>La wedding planner aggiornerà questa sezione.</p>
-        </div>
-        <div class="row-right">
-          <strong>File</strong>
-          <small>in arrivo</small>
-        </div>
-      </div>
-    `;
-    return;
-  }
+      list.innerHTML = data.documents.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>PDF</strong>
+              <small>DOC</small>
+            </div>
 
-  list.innerHTML = data.documents.map((item) => {
-    return `
-      <div class="deadline-row">
-        <div class="date-box">
-          <strong>PDF</strong>
-          <small>DOC</small>
-        </div>
+            <div class="row-info">
+              <h3>${item.name}</h3>
+              <p>Categoria: ${item.category || "Non indicata"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
 
-        <div class="row-info">
-          <h3>${item.name}</h3>
-          <p>Categoria: ${item.category || "Non indicata"}</p>
-          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+              <p style="margin-top:7px;">
+                <a 
+                  href="${item.url}" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style="color:#4d5a3a; font-weight:bold;"
+                >
+                  Apri documento
+                </a>
+              </p>
+            </div>
 
-          <p style="margin-top:7px;">
-            <a 
-              href="${item.url}" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style="color:#4d5a3a; font-weight:bold;"
-            >
-              Apri documento
-            </a>
-          </p>
-        </div>
+            <div class="row-right">
+              <strong>File</strong>
+              <small>documento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
 
-        <div class="row-right">
-          <strong>File</strong>
-          <small>documento</small>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
     function updateCountdown() {
-      const weddingDate = new Date("2026-08-27T15:00:00").getTime();
+      const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
+      const weddingDate = new Date(weddingDateString).getTime();
       const now = new Date().getTime();
       const distance = weddingDate - now;
 
@@ -1082,7 +1135,9 @@ function renderDocuments() {
       const minutesEl = document.getElementById("minutes");
       const secondsEl = document.getElementById("seconds");
 
-      if (distance <= 0) {
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+      if (isNaN(weddingDate) || distance <= 0) {
         daysEl.textContent = "000";
         hoursEl.textContent = "00";
         minutesEl.textContent = "00";
@@ -1102,21 +1157,24 @@ function renderDocuments() {
     }
 
     onSnapshot(eventRef, (snapshot) => {
-     if (!snapshot.exists()) {
-  renderSummary();
-  renderDeadlines();
-  renderSuppliers();
-  renderAgenda();
-  renderDocuments();
-  return;
-}
+      if (!snapshot.exists()) {
+        renderSummary();
+        renderDeadlines();
+        renderSuppliers();
+        renderAgenda();
+        renderDocuments();
+        updateCountdown();
+        return;
+      }
+
       data = normalizeData(snapshot.data());
 
-    renderSummary();
-renderDeadlines();
-renderSuppliers();
-renderAgenda();
-renderDocuments();
+      renderSummary();
+      renderDeadlines();
+      renderSuppliers();
+      renderAgenda();
+      renderDocuments();
+      updateCountdown();
     });
 
     updateCountdown();
