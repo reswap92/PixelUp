@@ -350,18 +350,20 @@
       gap: 11px;
     }
 
-    .deadline-section,
-    .supplier-section,
-    .agenda-section {
-      display: none;
-      animation: fade 0.22s ease;
-    }
+  .deadline-section,
+.supplier-section,
+.agenda-section,
+.document-section {
+  display: none;
+  animation: fade 0.22s ease;
+}
 
-    .deadline-section.show,
-    .supplier-section.show,
-    .agenda-section.show {
-      display: block;
-    }
+.deadline-section.show,
+.supplier-section.show,
+.agenda-section.show,
+.document-section.show {
+  display: block;
+}
 
     @keyframes fade {
       from { opacity: 0; transform: translateY(6px); }
@@ -621,6 +623,11 @@
         <span>Agenda</span>
       </button>
 
+      <button class="secondary-action" type="button" onclick="toggleDocuments()">
+  <span>▧</span>
+  <span>Documenti</span>
+</button>
+
       <div class="deadline-section" id="deadlineSection">
 
         <div class="section-title">
@@ -654,6 +661,17 @@
 
       </div>
 
+      <div class="document-section" id="documentSection">
+
+  <div class="section-title">
+    <h2>Documenti</h2>
+    <span>Sola lettura</span>
+  </div>
+
+  <div class="list-card" id="documentList"></div>
+
+</div>
+
       <div class="bottom-note">
         Questa pagina è in sola lettura. Le modifiche vengono aggiornate dalla wedding planner.
       </div>
@@ -685,14 +703,15 @@
 
     const eventRef = doc(db, "weddingEvents", "roberta-alessandro");
 
-    const defaultData = {
-      budget: 0,
-      due: 0,
-      paid: 0,
-      deadlines: [],
-      suppliers: [],
-      agenda: []
-    };
+   const defaultData = {
+  budget: 0,
+  due: 0,
+  paid: 0,
+  deadlines: [],
+  suppliers: [],
+  agenda: [],
+  documents: []
+};
 
     let data = structuredClone(defaultData);
 
@@ -713,6 +732,9 @@
       if (!Array.isArray(merged.agenda)) {
         merged.agenda = [];
       }
+      if (!Array.isArray(merged.documents)) {
+  merged.documents = [];
+}
 
       merged.budget = Number(merged.budget) || 0;
       merged.due = Number(merged.due) || 0;
@@ -743,6 +765,12 @@
         time: item.time || "",
         notes: item.notes || ""
       }));
+      merged.documents = merged.documents.map((item) => ({
+  name: item.name || "",
+  category: item.category || "",
+  url: item.url || "",
+  notes: item.notes || ""
+}));
 
       return merged;
     }
@@ -972,7 +1000,76 @@
         `;
       }).join("");
     }
+function toggleDocuments() {
+  const section = document.getElementById("documentSection");
+  section.classList.toggle("show");
 
+  if (section.classList.contains("show")) {
+    setTimeout(() => {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 120);
+  }
+}
+
+function renderDocuments() {
+  const list = document.getElementById("documentList");
+
+  if (!data.documents || data.documents.length === 0) {
+    list.innerHTML = `
+      <div class="deadline-row">
+        <div class="date-box">
+          <strong>--</strong>
+          <small>DOC</small>
+        </div>
+        <div class="row-info">
+          <h3>Nessun documento inserito</h3>
+          <p>La wedding planner aggiornerà questa sezione.</p>
+        </div>
+        <div class="row-right">
+          <strong>File</strong>
+          <small>in arrivo</small>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = data.documents.map((item) => {
+    return `
+      <div class="deadline-row">
+        <div class="date-box">
+          <strong>PDF</strong>
+          <small>DOC</small>
+        </div>
+
+        <div class="row-info">
+          <h3>${item.name}</h3>
+          <p>Categoria: ${item.category || "Non indicata"}</p>
+          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+
+          <p style="margin-top:7px;">
+            <a 
+              href="${item.url}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style="color:#4d5a3a; font-weight:bold;"
+            >
+              Apri documento
+            </a>
+          </p>
+        </div>
+
+        <div class="row-right">
+          <strong>File</strong>
+          <small>documento</small>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
     function updateCountdown() {
       const weddingDate = new Date("2026-08-27T15:00:00").getTime();
       const now = new Date().getTime();
@@ -1003,20 +1100,21 @@
     }
 
     onSnapshot(eventRef, (snapshot) => {
-      if (!snapshot.exists()) {
-        renderSummary();
-        renderDeadlines();
-        renderSuppliers();
-        renderAgenda();
-        return;
-      }
-
+     if (!snapshot.exists()) {
+  renderSummary();
+  renderDeadlines();
+  renderSuppliers();
+  renderAgenda();
+  renderDocuments();
+  return;
+}
       data = normalizeData(snapshot.data());
 
-      renderSummary();
-      renderDeadlines();
-      renderSuppliers();
-      renderAgenda();
+    renderSummary();
+renderDeadlines();
+renderSuppliers();
+renderAgenda();
+renderDocuments();
     });
 
     updateCountdown();
@@ -1025,6 +1123,7 @@
     window.toggleDeadlines = toggleDeadlines;
     window.toggleSuppliers = toggleSuppliers;
     window.toggleAgenda = toggleAgenda;
+    window.toggleDocuments = toggleDocuments;
   </script>
 
 </body>
