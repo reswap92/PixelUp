@@ -1194,9 +1194,9 @@
               ` : ""}
             </h3>
 
-            <p>${item.supplier}</p>
-            <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
-            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+           <p>${item.supplier}</p>
+<p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)}</p>
+${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
 
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
