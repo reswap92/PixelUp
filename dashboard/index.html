@@ -825,17 +825,19 @@
 
   </main>
 
- <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  onSnapshot,
-  collection,
-  getDocs,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    onSnapshot,
+    collection,
+    getDocs,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
     authDomain: "backtag-16de3.firebaseapp.com",
@@ -849,16 +851,18 @@ import {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-const urlParams = new URLSearchParams(window.location.search);
-const currentEventId = urlParams.get("event") || "roberta-alessandro";
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentEventId = urlParams.get("event") || "roberta-alessandro";
 
-const eventRef = doc(db, "weddingEvents", currentEventId);
- const defaultData = {
-  projectName: "Roberta & Alessandro",
-  weddingDate: "2026-08-27T15:00:00",
-  budget: 38000,
-  due: 24500,
-  paid: 13500,
+  const eventRef = doc(db, "weddingEvents", currentEventId);
+
+  const defaultData = {
+    projectName: "Roberta & Alessandro",
+    weddingDate: "2026-08-27T15:00:00",
+    budget: 38000,
+    due: 24500,
+    paid: 13500,
+
     deadlines: [
       {
         name: "Location",
@@ -867,7 +871,7 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         paid: 2000,
         date: "2026-06-15",
         status: "Primo acconto",
-         notes: "Confermare saldo e orari di ingresso fornitori."
+        notes: "Confermare saldo e orari di ingresso fornitori."
       },
       {
         name: "Catering",
@@ -876,7 +880,7 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         paid: 3000,
         date: "2026-07-10",
         status: "Primo acconto",
-         notes: "Confermare saldo e orari di ingresso fornitori."
+        notes: "Verificare menù finale, numero ospiti e saldo previsto."
       },
       {
         name: "Fioraio",
@@ -885,7 +889,7 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         paid: 300,
         date: "2026-07-20",
         status: "Acconto versato",
-         notes: "Confermare saldo e orari di ingresso fornitori."
+        notes: "Confermare centrotavola, bouquet e allestimento rito."
       },
       {
         name: "Musica",
@@ -894,52 +898,47 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
         paid: 400,
         date: "2026-08-01",
         status: "Primo acconto",
-         notes: "Confermare saldo e orari di ingresso fornitori."
+        notes: "Confermare playlist, SIAE e orario montaggio."
       }
     ],
+
     suppliers: [
       {
         service: "Location",
         name: "Villa Mattioli",
         phone: "039 0000000",
         email: "info@villamattioli.it"
-        
       },
       {
         service: "Catering",
         name: "Bon Appétit",
         phone: "333 0000001",
         email: "catering@email.it"
-       
       },
       {
         service: "Fioraio",
         name: "Floral Design",
         phone: "333 0000002",
         email: "fiori@email.it"
-       
       },
       {
         service: "Fotografo",
         name: "Studio Foto",
         phone: "333 0000003",
         email: "foto@email.it"
-       
       },
       {
         service: "Videomaker",
         name: "Video Wedding Studio",
         phone: "333 0000004",
         email: "video@email.it"
-       
       },
       {
         service: "Musica",
         name: "DJ Set",
         phone: "333 0000005",
         email: "dj@email.it"
-      
-      },
+      }
     ]
   };
 
@@ -947,19 +946,23 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
   let firebaseReady = false;
 
   function normalizeData(remoteData) {
+    const safeRemoteData = remoteData || {};
+
     const merged = {
       ...defaultData,
-      ...remoteData
+      ...safeRemoteData
     };
 
-    if (!Array.isArray(remoteData.deadlines)) {
+    if (!Array.isArray(safeRemoteData.deadlines)) {
       merged.deadlines = defaultData.deadlines;
     }
 
-    if (!Array.isArray(remoteData.suppliers)) {
+    if (!Array.isArray(safeRemoteData.suppliers)) {
       merged.suppliers = defaultData.suppliers;
     }
 
+    merged.projectName = merged.projectName || "Wedding Board";
+    merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
     merged.budget = Number(merged.budget) || 0;
     merged.due = Number(merged.due) || 0;
     merged.paid = Number(merged.paid) || 0;
@@ -970,15 +973,15 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
       total: Number(item.total) || 0,
       paid: Number(item.paid) || 0,
       date: item.date || "",
-      status: item.status || "Da saldare"
+      status: item.status || "Da saldare",
+      notes: item.notes || ""
     }));
 
     merged.suppliers = merged.suppliers.map((item) => ({
       service: item.service || "",
       name: item.name || "",
       phone: item.phone || "",
-      email: item.email || "",
-      notes: item.notes || ""
+      email: item.email || ""
     }));
 
     return merged;
@@ -1033,9 +1036,10 @@ const eventRef = doc(db, "weddingEvents", currentEventId);
   function renderSummary() {
     const projectTitle = document.getElementById("projectTitle");
 
-if (projectTitle) {
-  projectTitle.textContent = data.projectName || "Wedding Board";
-}
+    if (projectTitle) {
+      projectTitle.textContent = data.projectName || "Wedding Board";
+    }
+
     document.getElementById("budgetValue").textContent = euro(data.budget);
     document.getElementById("dueValue").textContent = euro(data.due);
     document.getElementById("paidValue").textContent = euro(data.paid);
@@ -1131,6 +1135,23 @@ if (projectTitle) {
   function renderDeadlines() {
     const list = document.getElementById("deadlineList");
 
+    if (!data.deadlines || data.deadlines.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessuna scadenza inserita.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare la prima scadenza.
+        </div>
+      `;
+      return;
+    }
+
     list.innerHTML = data.deadlines.map((item, index) => {
       const date = formatDate(item.date);
       const missing = Math.max(Number(item.total) - Number(item.paid), 0);
@@ -1144,36 +1165,39 @@ if (projectTitle) {
           </div>
 
           <div class="row-info">
-           <h3>
-  ${item.name}
-  ${item.name.toLowerCase().includes("musica") ? `
-    <a 
-      href="https://www.siae.it/it/utilizzatori/feste-private/matrimonio/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      style="
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        margin-left:6px;
-        padding:3px 8px;
-        border-radius:999px;
-        border:1px solid rgba(177,145,85,0.45);
-        background:rgba(255,252,246,0.95);
-        color:#4d5a3a;
-        font-family:Arial,sans-serif;
-        font-size:10px;
-        letter-spacing:0.8px;
-        text-transform:uppercase;
-        vertical-align:middle;
-      "
-    >
-      SIAE
-    </a>
-  ` : ""}
-</h3>
-<p>${item.supplier}</p>
+            <h3>
+              ${item.name}
+              ${item.name.toLowerCase().includes("musica") ? `
+                <a 
+                  href="https://www.siae.it/it/utilizzatori/feste-private/matrimonio/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style="
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin-left:6px;
+                    padding:3px 8px;
+                    border-radius:999px;
+                    border:1px solid rgba(177,145,85,0.45);
+                    background:rgba(255,252,246,0.95);
+                    color:#4d5a3a;
+                    font-family:Arial,sans-serif;
+                    font-size:10px;
+                    letter-spacing:0.8px;
+                    text-transform:uppercase;
+                    vertical-align:middle;
+                  "
+                >
+                  SIAE
+                </a>
+              ` : ""}
+            </h3>
+
+            <p>${item.supplier}</p>
             <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
             </span>
@@ -1207,6 +1231,9 @@ if (projectTitle) {
     const date = prompt("Data scadenza formato AAAA-MM-GG:", item.date);
     if (date === null) return;
 
+    const notes = prompt("Note:", item.notes || "");
+    if (notes === null) return;
+
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
 
@@ -1234,7 +1261,8 @@ if (projectTitle) {
       total: cleanTotal,
       paid: finalPaid,
       date: date || item.date,
-      status: automaticStatus
+      status: automaticStatus,
+      notes: notes || ""
     };
 
     updateTotalsFromDeadlines();
@@ -1244,117 +1272,129 @@ if (projectTitle) {
     saveData();
   }
 
-   function addDeadline() {
-  const name = prompt("Nuova voce / servizio:", "Nuova scadenza");
-  if (name === null) return;
+  function addDeadline() {
+    const name = prompt("Nuova voce / servizio:", "Nuova scadenza");
+    if (name === null) return;
 
-  const supplier = prompt("Fornitore:", "");
-  if (supplier === null) return;
+    const supplier = prompt("Fornitore:", "");
+    if (supplier === null) return;
 
-  const total = prompt("Importo totale:", "0");
-  if (total === null) return;
+    const total = prompt("Importo totale:", "0");
+    if (total === null) return;
 
-  const paid = prompt("Importo già pagato / saldato:", "0");
-  if (paid === null) return;
+    const paid = prompt("Importo già pagato / saldato:", "0");
+    if (paid === null) return;
 
-  const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
-  if (date === null) return;
+    const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+    if (date === null) return;
 
-  const cleanTotal = Number(total.replace(".", "").replace(",", "."));
-  const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
 
-  if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
-    alert("Importi non validi.");
-    return;
+    const cleanTotal = Number(total.replace(".", "").replace(",", "."));
+    const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+
+    if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+      alert("Importi non validi.");
+      return;
+    }
+
+    const finalPaid = Math.min(cleanPaid, cleanTotal);
+    const missing = Math.max(cleanTotal - finalPaid, 0);
+
+    let automaticStatus = "Da saldare";
+
+    if (finalPaid <= 0) {
+      automaticStatus = "Da saldare";
+    } else if (missing > 0) {
+      automaticStatus = "Acconto versato";
+    } else {
+      automaticStatus = "Saldato";
+    }
+
+    data.deadlines.push({
+      name: name || "Nuova scadenza",
+      supplier: supplier || "Fornitore non indicato",
+      total: cleanTotal,
+      paid: finalPaid,
+      date: date || "2026-08-01",
+      status: automaticStatus,
+      notes: notes || ""
+    });
+
+    updateTotalsFromDeadlines();
+
+    renderSummary();
+    renderDeadlines();
+    saveData();
   }
 
-  const finalPaid = Math.min(cleanPaid, cleanTotal);
-  const missing = Math.max(cleanTotal - finalPaid, 0);
+  function renderSuppliers() {
+    const list = document.getElementById("supplierList");
 
-  let automaticStatus = "Da saldare";
-
-  if (finalPaid <= 0) {
-    automaticStatus = "Da saldare";
-  } else if (missing > 0) {
-    automaticStatus = "Acconto versato";
-  } else {
-    automaticStatus = "Saldato";
-  }
-
-  data.deadlines.push({
-    name: name || "Nuova scadenza",
-    supplier: supplier || "Fornitore non indicato",
-    total: cleanTotal,
-    paid: finalPaid,
-    date: date || "2026-08-01",
-    status: automaticStatus
-  });
-
-  updateTotalsFromDeadlines();
-
-  renderSummary();
-  renderDeadlines();
-  saveData();
-}
-
-function renderSuppliers() {
-  const list = document.getElementById("supplierList");
-
-  if (!data.suppliers || data.suppliers.length === 0) {
-    list.innerHTML = `
-      <div style="
-        padding:18px 0;
-        text-align:center;
-        color:#7b6f62;
-        font-family:Arial,sans-serif;
-        font-size:13px;
-        line-height:1.4;
-      ">
-        Nessun fornitore inserito.<br>
-        Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto.
-      </div>
-    `;
-    return;
-  }
-
-  list.innerHTML = data.suppliers.map((item, index) => {
-    return `
-      <div class="supplier-row">
-        <div class="supplier-icon">☏</div>
-
-        <div class="row-info">
-          <h3>${item.service}</h3>
-          <p><strong>${item.name}</strong></p>
-          <p>Tel: ${item.phone}</p>
-          <p>Email: ${item.email}</p>
-          <p>Note: ${item.notes}</p>
+    if (!data.suppliers || data.suppliers.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun fornitore inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto.
         </div>
+      `;
+      return;
+    }
 
-        <div class="row-right">
-          <strong>Contatto</strong>
-          <small>fornitore</small>
+    list.innerHTML = data.suppliers.map((item, index) => {
+      const phoneLink = item.phone ? `tel:${item.phone.replace(/\s+/g, "")}` : "#";
+      const emailLink = item.email ? `mailto:${item.email}` : "#";
 
-          <button class="edit-btn" type="button" onclick="editSupplier(${index})">
-            Modifica
-          </button>
+      return `
+        <div class="supplier-row">
+          <div class="supplier-icon">☏</div>
 
-          <button 
-            class="edit-btn" 
-            type="button" 
-            onclick="deleteSupplier(${index})"
-            style="
-              color:#8a3d2c;
-              border-color:rgba(138,61,44,0.35);
-              margin-left:4px;
-            "
-          >
-            Elimina
-          </button>
+          <div class="row-info">
+            <h3>${item.service}</h3>
+            <p><strong>${item.name}</strong></p>
+            <p>Tel: ${item.phone}</p>
+            <p>Email: ${item.email}</p>
+
+            <p style="margin-top:7px;">
+              <a href="${phoneLink}" style="color:#4d5a3a; font-weight:bold;">Chiama</a>
+              ·
+              <a href="${emailLink}" style="color:#4d5a3a; font-weight:bold;">Email</a>
+            </p>
+          </div>
+
+          <div class="row-right">
+            <strong>Contatto</strong>
+            <small>fornitore</small>
+
+            <button class="edit-btn" type="button" onclick="editSupplier(${index})">
+              Modifica
+            </button>
+
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteSupplier(${index})"
+              style="
+                color:#8a3d2c;
+                border-color:rgba(138,61,44,0.35);
+                margin-left:4px;
+              "
+            >
+              Elimina
+            </button>
+          </div>
         </div>
-      </div>
-    `;
-  }).join("");
-}
+      `;
+    }).join("");
+  }
 
   function editSupplier(index) {
     const item = data.suppliers[index];
@@ -1371,269 +1411,268 @@ function renderSuppliers() {
     const email = prompt("Email:", item.email);
     if (email === null) return;
 
-    const notes = prompt("Note:", item.notes);
-    if (notes === null) return;
-
     data.suppliers[index] = {
       service: service || item.service,
       name: name || item.name,
       phone: phone || item.phone,
-      email: email || item.email,
-      notes: notes || item.notes
+      email: email || item.email
     };
 
     renderSuppliers();
     saveData();
   }
-   function deleteSupplier(index) {
-  const item = data.suppliers[index];
 
-  const confirmDelete = confirm(
-    "Vuoi eliminare questo fornitore?\n\n" + 
-    item.service + " - " + item.name
-  );
+  function deleteSupplier(index) {
+    const item = data.suppliers[index];
 
-  if (!confirmDelete) return;
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo fornitore?\n\n" + 
+      item.service + " - " + item.name
+    );
 
-  data.suppliers.splice(index, 1);
+    if (!confirmDelete) return;
 
-  renderSuppliers();
-  saveData();
-}
-function addSupplier() {
-  const service = prompt("Servizio:", "Nuovo fornitore");
-  if (service === null) return;
+    data.suppliers.splice(index, 1);
 
-  const name = prompt("Nome fornitore:", "");
-  if (name === null) return;
-
-  const phone = prompt("Numero di telefono:", "");
-  if (phone === null) return;
-
-  const email = prompt("Email:", "");
-  if (email === null) return;
-
-  const notes = prompt("Note:", "");
-  if (notes === null) return;
-
-  data.suppliers.push({
-    service: service || "Nuovo fornitore",
-    name: name || "Nome non indicato",
-    phone: phone || "Telefono non indicato",
-    email: email || "Email non indicata",
-    notes: notes || "Nessuna nota"
-  });
-
-  renderSuppliers();
-  saveData();
-}
-   function toggleProjectMenu() {
-  const menu = document.getElementById("projectMenu");
-  menu.classList.toggle("show");
-}
-
-function makeProjectId(name) {
-  return name
-    .toLowerCase()
-    .trim()
-    .replaceAll("à", "a")
-    .replaceAll("è", "e")
-    .replaceAll("é", "e")
-    .replaceAll("ì", "i")
-    .replaceAll("ò", "o")
-    .replaceAll("ù", "u")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-async function createNewProject() {
-  const projectName = prompt("Nome nuovo progetto:", "Nuovo matrimonio");
-
-  if (projectName === null) return;
-
-  const cleanName = projectName.trim();
-
-  if (!cleanName) {
-    alert("Inserisci un nome progetto valido.");
-    return;
+    renderSuppliers();
+    saveData();
   }
 
-  const projectId = makeProjectId(cleanName);
+  function addSupplier() {
+    const service = prompt("Servizio:", "Nuovo fornitore");
+    if (service === null) return;
 
-  if (!projectId) {
-    alert("Nome progetto non valido.");
-    return;
+    const name = prompt("Nome fornitore:", "");
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", "");
+    if (phone === null) return;
+
+    const email = prompt("Email:", "");
+    if (email === null) return;
+
+    data.suppliers.push({
+      service: service || "Nuovo fornitore",
+      name: name || "Nome non indicato",
+      phone: phone || "Telefono non indicato",
+      email: email || "Email non indicata"
+    });
+
+    renderSuppliers();
+    saveData();
   }
 
-const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "2026-08-27T15:00:00");
-
-if (weddingDate === null) return;
-
-const emptyProject = {
-  projectName: cleanName,
-  weddingDate: weddingDate || "2026-08-27T15:00:00",
-  budget: 0,
-  due: 0,
-  paid: 0,
-  deadlines: [],
-  suppliers: []
-};
-  try {
-    await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
-
-    window.location.href = "/dashboard/?event=" + projectId;
-  } catch (error) {
-    console.error("Errore creazione progetto:", error);
-    alert("Errore nella creazione del progetto.");
+  function toggleProjectMenu() {
+    const menu = document.getElementById("projectMenu");
+    menu.classList.toggle("show");
   }
-}
 
-async function showProjectsList() {
-  const list = document.getElementById("projectsList");
+  function makeProjectId(name) {
+    return name
+      .toLowerCase()
+      .trim()
+      .replaceAll("à", "a")
+      .replaceAll("è", "e")
+      .replaceAll("é", "e")
+      .replaceAll("ì", "i")
+      .replaceAll("ò", "o")
+      .replaceAll("ù", "u")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
 
-  list.innerHTML = `
-    <div style="
-      padding:16px 0;
-      text-align:center;
-      color:#7b6f62;
-      font-family:Arial,sans-serif;
-      font-size:13px;
-    ">
-      Caricamento progetti...
-    </div>
-  `;
+  async function createNewProject() {
+    const projectName = prompt("Nome nuovo progetto:", "Nuovo matrimonio");
 
-  try {
-    const snapshot = await getDocs(collection(db, "weddingEvents"));
+    if (projectName === null) return;
 
-    if (snapshot.empty) {
-      list.innerHTML = `
-        <div style="
-          padding:16px 0;
-          text-align:center;
-          color:#7b6f62;
-          font-family:Arial,sans-serif;
-          font-size:13px;
-        ">
-          Nessun progetto trovato.
-        </div>
-      `;
+    const cleanName = projectName.trim();
+
+    if (!cleanName) {
+      alert("Inserisci un nome progetto valido.");
       return;
     }
 
-    list.innerHTML = "";
+    const projectId = makeProjectId(cleanName);
 
-    snapshot.forEach((docSnap) => {
-      const project = docSnap.data();
-      const id = docSnap.id;
+    if (!projectId) {
+      alert("Nome progetto non valido.");
+      return;
+    }
 
-      const name = project.projectName || id;
-      const budget = Number(project.budget) || 0;
-      const paid = Number(project.paid) || 0;
-      const due = Number(project.due) || 0;
-list.innerHTML += `
-  <div class="project-item">
-    <div>
-      <h4>${name}</h4>
-      <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-    </div>
+    const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "2026-08-27T15:00:00");
 
-    <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-      <a href="/dashboard/?event=${id}">
-        Apri
-      </a>
+    if (weddingDate === null) return;
 
-      <button 
-        type="button" 
-        onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
-        style="
-          border:1px solid rgba(138,61,44,0.35);
-          background:rgba(255,252,246,0.95);
-          color:#8a3d2c;
-          border-radius:999px;
-          padding:7px 11px;
-          font-family:Arial,sans-serif;
-          font-size:12px;
-          text-transform:uppercase;
-        "
-      >
-        Elimina
-      </button>
-    </div>
-  </div>
-`;
-    });
+    const emptyProject = {
+      projectName: cleanName,
+      weddingDate: weddingDate || "2026-08-27T15:00:00",
+      budget: 0,
+      due: 0,
+      paid: 0,
+      deadlines: [],
+      suppliers: []
+    };
 
-  } catch (error) {
-    console.error("Errore caricamento progetti:", error);
+    try {
+      await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
+
+      window.location.href = "/dashboard/?event=" + projectId;
+    } catch (error) {
+      console.error("Errore creazione progetto:", error);
+      alert("Errore nella creazione del progetto.");
+    }
+  }
+
+  async function showProjectsList() {
+    const list = document.getElementById("projectsList");
 
     list.innerHTML = `
       <div style="
         padding:16px 0;
         text-align:center;
-        color:#8a3d2c;
+        color:#7b6f62;
         font-family:Arial,sans-serif;
         font-size:13px;
       ">
-        Errore nel caricamento dei progetti.
+        Caricamento progetti...
       </div>
     `;
+
+    try {
+      const snapshot = await getDocs(collection(db, "weddingEvents"));
+
+      if (snapshot.empty) {
+        list.innerHTML = `
+          <div style="
+            padding:16px 0;
+            text-align:center;
+            color:#7b6f62;
+            font-family:Arial,sans-serif;
+            font-size:13px;
+          ">
+            Nessun progetto trovato.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = "";
+
+      snapshot.forEach((docSnap) => {
+        const project = docSnap.data();
+        const id = docSnap.id;
+
+        const name = project.projectName || id;
+        const budget = Number(project.budget) || 0;
+        const paid = Number(project.paid) || 0;
+        const due = Number(project.due) || 0;
+
+        list.innerHTML += `
+          <div class="project-item">
+            <div>
+              <h4>${name}</h4>
+              <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+            </div>
+
+            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
+              <a href="/dashboard/?event=${id}">
+                Apri
+              </a>
+
+              <button 
+                type="button" 
+                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
+                style="
+                  border:1px solid rgba(138,61,44,0.35);
+                  background:rgba(255,252,246,0.95);
+                  color:#8a3d2c;
+                  border-radius:999px;
+                  padding:7px 11px;
+                  font-family:Arial,sans-serif;
+                  font-size:12px;
+                  text-transform:uppercase;
+                "
+              >
+                Elimina
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+    } catch (error) {
+      console.error("Errore caricamento progetti:", error);
+
+      list.innerHTML = `
+        <div style="
+          padding:16px 0;
+          text-align:center;
+          color:#8a3d2c;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+        ">
+          Errore nel caricamento dei progetti.
+        </div>
+      `;
+    }
   }
-}
-   async function deleteProject(projectId, projectName) {
-  if (projectId === currentEventId) {
-    alert("Non puoi eliminare il progetto che stai visualizzando ora. Aprine prima un altro.");
-    return;
+
+  async function deleteProject(projectId, projectName) {
+    if (projectId === currentEventId) {
+      alert("Non puoi eliminare il progetto che stai visualizzando ora. Aprine prima un altro.");
+      return;
+    }
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo progetto?\n\n" +
+      projectName +
+      "\n\nQuesta azione cancella la dashboard da Firebase."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteDoc(doc(db, "weddingEvents", projectId));
+      await showProjectsList();
+    } catch (error) {
+      console.error("Errore eliminazione progetto:", error);
+      alert("Errore durante l'eliminazione del progetto.");
+    }
   }
 
-  const confirmDelete = confirm(
-    "Vuoi eliminare questo progetto?\n\n" +
-    projectName +
-    "\n\nQuesta azione cancella la dashboard da Firebase."
-  );
+  function updateCountdown() {
+    const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
+    const weddingDate = new Date(weddingDateString).getTime();
 
-  if (!confirmDelete) return;
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
 
-  try {
-    await deleteDoc(doc(db, "weddingEvents", projectId));
-    await showProjectsList();
-  } catch (error) {
-    console.error("Errore eliminazione progetto:", error);
-    alert("Errore durante l'eliminazione del progetto.");
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+    if (isNaN(weddingDate) || distance <= 0) {
+      daysEl.textContent = "000";
+      hoursEl.textContent = "00";
+      minutesEl.textContent = "00";
+      secondsEl.textContent = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    daysEl.textContent = String(days).padStart(3, "0");
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
   }
-}
-function updateCountdown() {
-  const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
-  const weddingDate = new Date(weddingDateString).getTime();
-
-  const now = new Date().getTime();
-  const distance = weddingDate - now;
-
-  const daysEl = document.getElementById("days");
-  const hoursEl = document.getElementById("hours");
-  const minutesEl = document.getElementById("minutes");
-  const secondsEl = document.getElementById("seconds");
-
-  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
-
-  if (isNaN(weddingDate) || distance <= 0) {
-    daysEl.textContent = "000";
-    hoursEl.textContent = "00";
-    minutesEl.textContent = "00";
-    secondsEl.textContent = "00";
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((distance / (1000 * 60)) % 60);
-  const seconds = Math.floor((distance / 1000) % 60);
-
-  daysEl.textContent = String(days).padStart(3, "0");
-  hoursEl.textContent = String(hours).padStart(2, "0");
-  minutesEl.textContent = String(minutes).padStart(2, "0");
-  secondsEl.textContent = String(seconds).padStart(2, "0");
-}
 
   onSnapshot(eventRef, async (snapshot) => {
     if (snapshot.exists()) {
@@ -1642,6 +1681,8 @@ function updateCountdown() {
       data = normalizeData(remoteData);
 
       const needsInitialData =
+        remoteData.projectName === undefined ||
+        remoteData.weddingDate === undefined ||
         remoteData.budget === undefined ||
         remoteData.due === undefined ||
         remoteData.paid === undefined ||
@@ -1671,12 +1712,12 @@ function updateCountdown() {
   window.toggleDeadlines = toggleDeadlines;
   window.toggleSuppliers = toggleSuppliers;
   window.editDeadline = editDeadline;
-   window.addDeadline = addDeadline;
+  window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
-   window.addSupplier = addSupplier;
-   window.deleteSupplier = deleteSupplier;
-   window.toggleProjectMenu = toggleProjectMenu;
-window.showProjectsList = showProjectsList;
-window.createNewProject = createNewProject;
-   window.deleteProject = deleteProject;
+  window.addSupplier = addSupplier;
+  window.deleteSupplier = deleteSupplier;
+  window.toggleProjectMenu = toggleProjectMenu;
+  window.showProjectsList = showProjectsList;
+  window.createNewProject = createNewProject;
+  window.deleteProject = deleteProject;
 </script>
