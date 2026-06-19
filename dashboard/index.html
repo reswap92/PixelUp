@@ -1350,9 +1350,38 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
     }
 
     list.innerHTML = data.suppliers.map((item, index) => {
-      const phoneLink = item.phone ? `tel:${item.phone.replace(/\s+/g, "")}` : "#";
-      const emailLink = item.email ? `mailto:${item.email}` : "#";
+      const cleanPhone = item.phone ? item.phone.replace(/\D/g, "") : "";
+const phoneLink = cleanPhone ? `tel:${cleanPhone}` : "#";
 
+const whatsappNumber = cleanPhone
+  ? (cleanPhone.startsWith("39") ? cleanPhone : "39" + cleanPhone)
+  : "";
+
+const whatsappMessage = encodeURIComponent(
+  "Buongiorno, sono Emilia Wedding Events.\n\n" +
+  "La contatto per il matrimonio " + (data.projectName || "") + ".\n\n" +
+  "Avrei bisogno di un aggiornamento relativo al servizio: " + (item.service || "") + ".\n\n" +
+  "Grazie mille."
+);
+
+const whatsappLink = whatsappNumber
+  ? `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
+  : "#";
+
+const subject = encodeURIComponent("Aggiornamento matrimonio - " + (data.projectName || "Wedding"));
+
+const body = encodeURIComponent(
+  "Buongiorno,\n\n" +
+  "la contatto per un aggiornamento relativo al matrimonio " + (data.projectName || "") + ".\n\n" +
+  "Resto in attesa di un gentile riscontro.\n\n" +
+  "Cordiali saluti,\n" +
+  "Emilia Wedding Events\n" +
+  "emiliaweddingevents@libero.it"
+);
+
+const emailLink = item.email
+  ? `mailto:${item.email}?subject=${subject}&body=${body}`
+  : "#";
       return `
         <div class="supplier-row">
           <div class="supplier-icon">☏</div>
@@ -1363,11 +1392,13 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
             <p>Tel: ${item.phone}</p>
             <p>Email: ${item.email}</p>
 
-            <p style="margin-top:7px;">
-              <a href="${phoneLink}" style="color:#4d5a3a; font-weight:bold;">Chiama</a>
-              ·
-              <a href="${emailLink}" style="color:#4d5a3a; font-weight:bold;">Email</a>
-            </p>
+          <p style="margin-top:7px;">
+  <a href="${phoneLink}" style="color:#4d5a3a; font-weight:bold;">Chiama</a>
+  ·
+  <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" style="color:#4d5a3a; font-weight:bold;">WhatsApp</a>
+  ·
+  <a href="${emailLink}" style="color:#4d5a3a; font-weight:bold;">Email</a>
+</p>
           </div>
 
           <div class="row-right">
