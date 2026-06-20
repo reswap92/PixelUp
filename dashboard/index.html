@@ -904,7 +904,9 @@
     onSnapshot,
     collection,
     getDocs,
-    deleteDoc
+    deleteDoc,
+    query,
+    where
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -920,111 +922,36 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentEventId = urlParams.get("event") || "roberta-alessandro";
+  const hasAccess = localStorage.getItem("pixelup_access") === "true";
+  const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
+  const loggedRole = String(localStorage.getItem("pixelup_role") || "cliente").trim().toLowerCase();
+  const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
+  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 1);
 
-  const eventRef = doc(db, "weddingEvents", currentEventId);
+  if (!hasAccess || !loggedEmail) {
+    window.location.href = "/dasgboardemo/accedi.html";
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentEventId = urlParams.get("event") || "";
+  const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
   const defaultData = {
-    projectName: "Roberta & Alessandro",
-    weddingDate: "27-08-2026T15:00:00",
-    budget: 38000,
-    due: 24500,
-    paid: 13500,
+    projectName: "Seleziona o crea un progetto",
+    weddingDate: "2026-08-27T15:00:00",
+    budget: 0,
+    due: 0,
+    paid: 0,
+    ownerEmail: loggedEmail,
+    ownerRole: loggedRole,
+    accessCode: loggedCode,
 
-    deadlines: [
-      {
-        name: "Location",
-        supplier: "Villa Mattioli",
-        total: 8000,
-        paid: 2000,
-        date: "15-06-2026",
-        status: "Primo acconto",
-        notes: "Confermare saldo e orari di ingresso fornitori."
-      },
-      {
-        name: "Catering",
-        supplier: "Bon Appétit",
-        total: 10000,
-        paid: 3000,
-        date: "10-07-2026",
-        status: "Primo acconto",
-        notes: "Verificare menù finale, numero ospiti e saldo previsto."
-      },
-      {
-        name: "Fioraio",
-        supplier: "Floral Design",
-        total: 500,
-        paid: 300,
-        date: "20-07-2026",
-        status: "Acconto versato",
-        notes: "Confermare centrotavola, bouquet e allestimento rito."
-      },
-      {
-        name: "Musica",
-        supplier: "DJ Set",
-        total: 1200,
-        paid: 400,
-        date: "01-08-2026",
-        status: "Primo acconto",
-        notes: "Confermare playlist, SIAE e orario montaggio."
-      }
-    ],
+    deadlines: [],
 
-    suppliers: [
-      {
-        service: "Location",
-        name: "Villa Mattioli",
-        phone: "039 0000000",
-        email: "info@villamattioli.it"
-      },
-      {
-        service: "Catering",
-        name: "Bon Appétit",
-        phone: "333 0000001",
-        email: "catering@email.it"
-      },
-      {
-        service: "Fioraio",
-        name: "Floral Design",
-        phone: "333 0000002",
-        email: "fiori@email.it"
-      },
-      {
-        service: "Fotografo",
-        name: "Studio Foto",
-        phone: "333 0000003",
-        email: "foto@email.it"
-      },
-      {
-        service: "Videomaker",
-        name: "Video Wedding Studio",
-        phone: "333 0000004",
-        email: "video@email.it"
-      },
-      {
-        service: "Musica",
-        name: "DJ Set",
-        phone: "333 0000005",
-        email: "dj@email.it"
-      }
-    ],
-    agenda: [
-  {
-    title: "Prova menù",
-    place: "Villa Mattioli",
-    date: "2026-07-15",
-    time: "18:30",
-    notes: "Confermare menù finale e numero ospiti."
-  },
-  {
-    title: "Sopralluogo location",
-    place: "Villa Mattioli",
-    date: "2026-07-25",
-    time: "16:00",
-    notes: "Controllare allestimento, ingresso fornitori e piano tavoli."
-  }
-],
+    suppliers: [],
+
+    agenda: [],
+
     documents: []
   };
 
@@ -1048,17 +975,21 @@
     }
     
     if (!Array.isArray(safeRemoteData.agenda)) {
-  merged.agenda = defaultData.agenda;
-}
+      merged.agenda = defaultData.agenda;
+    }
+
     if (!Array.isArray(safeRemoteData.documents)) {
-  merged.documents = defaultData.documents || [];
-}
+      merged.documents = defaultData.documents || [];
+    }
 
     merged.projectName = merged.projectName || "Wedding Board";
-    merged.weddingDate = merged.weddingDate || "27-08-2026T15:00:00";
+    merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
     merged.budget = Number(merged.budget) || 0;
     merged.due = Number(merged.due) || 0;
     merged.paid = Number(merged.paid) || 0;
+    merged.ownerEmail = String(merged.ownerEmail || loggedEmail).trim().toLowerCase();
+    merged.ownerRole = merged.ownerRole || loggedRole;
+    merged.accessCode = merged.accessCode || loggedCode;
 
     merged.deadlines = merged.deadlines.map((item) => ({
       name: item.name || "",
@@ -1078,27 +1009,37 @@
     }));
 
     merged.agenda = merged.agenda.map((item) => ({
-  title: item.title || "",
-  place: item.place || "",
-  date: item.date || "",
-  time: item.time || "",
-  notes: item.notes || ""
-}));
+      title: item.title || "",
+      place: item.place || "",
+      date: item.date || "",
+      time: item.time || "",
+      notes: item.notes || ""
+    }));
 
     merged.documents = merged.documents.map((item) => ({
-  name: item.name || "",
-  category: item.category || "",
-  url: item.url || "",
-  notes: item.notes || ""
-}));
+      name: item.name || "",
+      category: item.category || "",
+      url: item.url || "",
+      notes: item.notes || ""
+    }));
 
     return merged;
   }
 
   async function saveData() {
+    if (!eventRef) {
+      alert("Apri o crea un progetto prima di salvare modifiche.");
+      return;
+    }
+
     if (!firebaseReady) return;
 
     try {
+      data.ownerEmail = loggedEmail;
+      data.ownerRole = loggedRole;
+      data.accessCode = loggedCode;
+      data.updatedAt = new Date().toISOString();
+
       await setDoc(eventRef, data, { merge: true });
     } catch (error) {
       console.error("Errore salvataggio Firebase:", error);
@@ -1141,71 +1082,71 @@
     data.paid = totalPaid;
   }
 
- function renderSummary() {
-  const projectTitle = document.getElementById("projectTitle");
+  function renderSummary() {
+    const projectTitle = document.getElementById("projectTitle");
 
-  if (projectTitle) {
-    projectTitle.textContent = data.projectName || "Wedding Board";
+    if (projectTitle) {
+      projectTitle.textContent = data.projectName || "Wedding Board";
+    }
+
+    document.getElementById("budgetValue").textContent = euro(data.budget);
+    document.getElementById("dueValue").textContent = euro(data.due);
+    document.getElementById("paidValue").textContent = euro(data.paid);
+
+    const totalReal = Number(data.paid) + Number(data.due);
+    const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
+
+    document.getElementById("paidPercent").textContent = percent + "%";
+    document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
   }
 
-  document.getElementById("budgetValue").textContent = euro(data.budget);
-  document.getElementById("dueValue").textContent = euro(data.due);
-  document.getElementById("paidValue").textContent = euro(data.paid);
+  function editSummary(type) {
+    let label = "";
+    let currentValue = 0;
 
-  const totalReal = Number(data.paid) + Number(data.due);
-  const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
+    if (type === "budget") {
+      label = "Budget totale";
+      currentValue = data.budget;
+    }
 
-  document.getElementById("paidPercent").textContent = percent + "%";
-  document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
-}
+    if (type === "due") {
+      label = "Da saldare";
+      currentValue = data.due;
+    }
 
-function editSummary(type) {
-  let label = "";
-  let currentValue = 0;
+    if (type === "paid") {
+      label = "Saldato";
+      currentValue = data.paid;
+    }
 
-  if (type === "budget") {
-    label = "Budget totale";
-    currentValue = data.budget;
+    const newValue = prompt("Modifica " + label + ":", currentValue);
+
+    if (newValue === null) return;
+
+    const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
+
+    if (isNaN(cleanValue) || cleanValue < 0) {
+      alert("Inserisci un importo valido.");
+      return;
+    }
+
+    if (type === "budget") {
+      data.budget = cleanValue;
+    }
+
+    if (type === "paid") {
+      data.paid = cleanValue;
+    }
+
+    if (type === "due") {
+      data.due = cleanValue;
+    }
+
+    renderSummary();
+    saveData();
   }
-
-  if (type === "due") {
-    label = "Da saldare";
-    currentValue = data.due;
-  }
-
-  if (type === "paid") {
-    label = "Saldato";
-    currentValue = data.paid;
-  }
-
-  const newValue = prompt("Modifica " + label + ":", currentValue);
-
-  if (newValue === null) return;
-
-  const cleanValue = Number(newValue.replace(".", "").replace(",", "."));
-
-  if (isNaN(cleanValue) || cleanValue < 0) {
-    alert("Inserisci un importo valido.");
-    return;
-  }
-
-  if (type === "budget") {
-    data.budget = cleanValue;
-  }
-
-  if (type === "paid") {
-    data.paid = cleanValue;
-  }
-
-  if (type === "due") {
-    data.due = cleanValue;
-  }
-
-  renderSummary();
-  saveData();
-}
   
- function toggleDeadlines() {
+  function toggleDeadlines() {
     const section = document.getElementById("deadlineSection");
     section.classList.toggle("show");
 
@@ -1234,18 +1175,18 @@ function editSummary(type) {
   }
 
   function toggleAgenda() {
-  const section = document.getElementById("agendaSection");
-  section.classList.toggle("show");
+    const section = document.getElementById("agendaSection");
+    section.classList.toggle("show");
 
-  if (section.classList.contains("show")) {
-    setTimeout(() => {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 120);
+    if (section.classList.contains("show")) {
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
   }
-}
 
   function renderDeadlines() {
     const list = document.getElementById("deadlineList");
@@ -1309,9 +1250,9 @@ function editSummary(type) {
               ` : ""}
             </h3>
 
-           <p>${item.supplier}</p>
-<p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)}</p>
-${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.supplier}</p>
+            <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)}</p>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
 
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
@@ -1445,148 +1386,149 @@ ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
   }
 
   function renderAgenda() {
-  const list = document.getElementById("agendaList");
+    const list = document.getElementById("agendaList");
 
-  if (!data.agenda || data.agenda.length === 0) {
-    list.innerHTML = `
-      <div style="
-        padding:18px 0;
-        text-align:center;
-        color:#7b6f62;
-        font-family:Arial,sans-serif;
-        font-size:13px;
-        line-height:1.4;
-      ">
-        Nessun appuntamento inserito.<br>
-        Clicca su <strong>+ Aggiungi</strong> per creare il primo appuntamento.
-      </div>
-    `;
-    return;
+    if (!data.agenda || data.agenda.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun appuntamento inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare il primo appuntamento.
+        </div>
+      `;
+      return;
+    }
+
+    const sortedAgenda = [...data.agenda].sort((a, b) => {
+      const dateA = new Date((a.date || "") + "T" + (a.time || "00:00"));
+      const dateB = new Date((b.date || "") + "T" + (b.time || "00:00"));
+      return dateA - dateB;
+    });
+
+    list.innerHTML = sortedAgenda.map((item) => {
+      const realIndex = data.agenda.indexOf(item);
+      const date = formatDate(item.date);
+
+      return `
+        <div class="deadline-row">
+          <div class="date-box">
+            <strong>${date.day}</strong>
+            <small>${date.month}</small>
+          </div>
+
+          <div class="row-info">
+            <h3>${item.title}</h3>
+            <p>${item.place}</p>
+            <p>Ore: ${item.time || "--:--"}</p>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+          </div>
+
+          <div class="row-right">
+            <strong>${item.time || "--:--"}</strong>
+            <small>appuntamento</small>
+
+            <button class="edit-btn" type="button" onclick="editAgendaItem(${realIndex})">
+              Modifica
+            </button>
+
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteAgendaItem(${realIndex})"
+              style="
+                color:#8a3d2c;
+                border-color:rgba(138,61,44,0.35);
+                margin-left:4px;
+              "
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
   }
 
-  const sortedAgenda = [...data.agenda].sort((a, b) => {
-    const dateA = new Date((a.date || "") + "T" + (a.time || "00:00"));
-    const dateB = new Date((b.date || "") + "T" + (b.time || "00:00"));
-    return dateA - dateB;
-  });
+  function addAgendaItem() {
+    const title = prompt("Titolo appuntamento:", "Nuovo appuntamento");
+    if (title === null) return;
 
-  list.innerHTML = sortedAgenda.map((item) => {
-    const realIndex = data.agenda.indexOf(item);
-    const date = formatDate(item.date);
+    const place = prompt("Luogo:", "");
+    if (place === null) return;
 
-    return `
-      <div class="deadline-row">
-        <div class="date-box">
-          <strong>${date.day}</strong>
-          <small>${date.month}</small>
-        </div>
+    const date = prompt("Data formato AAAA-MM-GG:", "2026-08-01");
+    if (date === null) return;
 
-        <div class="row-info">
-          <h3>${item.title}</h3>
-          <p>${item.place}</p>
-          <p>Ore: ${item.time || "--:--"}</p>
-          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
-        </div>
+    const time = prompt("Ora formato HH:MM:", "18:00");
+    if (time === null) return;
 
-        <div class="row-right">
-          <strong>${item.time || "--:--"}</strong>
-          <small>appuntamento</small>
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
 
-          <button class="edit-btn" type="button" onclick="editAgendaItem(${realIndex})">
-            Modifica
-          </button>
+    data.agenda.push({
+      title: title || "Nuovo appuntamento",
+      place: place || "Luogo non indicato",
+      date: date || "",
+      time: time || "",
+      notes: notes || ""
+    });
 
-          <button 
-            class="edit-btn" 
-            type="button" 
-            onclick="deleteAgendaItem(${realIndex})"
-            style="
-              color:#8a3d2c;
-              border-color:rgba(138,61,44,0.35);
-              margin-left:4px;
-            "
-          >
-            Elimina
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
+    renderAgenda();
+    saveData();
+  }
 
-function addAgendaItem() {
-  const title = prompt("Titolo appuntamento:", "Nuovo appuntamento");
-  if (title === null) return;
+  function editAgendaItem(index) {
+    const item = data.agenda[index];
 
-  const place = prompt("Luogo:", "");
-  if (place === null) return;
+    const title = prompt("Titolo appuntamento:", item.title);
+    if (title === null) return;
 
-  const date = prompt("Data formato AAAA-MM-GG:", "2026-08-01");
-  if (date === null) return;
+    const place = prompt("Luogo:", item.place);
+    if (place === null) return;
 
-  const time = prompt("Ora formato HH:MM:", "18:00");
-  if (time === null) return;
+    const date = prompt("Data formato AAAA-MM-GG:", item.date);
+    if (date === null) return;
 
-  const notes = prompt("Note:", "");
-  if (notes === null) return;
+    const time = prompt("Ora formato HH:MM:", item.time);
+    if (time === null) return;
 
-  data.agenda.push({
-    title: title || "Nuovo appuntamento",
-    place: place || "Luogo non indicato",
-    date: date || "",
-    time: time || "",
-    notes: notes || ""
-  });
+    const notes = prompt("Note:", item.notes);
+    if (notes === null) return;
 
-  renderAgenda();
-  saveData();
-}
+    data.agenda[index] = {
+      title: title || item.title,
+      place: place || item.place,
+      date: date || item.date,
+      time: time || item.time,
+      notes: notes || ""
+    };
 
-function editAgendaItem(index) {
-  const item = data.agenda[index];
+    renderAgenda();
+    saveData();
+  }
 
-  const title = prompt("Titolo appuntamento:", item.title);
-  if (title === null) return;
+  function deleteAgendaItem(index) {
+    const item = data.agenda[index];
 
-  const place = prompt("Luogo:", item.place);
-  if (place === null) return;
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo appuntamento?\n\n" +
+      item.title + " - " + item.date + " " + item.time
+    );
 
-  const date = prompt("Data formato AAAA-MM-GG:", item.date);
-  if (date === null) return;
+    if (!confirmDelete) return;
 
-  const time = prompt("Ora formato HH:MM:", item.time);
-  if (time === null) return;
+    data.agenda.splice(index, 1);
 
-  const notes = prompt("Note:", item.notes);
-  if (notes === null) return;
+    renderAgenda();
+    saveData();
+  }
 
-  data.agenda[index] = {
-    title: title || item.title,
-    place: place || item.place,
-    date: date || item.date,
-    time: time || item.time,
-    notes: notes || ""
-  };
-
-  renderAgenda();
-  saveData();
-}
-
-function deleteAgendaItem(index) {
-  const item = data.agenda[index];
-
-  const confirmDelete = confirm(
-    "Vuoi eliminare questo appuntamento?\n\n" +
-    item.title + " - " + item.date + " " + item.time
-  );
-
-  if (!confirmDelete) return;
-
-  data.agenda.splice(index, 1);
-
-  renderAgenda();
-  saveData();
-}
   function renderSuppliers() {
     const list = document.getElementById("supplierList");
 
@@ -1609,37 +1551,38 @@ function deleteAgendaItem(index) {
 
     list.innerHTML = data.suppliers.map((item, index) => {
       const cleanPhone = item.phone ? item.phone.replace(/\D/g, "") : "";
-const phoneLink = cleanPhone ? `tel:${cleanPhone}` : "#";
+      const phoneLink = cleanPhone ? `tel:${cleanPhone}` : "#";
 
-const whatsappNumber = cleanPhone
-  ? (cleanPhone.startsWith("39") ? cleanPhone : "39" + cleanPhone)
-  : "";
+      const whatsappNumber = cleanPhone
+        ? (cleanPhone.startsWith("39") ? cleanPhone : "39" + cleanPhone)
+        : "";
 
-const whatsappMessage = encodeURIComponent(
-  "Buongiorno, sono Emilia Wedding Events.\n\n" +
-  "La contatto per il matrimonio " + (data.projectName || "") + ".\n\n" +
-  "Avrei bisogno di un aggiornamento relativo al servizio: " + (item.service || "") + ".\n\n" +
-  "Grazie mille."
-);
+      const whatsappMessage = encodeURIComponent(
+        "Buongiorno, sono Emilia Wedding Events.\n\n" +
+        "La contatto per il matrimonio " + (data.projectName || "") + ".\n\n" +
+        "Avrei bisogno di un aggiornamento relativo al servizio: " + (item.service || "") + ".\n\n" +
+        "Grazie mille."
+      );
 
-const whatsappLink = whatsappNumber
-  ? `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
-  : "#";
+      const whatsappLink = whatsappNumber
+        ? `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
+        : "#";
 
-const subject = encodeURIComponent("Aggiornamento matrimonio - " + (data.projectName || "Wedding"));
+      const subject = encodeURIComponent("Aggiornamento matrimonio - " + (data.projectName || "Wedding"));
 
-const body = encodeURIComponent(
-  "Buongiorno,\n\n" +
-  "la contatto per un aggiornamento relativo al matrimonio " + (data.projectName || "") + ".\n\n" +
-  "Resto in attesa di un gentile riscontro.\n\n" +
-  "Cordiali saluti,\n" +
-  "Emilia Wedding Events\n" +
-  "emiliaweddingevents@libero.it"
-);
+      const body = encodeURIComponent(
+        "Buongiorno,\n\n" +
+        "la contatto per un aggiornamento relativo al matrimonio " + (data.projectName || "") + ".\n\n" +
+        "Resto in attesa di un gentile riscontro.\n\n" +
+        "Cordiali saluti,\n" +
+        "Emilia Wedding Events\n" +
+        "emiliaweddingevents@libero.it"
+      );
 
-const emailLink = item.email
-  ? `mailto:${item.email}?subject=${subject}&body=${body}`
-  : "#";
+      const emailLink = item.email
+        ? `mailto:${item.email}?subject=${subject}&body=${body}`
+        : "#";
+
       return `
         <div class="supplier-row">
           <div class="supplier-icon">☏</div>
@@ -1650,13 +1593,13 @@ const emailLink = item.email
             <p>Tel: ${item.phone}</p>
             <p>Email: ${item.email}</p>
 
-          <p style="margin-top:7px;">
-  <a href="${phoneLink}" style="color:#4d5a3a; font-weight:bold;">Chiama</a>
-  ·
-  <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" style="color:#4d5a3a; font-weight:bold;">WhatsApp</a>
-  ·
-  <a href="${emailLink}" style="color:#4d5a3a; font-weight:bold;">Email</a>
-</p>
+            <p style="margin-top:7px;">
+              <a href="${phoneLink}" style="color:#4d5a3a; font-weight:bold;">Chiama</a>
+              ·
+              <a href="${whatsappLink}" target="_blank" rel="noopener noreferrer" style="color:#4d5a3a; font-weight:bold;">WhatsApp</a>
+              ·
+              <a href="${emailLink}" style="color:#4d5a3a; font-weight:bold;">Email</a>
+            </p>
           </div>
 
           <div class="row-right">
@@ -1750,166 +1693,167 @@ const emailLink = item.email
     renderSuppliers();
     saveData();
   }
+
   function toggleDocuments() {
-  const section = document.getElementById("documentSection");
-  section.classList.toggle("show");
+    const section = document.getElementById("documentSection");
+    section.classList.toggle("show");
 
-  if (section.classList.contains("show")) {
-    setTimeout(() => {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 120);
-  }
-}
-
-function renderDocuments() {
-  const list = document.getElementById("documentList");
-
-  if (!data.documents || data.documents.length === 0) {
-    list.innerHTML = `
-      <div style="
-        padding:18px 0;
-        text-align:center;
-        color:#7b6f62;
-        font-family:Arial,sans-serif;
-        font-size:13px;
-        line-height:1.4;
-      ">
-        Nessun documento inserito.<br>
-        Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive o PDF.
-      </div>
-    `;
-    return;
+    if (section.classList.contains("show")) {
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
   }
 
-  list.innerHTML = data.documents.map((item, index) => {
-    return `
-      <div class="deadline-row">
-        <div class="date-box">
-          <strong>PDF</strong>
-          <small>DOC</small>
+  function renderDocuments() {
+    const list = document.getElementById("documentList");
+
+    if (!data.documents || data.documents.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun documento inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive o PDF.
         </div>
+      `;
+      return;
+    }
 
-        <div class="row-info">
-          <h3>${item.name}</h3>
-          <p>Categoria: ${item.category || "Non indicata"}</p>
-          ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+    list.innerHTML = data.documents.map((item, index) => {
+      return `
+        <div class="deadline-row">
+          <div class="date-box">
+            <strong>PDF</strong>
+            <small>DOC</small>
+          </div>
 
-          <p style="margin-top:7px;">
-            <a 
-              href="${item.url}" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style="color:#4d5a3a; font-weight:bold;"
+          <div class="row-info">
+            <h3>${item.name}</h3>
+            <p>Categoria: ${item.category || "Non indicata"}</p>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+
+            <p style="margin-top:7px;">
+              <a 
+                href="${item.url}" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style="color:#4d5a3a; font-weight:bold;"
+              >
+                Apri documento
+              </a>
+            </p>
+          </div>
+
+          <div class="row-right">
+            <strong>File</strong>
+            <small>documento</small>
+
+            <button class="edit-btn" type="button" onclick="editDocument(${index})">
+              Modifica
+            </button>
+
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteDocument(${index})"
+              style="
+                color:#8a3d2c;
+                border-color:rgba(138,61,44,0.35);
+                margin-left:4px;
+              "
             >
-              Apri documento
-            </a>
-          </p>
+              Elimina
+            </button>
+          </div>
         </div>
-
-        <div class="row-right">
-          <strong>File</strong>
-          <small>documento</small>
-
-          <button class="edit-btn" type="button" onclick="editDocument(${index})">
-            Modifica
-          </button>
-
-          <button 
-            class="edit-btn" 
-            type="button" 
-            onclick="deleteDocument(${index})"
-            style="
-              color:#8a3d2c;
-              border-color:rgba(138,61,44,0.35);
-              margin-left:4px;
-            "
-          >
-            Elimina
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function addDocument() {
-  const name = prompt("Nome documento:", "Nuovo documento");
-  if (name === null) return;
-
-  const category = prompt("Categoria:", "Preventivi");
-  if (category === null) return;
-
-  const url = prompt("Link Google Drive / PDF:", "");
-  if (url === null) return;
-
-  const notes = prompt("Note:", "");
-  if (notes === null) return;
-
-  if (!url.trim()) {
-  alert("Inserisci un link valido al documento.");
-  return;
-}
-
-  data.documents.push({
-    name: name || "Nuovo documento",
-    category: category || "Altro",
-    url: url.trim(),
-    notes: notes || ""
-  });
-
-  renderDocuments();
-  saveData();
-}
-
-function editDocument(index) {
-  const item = data.documents[index];
-
-  const name = prompt("Nome documento:", item.name);
-  if (name === null) return;
-
-  const category = prompt("Categoria:", item.category);
-  if (category === null) return;
-
-  const url = prompt("Link Google Drive / PDF:", item.url);
-  if (url === null) return;
-
-  const notes = prompt("Note:", item.notes);
-  if (notes === null) return;
-
-  if (!url.trim()) {
-    alert("Inserisci un link valido al documento.");
-    return;
+      `;
+    }).join("");
   }
 
-  data.documents[index] = {
-    name: name || item.name,
-    category: category || item.category,
-    url: url.trim(),
-    notes: notes || ""
-  };
+  function addDocument() {
+    const name = prompt("Nome documento:", "Nuovo documento");
+    if (name === null) return;
 
-  renderDocuments();
-  saveData();
-}
+    const category = prompt("Categoria:", "Preventivi");
+    if (category === null) return;
 
-function deleteDocument(index) {
-  const item = data.documents[index];
+    const url = prompt("Link Google Drive / PDF:", "");
+    if (url === null) return;
 
-  const confirmDelete = confirm(
-    "Vuoi eliminare questo documento?\n\n" +
-    item.name
-  );
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
 
-  if (!confirmDelete) return;
+    if (!url.trim()) {
+      alert("Inserisci un link valido al documento.");
+      return;
+    }
 
-  data.documents.splice(index, 1);
+    data.documents.push({
+      name: name || "Nuovo documento",
+      category: category || "Altro",
+      url: url.trim(),
+      notes: notes || ""
+    });
 
-  renderDocuments();
-  saveData();
-}
+    renderDocuments();
+    saveData();
+  }
+
+  function editDocument(index) {
+    const item = data.documents[index];
+
+    const name = prompt("Nome documento:", item.name);
+    if (name === null) return;
+
+    const category = prompt("Categoria:", item.category);
+    if (category === null) return;
+
+    const url = prompt("Link Google Drive / PDF:", item.url);
+    if (url === null) return;
+
+    const notes = prompt("Note:", item.notes);
+    if (notes === null) return;
+
+    if (!url.trim()) {
+      alert("Inserisci un link valido al documento.");
+      return;
+    }
+
+    data.documents[index] = {
+      name: name || item.name,
+      category: category || item.category,
+      url: url.trim(),
+      notes: notes || ""
+    };
+
+    renderDocuments();
+    saveData();
+  }
+
+  function deleteDocument(index) {
+    const item = data.documents[index];
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo documento?\n\n" +
+      item.name
+    );
+
+    if (!confirmDelete) return;
+
+    data.documents.splice(index, 1);
+
+    renderDocuments();
+    saveData();
+  }
 
   function toggleProjectMenu() {
     const menu = document.getElementById("projectMenu");
@@ -1930,7 +1874,27 @@ function deleteDocument(index) {
       .replace(/^-+|-+$/g, "");
   }
 
+  async function countUserProjects() {
+    const q = query(
+      collection(db, "weddingEvents"),
+      where("ownerEmail", "==", loggedEmail)
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.size;
+  }
+
   async function createNewProject() {
+    const existingProjects = await countUserProjects();
+
+    if (existingProjects >= maxProjects) {
+      alert(
+        "Hai raggiunto il limite massimo di " + maxProjects + " progetto/i attivi per questo account.\n\n" +
+        "Elimina un progetto o passa a un piano superiore."
+      );
+      return;
+    }
+
     const projectName = prompt("Nome nuovo progetto:", "Nuovo matrimonio");
 
     if (projectName === null) return;
@@ -1942,28 +1906,35 @@ function deleteDocument(index) {
       return;
     }
 
-    const projectId = makeProjectId(cleanName);
+    const baseProjectId = makeProjectId(cleanName);
 
-    if (!projectId) {
+    if (!baseProjectId) {
       alert("Nome progetto non valido.");
       return;
     }
 
-    const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "27-08-2026T15:00:00");
+    const projectId = baseProjectId + "-" + Date.now().toString(36);
+
+    const weddingDate = prompt("Data e ora matrimonio formato AAAA-MM-GGTHH:MM:SS:", "2026-08-27T15:00:00");
 
     if (weddingDate === null) return;
 
-  const emptyProject = {
-  projectName: cleanName,
-  weddingDate: weddingDate || "2026-08-27T15:00:00",
-  budget: 0,
-  due: 0,
-  paid: 0,
-  deadlines: [],
-  suppliers: [],
-  agenda: [],
-  documents: []
-};
+    const emptyProject = {
+      projectName: cleanName,
+      weddingDate: weddingDate || "2026-08-27T15:00:00",
+      budget: 0,
+      due: 0,
+      paid: 0,
+      deadlines: [],
+      suppliers: [],
+      agenda: [],
+      documents: [],
+      ownerEmail: loggedEmail,
+      ownerRole: loggedRole,
+      accessCode: loggedCode,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
 
     try {
       await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
@@ -1976,131 +1947,138 @@ function deleteDocument(index) {
   }
 
   async function showProjectsList() {
-  const list = document.getElementById("projectsList");
-
-  list.innerHTML = `
-    <div style="
-      padding:16px 0;
-      text-align:center;
-      color:#7b6f62;
-      font-family:Arial,sans-serif;
-      font-size:13px;
-    ">
-      Caricamento progetti...
-    </div>
-  `;
-
-  try {
-    const snapshot = await getDocs(collection(db, "weddingEvents"));
-
-    if (snapshot.empty) {
-      list.innerHTML = `
-        <div style="
-          padding:16px 0;
-          text-align:center;
-          color:#7b6f62;
-          font-family:Arial,sans-serif;
-          font-size:13px;
-        ">
-          Nessun progetto trovato.
-        </div>
-      `;
-      return;
-    }
-
-    list.innerHTML = "";
-
-    snapshot.forEach((docSnap) => {
-      const project = docSnap.data();
-      const id = docSnap.id;
-
-      const name = project.projectName || id;
-      const budget = Number(project.budget) || 0;
-      const paid = Number(project.paid) || 0;
-      const due = Number(project.due) || 0;
-
-      list.innerHTML += `
-        <div class="project-item">
-          <div>
-            <h4>${name}</h4>
-            <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-          </div>
-
-          <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-            <a href="/dashboard/?event=${id}">
-              Apri
-            </a>
-
-           
-            <button 
-              type="button" 
-              onclick="copySpousesLink('${id}')"
-              style="
-                border:1px solid rgba(177,145,85,0.45);
-                background:rgba(255,252,246,0.95);
-                color:#4d5a3a;
-                border-radius:999px;
-                padding:7px 11px;
-                font-family:Arial,sans-serif;
-                font-size:12px;
-                text-transform:uppercase;
-              "
-            >
-              Copia
-            </button>
-
-            <button 
-              type="button" 
-              onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
-              style="
-                border:1px solid rgba(138,61,44,0.35);
-                background:rgba(255,252,246,0.95);
-                color:#8a3d2c;
-                border-radius:999px;
-                padding:7px 11px;
-                font-family:Arial,sans-serif;
-                font-size:12px;
-                text-transform:uppercase;
-              "
-            >
-              Elimina
-            </button>
-          </div>
-        </div>
-      `;
-    });
-
-  } catch (error) {
-    console.error("Errore caricamento progetti:", error);
+    const list = document.getElementById("projectsList");
 
     list.innerHTML = `
       <div style="
         padding:16px 0;
         text-align:center;
-        color:#8a3d2c;
+        color:#7b6f62;
         font-family:Arial,sans-serif;
         font-size:13px;
       ">
-        Errore nel caricamento dei progetti.
+        Caricamento progetti...
       </div>
     `;
-  }
-}
-  function copySpousesLink(projectId) {
-  const link = window.location.origin + "/sposi/?event=" + projectId;
 
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(link)
-      .then(() => {
-        alert("Link sposi copiato:\n\n" + link);
-      })
-      .catch(() => {
-        prompt("Copia questo link sposi:", link);
+    try {
+      const q = query(
+        collection(db, "weddingEvents"),
+        where("ownerEmail", "==", loggedEmail)
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        list.innerHTML = `
+          <div style="
+            padding:16px 0;
+            text-align:center;
+            color:#7b6f62;
+            font-family:Arial,sans-serif;
+            font-size:13px;
+          ">
+            Nessun progetto trovato per questo account.<br>
+            Clicca su <strong>Nuovo progetto</strong> per iniziare.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = "";
+
+      snapshot.forEach((docSnap) => {
+        const project = docSnap.data();
+        const id = docSnap.id;
+
+        const name = project.projectName || id;
+        const budget = Number(project.budget) || 0;
+        const paid = Number(project.paid) || 0;
+        const due = Number(project.due) || 0;
+
+        list.innerHTML += `
+          <div class="project-item">
+            <div>
+              <h4>${name}</h4>
+              <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+            </div>
+
+            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
+              <a href="/dashboard/?event=${id}">
+                Apri
+              </a>
+
+              <button 
+                type="button" 
+                onclick="copySpousesLink('${id}')"
+                style="
+                  border:1px solid rgba(177,145,85,0.45);
+                  background:rgba(255,252,246,0.95);
+                  color:#4d5a3a;
+                  border-radius:999px;
+                  padding:7px 11px;
+                  font-family:Arial,sans-serif;
+                  font-size:12px;
+                  text-transform:uppercase;
+                "
+              >
+                Copia
+              </button>
+
+              <button 
+                type="button" 
+                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
+                style="
+                  border:1px solid rgba(138,61,44,0.35);
+                  background:rgba(255,252,246,0.95);
+                  color:#8a3d2c;
+                  border-radius:999px;
+                  padding:7px 11px;
+                  font-family:Arial,sans-serif;
+                  font-size:12px;
+                  text-transform:uppercase;
+                "
+              >
+                Elimina
+              </button>
+            </div>
+          </div>
+        `;
       });
-  } else {
-    prompt("Copia questo link sposi:", link);
+
+    } catch (error) {
+      console.error("Errore caricamento progetti:", error);
+
+      list.innerHTML = `
+        <div style="
+          padding:16px 0;
+          text-align:center;
+          color:#8a3d2c;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+        ">
+          Errore nel caricamento dei progetti.
+        </div>
+      `;
+    }
   }
-}
+
+  function copySpousesLink(projectId) {
+    const link = window.location.origin + "/sposi/?event=" + projectId;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link)
+        .then(() => {
+          alert("Link sposi copiato:\n\n" + link);
+        })
+        .catch(() => {
+          prompt("Copia questo link sposi:", link);
+        });
+    } else {
+      prompt("Copia questo link sposi:", link);
+    }
+  }
+
   async function deleteProject(projectId, projectName) {
     if (projectId === currentEventId) {
       alert("Non puoi eliminare il progetto che stai visualizzando ora. Aprine prima un altro.");
@@ -2125,7 +2103,7 @@ function deleteDocument(index) {
   }
 
   function updateCountdown() {
-    const weddingDateString = data.weddingDate || "27-08-2026T15:00:00";
+    const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
     const weddingDate = new Date(weddingDateString).getTime();
 
     const now = new Date().getTime();
@@ -2157,40 +2135,76 @@ function deleteDocument(index) {
     secondsEl.textContent = String(seconds).padStart(2, "0");
   }
 
-  onSnapshot(eventRef, async (snapshot) => {
-    if (snapshot.exists()) {
-      const remoteData = snapshot.data();
+  function renderAll() {
+    renderSummary();
+    renderDeadlines();
+    renderSuppliers();
+    renderAgenda();
+    renderDocuments();
+    updateCountdown();
+  }
 
-      data = normalizeData(remoteData);
+  if (eventRef) {
+    onSnapshot(eventRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const remoteData = snapshot.data();
 
-   const needsInitialData =
-  remoteData.projectName === undefined ||
-  remoteData.weddingDate === undefined ||
-  remoteData.budget === undefined ||
-  remoteData.due === undefined ||
-  remoteData.paid === undefined ||
-  !Array.isArray(remoteData.deadlines) ||
-  !Array.isArray(remoteData.suppliers) ||
-  !Array.isArray(remoteData.agenda) ||
-  !Array.isArray(remoteData.documents);
+        const projectOwner = String(remoteData.ownerEmail || "").trim().toLowerCase();
 
-      if (needsInitialData) {
+        if (projectOwner && projectOwner !== loggedEmail && loggedRole !== "admin") {
+          alert("Questo progetto non appartiene al tuo account.");
+          window.location.href = "/dashboard/";
+          return;
+        }
+
+        data = normalizeData({
+          ...remoteData,
+          ownerEmail: projectOwner || loggedEmail
+        });
+
+        const needsInitialData =
+          remoteData.projectName === undefined ||
+          remoteData.weddingDate === undefined ||
+          remoteData.budget === undefined ||
+          remoteData.due === undefined ||
+          remoteData.paid === undefined ||
+          remoteData.ownerEmail === undefined ||
+          !Array.isArray(remoteData.deadlines) ||
+          !Array.isArray(remoteData.suppliers) ||
+          !Array.isArray(remoteData.agenda) ||
+          !Array.isArray(remoteData.documents);
+
+        if (needsInitialData) {
+          await setDoc(eventRef, data, { merge: true });
+        }
+      } else {
+        data = structuredClone(defaultData);
+        data.projectName = "Nuovo progetto";
+        data.ownerEmail = loggedEmail;
+        data.ownerRole = loggedRole;
+        data.accessCode = loggedCode;
+        data.createdAt = new Date().toISOString();
+        data.updatedAt = new Date().toISOString();
+
         await setDoc(eventRef, data, { merge: true });
       }
-    } else {
-      data = structuredClone(defaultData);
-      await setDoc(eventRef, data, { merge: true });
-    }
 
-    firebaseReady = true;
+      firebaseReady = true;
+      renderAll();
+    });
+  } else {
+    firebaseReady = false;
+    data = structuredClone(defaultData);
+    renderAll();
 
-renderSummary();
-renderDeadlines();
-renderSuppliers();
-renderAgenda();
-renderDocuments();
-updateCountdown();
-  });
+    setTimeout(() => {
+      const menu = document.getElementById("projectMenu");
+      if (menu) {
+        menu.classList.add("show");
+        showProjectsList();
+      }
+    }, 400);
+  }
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
@@ -2208,12 +2222,12 @@ updateCountdown();
   window.createNewProject = createNewProject;
   window.deleteProject = deleteProject;
   window.toggleAgenda = toggleAgenda;
-window.addAgendaItem = addAgendaItem;
-window.editAgendaItem = editAgendaItem;
-window.deleteAgendaItem = deleteAgendaItem;
+  window.addAgendaItem = addAgendaItem;
+  window.editAgendaItem = editAgendaItem;
+  window.deleteAgendaItem = deleteAgendaItem;
   window.toggleDocuments = toggleDocuments;
-window.addDocument = addDocument;
-window.editDocument = editDocument;
-window.deleteDocument = deleteDocument;
+  window.addDocument = addDocument;
+  window.editDocument = editDocument;
+  window.deleteDocument = deleteDocument;
   window.copySpousesLink = copySpousesLink;
 </script>
