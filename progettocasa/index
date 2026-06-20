@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Alessia & Francesco | PixelUp Events</title>
+  <title>Martina & Luca | PixelUp Events Demo</title>
 
   <style>
     :root {
@@ -21,10 +21,6 @@
       --shadow: 0 14px 35px rgba(60, 45, 28, 0.13);
       --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
 
-      /*
-        Puoi cambiare immagine di sfondo sostituendo questo link.
-        Consiglio: usa una foto larga, elegante, orizzontale.
-      */
       --hero-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=90");
     }
 
@@ -61,8 +57,6 @@
       position: relative;
       box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
     }
-
-    /* HERO */
 
     .hero {
       min-height: 385px;
@@ -268,8 +262,6 @@
       font-size: 21px;
       line-height: 1;
     }
-
-    /* CONTENT */
 
     .content {
       position: relative;
@@ -682,36 +674,34 @@
 
   <main class="app">
 
-    <!-- HERO -->
     <section class="hero">
 
       <div class="topbar">
-        <a class="menu-icon" href="menu-navigazione.html" aria-label="Apri menu">☰</a>
+        <a class="menu-icon" href="menu.html" aria-label="Apri menu">☰</a>
         <div class="brand">PixelUp Events</div>
-        <a class="heart-icon" href="lista-regalo.html" aria-label="Lista regalo">♡</a>
+        <a class="heart-icon" href="storia.html" aria-label="Storia evento">♡</a>
       </div>
 
       <div class="hero-content">
 
-        <div class="monogram">A|F</div>
+        <div class="monogram">M|L</div>
 
-        <h1>Roberta <span class="amp">&amp;</span> Alessandro</h1>
+        <h1>Martina <span class="amp">&amp;</span> Luca</h1>
 
         <div class="ornament">
           <span>♡</span>
         </div>
 
-      <div class="date" style="margin-bottom: 12px;">27 Agosto 2026</div>
-<div class="subtitle">Benvenuti al nostro matrimonio</div>
+        <div class="date" style="margin-bottom: 12px;">Domenica 21 Giugno 2026</div>
+        <div class="subtitle">Benvenuti al nostro evento demo</div>
+
         <div class="hero-buttons">
 
-          <!-- PULSANTE CONFERMA PRESENZA -->
-          <a class="btn btn-primary" href="/events/marco-giulia/conferma-presenza.html">
+          <a class="btn btn-primary" href="conferma-presenza.html">
             <span class="ico">✓</span>
             <span>Conferma presenza</span>
           </a>
 
-          <!-- PULSANTE MAPPA -->
           <a class="btn btn-secondary" href="rito.html">
             <span class="ico">⌖</span>
             <span>Rito</span>
@@ -723,37 +713,34 @@
 
     </section>
 
-    <!-- CONTENUTO -->
     <section class="content">
 
-    <!-- COUNTDOWN ATTIVO -->
-<div class="countdown" aria-label="Countdown evento">
-  <div class="count-box">
-    <strong id="days">000</strong>
-    <small>Giorni</small>
-  </div>
+      <div class="countdown" aria-label="Countdown evento">
+        <div class="count-box">
+          <strong id="days">000</strong>
+          <small>Giorni</small>
+        </div>
 
-  <div class="count-box">
-    <strong id="hours">00</strong>
-    <small>Ore</small>
-  </div>
+        <div class="count-box">
+          <strong id="hours">00</strong>
+          <small>Ore</small>
+        </div>
 
-  <div class="count-box">
-    <strong id="minutes">00</strong>
-    <small>Minuti</small>
-  </div>
+        <div class="count-box">
+          <strong id="minutes">00</strong>
+          <small>Minuti</small>
+        </div>
 
-  <div class="count-box">
-    <strong id="seconds">00</strong>
-    <small>Secondi</small>
-  </div>
-</div>
+        <div class="count-box">
+          <strong id="seconds">00</strong>
+          <small>Secondi</small>
+        </div>
+      </div>
 
       <div class="section-divider">
         <span>♡</span>
       </div>
 
-      <!-- PROGRAMMA + LOCATION -->
       <div class="main-grid">
 
         <section class="panel">
@@ -767,7 +754,7 @@
             <div class="program-item">
               <span class="round">♾</span>
               <span class="hour">15:00</span>
-              <span class="label"> —  Rito religioso</span>
+              <span class="label"> —  Rito</span>
             </div>
 
             <div class="program-item">
@@ -779,7 +766,7 @@
             <div class="program-item">
               <span class="round">⌂</span>
               <span class="hour">19:00</span>
-              <span class="label">—  Cena </span>
+              <span class="label">—  Cena</span>
             </div>
 
             <div class="program-item">
@@ -805,10 +792,9 @@
 
           <div class="location-line">
             <span>⌖</span>
-            <span>Villa Mattioli, Lesmo</span>
+            <span>Location Evento Demo</span>
           </div>
 
-          <!-- ANCHE LA MAPPA È CLICCABILE -->
           <a href="mappa.html" aria-label="Apri mappa">
             <div class="fake-map">
               <div class="pin">🏛</div>
@@ -823,18 +809,15 @@
 
       </div>
 
-      <!-- SEI PULSANTI IN BASSO -->
       <div class="cards">
 
-        <!-- DRESS CODE -->
         <a class="small-card" href="dress-code.html">
           <span class="icon">⧓</span>
           <h3>Dress Code</h3>
-          
+          <p>Info look</p>
           <span class="arrow">→</span>
         </a>
 
-        <!-- MENU -->
         <a class="small-card" href="menu.html">
           <span class="icon">⌂</span>
           <h3>Menu</h3>
@@ -842,23 +825,20 @@
           <span class="arrow">→</span>
         </a>
 
-        <!-- LISTA REGALO -->
-        <a class="small-card" href="lista-regalo.html">
-          <span class="icon">🎁︎</span>
-          <h3>Lista Regalo</h3>
-          <p>Il vostro contributo<br>è il nostro regalo più bello</p>
+        <a class="small-card" href="segnala-intolleranze.html">
+          <span class="icon">!</span>
+          <h3>Intolleranze</h3>
+          <p>Segnala allergie</p>
           <span class="arrow">→</span>
         </a>
 
-        <!-- TAVOLI -->
-<a class="small-card" href="tavoli.html">
-  <span class="icon">▦</span>
-  <h3>Tavoli</h3>
-  <p>Scopri la composizione</p>
-  <span class="arrow">→</span>
-</a>
+        <a class="small-card" href="tavoli.html">
+          <span class="icon">▦</span>
+          <h3>Tavoli</h3>
+          <p>Scopri la composizione</p>
+          <span class="arrow">→</span>
+        </a>
 
-        <!-- CONTATTI -->
         <a class="small-card" href="contatti.html">
           <span class="icon">♡</span>
           <h3>Contatti</h3>
@@ -866,65 +846,65 @@
           <span class="arrow">→</span>
         </a>
 
-        <!-- LOGO / DETTAGLIO EVENTO -->
         <a class="small-card logo-card" href="storia.html">
-          <span class="floral">A|F</span>
+          <span class="floral">M|L</span>
           <p>❦</p>
         </a>
 
       </div>
 
-      <!-- FRASE FINALE -->
       <div class="quote">
         <span class="quote-mark">“</span>
         La cosa migliore da fare, la più bella da vedere,<br>
-        è quella di condividere il nostro giorno con voi.
+        è quella di condividere questo giorno con voi.
         <span class="quote-heart">♡</span>
       </div>
 
     </section>
 
   </main>
-<script>
-  /*
-    TIMER MATRIMONIO
-    Data evento: 27 Settembre 2026
-    Ora evento: 15:00
-    Puoi cambiare l'orario modificando "15:00:00"
-  */
 
-  const weddingDate = new Date("2026-08-27T15:00:00").getTime();
+  <script>
+    /*
+      TIMER EVENTO DEMO
+      Scadenza: domenica prossima
+      Data impostata: Domenica 21 Giugno 2026
+      Ora evento: 15:00
+    */
 
-  const daysElement = document.getElementById("days");
-  const hoursElement = document.getElementById("hours");
-  const minutesElement = document.getElementById("minutes");
-  const secondsElement = document.getElementById("seconds");
+    const weddingDate = new Date("2026-06-21T15:00:00").getTime();
 
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
+    const daysElement = document.getElementById("days");
+    const hoursElement = document.getElementById("hours");
+    const minutesElement = document.getElementById("minutes");
+    const secondsElement = document.getElementById("seconds");
 
-    if (distance <= 0) {
-      daysElement.textContent = "000";
-      hoursElement.textContent = "00";
-      minutesElement.textContent = "00";
-      secondsElement.textContent = "00";
-      return;
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance <= 0) {
+        daysElement.textContent = "000";
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      daysElement.textContent = String(days).padStart(3, "0");
+      hoursElement.textContent = String(hours).padStart(2, "0");
+      minutesElement.textContent = String(minutes).padStart(2, "0");
+      secondsElement.textContent = String(seconds).padStart(2, "0");
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 
-    daysElement.textContent = String(days).padStart(3, "0");
-    hoursElement.textContent = String(hours).padStart(2, "0");
-    minutesElement.textContent = String(minutes).padStart(2, "0");
-    secondsElement.textContent = String(seconds).padStart(2, "0");
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-</script>
 </body>
 </html>
