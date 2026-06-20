@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dress Code - Martina & Luca</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Georgia", serif;
+      background: #f8f1e6;
+      color: #253322;
+    }
+
+    .page {
+      min-height: 100vh;
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.25), #f8f1e6 42%),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: top center;
+      padding-bottom: 35px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 26px;
+      color: #243122;
+      letter-spacing: 4px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+    }
+
+    .menu-icon {
+      width: 28px;
+      height: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .menu-icon span {
+      display: block;
+      height: 1.5px;
+      background: #243122;
+    }
+
+    .heart-btn {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(91, 72, 42, 0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      background: rgba(255,255,255,0.35);
+      cursor: pointer;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 10px 24px 35px;
+    }
+
+    .monogram {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 18px;
+      border: 1px solid rgba(174, 139, 83, 0.55);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a88751;
+      font-size: 25px;
+      letter-spacing: 10px;
+      padding-left: 10px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    h1 {
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1;
+      color: #263724;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 33px;
+      font-style: italic;
+      color: #a88751;
+      margin-bottom: 20px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #b28a51;
+      margin: 12px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      width: 95px;
+      height: 1px;
+      background: rgba(178, 138, 81, 0.55);
+    }
+
+    .names {
+      font-size: 42px;
+      font-weight: 400;
+      color: #263724;
+    }
+
+    .names span {
+      color: #a88751;
+      font-style: italic;
+    }
+
+    .date {
+      font-size: 22px;
+      margin-top: 5px;
+      color: #3d3d32;
+    }
+
+    .content {
+      padding: 0 18px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid rgba(190, 165, 124, 0.25);
+      border-radius: 17px;
+      box-shadow: 0 8px 25px rgba(90, 65, 30, 0.08);
+      backdrop-filter: blur(4px);
+    }
+
+    .intro-card {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 26px 30px;
+      margin-bottom: 18px;
+    }
+
+    .circle-icon {
+      width: 62px;
+      height: 62px;
+      min-width: 62px;
+      border-radius: 50%;
+      border: 1px solid rgba(183, 143, 78, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a88751;
+      font-size: 29px;
+    }
+
+    .intro-card p {
+      font-size: 22px;
+      line-height: 1.45;
+      color: #2f362a;
+    }
+
+    .palette-card {
+      padding: 24px 22px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #2f3328;
+    }
+
+    .small-heart {
+      color: #b28a51;
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .palette {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .color {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+
+    .c1 { background: #efe9df; }
+    .c2 { background: #e8c7b9; }
+    .c3 { background: #cfd3bb; }
+    .c4 { background: #c8d1dc; }
+    .c5 { background: #dfd1c2; }
+    .c6 { background: #5d6348; }
+    .c7 { background: linear-gradient(135deg, #c59b4b, #f4dd98, #b88b3a); }
+
+    .palette-card p {
+      font-size: 18px;
+      font-style: italic;
+      line-height: 1.4;
+      color: #4b4a3d;
+    }
+
+    .leaf {
+      margin-top: 16px;
+      color: #9d966f;
+      font-size: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .info-card {
+      padding: 22px;
+      min-height: 245px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card h3 {
+      text-align: center;
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .info-card .small-heart {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .info-body {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .info-body .circle-icon {
+      width: 58px;
+      height: 58px;
+      min-width: 58px;
+      font-size: 27px;
+    }
+
+    .info-body p {
+      font-size: 18px;
+      line-height: 1.55;
+      color: #303529;
+    }
+
+    .single-card {
+      min-height: 205px;
+    }
+
+    .single-card .info-body {
+      margin-top: 18px;
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: 11px;
+      padding: 19px 20px;
+      font-size: 20px;
+      letter-spacing: 4px;
+      font-family: Georgia, serif;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .btn-secondary {
+      background: rgba(255,253,248,0.82);
+      color: #3d392f;
+      border: 1px solid #b98f4f;
+    }
+
+    .bottom-decoration {
+      text-align: center;
+      color: #b28a51;
+      margin-top: 20px;
+      font-size: 25px;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        background-position: top center;
+      }
+
+      .topbar {
+        padding: 20px 18px;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      .subtitle {
+        font-size: 27px;
+      }
+
+      .names {
+        font-size: 34px;
+      }
+
+      .date {
+        font-size: 19px;
+      }
+
+      .intro-card {
+        padding: 22px 20px;
+      }
+
+      .intro-card p {
+        font-size: 19px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .info-card {
+        padding: 18px 14px;
+        min-height: 250px;
+      }
+
+      .info-body {
+        gap: 10px;
+      }
+
+      .info-body .circle-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 23px;
+      }
+
+      .info-body p {
+        font-size: 16px;
+      }
+
+      .single-card {
+        min-height: 190px;
+      }
+
+      .btn {
+        font-size: 17px;
+        letter-spacing: 3px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 43px;
+      }
+
+      .subtitle {
+        font-size: 24px;
+      }
+
+      .names {
+        font-size: 30px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-card {
+        min-height: auto;
+      }
+
+      .palette .color {
+        width: 52px;
+        height: 52px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <header class="topbar">
+      <div class="menu-icon" onclick="window.location.href='menu.html'">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div>PIXELUP EVENTS</div>
+
+      <div class="heart-btn" onclick="window.location.href='storia.html'">♡</div>
+    </header>
+
+    <section class="hero">
+      <div class="monogram">M|L</div>
+
+      <h1>Dress Code</h1>
+
+      <div class="divider">♡</div>
+
+      <div class="names">Martina <span>&</span> Luca</div>
+      <div class="date">Domenica 21 Giugno 2026</div>
+
+      <div class="divider">♡</div>
+    </section>
+
+    <section class="content">
+
+      <div class="card intro-card">
+        <div class="circle-icon">♧</div>
+        <p>
+          Vorremmo condividere con voi<br>
+          un’atmosfera unica, luminosa e senza tempo.
+        </p>
+      </div>
+
+      <div class="card palette-card">
+        <div class="section-title">PALETTE CONSIGLIATA</div>
+        <div class="small-heart">♡</div>
+
+        <div class="palette">
+          <div class="color c1"></div>
+          <div class="color c2"></div>
+          <div class="color c3"></div>
+          <div class="color c4"></div>
+          <div class="color c5"></div>
+          <div class="color c6"></div>
+          <div class="color c7"></div>
+        </div>
+
+        <p>
+          Tonalità delicate e naturali che si fondono con la bellezza del luogo.
+        </p>
+
+        <div class="leaf">⌇ ❧ ⌇</div>
+      </div>
+
+      <div class="grid">
+
+        <div class="card info-card">
+          <h3>PER LEI</h3>
+          <div class="small-heart">♡</div>
+
+          <div class="info-body">
+            <div class="circle-icon">♕</div>
+            <p>
+              Scegliete tonalità pastello o neutre, stampe delicate e tessuti leggeri.
+            </p>
+          </div>
+        </div>
+
+        <div class="card info-card">
+          <h3>PER LUI</h3>
+          <div class="small-heart">♡</div>
+
+          <div class="info-body">
+            <div class="circle-icon">♛</div>
+            <p>
+              Colori classici o chiari per un look armonioso.
+            </p>
+          </div>
+        </div>
+
+        <div class="card info-card single-card">
+          <h3>ACCESSORI</h3>
+          <div class="small-heart">♡</div>
+
+          <div class="info-body">
+            <div class="circle-icon">♢</div>
+            <p>
+              Consigliamo di portare una copertura leggera per la sera.
+            </p>
+          </div>
+        </div>
+
+        <div class="card info-card single-card">
+          <h3>NOTE</h3>
+          <div class="small-heart">♡</div>
+
+          <div class="info-body">
+            <div class="circle-icon">♡</div>
+            <p>
+              Evitiamo il bianco integrale per mantenere un’atmosfera elegante e armoniosa.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <a href="index.html" class="btn btn-secondary">
+        ← TORNA ALL’EVENTO
+      </a>
+
+      <div class="bottom-decoration">— ♡ —</div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
