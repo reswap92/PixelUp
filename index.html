@@ -64,14 +64,12 @@
       margin: 0 auto;
     }
 
-    /* HEADER */
-
     header {
       position: sticky;
       top: 0;
       z-index: 50;
       backdrop-filter: blur(18px);
-      background: rgba(255, 250, 242, 0.78);
+      background: rgba(255, 250, 242, 0.88);
       border-bottom: 1px solid rgba(182, 139, 69, 0.12);
     }
 
@@ -187,26 +185,6 @@
       background: rgba(255,255,255,0.42);
     }
 
-    .btn-light {
-      background: rgba(255,255,255,0.78);
-      color: var(--green);
-      border-color: rgba(182,139,69,0.22);
-    }
-
-    .menu-btn {
-      display: none;
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      border: 1px solid rgba(182,139,69,0.24);
-      background: rgba(255,255,255,0.65);
-      color: var(--green);
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    /* HERO */
-
     .hero {
       position: relative;
       padding: 76px 0 64px;
@@ -281,12 +259,61 @@
       margin-bottom: 30px;
     }
 
-    .hero-actions {
-      display: flex;
+    .demo-hero-card {
+      width: 100%;
+      max-width: 560px;
+      min-height: 96px;
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
       align-items: center;
       gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 34px;
+      padding: 18px;
+      margin: 28px 0 30px;
+      border-radius: 22px;
+      background: rgba(255, 252, 246, 0.9);
+      border: 1px solid rgba(182, 139, 69, 0.35);
+      box-shadow: 0 18px 45px rgba(36, 27, 15, 0.12);
+      color: var(--green);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .demo-hero-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 55px rgba(36, 27, 15, 0.16);
+    }
+
+    .demo-hero-card > div:first-child {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--green), #2e5038);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+    }
+
+    .demo-hero-card strong {
+      display: block;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .demo-hero-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .demo-hero-card small {
+      font-family: "Inter", sans-serif;
+      font-weight: 800;
+      color: var(--gold);
+      white-space: nowrap;
     }
 
     .mini-note {
@@ -518,8 +545,6 @@
       border: 1px solid rgba(182,139,69,0.18);
     }
 
-    /* SECTIONS */
-
     section {
       padding: 72px 0;
     }
@@ -695,8 +720,6 @@
       border: 1px solid rgba(182,139,69,0.15);
     }
 
-    /* BENEFITS */
-
     .benefits {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -739,8 +762,6 @@
       font-size: 14px;
     }
 
-    /* WHO */
-
     .who-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -780,8 +801,6 @@
       line-height: 1.45;
       font-size: 13px;
     }
-
-    /* HOW */
 
     .how-box {
       background: rgba(255,255,255,0.72);
@@ -832,8 +851,6 @@
       font-size: 28px;
     }
 
-    /* DEMO */
-
     .demo-section {
       position: relative;
       background:
@@ -849,8 +866,6 @@
       gap: 18px;
       flex-wrap: wrap;
     }
-
-    /* PRICING */
 
     .pricing-grid {
       display: grid;
@@ -958,42 +973,128 @@
       width: 100%;
     }
 
-    /* CTA */
-
-    .final-cta {
+    .contact-section {
       position: relative;
       background:
         linear-gradient(90deg, rgba(24,61,43,0.98), rgba(24,61,43,0.88)),
         url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80") center/cover;
       color: white;
-      padding: 66px 0;
+      padding: 74px 0;
       overflow: hidden;
     }
 
-    .final-grid {
+    .contact-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr auto;
-      gap: 30px;
-      align-items: center;
+      grid-template-columns: 1.05fr 1fr 1.25fr;
+      gap: 24px;
+      align-items: stretch;
     }
 
-    .final-cta h2 {
+    .contact-card {
+      background: rgba(255, 252, 246, 0.10);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 26px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+
+    .contact-card h3 {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(36px, 4vw, 56px);
+      font-size: 34px;
       line-height: 1;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      color: white;
     }
 
-    .final-cta p {
-      color: rgba(255,255,255,0.82);
+    .contact-card p {
+      color: rgba(255,255,255,0.78);
       line-height: 1.55;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .contact-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    .contact-btn {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .contact-btn.whatsapp {
+      background: linear-gradient(135deg, #1f6b46, #2f8f5d);
+      border: none;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.92);
+      color: var(--text);
+      padding: 14px 15px;
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .contact-form input,
+    .contact-form select {
+      height: 50px;
+    }
+
+    .contact-form textarea {
+      min-height: 118px;
+      resize: vertical;
+    }
+
+    .contact-submit {
+      min-height: 54px;
+      border: 0;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: white;
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 16px 34px rgba(182,139,69,0.22);
     }
 
     .secure {
       font-size: 13px;
       color: rgba(255,255,255,0.72);
-      margin-top: 12px;
+      margin-top: 16px;
       text-align: center;
+      line-height: 1.45;
     }
 
     footer {
@@ -1003,96 +1104,10 @@
       font-size: 13px;
       text-align: center;
     }
-    .demo-hero-card {
-  width: 100%;
-  max-width: 560px;
-  min-height: 96px;
-  display: grid;
-  grid-template-columns: 58px 1fr auto;
-  align-items: center;
-  gap: 16px;
-  padding: 18px;
-  margin: 28px 0 30px;
-  border-radius: 22px;
-  background: rgba(255, 252, 246, 0.9);
-  border: 1px solid rgba(182, 139, 69, 0.35);
-  box-shadow: 0 18px 45px rgba(36, 27, 15, 0.12);
-  color: var(--green);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.demo-hero-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 24px 55px rgba(36, 27, 15, 0.16);
-}
-
-.demo-hero-card > div:first-child {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--green), #2e5038);
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 26px;
-}
-
-.demo-hero-card strong {
-  display: block;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 28px;
-  line-height: 1;
-  color: var(--green);
-  margin-bottom: 6px;
-}
-
-.demo-hero-card p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--muted);
-}
-
-.demo-hero-card small {
-  font-family: "Inter", sans-serif;
-  font-weight: 800;
-  color: var(--gold);
-  white-space: nowrap;
-}
-
-    /* MOBILE */
 
     @media (max-width: 980px) {
-      .nav-links,
-      .nav-actions {
+      .nav-links {
         display: none;
-      }
-
-      .menu-btn {
-        display: grid;
-        place-items: center;
-      }
-
-      .mobile-menu {
-        display: none;
-        padding: 0 0 20px;
-        border-top: 1px solid rgba(182,139,69,0.14);
-      }
-
-      .mobile-menu.active {
-        display: block;
-      }
-
-      .mobile-menu a {
-        display: block;
-        padding: 15px 0;
-        font-weight: 700;
-        color: var(--green);
-      }
-
-      .mobile-menu .btn {
-        margin-top: 10px;
-        width: 100%;
       }
 
       .hero-grid {
@@ -1114,7 +1129,8 @@
 
       .two-cards,
       .benefits,
-      .pricing-grid {
+      .pricing-grid,
+      .contact-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1143,11 +1159,6 @@
       .price-card.featured {
         transform: none;
       }
-
-      .final-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
     }
 
     @media (max-width: 640px) {
@@ -1166,6 +1177,12 @@
 
       .brand-text strong {
         font-size: 30px;
+      }
+
+      .nav-actions .btn {
+        min-height: 42px;
+        padding: 0 14px;
+        font-size: 13px;
       }
 
       .hero {
@@ -1188,12 +1205,18 @@
         font-size: 16px;
       }
 
-      .hero-actions {
-        align-items: stretch;
+      .demo-hero-card {
+        grid-template-columns: 52px 1fr;
+        gap: 14px;
       }
 
-      .hero-actions .btn {
-        width: 100%;
+      .demo-hero-card small {
+        grid-column: 1 / -1;
+        padding-left: 66px;
+      }
+
+      .demo-hero-card strong {
+        font-size: 24px;
       }
 
       .mockup-wrap {
@@ -1237,7 +1260,8 @@
 
       .feature-card,
       .benefit,
-      .price-card {
+      .price-card,
+      .contact-card {
         padding: 24px;
       }
 
@@ -1253,22 +1277,9 @@
         font-size: 42px;
       }
 
-      .final-cta {
-        padding: 52px 0;
+      .contact-section {
+        padding: 58px 0;
       }
-      .demo-hero-card {
-  grid-template-columns: 52px 1fr;
-  gap: 14px;
-}
-
-.demo-hero-card small {
-  grid-column: 1 / -1;
-  padding-left: 66px;
-}
-
-.demo-hero-card strong {
-  font-size: 24px;
-}
     }
   </style>
 </head>
@@ -1279,7 +1290,7 @@
     <header>
       <div class="container">
         <nav class="nav">
-          <a class="brand" href="#">
+          <a class="brand" href="/">
             <div class="brand-icon">♡</div>
             <div class="brand-text">
               <strong>Pixel<span>Up</span></strong>
@@ -1287,25 +1298,18 @@
             </div>
           </a>
 
-         <div class="nav-links">
-  <a href="#funzionalita">Funzionalità</a>
-  <a href="#demo">Demo</a>
-  <a href="#prezzi">Prezzi</a>
-  <a href="#contatti">Contatti</a>
-</div>
-<div class="nav-actions">
-  <a class="btn btn-outline" href="/dashboard/">Accedi</a>
-</div>
-          <button class="menu-btn" id="menuBtn" aria-label="Apri menu">☰</button>
-        </nav>
+          <div class="nav-links">
+            <a href="#funzionalita">Funzionalità</a>
+            <a href="#demo">Demo</a>
+            <a href="#prezzi">Prezzi</a>
+            <a href="#contatti">Contatti</a>
+          </div>
 
-       <div class="mobile-menu" id="mobileMenu">
-  <a href="#funzionalita">Funzionalità</a>
-  <a href="#demo">Demo</a>
-  <a href="#prezzi">Prezzi</a>
-  <a href="#contatti">Contatti</a>
-  <a class="btn btn-outline" href="/dashboard/">Accedi</a>
-</div>
+          <div class="nav-actions">
+            <a class="btn btn-outline" href="/dasgboardemo/accedi.html">Accedi</a>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <main>
@@ -1329,18 +1333,18 @@
               in un’unica area elegante e sempre aggiornata.
             </p>
 
-           <a class="demo-hero-card" href="/dasgboardemo/">
-  <div>
-    <span>▣</span>
-  </div>
+            <a class="demo-hero-card" href="/dasgboardemo/">
+              <div>
+                <span>▣</span>
+              </div>
 
-  <div>
-    <strong>Guarda la demo interattiva</strong>
-    <p>Prova la dashboard evento da telefono: budget, scadenze, fornitori, agenda e documenti.</p>
-  </div>
+              <div>
+                <strong>Guarda la demo interattiva</strong>
+                <p>Prova la dashboard evento da telefono: budget, scadenze, fornitori, agenda e documenti.</p>
+              </div>
 
-  <small>Apri demo →</small>
-</a>
+              <small>Apri demo →</small>
+            </a>
 
             <div class="mini-note">
               <div class="heart">♡</div>
@@ -1356,7 +1360,7 @@
             <div class="phone phone-1">
               <div class="phone-inner">
                 <div class="phone-head">
-                  <strong>Roberta & Alessandro</strong>
+                  <strong>Evento Demo</strong>
                   <small>Area privata evento</small>
                 </div>
 
@@ -1400,14 +1404,14 @@
               <div class="phone-inner">
                 <div class="event-mini-title">
                   <small>Il nostro giorno</small>
-                  <strong>24 Maggio 2026</strong>
+                  <strong>14 Settembre 2026</strong>
                 </div>
 
                 <div class="phone-image"></div>
 
                 <div class="event-mini-title" style="padding-top:0;">
-                  <strong>Villa Mattioli</strong>
-                  <small>Lesmo, Monza e Brianza</small>
+                  <strong>Villa Aurora</strong>
+                  <small>Bergamo, Lombardia</small>
                 </div>
 
                 <div class="event-map">⌖</div>
@@ -1500,7 +1504,7 @@
 
               <div class="mini-screen mini-event">
                 <div class="mini-event-img"></div>
-                <h4>Il nostro evento</h4>
+                <h4>Il tuo evento</h4>
                 <div class="mini-btn">Vedi mappa</div>
                 <div class="mini-icons">
                   <span></span>
@@ -1661,8 +1665,8 @@
             <a class="btn btn-primary" href="/dasgboardemo/">
               ▣ Demo Dashboard
             </a>
-<a class="btn btn-gold"href="/dasgboardemo/eventodemo.html>
-            
+
+            <a class="btn btn-gold" href="/dasgboardemo/eventodemo.html">
               ♡ Demo Pagina Evento
             </a>
           </div>
@@ -1744,39 +1748,85 @@
         </div>
       </section>
 
-      <section id="contatti" class="final-cta">
-        <div class="container final-grid">
+      <section id="contatti" class="contact-section">
+        <div class="container">
 
-          <div>
-            <div class="eyebrow" style="margin-bottom:12px;">
-              <span>♡</span>
-              La tua area evento digitale
-            </div>
-
-            <h2>Pronto a portare ordine e bellezza nei tuoi eventi?</h2>
-
-            <p>
-              Richiedi una demo, prova la dashboard e scopri come offrire ai tuoi clienti
-              un’area privata elegante, semplice e sempre aggiornata.
+          <div class="section-title">
+            <h2 style="color:white;">Raccontaci il tuo evento</h2>
+            <p style="color:rgba(255,255,255,0.78);">
+              Hai bisogno di una dashboard, di una pagina evento personalizzata
+              o vuoi capire quale soluzione fa per te? Scrivici e ti risponderemo il prima possibile.
             </p>
           </div>
 
-          <div>
-            <p>
-              Ideale per partire con wedding planner, eventi privati, creator,
-              live online, location e attività locali.
-            </p>
-          </div>
+          <div class="contact-grid">
 
-          <div>
-            <!-- CAMBIA QUI IL LINK WHATSAPP O EMAIL -->
-            <a class="btn btn-gold" href="mailto:backtagofficialme@gmail.com?subject=Richiesta%20PixelUp%20Event%20Board&body=Ciao,%20vorrei%20provare%20PixelUp%20Event%20Board.">
-              Richiedi la tua dashboard →
-            </a>
+            <div class="contact-card">
+              <div class="contact-icon">✉</div>
+              <h3>Email</h3>
+              <p>
+                Scrivici direttamente via email per richiedere informazioni,
+                demo o una dashboard personalizzata.
+              </p>
 
-            <div class="secure">
-              Sicuro, semplice e creato per chi organizza eventi.
+              <a 
+                class="contact-btn" 
+                href="mailto:info@pixelup.it?subject=Richiesta%20PixelUp%20Event%20Board&body=Ciao%20PixelUp,%0A%0Avorrei%20ricevere%20informazioni%20su%20una%20dashboard%20o%20pagina%20evento%20personalizzata.%0A%0AGrazie."
+              >
+                Scrivi a info@pixelup.it
+              </a>
             </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">☏</div>
+              <h3>WhatsApp</h3>
+              <p>
+                Preferisci un contatto veloce? Apri WhatsApp e inviaci un messaggio
+                già precompilato.
+              </p>
+
+              <a 
+                class="contact-btn whatsapp" 
+                href="https://wa.me/393519780804?text=Ciao%20da%20PixelUp%2C%20hai%20bisogno%20di%20una%20Dashboard%20o%20di%20un%20evento%20personalizzato%3F" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                Scrivici su WhatsApp
+              </a>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-icon">▣</div>
+              <h3>Spiegaci la tua idea</h3>
+              <p>
+                Compila il modulo: si aprirà la tua email già pronta da inviare a PixelUp.
+              </p>
+
+              <form id="contactForm" class="contact-form">
+                <input type="text" id="contactName" placeholder="Il tuo nome" required>
+                <input type="email" id="contactEmail" placeholder="La tua email" required>
+
+                <select id="contactType" required>
+                  <option value="">Tipo di richiesta</option>
+                  <option value="Dashboard evento">Dashboard evento</option>
+                  <option value="Pagina evento personalizzata">Pagina evento personalizzata</option>
+                  <option value="Evento completo">Evento completo</option>
+                  <option value="Piano planner">Piano planner</option>
+                  <option value="Altro">Altro</option>
+                </select>
+
+                <textarea id="contactMessage" placeholder="Spiegaci la tua idea, il tipo di evento, la data e cosa vorresti creare..." required></textarea>
+
+                <button class="contact-submit" type="submit">
+                  Prepara email
+                </button>
+              </form>
+
+              <div class="secure">
+                Il modulo apre la tua app email con il messaggio già compilato.
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -1793,20 +1843,32 @@
   </div>
 
   <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
+    const contactForm = document.getElementById("contactForm");
 
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("active");
-      menuBtn.textContent = mobileMenu.classList.contains("active") ? "×" : "☰";
-    });
+    if (contactForm) {
+      contactForm.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-    document.querySelectorAll(".mobile-menu a").forEach(link => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.remove("active");
-        menuBtn.textContent = "☰";
+        const name = document.getElementById("contactName").value.trim();
+        const email = document.getElementById("contactEmail").value.trim();
+        const type = document.getElementById("contactType").value;
+        const message = document.getElementById("contactMessage").value.trim();
+
+        const subject = encodeURIComponent("Richiesta PixelUp - " + type);
+
+        const body = encodeURIComponent(
+          "Ciao PixelUp,\n\n" +
+          "vorrei richiedere informazioni.\n\n" +
+          "Nome: " + name + "\n" +
+          "Email: " + email + "\n" +
+          "Tipo richiesta: " + type + "\n\n" +
+          "Messaggio:\n" + message + "\n\n" +
+          "Grazie."
+        );
+
+        window.location.href = "mailto:info@pixelup.it?subject=" + subject + "&body=" + body;
       });
-    });
+    }
   </script>
 </body>
 </html>
