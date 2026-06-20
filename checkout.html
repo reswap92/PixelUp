@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Checkout | PixelUp Event Board</title>
+
+  <meta name="description" content="Completa l'acquisto del tuo piano PixelUp Event Board: dashboard privata, pagina evento o piano planner." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #183d2b;
+      --green-2: #2e5038;
+      --gold: #b68b45;
+      --gold-2: #d5aa5d;
+      --cream: #fbf4e8;
+      --cream-2: #fffaf2;
+      --text: #1f2c24;
+      --muted: #7b7166;
+      --line: rgba(182, 139, 69, 0.28);
+      --shadow: 0 24px 70px rgba(36, 27, 15, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255,250,242,0.95), rgba(251,244,232,0.97)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90") center/cover fixed no-repeat;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 250, 242, 0.88);
+      border-bottom: 1px solid rgba(182,139,69,0.16);
+    }
+
+    .nav {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 22px;
+      background: rgba(255,255,255,0.55);
+    }
+
+    .brand strong {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      line-height: 1;
+      color: var(--green);
+    }
+
+    .brand strong span {
+      color: var(--gold);
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(182,139,69,0.34);
+      background: rgba(255,255,255,0.46);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    main {
+      padding: 68px 0;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .checkout-card,
+    .side-card {
+      background: rgba(255, 252, 246, 0.90);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow span {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(182,139,69,0.14);
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(46px, 6vw, 74px);
+      line-height: 0.95;
+      color: var(--green);
+      letter-spacing: -1.4px;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .price-box {
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      color: white;
+      border-radius: 26px;
+      padding: 26px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-box::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -60px;
+      top: -60px;
+      border-radius: 50%;
+      background: rgba(213,170,93,0.18);
+    }
+
+    .price-label {
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .price strong {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 66px;
+      line-height: 0.9;
+      font-weight: 700;
+    }
+
+    .price small {
+      color: rgba(255,255,255,0.74);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .include-title {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--green);
+      font-size: 34px;
+      margin-bottom: 14px;
+    }
+
+    .features {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .features li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: #3f4d43;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .features li::before {
+      content: "✓";
+      color: var(--gold);
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    .pay-actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 900;
+      border: 0;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-paypal {
+      background: linear-gradient(135deg, #003087, #0070ba);
+      color: white;
+      box-shadow: 0 16px 34px rgba(0,48,135,0.22);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #1f6b46, #2f8f5d);
+      color: white;
+      box-shadow: 0 16px 34px rgba(31,107,70,0.18);
+    }
+
+    .btn-email {
+      background: rgba(255,255,255,0.72);
+      color: var(--green);
+      border: 1px solid rgba(182,139,69,0.32);
+    }
+
+    .small-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .side-card h2 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--green);
+      font-size: 38px;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 15px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(182,139,69,0.16);
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--green);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .step small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .delivery-box {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(77, 90, 58, 0.10);
+      border: 1px solid rgba(77, 90, 58, 0.20);
+      color: var(--green);
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 26px 0;
+      background: #102d20;
+      color: rgba(255,255,255,0.72);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(100% - 28px, 1080px);
+      }
+
+      .nav {
+        height: 74px;
+      }
+
+      .brand strong {
+        font-size: 30px;
+      }
+
+      .nav-link {
+        padding: 0 12px;
+        font-size: 12px;
+      }
+
+      main {
+        padding: 42px 0;
+      }
+
+      .checkout-card,
+      .side-card {
+        padding: 24px;
+        border-radius: 26px;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      .price strong {
+        font-size: 58px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <a class="brand" href="/">
+          <div class="brand-icon">♡</div>
+          <div>
+            <strong>Pixel<span>Up</span></strong>
+            <small>Event Board</small>
+          </div>
+        </a>
+
+        <a class="nav-link" href="/contatti.html">Contatti</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container checkout-grid">
+
+      <section class="checkout-card">
+        <div class="eyebrow">
+          <span>▣</span>
+          Checkout PixelUp
+        </div>
+
+        <h1 id="planTitle">Caricamento piano...</h1>
+
+        <p class="subtitle" id="planSubtitle">
+          Stiamo preparando il riepilogo del piano selezionato.
+        </p>
+
+        <div class="price-box">
+          <div class="price-label" id="priceLabel">Totale</div>
+          <div class="price">
+            <strong id="planPrice">€ 0</strong>
+            <small id="priceType">una tantum</small>
+          </div>
+        </div>
+
+        <h2 class="include-title">Cosa include</h2>
+
+        <ul class="features" id="featuresList"></ul>
+
+        <div class="pay-actions">
+          <a class="btn btn-paypal" id="paypalBtn" href="#" target="_blank" rel="noopener noreferrer">
+            Paga con PayPal
+          </a>
+
+          <a class="btn btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener noreferrer">
+            Domande? Scrivici su WhatsApp
+          </a>
+
+          <a class="btn btn-email" id="emailBtn" href="#">
+            Preferisco essere contattato via email
+          </a>
+        </div>
+
+        <div class="small-note" id="paymentNote">
+          Dopo il pagamento riceverai le istruzioni per completare l’attivazione.
+        </div>
+      </section>
+
+      <aside class="side-card">
+        <h2>Come avviene la consegna</h2>
+
+        <p class="subtitle">
+          Per ora l’attivazione è manuale, così possiamo configurare correttamente
+          la dashboard o la pagina evento in base alle tue esigenze.
+        </p>
+
+        <div class="timeline">
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <strong>Effettui il pagamento</strong>
+              <small>Completi l’acquisto tramite PayPal o ci scrivi prima per chiarimenti.</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <strong>Ti contattiamo su WhatsApp o email</strong>
+              <small>Raccogliamo nome evento, data, email di accesso e dettagli da inserire.</small>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <strong>Ricevi il link entro 24h</strong>
+              <small>Ti inviamo link dashboard, email e codice per accedere alla tua area PixelUp.</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="delivery-box">
+          Dopo la richiesta o il pagamento riceverai entro 24 ore su WhatsApp il link della tua dashboard PixelUp con email e codice di accesso.
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 PixelUp Event Board — Pagamento e attivazione servizi.
+    </div>
+  </footer>
+
+  <script>
+    /*
+      IMPORTANTE:
+      Sostituisci PAYPALME_PIXELUP con il tuo link PayPal.Me.
+
+      Esempio:
+      se il tuo PayPal.Me è https://www.paypal.me/VincenzoPixelUp
+      allora sotto metti:
+      const paypalBase = "https://www.paypal.me/VincenzoPixelUp";
+    */
+
+    const paypalBase = "https://www.paypal.me/PAYPALME_PIXELUP";
+
+    const plans = {
+      "pagina-evento": {
+        title: "Pagina Evento",
+        subtitle: "Una pagina elegante e personalizzata da condividere con invitati, clienti o partecipanti.",
+        price: "19.90",
+        priceText: "€ 19,90",
+        priceType: "una tantum",
+        paypalAmount: "19.90",
+        features: [
+          "Pagina evento personalizzata",
+          "Programma, mappa e informazioni utili",
+          "Menù, dress code, lista regalo e tavoli",
+          "Contatti e link pronti da condividere",
+          "Prima bozza entro 24 ore dalla ricezione dei dati"
+        ],
+        note: "Per la pagina evento puoi anche richiedere acconto 50% e saldo alla consegna scrivendoci su WhatsApp."
+      },
+
+      "evento-completo": {
+        title: "Evento Completo",
+        subtitle: "Il pacchetto più completo: dashboard privata per la gestione + pagina evento personalizzata.",
+        price: "29.90",
+        priceText: "€ 29,90",
+        priceType: "una tantum",
+        paypalAmount: "29.90",
+        features: [
+          "Dashboard privata PixelUp",
+          "Pagina evento per invitati o partecipanti",
+          "Budget, saldato, da saldare e scadenze",
+          "Fornitori, agenda e documenti",
+          "Link privato + email e codice di accesso",
+          "Consegna entro 24 ore dalla ricezione dei dati"
+        ],
+        note: "Dopo il pagamento ti contatteremo per raccogliere i dati e attivare dashboard e pagina evento."
+      },
+
+      "piano-planner": {
+        title: "Piano Planner",
+        subtitle: "Pensato per wedding planner, event planner e professionisti che vogliono gestire più progetti.",
+        price: "9.90",
+        priceText: "€ 9,90",
+        priceType: "al mese",
+        paypalAmount: "9.90",
+        features: [
+          "Fino a 5 dashboard private attive",
+          "Area 'I miei progetti'",
+          "Link privato per ogni cliente",
+          "Possibilità di aggiungere pagine evento",
+          "Attivazione manuale dell’account planner"
+        ],
+        note: "Il pagamento PayPal iniziale attiva il primo mese. Per rinnovi automatici useremo un abbonamento dedicato quando sarà attivo."
+      }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedPlan = urlParams.get("piano") || "evento-completo";
+    const plan = plans[selectedPlan] || plans["evento-completo"];
+
+    const whatsappNumber = "393519780804";
+
+    document.getElementById("planTitle").textContent = plan.title;
+    document.getElementById("planSubtitle").textContent = plan.subtitle;
+    document.getElementById("planPrice").textContent = plan.priceText;
+    document.getElementById("priceType").textContent = plan.priceType;
+    document.getElementById("paymentNote").textContent = plan.note;
+
+    const featuresList = document.getElementById("featuresList");
+    featuresList.innerHTML = plan.features.map(item => `<li>${item}</li>`).join("");
+
+    const paypalBtn = document.getElementById("paypalBtn");
+    paypalBtn.href = paypalBase + "/" + plan.paypalAmount;
+
+    const whatsappMessage = encodeURIComponent(
+      "Ciao PixelUp, sono interessato al piano: " + plan.title + ".\n\n" +
+      "Vorrei ricevere informazioni e procedere con l'attivazione."
+    );
+
+    document.getElementById("whatsappBtn").href = "https://wa.me/" + whatsappNumber + "?text=" + whatsappMessage;
+
+    const emailSubject = encodeURIComponent("Richiesta PixelUp - " + plan.title);
+
+    const emailBody = encodeURIComponent(
+      "Ciao PixelUp,\n\n" +
+      "sono interessato al piano: " + plan.title + ".\n\n" +
+      "Vorrei ricevere informazioni e procedere con l'attivazione.\n\n" +
+      "Grazie."
+    );
+
+    document.getElementById("emailBtn").href = "mailto:info@pixelup.it?subject=" + emailSubject + "&body=" + emailBody;
+  </script>
+</body>
+</html>
