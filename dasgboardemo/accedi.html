@@ -54,6 +54,20 @@
       max-width: 460px;
     }
 
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(182,139,69,0.22);
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+
     .logo {
       text-align: center;
       margin-bottom: 24px;
@@ -163,6 +177,11 @@
       margin-top: 6px;
     }
 
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .btn:active {
       transform: scale(0.98);
     }
@@ -218,7 +237,7 @@
       }
 
       .page {
-        margin-top: 26px;
+        margin-top: 20px;
       }
 
       .card {
@@ -241,6 +260,8 @@
 
   <main class="page">
 
+    <a class="back-link" href="/">← Torna alla home</a>
+
     <div class="logo">
       <div class="logo-icon">♡</div>
       <h1>Pixel<span>Up</span></h1>
@@ -251,8 +272,8 @@
       <h2>Accedi</h2>
 
       <p class="subtitle">
-        Inserisci la tua email e il codice di accesso che ti è stato fornito
-        per entrare nella tua area PixelUp.
+        Inserisci la tua email e il codice di accesso fornito da PixelUp
+        per entrare nella tua area dashboard.
       </p>
 
       <form id="loginForm">
@@ -273,13 +294,13 @@
           <input 
             type="text" 
             id="code" 
-            placeholder="Es. PU-2026" 
+            placeholder="Es. DEMO2026" 
             autocomplete="one-time-code"
             required
           />
         </div>
 
-        <button class="btn" type="submit">
+        <button class="btn" id="loginBtn" type="submit">
           Entra nella dashboard
         </button>
 
@@ -289,83 +310,118 @@
 
       <a 
         class="secondary-link" 
-        href="mailto:backtagofficialme@gmail.com?subject=Richiesta%20accesso%20PixelUp&body=Ciao,%20vorrei%20richiedere%20l'accesso%20a%20PixelUp%20Event%20Board."
+        href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp&body=Ciao%20PixelUp,%0A%0Avorrei%20richiedere%20un%20codice%20di%20accesso%20per%20PixelUp%20Event%20Board.%0A%0AGrazie."
       >
         Non hai ancora un codice? Richiedilo qui
       </a>
 
       <div class="note">
         L’accesso è riservato ai clienti PixelUp attivi.
-        Se hai appena acquistato una dashboard, usa il codice che hai ricevuto.
+        Se hai appena acquistato una dashboard, usa il codice ricevuto.
       </div>
 
     </section>
 
   </main>
 
-  <script>
-    /*
-      QUI INSERISCI I CLIENTI AUTORIZZATI.
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
-      Ogni cliente ha:
-      - email
-      - codice
-      - redirect: pagina dove deve entrare dopo il login
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-      Per ora è un sistema semplice per fase beta.
-      Non usare codici troppo importanti o dati sensibili.
-    */
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
 
-    const utentiAutorizzati = [
-      {
-        email: "demo@pixelup.it",
-        codice: "DEMO2026",
-        redirect: "/dashboard/"
-      },
-      {
-        email: "emiliaweddingevents@libero.it",
-        codice: "EMILIA2026",
-        redirect: "/dashboard/"
-      },
-      {
-        email: "cliente@email.it",
-        codice: "EVENTO2026",
-        redirect: "/dashboard/"
-      }
-    ];
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
+    const loginBtn = document.getElementById("loginBtn");
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", async function(event) {
       event.preventDefault();
 
       const email = document.getElementById("email").value.trim().toLowerCase();
       const code = document.getElementById("code").value.trim().toUpperCase();
 
-      const user = utentiAutorizzati.find(item => {
-        return item.email.toLowerCase() === email && item.codice.toUpperCase() === code;
-      });
-
-      if (!user) {
-        showMessage("Email o codice non corretti. Controlla i dati ricevuti da PixelUp.", "error");
+      if (!email || !code) {
+        showMessage("Inserisci email e codice accesso.", "error");
         return;
       }
 
-      localStorage.setItem("pixelup_access", "true");
-      localStorage.setItem("pixelup_email", email);
-      localStorage.setItem("pixelup_login_time", new Date().toISOString());
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Controllo accesso...";
 
-      showMessage("Accesso corretto. Apertura dashboard...", "success");
+      try {
+        const accessRef = doc(db, "accessCodes", code);
+        const accessSnap = await getDoc(accessRef);
 
-      setTimeout(() => {
-        window.location.href = user.redirect;
-      }, 900);
+        if (!accessSnap.exists()) {
+          showMessage("Codice accesso non trovato. Controlla il codice ricevuto.", "error");
+          resetButton();
+          return;
+        }
+
+        const accessData = accessSnap.data();
+
+        const firebaseEmail = String(accessData.email || "").trim().toLowerCase();
+        const active = accessData.active === true;
+        const role = accessData.role || "cliente";
+        const maxProjects = Number(accessData.maxProjects || 1);
+        const redirect = accessData.redirect || "/dashboard/";
+
+        if (!active) {
+          showMessage("Questo codice non è attivo. Contatta PixelUp.", "error");
+          resetButton();
+          return;
+        }
+
+        if (firebaseEmail !== email) {
+          showMessage("Email non corretta per questo codice accesso.", "error");
+          resetButton();
+          return;
+        }
+
+        localStorage.setItem("pixelup_access", "true");
+        localStorage.setItem("pixelup_email", email);
+        localStorage.setItem("pixelup_code", code);
+        localStorage.setItem("pixelup_role", role);
+        localStorage.setItem("pixelup_maxProjects", String(maxProjects));
+        localStorage.setItem("pixelup_login_time", new Date().toISOString());
+
+        showMessage("Accesso corretto. Apertura dashboard...", "success");
+
+        setTimeout(() => {
+          window.location.href = redirect;
+        }, 900);
+
+      } catch (error) {
+        console.error("Errore accesso Firebase:", error);
+        showMessage("Errore durante il controllo accesso. Controlla Firebase o riprova.", "error");
+        resetButton();
+      }
     });
 
     function showMessage(text, type) {
       message.textContent = text;
       message.className = "message " + type;
+    }
+
+    function resetButton() {
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Entra nella dashboard";
     }
   </script>
 
