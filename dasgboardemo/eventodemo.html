@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Demo Pagina Evento | PixelUp</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-light: #fffaf2;
+      --card: rgba(255, 252, 246, 0.96);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --border: rgba(223, 212, 193, 0.85);
+      --shadow: 0 18px 35px rgba(60, 45, 28, 0.12);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.08);
+      --hero-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=90");
+      --location-image: url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 34px;
+    }
+
+    .demo-banner {
+      background: linear-gradient(135deg, #344028, #4d5a3a);
+      color: #fffaf2;
+      padding: 11px 18px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+      letter-spacing: 0.2px;
+    }
+
+    .demo-banner strong {
+      color: #f0d69a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .topbar {
+      height: 66px;
+      padding: 0 20px;
+      background: rgba(255, 252, 246, 0.96);
+      border-bottom: 1px solid rgba(223, 212, 193, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    .circle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(177, 145, 85, 0.45);
+      background: rgba(255, 255, 255, 0.55);
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-size: 22px;
+    }
+
+    .top-title {
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .top-title h1 {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .top-title p {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .hero {
+      min-height: 370px;
+      background:
+        linear-gradient(180deg, rgba(35, 38, 28, 0.10), rgba(35, 38, 28, 0.56)),
+        var(--hero-image) center / cover no-repeat;
+      color: white;
+      padding: 36px 24px 64px;
+      display: flex;
+      align-items: flex-end;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 56px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+    }
+
+    .hero-content {
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .monogram {
+      width: 86px;
+      height: 86px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 24px;
+      letter-spacing: 2px;
+      background: rgba(255, 250, 241, 0.30);
+      border: 1px solid rgba(177, 145, 85, 0.78);
+      backdrop-filter: blur(5px);
+    }
+
+    .hero small {
+      display: block;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.86);
+      margin-bottom: 8px;
+    }
+
+    .hero h2 {
+      font-size: 45px;
+      line-height: 0.95;
+      font-weight: 400;
+      margin-bottom: 12px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero p {
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.45;
+      opacity: 0.95;
+      max-width: 390px;
+      margin: 0 auto;
+    }
+
+    .content {
+      padding: 18px 20px 24px;
+    }
+
+    .date-card {
+      margin: -38px auto 20px;
+      position: relative;
+      z-index: 4;
+      width: 90%;
+      background: rgba(255, 252, 246, 0.94);
+      border: 1px solid rgba(223, 212, 193, 0.85);
+      border-radius: 24px;
+      padding: 18px 16px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .date-card small {
+      display: block;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.7px;
+      color: var(--gold);
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .date-card strong {
+      display: block;
+      color: var(--green-dark);
+      font-size: 28px;
+      font-weight: 400;
+    }
+
+    .intro-card,
+    .section-card,
+    .quote-card,
+    .cta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--soft-shadow);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .intro-card {
+      text-align: center;
+    }
+
+    .intro-card h3 {
+      color: var(--green-dark);
+      font-size: 27px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .intro-card p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .location-img {
+      height: 170px;
+      border-radius: 20px;
+      background: var(--location-image) center / cover no-repeat;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .location-img::after {
+      content: "⌖";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 252, 246, 0.88);
+      border: 1px solid rgba(177,145,85,0.45);
+      color: var(--gold);
+      font-size: 32px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .location-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .location-info h3 {
+      font-size: 25px;
+      color: var(--green-dark);
+      font-weight: 400;
+    }
+
+    .location-info p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      margin-top: 4px;
+    }
+
+    .map-btn {
+      border: 1px solid var(--gold);
+      background: rgba(255,252,246,0.95);
+      color: var(--green-dark);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .grid-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .action-card {
+      min-height: 128px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--soft-shadow);
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .action-card:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .action-card span {
+      color: var(--gold);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .action-card strong {
+      color: var(--green-dark);
+      font-size: 18px;
+      line-height: 1.05;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    .action-card small {
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .demo-section {
+      display: none;
+      animation: fade 0.22s ease;
+    }
+
+    .demo-section.show {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title h3 {
+      color: var(--green-dark);
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .section-title span {
+      font-family: Arial, sans-serif;
+      color: var(--gold);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-row,
+    .table-row,
+    .contact-row {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(177,145,85,0.18);
+      align-items: center;
+    }
+
+    .timeline-row:last-child,
+    .table-row:last-child,
+    .contact-row:last-child {
+      border-bottom: none;
+    }
+
+    .time-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(177,145,85,0.12);
+      border: 1px solid rgba(177,145,85,0.22);
+      color: var(--green-dark);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+    }
+
+    .row-info h4 {
+      color: var(--green-dark);
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    .row-info p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.38;
+    }
+
+    .menu-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .menu-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,250,242,0.78);
+      border: 1px solid rgba(177,145,85,0.16);
+    }
+
+    .menu-item h4 {
+      color: var(--green-dark);
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+
+    .menu-item p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .gift-box {
+      text-align: center;
+    }
+
+    .gift-box .gift {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .gift-box h4 {
+      color: var(--green-dark);
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .gift-box p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .gift-btn {
+      display: inline-flex;
+      margin-top: 14px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #b19155, #d7b36b);
+      color: white;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      border: 0;
+    }
+
+    .quote-card {
+      text-align: center;
+      padding: 24px 20px;
+    }
+
+    .quote-card p {
+      color: #766b5f;
+      font-size: 22px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    .quote-card span {
+      display: block;
+      color: var(--gold);
+      font-size: 28px;
+      margin-top: 12px;
+    }
+
+    .cta-card {
+      text-align: center;
+      background: linear-gradient(135deg, #344028, #4d5a3a);
+      color: white;
+      border: none;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-card h3 {
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .cta-card p {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      opacity: 0.9;
+      margin-bottom: 14px;
+    }
+
+    .cta-card a {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #b19155, #d7b36b);
+      color: white;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .bottom-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      width: min(92%, 430px);
+      background: rgba(52, 64, 40, 0.97);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.35;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 390px) {
+      .content {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero h2 {
+        font-size: 38px;
+      }
+
+      .grid-actions {
+        gap: 9px;
+      }
+
+      .action-card {
+        min-height: 118px;
+        padding: 13px 7px;
+      }
+
+      .action-card strong {
+        font-size: 15px;
+      }
+
+      .action-card small {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="demo-banner">
+      <strong>Demo pagina evento</strong> · puoi cliccare le sezioni, ma è una pagina dimostrativa.
+    </div>
+
+    <header class="topbar">
+      <button class="circle-btn" type="button" onclick="goBack()">‹</button>
+
+      <div class="top-title">
+        <h1>Evento Demo</h1>
+        <p>PixelUp Event Page</p>
+      </div>
+
+      <button class="circle-btn" type="button" onclick="showToast('Questa è una pagina evento demo creata con PixelUp.')">♡</button>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="monogram">S|L</div>
+        <small>Il nostro giorno</small>
+        <h2>Sofia & Lorenzo</h2>
+        <p>
+          Siamo felici di condividere con voi le informazioni più importanti
+          per vivere insieme questo giorno speciale.
+        </p>
+      </div>
+    </section>
+
+    <section class="content">
+
+      <div class="date-card">
+        <small>Data evento</small>
+        <strong>14 Settembre 2026</strong>
+      </div>
+
+      <div class="intro-card">
+        <h3>Benvenuti nella nostra pagina evento</h3>
+        <p>
+          Qui trovate programma, location, menù, dress code, tavoli,
+          contatti e tutte le informazioni utili.
+        </p>
+      </div>
+
+      <div class="section-card">
+        <div class="location-img"></div>
+
+        <div class="location-info">
+          <div>
+            <h3>Villa Aurora</h3>
+            <p>Via dei Giardini 12<br>Bergamo, Lombardia</p>
+          </div>
+
+          <button class="map-btn" type="button" onclick="openMap()">
+            Apri mappa →
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-actions">
+
+        <button class="action-card" type="button" onclick="toggleSection('programma')">
+          <span>◷</span>
+          <strong>Programma</strong>
+          <small>Orari e momenti</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="toggleSection('menu')">
+          <span>⌂</span>
+          <strong>Menù</strong>
+          <small>Cena e buffet</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="toggleSection('lista')">
+          <span>🎁</span>
+          <strong>Lista regalo</strong>
+          <small>Contributo libero</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="toggleSection('dress')">
+          <span>◈</span>
+          <strong>Dress code</strong>
+          <small>Elegante naturale</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="toggleSection('tavoli')">
+          <span>▦</span>
+          <strong>Tavoli</strong>
+          <small>Composizione demo</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="toggleSection('contatti')">
+          <span>♡</span>
+          <strong>Contatti</strong>
+          <small>Info evento</small>
+        </button>
+
+      </div>
+
+      <div class="demo-section" id="programma">
+        <div class="section-card">
+          <div class="section-title">
+            <h3>Programma</h3>
+            <span>demo</span>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-row">
+              <div class="time-box">15:30</div>
+              <div class="row-info">
+                <h4>Arrivo ospiti</h4>
+                <p>Accoglienza in villa e indicazioni per la cerimonia.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-box">16:00</div>
+              <div class="row-info">
+                <h4>Cerimonia</h4>
+                <p>Momento principale nel giardino della location.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-box">18:00</div>
+              <div class="row-info">
+                <h4>Aperitivo</h4>
+                <p>Buffet e brindisi di benvenuto.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-box">20:00</div>
+              <div class="row-info">
+                <h4>Cena</h4>
+                <p>Servizio al tavolo nella sala principale.</p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="time-box">22:30</div>
+              <div class="row-info">
+                <h4>Taglio torta e party</h4>
+                <p>Torta, musica e festa finale.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section" id="menu">
+        <div class="section-card">
+          <div class="section-title">
+            <h3>Menù</h3>
+            <span>demo</span>
+          </div>
+
+          <div class="menu-list">
+            <div class="menu-item">
+              <h4>Aperitivo</h4>
+              <p>Finger food, isole gastronomiche, bollicine e analcolici.</p>
+            </div>
+
+            <div class="menu-item">
+              <h4>Primi</h4>
+              <p>Risotto cremoso alle erbe fini e ravioli con ripieno delicato.</p>
+            </div>
+
+            <div class="menu-item">
+              <h4>Secondo</h4>
+              <p>Filetto con contorno di stagione e proposta vegetariana su richiesta.</p>
+            </div>
+
+            <div class="menu-item">
+              <h4>Dolce</h4>
+              <p>Taglio torta, buffet dolci e caffetteria.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section" id="lista">
+        <div class="section-card gift-box">
+          <div class="gift">🎁</div>
+          <h4>Lista regalo</h4>
+          <p>
+            La vostra presenza è il regalo più bello.
+            Per chi desidera contribuire, nella versione reale qui può essere inserito
+            un IBAN, un link lista regalo o un messaggio personalizzato.
+          </p>
+
+          <button class="gift-btn" type="button" onclick="showToast('Nella versione reale questo pulsante può aprire lista regalo, IBAN o link dedicato.')">
+            Apri lista demo
+          </button>
+        </div>
+      </div>
+
+      <div class="demo-section" id="dress">
+        <div class="section-card">
+          <div class="section-title">
+            <h3>Dress code</h3>
+            <span>demo</span>
+          </div>
+
+          <div class="menu-list">
+            <div class="menu-item">
+              <h4>Elegante naturale</h4>
+              <p>
+                Toni chiari, sabbia, verde salvia, beige, cipria e colori delicati.
+                Evitare bianco totale e colori troppo accesi.
+              </p>
+            </div>
+
+            <div class="menu-item">
+              <h4>Consiglio</h4>
+              <p>
+                Parte dell’evento si svolgerà in giardino: meglio scegliere scarpe comode.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section" id="tavoli">
+        <div class="section-card">
+          <div class="section-title">
+            <h3>Tavoli</h3>
+            <span>demo</span>
+          </div>
+
+          <div class="timeline">
+            <div class="table-row">
+              <div class="time-box">1</div>
+              <div class="row-info">
+                <h4>Tavolo Magnolia</h4>
+                <p>Famiglia Rossi · Famiglia Bianchi · 8 ospiti</p>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="time-box">2</div>
+              <div class="row-info">
+                <h4>Tavolo Ulivo</h4>
+                <p>Amici università · Colleghi · 8 ospiti</p>
+              </div>
+            </div>
+
+            <div class="table-row">
+              <div class="time-box">3</div>
+              <div class="row-info">
+                <h4>Tavolo Lavanda</h4>
+                <p>Cugini e amici stretti · 8 ospiti</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section" id="contatti">
+        <div class="section-card">
+          <div class="section-title">
+            <h3>Contatti</h3>
+            <span>demo</span>
+          </div>
+
+          <div class="timeline">
+            <div class="contact-row">
+              <div class="time-box">☏</div>
+              <div class="row-info">
+                <h4>Event planner</h4>
+                <p>PixelUp Demo Events<br>Telefono e WhatsApp disponibili nella versione reale.</p>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="time-box">@</div>
+              <div class="row-info">
+                <h4>Email evento</h4>
+                <p>demo@pixelup.it<br>Per richieste, intolleranze o comunicazioni utili.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <p>
+          “La cosa migliore da fare è condividere i momenti più belli con le persone giuste.”
+        </p>
+        <span>♡</span>
+      </div>
+
+      <div class="cta-card">
+        <h3>Vuoi una pagina così?</h3>
+        <p>
+          PixelUp può creare una pagina evento personalizzata per invitati,
+          clienti o partecipanti.
+        </p>
+
+        <a href="mailto:backtagofficialme@gmail.com?subject=Richiesta%20Pagina%20Evento%20PixelUp&body=Ciao,%20vorrei%20creare%20una%20pagina%20evento%20personalizzata%20con%20PixelUp.">
+          Richiedi pagina evento
+        </a>
+      </div>
+
+      <div class="bottom-note">
+        Questa è una demo pubblica. In una pagina reale testi, foto, data,
+        programma, mappa, menù e tavoli vengono personalizzati per ogni evento.
+      </div>
+
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      section.classList.toggle("show");
+
+      if (section.classList.contains("show")) {
+        setTimeout(() => {
+          section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3400);
+    }
+
+    function openMap() {
+      window.open(
+        "https://www.google.com/maps/search/?api=1&query=Bergamo+Lombardia+Villa+evento",
+        "_blank"
+      );
+    }
+
+    function goBack() {
+      window.location.href = "/dasgboardemo/";
+    }
+  </script>
+
+</body>
+</html>
