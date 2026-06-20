@@ -1003,6 +1003,62 @@
       font-size: 13px;
       text-align: center;
     }
+    .demo-hero-card {
+  width: 100%;
+  max-width: 560px;
+  min-height: 96px;
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  margin: 28px 0 30px;
+  border-radius: 22px;
+  background: rgba(255, 252, 246, 0.9);
+  border: 1px solid rgba(182, 139, 69, 0.35);
+  box-shadow: 0 18px 45px rgba(36, 27, 15, 0.12);
+  color: var(--green);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.demo-hero-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 55px rgba(36, 27, 15, 0.16);
+}
+
+.demo-hero-card > div:first-child {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--green), #2e5038);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+
+.demo-hero-card strong {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
+.demo-hero-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.demo-hero-card small {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  color: var(--gold);
+  white-space: nowrap;
+}
 
     /* MOBILE */
 
@@ -1200,6 +1256,19 @@
       .final-cta {
         padding: 52px 0;
       }
+      .demo-hero-card {
+  grid-template-columns: 52px 1fr;
+  gap: 14px;
+}
+
+.demo-hero-card small {
+  grid-column: 1 / -1;
+  padding-left: 66px;
+}
+
+.demo-hero-card strong {
+  font-size: 24px;
+}
     }
   </style>
 </head>
@@ -1218,32 +1287,25 @@
             </div>
           </a>
 
-          <div class="nav-links">
-            <a href="#funzionalita">Funzionalità</a>
-            <a href="#perchi">Per chi è</a>
-            <a href="#demo">Demo</a>
-            <a href="#prezzi">Prezzi</a>
-            <a href="#contatti">Contatti</a>
-          </div>
-
-          <div class="nav-actions">
-            <a class="btn btn-outline" href="/dashboard/">Accedi</a>
-            <a class="btn btn-primary" href="#contatti">Inizia ora</a>
-          </div>
-
+         <div class="nav-links">
+  <a href="#funzionalita">Funzionalità</a>
+  <a href="#demo">Demo</a>
+  <a href="#prezzi">Prezzi</a>
+  <a href="#contatti">Contatti</a>
+</div>
+<div class="nav-actions">
+  <a class="btn btn-outline" href="/dashboard/">Accedi</a>
+</div>
           <button class="menu-btn" id="menuBtn" aria-label="Apri menu">☰</button>
         </nav>
 
-        <div class="mobile-menu" id="mobileMenu">
-          <a href="#funzionalita">Funzionalità</a>
-          <a href="#perchi">Per chi è</a>
-          <a href="#demo">Demo</a>
-          <a href="#prezzi">Prezzi</a>
-          <a href="#contatti">Contatti</a>
-          <a class="btn btn-outline" href="/dashboard/">Accedi</a>
-          <a class="btn btn-primary" href="#contatti">Inizia ora</a>
-        </div>
-      </div>
+       <div class="mobile-menu" id="mobileMenu">
+  <a href="#funzionalita">Funzionalità</a>
+  <a href="#demo">Demo</a>
+  <a href="#prezzi">Prezzi</a>
+  <a href="#contatti">Contatti</a>
+  <a class="btn btn-outline" href="/dashboard/">Accedi</a>
+</div>
     </header>
 
     <main>
@@ -1267,16 +1329,18 @@
               in un’unica area elegante e sempre aggiornata.
             </p>
 
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="/dasgboardemo/">
-                Guarda la demo
-                <span>▷</span>
-              </a>
+           <a class="demo-hero-card" href="/dasgboardemo/">
+  <div>
+    <span>▣</span>
+  </div>
 
-              <a class="btn btn-outline" href="#contatti">
-                Contattaci
-              </a>
-            </div>
+  <div>
+    <strong>Guarda la demo interattiva</strong>
+    <p>Prova la dashboard evento da telefono: budget, scadenze, fornitori, agenda e documenti.</p>
+  </div>
+
+  <small>Apri demo →</small>
+</a>
 
             <div class="mini-note">
               <div class="heart">♡</div>
