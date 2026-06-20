@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Accedi | PixelUp Event Board</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #183d2b;
+      --green-2: #2e5038;
+      --gold: #b68b45;
+      --gold-2: #d5aa5d;
+      --cream: #fbf4e8;
+      --cream-2: #fffaf2;
+      --text: #1f2c24;
+      --muted: #7b7166;
+      --line: rgba(182, 139, 69, 0.28);
+      --shadow: 0 24px 70px rgba(36, 27, 15, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255,250,242,0.94), rgba(251,244,232,0.96)),
+        url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90") center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(182,139,69,0.5);
+      background: rgba(255,255,255,0.55);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 30px;
+      box-shadow: 0 14px 35px rgba(36, 27, 15, 0.10);
+    }
+
+    .logo h1 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--green);
+      font-size: 46px;
+      line-height: 1;
+      letter-spacing: -0.8px;
+    }
+
+    .logo h1 span {
+      color: var(--gold);
+    }
+
+    .logo p {
+      margin-top: 4px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+
+    .card {
+      background: rgba(255, 252, 246, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      backdrop-filter: blur(14px);
+    }
+
+    .card h2 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--green);
+      font-size: 42px;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .card .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 54px;
+      border-radius: 16px;
+      border: 1px solid rgba(182,139,69,0.32);
+      background: rgba(255,255,255,0.72);
+      padding: 0 16px;
+      font-size: 15px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(182,139,69,0.13);
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      box-shadow: 0 18px 36px rgba(24, 61, 43, 0.22);
+      margin-top: 6px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .secondary-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(138, 61, 44, 0.10);
+      border: 1px solid rgba(138, 61, 44, 0.22);
+      color: #8a3d2c;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(77, 90, 58, 0.12);
+      border: 1px solid rgba(77, 90, 58, 0.24);
+      color: var(--green);
+    }
+
+    .note {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(182,139,69,0.18);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    @media (max-width: 430px) {
+      body {
+        padding: 18px;
+        align-items: flex-start;
+      }
+
+      .page {
+        margin-top: 26px;
+      }
+
+      .card {
+        padding: 24px;
+        border-radius: 26px;
+      }
+
+      .card h2 {
+        font-size: 36px;
+      }
+
+      .logo h1 {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="logo">
+      <div class="logo-icon">♡</div>
+      <h1>Pixel<span>Up</span></h1>
+      <p>EVENT BOARD</p>
+    </div>
+
+    <section class="card">
+      <h2>Accedi</h2>
+
+      <p class="subtitle">
+        Inserisci la tua email e il codice di accesso che ti è stato fornito
+        per entrare nella tua area PixelUp.
+      </p>
+
+      <form id="loginForm">
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            placeholder="esempio@email.it" 
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="code">Codice accesso</label>
+          <input 
+            type="text" 
+            id="code" 
+            placeholder="Es. PU-2026" 
+            autocomplete="one-time-code"
+            required
+          />
+        </div>
+
+        <button class="btn" type="submit">
+          Entra nella dashboard
+        </button>
+
+        <div class="message" id="message"></div>
+
+      </form>
+
+      <a 
+        class="secondary-link" 
+        href="mailto:backtagofficialme@gmail.com?subject=Richiesta%20accesso%20PixelUp&body=Ciao,%20vorrei%20richiedere%20l'accesso%20a%20PixelUp%20Event%20Board."
+      >
+        Non hai ancora un codice? Richiedilo qui
+      </a>
+
+      <div class="note">
+        L’accesso è riservato ai clienti PixelUp attivi.
+        Se hai appena acquistato una dashboard, usa il codice che hai ricevuto.
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    /*
+      QUI INSERISCI I CLIENTI AUTORIZZATI.
+
+      Ogni cliente ha:
+      - email
+      - codice
+      - redirect: pagina dove deve entrare dopo il login
+
+      Per ora è un sistema semplice per fase beta.
+      Non usare codici troppo importanti o dati sensibili.
+    */
+
+    const utentiAutorizzati = [
+      {
+        email: "demo@pixelup.it",
+        codice: "DEMO2026",
+        redirect: "/dashboard/"
+      },
+      {
+        email: "emiliaweddingevents@libero.it",
+        codice: "EMILIA2026",
+        redirect: "/dashboard/"
+      },
+      {
+        email: "cliente@email.it",
+        codice: "EVENTO2026",
+        redirect: "/dashboard/"
+      }
+    ];
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const code = document.getElementById("code").value.trim().toUpperCase();
+
+      const user = utentiAutorizzati.find(item => {
+        return item.email.toLowerCase() === email && item.codice.toUpperCase() === code;
+      });
+
+      if (!user) {
+        showMessage("Email o codice non corretti. Controlla i dati ricevuti da PixelUp.", "error");
+        return;
+      }
+
+      localStorage.setItem("pixelup_access", "true");
+      localStorage.setItem("pixelup_email", email);
+      localStorage.setItem("pixelup_login_time", new Date().toISOString());
+
+      showMessage("Accesso corretto. Apertura dashboard...", "success");
+
+      setTimeout(() => {
+        window.location.href = user.redirect;
+      }, 900);
+    });
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+  </script>
+
+</body>
+</html>
