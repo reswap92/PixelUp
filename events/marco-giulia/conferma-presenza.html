@@ -713,133 +713,177 @@
 
   </main>
 
-  <script>
-    const attendanceButtons = document.querySelectorAll(".choice-btn");
-    const guestButtons = document.querySelectorAll(".guest-btn");
-    const form = document.getElementById("rsvpForm");
-    const successMessage = document.getElementById("successMessage");
-    const companionsContainer = document.getElementById("companionsContainer");
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
-    let attendanceValue = "si";
-    let guestsValue = "1";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    function getGuestNumber(value) {
-      if (value === "4+") return 4;
-      return parseInt(value, 10);
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+    authDomain: "backtag-16de3.firebaseapp.com",
+    projectId: "backtag-16de3",
+    storageBucket: "backtag-16de3.firebasestorage.app",
+    messagingSenderId: "415455463905",
+    appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+    measurementId: "G-6565LXTZW7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const eventId = "roberta-alessandro";
+
+  const attendanceButtons = document.querySelectorAll(".choice-btn");
+  const guestButtons = document.querySelectorAll(".guest-btn");
+  const form = document.getElementById("rsvpForm");
+  const successMessage = document.getElementById("successMessage");
+  const companionsContainer = document.getElementById("companionsContainer");
+
+  let attendanceValue = "si";
+  let guestsValue = "1";
+
+  function getGuestNumber(value) {
+    if (value === "4+") return 4;
+    return parseInt(value, 10);
+  }
+
+  function renderCompanionFields(value) {
+    const number = getGuestNumber(value);
+
+    companionsContainer.innerHTML = "";
+
+    if (number === 0) {
+      return;
     }
 
-    function renderCompanionFields(value) {
-      const number = getGuestNumber(value);
+    for (let i = 1; i <= number; i++) {
+      const card = document.createElement("div");
+      card.className = "companion-card";
 
-      companionsContainer.innerHTML = "";
+      card.innerHTML = `
+        <div class="companion-title">Accompagnatore ${i}</div>
 
-      if (number === 0) {
-        return;
-      }
+        <div class="companion-fields">
+          <input
+            class="companion-input companion-name"
+            type="text"
+            placeholder="Nome e cognome"
+            data-index="${i}"
+          />
 
-      for (let i = 1; i <= number; i++) {
-        const card = document.createElement("div");
-        card.className = "companion-card";
+          <input
+            class="companion-input companion-age"
+            type="number"
+            min="0"
+            placeholder="Età"
+            data-index="${i}"
+          />
+        </div>
+      `;
 
-        card.innerHTML = `
-          <div class="companion-title">Accompagnatore ${i}</div>
+      companionsContainer.appendChild(card);
+    }
+  }
 
-          <div class="companion-fields">
-            <input
-              class="companion-input companion-name"
-              type="text"
-              placeholder="Nome e cognome"
-              data-index="${i}"
-            />
+  attendanceButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      attendanceButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      attendanceValue = button.dataset.attendance;
+    });
+  });
 
-            <input
-              class="companion-input companion-age"
-              type="number"
-              min="0"
-              placeholder="Età"
-              data-index="${i}"
-            />
-          </div>
-        `;
+  guestButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      guestButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      guestsValue = button.dataset.guests;
 
-        companionsContainer.appendChild(card);
+      renderCompanionFields(guestsValue);
+    });
+  });
+
+  renderCompanionFields(guestsValue);
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nome = document.getElementById("nome").value.trim();
+    const allergie = document.getElementById("allergie").value.trim();
+    const note = document.getElementById("note").value.trim();
+
+    const companionCards = document.querySelectorAll(".companion-card");
+
+    let accompagnatoriText = "";
+    const accompagnatoriArray = [];
+
+    companionCards.forEach((card, index) => {
+      const nomeAcc = card.querySelector(".companion-name").value.trim();
+      const etaAcc = card.querySelector(".companion-age").value.trim();
+
+      accompagnatoriArray.push({
+        nome: nomeAcc || "Nome non indicato",
+        eta: etaAcc || "Non indicata"
+      });
+
+      accompagnatoriText +=
+        "Accompagnatore " + (index + 1) + ": " +
+        (nomeAcc || "Nome non indicato") +
+        " - Età: " +
+        (etaAcc || "Non indicata") +
+        "\n";
+    });
+
+    if (!accompagnatoriText) {
+      accompagnatoriText = "Nessun accompagnatore indicato\n";
+    }
+
+    const destinatario = "emiliaweddingevents@libero.it";
+
+    const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
+
+    const body =
+      "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
+      "Nome e cognome: " + (nome || "Non indicato") + "\n" +
+      "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
+      "Numero accompagnatori: " + guestsValue + "\n\n" +
+      "Dettaglio accompagnatori:\n" +
+      accompagnatoriText + "\n" +
+      "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
+      "Note: " + (note || "Nessuna nota") + "\n\n" +
+      "Messaggio inviato dalla pagina evento PixelUp Events.";
+
+    successMessage.classList.add("show");
+
+    if (attendanceValue === "si") {
+      try {
+        await addDoc(collection(db, "eventGuests", eventId, "guests"), {
+          nome: nome || "Non indicato",
+          presenza: "si",
+          numeroAccompagnatori: guestsValue,
+          accompagnatori: accompagnatoriArray,
+          allergie: allergie || "",
+          note: note || "",
+          evento: "Roberta & Alessandro",
+          eventId: eventId,
+          createdAt: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Errore salvataggio invitato:", error);
+        alert("La conferma email verrà preparata, ma il salvataggio nella lista invitati non è riuscito. Controlla le regole Firebase.");
       }
     }
 
-    attendanceButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        attendanceButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        attendanceValue = button.dataset.attendance;
-      });
-    });
-
-    guestButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        guestButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        guestsValue = button.dataset.guests;
-
-        renderCompanionFields(guestsValue);
-      });
-    });
-
-    renderCompanionFields(guestsValue);
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const nome = document.getElementById("nome").value.trim();
-      const allergie = document.getElementById("allergie").value.trim();
-      const note = document.getElementById("note").value.trim();
-
-      const companionCards = document.querySelectorAll(".companion-card");
-
-      let accompagnatoriText = "";
-
-      companionCards.forEach((card, index) => {
-        const nomeAcc = card.querySelector(".companion-name").value.trim();
-        const etaAcc = card.querySelector(".companion-age").value.trim();
-
-        accompagnatoriText +=
-          "Accompagnatore " + (index + 1) + ": " +
-          (nomeAcc || "Nome non indicato") +
-          " - Età: " +
-          (etaAcc || "Non indicata") +
-          "\n";
-      });
-
-      if (!accompagnatoriText) {
-        accompagnatoriText = "Nessun accompagnatore indicato\n";
-      }
-
-      const destinatario = "emiliaweddingevents@libero.it";
-      const copia = "robertagallo1995@gmail.com";
-
-      const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
-
-      const body =
-        "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
-        "Nome e cognome: " + (nome || "Non indicato") + "\n" +
-        "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
-        "Numero accompagnatori: " + guestsValue + "\n\n" +
-        "Dettaglio accompagnatori:\n" +
-        accompagnatoriText + "\n" +
-        "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
-        "Note: " + (note || "Nessuna nota") + "\n\n" +
-        "Messaggio inviato dalla pagina evento PixelUp Events.";
-
-      successMessage.classList.add("show");
-
-      setTimeout(() => {
-        window.location.href =
-          "mailto:" + destinatario +
-          "?cc=" + encodeURIComponent(copia) +
-          "&subject=" + encodeURIComponent(subject) +
-          "&body=" + encodeURIComponent(body);
-      }, 700);
-    });
-  </script>
-
-</body>
-</html>
+    setTimeout(() => {
+      window.location.href =
+        "mailto:" + destinatario +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    }, 700);
+  });
+</script>
