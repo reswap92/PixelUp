@@ -4,20 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Segnala intolleranze | Robrta & Alessandro</title>
+  <title>Conferma presenza | Roberta & Alessandro</title>
 
   <style>
     :root {
       --cream: #fbf4e8;
-      --card: rgba(255, 252, 246, 0.95);
+      --cream-light: #fffaf1;
+      --card: rgba(255, 252, 246, 0.94);
       --text: #263122;
       --muted: #7b6f62;
       --gold: #b19155;
+      --gold-soft: #d8c498;
       --green: #4d5a3a;
       --green-dark: #344028;
+      --line: rgba(177, 145, 85, 0.35);
       --border: rgba(218, 205, 184, 0.85);
       --shadow: 0 18px 40px rgba(60, 45, 28, 0.13);
       --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+
+      /*
+        Cambia questa immagine se vuoi usare una foto reale degli sposi.
+        Deve essere orizzontale, elegante, luminosa.
+      */
       --hero-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90");
     }
 
@@ -26,6 +34,10 @@
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -40,9 +52,9 @@
       text-decoration: none;
     }
 
+    button,
     input,
-    textarea,
-    button {
+    textarea {
       font-family: inherit;
     }
 
@@ -57,184 +69,125 @@
       box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
     }
 
+    /* HERO */
+
     .hero {
-      min-height: 300px;
+      min-height: 255px;
+      padding: 22px 24px 0;
       position: relative;
-      padding: 18px 22px 28px;
+      color: #fff;
       background:
         linear-gradient(
           180deg,
-          rgba(255, 248, 235, 0.18) 0%,
-          rgba(255, 246, 230, 0.42) 58%,
-          rgba(255, 246, 230, 0.93) 100%
+          rgba(20, 22, 18, 0.20) 0%,
+          rgba(20, 22, 18, 0.24) 46%,
+          rgba(255, 246, 230, 0.92) 100%
         ),
         var(--hero-image) center top / cover no-repeat;
-      text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      text-align: center;
     }
 
     .hero::after {
       content: "";
       position: absolute;
-      left: -8%;
+      left: -10%;
       bottom: -1px;
-      width: 116%;
-      height: 62px;
+      width: 120%;
+      height: 72px;
       background: var(--cream);
       border-radius: 50% 50% 0 0 / 100% 100% 0 0;
       z-index: 1;
+      box-shadow: 0 -10px 28px rgba(255, 246, 230, 0.72);
     }
 
-    .topbar {
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 3;
-      font-family: Arial, sans-serif;
-    }
-
-    .back-top,
-    .heart-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: rgba(255, 255, 255, 0.50);
-      color: var(--green);
-      border: 1px solid rgba(104, 85, 49, 0.28);
-      font-size: 24px;
-    }
-
-    .brand {
-      font-size: 12px;
-      letter-spacing: 5px;
-      color: var(--green);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 3;
-      padding-top: 22px;
-    }
-
-    .monogram {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 12px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 23px;
-      letter-spacing: 2px;
-      position: relative;
-      background: rgba(255, 250, 241, 0.20);
-    }
-
-    .monogram::before {
-      content: "";
+    .back-btn {
       position: absolute;
-      inset: 1px;
+      top: 22px;
+      left: 22px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      border: 1px solid rgba(177, 145, 85, 0.55);
+      background: rgba(255, 255, 255, 0.96);
+      color: #1f211c;
+      display: grid;
+      place-items: center;
+      font-size: 31px;
+      line-height: 1;
+      z-index: 4;
+      box-shadow: 0 10px 22px rgba(39, 33, 25, 0.15);
+      transition: transform 0.18s ease, opacity 0.18s ease;
     }
 
-    h1 {
-      font-size: clamp(42px, 10vw, 62px);
-      font-weight: 400;
-      line-height: 0.98;
-      color: var(--green-dark);
-      text-shadow: 0 3px 20px rgba(255, 255, 255, 0.68);
-      margin-bottom: 8px;
+    .back-btn:active {
+      transform: scale(0.96);
+      opacity: 0.9;
     }
 
-    .hero-subtitle {
-      font-size: 18px;
-      font-style: italic;
-      color: #6f634f;
-    }
-
-    .ornament {
-      width: 190px;
-      height: 18px;
-      margin: 8px auto 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold);
-    }
-
-    .ornament::before,
-    .ornament::after {
-      content: "";
-      height: 1px;
-      background: rgba(177, 145, 85, 0.40);
-      flex: 1;
-    }
-
-    .ornament span {
-      padding: 0 12px;
+    .hero-text {
+      position: relative;
+      z-index: 3;
+      padding-top: 78px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
     }
 
     .couple {
-      font-size: 31px;
-      color: var(--green-dark);
-      margin-top: 4px;
+      font-size: 25px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-weight: 500;
+      color: #fff;
     }
 
     .date {
+      margin-top: 11px;
       font-size: 18px;
-      color: var(--text);
-      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #fff;
     }
 
     .content {
       position: relative;
       z-index: 3;
-      padding: 0 22px 34px;
+      padding: 0 22px 32px;
+      margin-top: -6px;
     }
 
-    .intro-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--soft-shadow);
-      border-radius: 22px;
-      padding: 20px 18px;
-      margin-bottom: 18px;
+    .title-block {
       text-align: center;
+      padding-top: 8px;
+      margin-bottom: 22px;
     }
 
-    .intro-icon {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 12px;
-      border-radius: 50%;
-      background: rgba(251, 246, 237, 0.95);
-      border: 1px solid rgba(235, 226, 209, 0.9);
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 36px;
-    }
-
-    .intro-card h2 {
-      font-size: 25px;
-      font-weight: 400;
+    .title-block h1 {
+      font-size: 31px;
+      line-height: 1.1;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
-    .intro-card p {
-      font-size: 16px;
-      line-height: 1.45;
-      color: #544c3f;
+    .subtitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .subtitle span {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
     }
 
     .form-card {
@@ -242,17 +195,83 @@
       border: 1px solid var(--border);
       border-radius: 24px;
       box-shadow: var(--shadow);
-      padding: 20px 16px;
+      padding: 18px 16px;
       margin-bottom: 18px;
+    }
+
+    .question-card {
+      background: rgba(255, 252, 246, 0.90);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--soft-shadow);
+      padding: 17px 14px 16px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .question-title {
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .attendance-options {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 11px;
+    }
+
+    .choice-btn {
+      min-height: 50px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 252, 246, 0.94);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      box-shadow: 0 8px 18px rgba(60, 45, 28, 0.08);
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .choice-btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .choice-btn.active {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      border-color: rgba(214, 193, 145, 0.95);
+      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.22);
+    }
+
+    .choice-icon {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      border: 1.3px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      line-height: 1;
+      flex: 0 0 auto;
     }
 
     .form-row {
       border-bottom: 1px solid rgba(177, 145, 85, 0.22);
-      padding: 16px 0;
+      padding: 17px 0;
     }
 
-    .form-row:first-child {
-      padding-top: 0;
+    .form-row:first-of-type {
+      padding-top: 4px;
     }
 
     .form-row:last-of-type {
@@ -295,12 +314,13 @@
       color: var(--text);
       outline: none;
       box-shadow: inset 0 1px 2px rgba(60, 45, 28, 0.04);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
     }
 
     .text-area {
       resize: none;
       padding-top: 14px;
-      min-height: 84px;
+      min-height: 58px;
     }
 
     .text-input::placeholder,
@@ -310,31 +330,96 @@
       font-size: 15px;
     }
 
-    .radio-grid {
-      width: calc(100% - 44px);
-      margin-left: 44px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+    .text-input:focus,
+    .text-area:focus {
+      border-color: rgba(177, 145, 85, 0.85);
+      box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
     }
 
-    .radio-btn {
-      min-height: 44px;
-      border-radius: 999px;
+    .guest-options {
+      display: flex;
+      gap: 14px;
+      margin-left: 44px;
+      flex-wrap: wrap;
+    }
+
+    .guest-btn {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
       border: 1px solid var(--border);
       background: rgba(255, 252, 246, 0.95);
       color: var(--text);
       display: grid;
       place-items: center;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
-      box-shadow: 0 7px 16px rgba(60, 45, 28, 0.08);
+      box-shadow: 0 7px 16px rgba(60, 45, 28, 0.10);
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
     }
 
-    .radio-btn.active {
+    .guest-btn:active {
+      transform: scale(0.94);
+    }
+
+    .guest-btn.active {
       background: var(--green);
       color: #fff;
       border-color: rgba(214, 193, 145, 0.95);
+    }
+
+    /* CAMPI ACCOMPAGNATORI AGGIUNTI */
+    .companions-container {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      margin-top: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .companion-card {
+      background: rgba(255, 252, 246, 0.72);
+      border: 1px solid rgba(190, 178, 158, 0.65);
+      border-radius: 15px;
+      padding: 13px;
+      box-shadow: 0 6px 15px rgba(60, 45, 28, 0.06);
+    }
+
+    .companion-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+
+    .companion-fields {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      gap: 10px;
+    }
+
+    .companion-input {
+      width: 100%;
+      border: 1px solid rgba(190, 178, 158, 0.75);
+      background: rgba(255, 252, 246, 0.85);
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 0 13px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .companion-input::placeholder {
+      color: rgba(75, 72, 67, 0.52);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .companion-input:focus {
+      border-color: rgba(177, 145, 85, 0.85);
+      box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
     }
 
     .submit-btn {
@@ -346,30 +431,55 @@
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 1.4px;
-      font-size: 17px;
+      font-size: 18px;
       cursor: pointer;
-      margin-top: 20px;
+      margin-top: 18px;
       box-shadow: 0 12px 25px rgba(54, 64, 42, 0.24);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 13px;
+      transition: transform 0.18s ease, opacity 0.18s ease;
     }
 
-    .back-btn {
-      min-height: 56px;
-      border-radius: 16px;
-      border: 1px solid var(--gold);
-      background: rgba(255, 252, 246, 0.92);
-      color: var(--text);
-      box-shadow: var(--soft-shadow);
+    .submit-btn:active {
+      transform: scale(0.985);
+      opacity: 0.92;
+    }
+
+    .submit-heart {
+      font-size: 26px;
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    .footer-note {
+      margin-top: 17px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.4px;
-      font-size: 16px;
+      gap: 9px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .footer-note .leaf {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+    }
+
+    .bottom-floral {
+      position: absolute;
+      left: 12px;
+      bottom: 8px;
+      color: rgba(177, 145, 85, 0.42);
+      font-size: 36px;
+      pointer-events: none;
+      transform: rotate(-18deg);
     }
 
     .success-message {
@@ -390,20 +500,18 @@
       display: block;
     }
 
-    .footer-note {
-      margin: 18px 0;
-      text-align: center;
-      color: var(--muted);
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
     @media (max-width: 390px) {
       .hero {
-        min-height: 285px;
-        padding-left: 17px;
-        padding-right: 17px;
+        min-height: 244px;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .back-btn {
+        top: 18px;
+        left: 18px;
+        width: 43px;
+        height: 43px;
       }
 
       .content {
@@ -411,21 +519,34 @@
         padding-right: 17px;
       }
 
-      h1 {
-        font-size: 41px;
+      .couple {
+        font-size: 23px;
       }
 
-      .couple {
+      .title-block h1 {
         font-size: 28px;
       }
 
-      .radio-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .attendance-options {
+        grid-template-columns: 1fr;
+      }
+
+      .choice-btn {
+        font-size: 13px;
+      }
+
+      .guest-options {
+        gap: 10px;
+      }
+
+      .guest-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
       }
 
       .text-input,
-      .text-area,
-      .radio-grid {
+      .text-area {
         width: calc(100% - 38px);
         margin-left: 38px;
       }
@@ -434,8 +555,21 @@
         grid-template-columns: 28px 1fr;
       }
 
+      .label-icon {
+        font-size: 21px;
+      }
+
       label {
         font-size: 14px;
+      }
+
+      .companions-container {
+        width: calc(100% - 38px);
+        margin-left: 38px;
+      }
+
+      .companion-fields {
+        grid-template-columns: 1fr 78px;
       }
     }
   </style>
@@ -445,36 +579,50 @@
 
   <main class="app">
 
+    <!-- HERO SUPERIORE -->
     <section class="hero">
-      <div class="topbar">
-        <a class="back-top" href="menu.html" aria-label="Torna al menù">‹</a>
-        <div class="brand">PixelUp Events</div>
-        <a class="heart-icon" href="index.html" aria-label="Torna all'evento">♡</a>
-      </div>
 
-      <div class="hero-content">
-        <div class="monogram">R|A</div>
-        <h1>Intolleranze</h1>
-        <div class="hero-subtitle">Segnala esigenze alimentari</div>
-        <div class="ornament"><span>♡</span></div>
+      <a class="back-btn" href="index.html" aria-label="Torna all'evento">‹</a>
+
+      <div class="hero-text">
         <div class="couple">Roberta &amp; Alessandro</div>
         <div class="date">27 Agosto 2026</div>
       </div>
+
     </section>
 
+    <!-- CONTENUTO -->
     <section class="content">
 
-      <div class="intro-card">
-        <div class="intro-icon">❧</div>
-        <h2>Aiutaci a prenderci cura di te</h2>
-        <p>
-          Compila questo modulo per segnalare allergie e/o intolleranze.
-          
-        </p>
+      <div class="title-block">
+        <h1>Conferma la tua presenza</h1>
+
+        <div class="subtitle">
+          <span>♡</span>
+          <p>La tua presenza renderà il nostro giorno ancora più speciale</p>
+        </div>
       </div>
 
-      <form class="form-card" id="allergyForm">
+      <form class="form-card" id="rsvpForm">
 
+        <!-- DOMANDA PRESENZA -->
+        <div class="question-card">
+          <div class="question-title">Confermi la tua presenza?</div>
+
+          <div class="attendance-options">
+            <button type="button" class="choice-btn active" data-attendance="si">
+              <span class="choice-icon">✓</span>
+              <span>Sì, ci sarò!</span>
+            </button>
+
+            <button type="button" class="choice-btn" data-attendance="no">
+              <span class="choice-icon">×</span>
+              <span>Non posso partecipare</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- NOME -->
         <div class="form-row">
           <div class="label-line">
             <div class="label-icon">♙</div>
@@ -483,126 +631,257 @@
 
           <input
             id="nome"
+            name="nome"
             class="text-input"
             type="text"
             placeholder="Scrivi qui il tuo nome"
+            autocomplete="name"
           />
         </div>
 
+        <!-- ACCOMPAGNATORI -->
         <div class="form-row">
           <div class="label-line">
             <div class="label-icon">♧</div>
-            <label>Persone interessate</label>
+            <label>N. di accompagnatori</label>
           </div>
 
-          <div class="radio-grid">
-            <button type="button" class="radio-btn active" data-persone="1">1</button>
-            <button type="button" class="radio-btn" data-persone="2">2</button>
-            <button type="button" class="radio-btn" data-persone="3">3</button>
-            <button type="button" class="radio-btn" data-persone="4+">4+</button>
+          <div class="guest-options">
+            <button type="button" class="guest-btn" data-guests="0">0</button>
+            <button type="button" class="guest-btn active" data-guests="1">1</button>
+            <button type="button" class="guest-btn" data-guests="2">2</button>
+            <button type="button" class="guest-btn" data-guests="3">3</button>
+            <button type="button" class="guest-btn" data-guests="4+">4+</button>
           </div>
+
+          <!-- QUI ESCONO AUTOMATICAMENTE NOME + ETÀ ACCOMPAGNATORI -->
+          <div class="companions-container" id="companionsContainer"></div>
         </div>
 
+        <!-- ALLERGIE -->
         <div class="form-row">
           <div class="label-line">
             <div class="label-icon">❧</div>
-            <label for="intolleranza">Allergia o intolleranza</label>
+            <label for="allergie">Allergie o intolleranze</label>
           </div>
 
           <input
-            id="intolleranza"
+            id="allergie"
+            name="allergie"
             class="text-input"
             type="text"
-            placeholder="Es. glutine, lattosio, frutta secca..."
+            placeholder="Scrivi eventuali allergie o intolleranze alimentari"
           />
         </div>
 
+        <!-- NOTE -->
         <div class="form-row">
           <div class="label-line">
             <div class="label-icon">♢</div>
-            <label for="note">Note aggiuntive</label>
+            <label for="note">Note <span style="text-transform:none; color:#7b6f62;">(opzionale)</span></label>
           </div>
 
           <textarea
             id="note"
+            name="note"
             class="text-area"
-            placeholder="Scrivi eventuali dettagli utili per la cucina o la wedding planner"
+            placeholder="Scrivi qui eventuali note"
           ></textarea>
         </div>
 
+        <!-- INVIA -->
         <button class="submit-btn" type="submit">
-          <span>Invia </span>
-          <span>♡</span>
+          <span>Invia conferma</span>
+          <span class="submit-heart">♡</span>
         </button>
 
         <div class="success-message" id="successMessage">
-         Email pronta. Si aprirà l’app email con il testo già compilato per la wedding planner.
+          Email pronta. Si aprirà l’app email con il messaggio già compilato.<br>
+          Ti basterà premere “Invia”.
         </div>
 
       </form>
 
       <div class="footer-note">
-        Ti consigliamo di segnalare eventuali intolleranze il prima possibile.
+        <span class="leaf">❧</span>
+        <p>Ti ringraziamo di confermare entro il 1 Luglio 2026</p>
       </div>
 
-      <a class="back-btn" href="menu.html">
-        <span style="font-size:24px;">←</span>
-        <span>Torna al menù</span>
-      </a>
+      <div class="bottom-floral">❧</div>
 
     </section>
 
   </main>
 
- <script>
-  /*
-    Invio tramite email:
-    quando l'utente clicca "Invia alla wedding planner",
-    si apre l'app email con destinatario, oggetto e testo già compilati.
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
-    Nota:
-    con HTML semplice non si può inviare una email automaticamente senza backend.
-    Questo metodo apre la mail pronta da inviare.
-  */
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  const weddingPlannerEmail = "emiliaweddingevents@libero.it";
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+    authDomain: "backtag-16de3.firebaseapp.com",
+    projectId: "backtag-16de3",
+    storageBucket: "backtag-16de3.firebasestorage.app",
+    messagingSenderId: "415455463905",
+    appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+    measurementId: "G-6565LXTZW7"
+  };
 
-  const radioButtons = document.querySelectorAll(".radio-btn");
-  const form = document.getElementById("allergyForm");
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const eventId = "roberta-alessandro";
+
+  const attendanceButtons = document.querySelectorAll(".choice-btn");
+  const guestButtons = document.querySelectorAll(".guest-btn");
+  const form = document.getElementById("rsvpForm");
   const successMessage = document.getElementById("successMessage");
+  const companionsContainer = document.getElementById("companionsContainer");
 
-  let personeValue = "1";
+  let attendanceValue = "si";
+  let guestsValue = "1";
 
-  radioButtons.forEach((button) => {
+  function getGuestNumber(value) {
+    if (value === "4+") return 4;
+    return parseInt(value, 10);
+  }
+
+  function renderCompanionFields(value) {
+    const number = getGuestNumber(value);
+
+    companionsContainer.innerHTML = "";
+
+    if (number === 0) {
+      return;
+    }
+
+    for (let i = 1; i <= number; i++) {
+      const card = document.createElement("div");
+      card.className = "companion-card";
+
+      card.innerHTML = `
+        <div class="companion-title">Accompagnatore ${i}</div>
+
+        <div class="companion-fields">
+          <input
+            class="companion-input companion-name"
+            type="text"
+            placeholder="Nome e cognome"
+            data-index="${i}"
+          />
+
+          <input
+            class="companion-input companion-age"
+            type="number"
+            min="0"
+            placeholder="Età"
+            data-index="${i}"
+          />
+        </div>
+      `;
+
+      companionsContainer.appendChild(card);
+    }
+  }
+
+  attendanceButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      radioButtons.forEach((btn) => btn.classList.remove("active"));
+      attendanceButtons.forEach((btn) => btn.classList.remove("active"));
       button.classList.add("active");
-      personeValue = button.dataset.persone;
+      attendanceValue = button.dataset.attendance;
     });
   });
 
-  form.addEventListener("submit", (event) => {
+  guestButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      guestButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      guestsValue = button.dataset.guests;
+
+      renderCompanionFields(guestsValue);
+    });
+  });
+
+  renderCompanionFields(guestsValue);
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
-    const intolleranza = document.getElementById("intolleranza").value.trim();
+    const allergie = document.getElementById("allergie").value.trim();
     const note = document.getElementById("note").value.trim();
 
-    const subject = "Segnalazione intolleranze - Matrimonio Roberta & Alessandro";
+    const companionCards = document.querySelectorAll(".companion-card");
+
+    let accompagnatoriText = "";
+    const accompagnatoriArray = [];
+
+    companionCards.forEach((card, index) => {
+      const nomeAcc = card.querySelector(".companion-name").value.trim();
+      const etaAcc = card.querySelector(".companion-age").value.trim();
+
+      accompagnatoriArray.push({
+        nome: nomeAcc || "Nome non indicato",
+        eta: etaAcc || "Non indicata"
+      });
+
+      accompagnatoriText +=
+        "Accompagnatore " + (index + 1) + ": " +
+        (nomeAcc || "Nome non indicato") +
+        " - Età: " +
+        (etaAcc || "Non indicata") +
+        "\n";
+    });
+
+    if (!accompagnatoriText) {
+      accompagnatoriText = "Nessun accompagnatore indicato\n";
+    }
+
+    const destinatario = "emiliaweddingevents@libero.it";
+
+    const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
 
     const body =
-      "Segnalazione intolleranze - Matrimonio  Roberta & Alessandro\n\n" +
-      "Nome: " + (nome || "Non indicato") + "\n" +
-      "Persone interessate: " + personeValue + "\n" +
-      "Allergia/intolleranza: " + (intolleranza || "Non indicata") + "\n" +
+      "Conferma presenza - Matrimonio Roberta & Alessandro\n\n" +
+      "Nome e cognome: " + (nome || "Non indicato") + "\n" +
+      "Presenza: " + (attendanceValue === "si" ? "Sì, ci sarò" : "Non posso partecipare") + "\n" +
+      "Numero accompagnatori: " + guestsValue + "\n\n" +
+      "Dettaglio accompagnatori:\n" +
+      accompagnatoriText + "\n" +
+      "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
       "Note: " + (note || "Nessuna nota") + "\n\n" +
       "Messaggio inviato dalla pagina evento PixelUp Events.";
 
     successMessage.classList.add("show");
 
+    if (attendanceValue === "si") {
+      try {
+        await addDoc(collection(db, "eventGuests", eventId, "guests"), {
+          nome: nome || "Non indicato",
+          presenza: "si",
+          numeroAccompagnatori: guestsValue,
+          accompagnatori: accompagnatoriArray,
+          allergie: allergie || "",
+          note: note || "",
+          evento: "Roberta & Alessandro",
+          eventId: eventId,
+          createdAt: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Errore salvataggio invitato:", error);
+        alert("La conferma email verrà preparata, ma il salvataggio nella lista invitati non è riuscito. Controlla le regole Firebase.");
+      }
+    }
+
     setTimeout(() => {
       window.location.href =
-        "mailto:" + weddingPlannerEmail +
+        "mailto:" + destinatario +
         "?subject=" + encodeURIComponent(subject) +
         "&body=" + encodeURIComponent(body);
     }, 700);
