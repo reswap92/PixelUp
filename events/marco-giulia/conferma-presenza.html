@@ -422,6 +422,60 @@
       box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
     }
 
+
+    /* ESIGENZE PARTICOLARI / ACCESSIBILITÀ */
+    .needs-options {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .need-btn {
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 252, 246, 0.95);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 0 14px;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 7px 16px rgba(60, 45, 28, 0.08);
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+      text-align: left;
+    }
+
+    .need-btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .need-btn.active {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      border-color: rgba(214, 193, 145, 0.95);
+      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.18);
+    }
+
+    .need-check {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.2px solid currentColor;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
     .submit-btn {
       width: 100%;
       min-height: 58px;
@@ -563,7 +617,8 @@
         font-size: 14px;
       }
 
-      .companions-container {
+      .companions-container,
+      .needs-options {
         width: calc(100% - 38px);
         margin-left: 38px;
       }
@@ -674,6 +729,44 @@
           />
         </div>
 
+
+        <!-- ESIGENZE PARTICOLARI -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">♿</div>
+            <label>Esigenze particolari</label>
+          </div>
+
+          <div class="needs-options">
+            <button type="button" class="need-btn" data-need="Accessibilità / carrozzina">
+              <span class="need-check">✓</span>
+              <span>Accessibilità / carrozzina</span>
+            </button>
+
+            <button type="button" class="need-btn" data-need="Seggiolone bambino">
+              <span class="need-check">✓</span>
+              <span>Seggiolone bambino</span>
+            </button>
+
+            <button type="button" class="need-btn" data-need="Posto comodo / vicino uscita">
+              <span class="need-check">✓</span>
+              <span>Posto comodo / vicino uscita</span>
+            </button>
+
+            <button type="button" class="need-btn" data-need="Altro">
+              <span class="need-check">✓</span>
+              <span>Altro</span>
+            </button>
+          </div>
+
+          <textarea
+            id="dettagliEsigenze"
+            name="dettagliEsigenze"
+            class="text-area"
+            placeholder="Scrivi eventuali dettagli: es. persona in carrozzina, spazio vicino al tavolo, passeggino, seggiolone..."
+          ></textarea>
+        </div>
+
         <!-- NOTE -->
         <div class="form-row">
           <div class="label-line">
@@ -743,9 +836,11 @@
   const form = document.getElementById("rsvpForm");
   const successMessage = document.getElementById("successMessage");
   const companionsContainer = document.getElementById("companionsContainer");
+  const needButtons = document.querySelectorAll(".need-btn");
 
   let attendanceValue = "si";
   let guestsValue = "1";
+  let esigenzeValue = [];
 
   function getGuestNumber(value) {
     if (value === "4+") return 4;
@@ -804,7 +899,23 @@
       button.classList.add("active");
       guestsValue = button.dataset.guests;
 
-      renderCompanionFields(guestsValue);
+    
+  needButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const value = button.dataset.need;
+      button.classList.toggle("active");
+
+      if (button.classList.contains("active")) {
+        if (!esigenzeValue.includes(value)) {
+          esigenzeValue.push(value);
+        }
+      } else {
+        esigenzeValue = esigenzeValue.filter((item) => item !== value);
+      }
+    });
+  });
+
+  renderCompanionFields(guestsValue);
     });
   });
 
@@ -816,6 +927,7 @@
     const nome = document.getElementById("nome").value.trim();
     const allergie = document.getElementById("allergie").value.trim();
     const note = document.getElementById("note").value.trim();
+    const dettagliEsigenze = document.getElementById("dettagliEsigenze").value.trim();
 
     const companionCards = document.querySelectorAll(".companion-card");
 
@@ -843,6 +955,8 @@
       accompagnatoriText = "Nessun accompagnatore indicato\n";
     }
 
+    const esigenzeText = esigenzeValue.length > 0 ? esigenzeValue.join(", ") : "Nessuna esigenza indicata";
+
     const destinatario = "emiliaweddingevents@libero.it";
 
     const subject = "Conferma presenza - Matrimonio Roberta & Alessandro";
@@ -855,6 +969,8 @@
       "Dettaglio accompagnatori:\n" +
       accompagnatoriText + "\n" +
       "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
+      "Esigenze particolari: " + esigenzeText + "\n" +
+      "Dettagli esigenze: " + (dettagliEsigenze || "Nessun dettaglio indicato") + "\n" +
       "Note: " + (note || "Nessuna nota") + "\n\n" +
       "Messaggio inviato dalla pagina evento PixelUp Events.";
 
@@ -868,6 +984,8 @@
           numeroAccompagnatori: guestsValue,
           accompagnatori: accompagnatoriArray,
           allergie: allergie || "",
+          esigenzeParticolari: esigenzeValue,
+          dettagliEsigenze: dettagliEsigenze || "",
           note: note || "",
           evento: "Roberta & Alessandro",
           eventId: eventId,
@@ -887,3 +1005,7 @@
     }, 700);
   });
 </script>
+
+
+</body>
+</html>
