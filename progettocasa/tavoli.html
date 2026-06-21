@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tavoli | Martina & Luca</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-light: #fffaf1;
+      --card: rgba(255, 252, 246, 0.94);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --border: rgba(218, 205, 184, 0.85);
+      --shadow: 0 18px 40px rgba(60, 45, 28, 0.13);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+
+      --hero-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero {
+      min-height: 310px;
+      position: relative;
+      padding: 18px 22px 28px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 248, 235, 0.18) 0%,
+          rgba(255, 246, 230, 0.42) 58%,
+          rgba(255, 246, 230, 0.93) 100%
+        ),
+        var(--hero-image) center top / cover no-repeat;
+      text-align: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 62px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+      box-shadow: 0 -8px 26px rgba(255, 246, 230, 0.65);
+    }
+
+    .topbar {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 3;
+      font-family: Arial, sans-serif;
+    }
+
+    .menu-icon,
+    .heart-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-size: 24px;
+    }
+
+    .heart-icon {
+      border: 1px solid rgba(104, 85, 49, 0.38);
+      background: rgba(255, 255, 255, 0.35);
+      font-size: 22px;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 5px;
+      color: var(--green);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding-top: 28px;
+    }
+
+    .monogram {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 22px;
+      letter-spacing: 2px;
+      position: relative;
+      background: rgba(255, 250, 241, 0.22);
+    }
+
+    .monogram::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 50%;
+      border: 1px solid rgba(177, 145, 85, 0.55);
+    }
+
+    h1 {
+      font-size: clamp(54px, 11vw, 72px);
+      font-weight: 400;
+      line-height: 0.95;
+      color: var(--green-dark);
+      text-shadow: 0 3px 20px rgba(255, 255, 255, 0.68);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      font-style: italic;
+      color: #6f634f;
+      margin-bottom: 8px;
+    }
+
+    .ornament {
+      width: 190px;
+      height: 18px;
+      margin: 6px auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: "";
+      height: 1px;
+      background: rgba(177, 145, 85, 0.40);
+      flex: 1;
+    }
+
+    .ornament span {
+      padding: 0 12px;
+    }
+
+    .couple {
+      font-size: 30px;
+      color: var(--green-dark);
+    }
+
+    .date {
+      font-size: 18px;
+      color: var(--text);
+      margin-top: 4px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 3;
+      padding: 0 22px 34px;
+    }
+
+    .intro-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--soft-shadow);
+      border-radius: 22px;
+      padding: 18px 16px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .intro-card h2 {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+
+    .intro-card p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .room-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .room-title {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green-dark);
+      font-size: 17px;
+      margin-bottom: 14px;
+    }
+
+    .hall {
+      position: relative;
+      min-height: 560px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.8), transparent 35%),
+        linear-gradient(145deg, #f9f0e1 0%, #eadbc7 100%);
+      border: 1px solid rgba(211, 192, 162, 0.75);
+      box-shadow: inset 0 0 40px rgba(99, 76, 42, 0.10);
+      overflow: hidden;
+      padding: 24px 10px;
+    }
+
+    .hall::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 22px;
+      border: 2px solid rgba(177, 145, 85, 0.18);
+      pointer-events: none;
+    }
+
+    .spouses-table {
+      width: 240px;
+      min-height: 66px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fffaf1, #eadfcd);
+      border: 1px solid rgba(177, 145, 85, 0.45);
+      box-shadow: 0 14px 24px rgba(70, 51, 28, 0.14);
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--green-dark);
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .spouses-table.active {
+      outline: 4px solid rgba(77, 90, 58, 0.15);
+      border-color: var(--gold);
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px 26px;
+      justify-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .wedding-table {
+      width: 142px;
+      height: 142px;
+      border: 0;
+      background: transparent;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .wedding-table:active {
+      transform: scale(0.97);
+      opacity: 0.92;
+    }
+
+    .table-center {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 42%, #fffdf7 0%, #fff8ed 52%, #e6d4b9 100%);
+      border: 7px solid #dfd0b7;
+      box-shadow:
+        0 14px 22px rgba(68, 48, 27, 0.18),
+        inset 0 0 0 2px rgba(255,255,255,0.7);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .table-center span {
+      font-size: 13px;
+      line-height: 1.1;
+      color: var(--green-dark);
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .wedding-table.active .table-center {
+      border-color: var(--gold);
+      box-shadow:
+        0 16px 24px rgba(68, 48, 27, 0.22),
+        0 0 0 5px rgba(77, 90, 58, 0.16);
+    }
+
+    .seat {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #d8c49f;
+      border: 1px solid rgba(97, 80, 47, 0.20);
+      position: absolute;
+      box-shadow: 0 4px 8px rgba(60, 45, 28, 0.10);
+    }
+
+    .seat.filled {
+      background: var(--green);
+    }
+
+    .seat.s1 { top: 3px; left: 61px; }
+    .seat.s2 { top: 21px; right: 21px; }
+    .seat.s3 { top: 61px; right: 3px; }
+    .seat.s4 { right: 21px; bottom: 21px; }
+    .seat.s5 { bottom: 3px; left: 61px; }
+    .seat.s6 { left: 21px; bottom: 21px; }
+    .seat.s7 { top: 61px; left: 3px; }
+    .seat.s8 { top: 21px; left: 21px; }
+
+    .room-note {
+      margin-top: 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    .details-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 18px 16px;
+      margin-bottom: 16px;
+    }
+
+    .details-header {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .details-icon {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: #f5efe5;
+      border: 1px solid rgba(176,138,69,0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 32px;
+    }
+
+    .details-title small {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .details-title h2 {
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .edit-table-name {
+      margin-bottom: 18px;
+    }
+
+    .edit-table-name label,
+    .seats-title {
+      display: block;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+
+    .name-input {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 13px;
+      border: 1px solid rgba(190, 178, 158, 0.75);
+      background: rgba(255, 252, 246, 0.85);
+      padding: 0 14px;
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    .name-input:focus {
+      border-color: rgba(177, 145, 85, 0.85);
+      box-shadow: 0 0 0 3px rgba(177, 145, 85, 0.12);
+    }
+
+    .seats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .seat-row {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(218, 205, 184, 0.70);
+      background: rgba(255, 252, 246, 0.70);
+    }
+
+    .seat-label {
+      color: var(--gold);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: center;
+    }
+
+    .seat-input {
+      width: 100%;
+      min-height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(190, 178, 158, 0.65);
+      background: rgba(255, 252, 246, 0.88);
+      padding: 0 13px;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .seat-input::placeholder {
+      color: rgba(75, 72, 67, 0.45);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .summary {
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(77, 90, 58, 0.08);
+      border: 1px solid rgba(77, 90, 58, 0.18);
+      color: var(--green-dark);
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .back-event {
+      min-height: 58px;
+      border-radius: 16px;
+      border: 1px solid var(--gold);
+      background: rgba(255, 252, 246, 0.92);
+      color: var(--text);
+      box-shadow: var(--soft-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .bottom-ornament {
+      width: 210px;
+      height: 22px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    .bottom-ornament::before,
+    .bottom-ornament::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(177, 145, 85, 0.34);
+    }
+
+    .bottom-ornament span {
+      padding: 0 10px;
+    }
+
+    @media (max-width: 390px) {
+      .hero {
+        min-height: 300px;
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .content {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      h1 {
+        font-size: 50px;
+      }
+
+      .couple {
+        font-size: 27px;
+      }
+
+      .hall {
+        min-height: 520px;
+      }
+
+      .tables-grid {
+        gap: 28px 16px;
+      }
+
+      .wedding-table {
+        width: 130px;
+        height: 130px;
+      }
+
+      .table-center {
+        width: 84px;
+        height: 84px;
+      }
+
+      .table-center span {
+        font-size: 12px;
+      }
+
+      .seat {
+        width: 18px;
+        height: 18px;
+      }
+
+      .seat.s1 { top: 3px; left: 56px; }
+      .seat.s2 { top: 19px; right: 19px; }
+      .seat.s3 { top: 56px; right: 3px; }
+      .seat.s4 { right: 19px; bottom: 19px; }
+      .seat.s5 { bottom: 3px; left: 56px; }
+      .seat.s6 { left: 19px; bottom: 19px; }
+      .seat.s7 { top: 56px; left: 3px; }
+      .seat.s8 { top: 19px; left: 19px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <section class="hero">
+      <div class="topbar">
+        <a class="menu-icon" href="menu.html" aria-label="Apri menu">☰</a>
+        <div class="brand">PixelUp Events</div>
+        <a class="heart-icon" href="index.html" aria-label="Torna all'evento">♡</a>
+      </div>
+
+      <div class="hero-content">
+        <div class="monogram">M|L</div>
+        <h1>Tavoli</h1>
+        <div class="hero-subtitle">Scopri la disposizione degli ospiti</div>
+        <div class="ornament"><span>♡</span></div>
+        <div class="couple">Martina <span style="color: var(--gold); font-style: italic;">&</span> Luca</div>
+        <div class="date">28 Agosto 2026</div>
+      </div>
+    </section>
+
+    <section class="content">
+
+      <div class="intro-card">
+        <h2>Composizione tavoli</h2>
+        <p>
+          Tocca un tavolo per visualizzare o modificare gli ospiti seduti.
+          Ogni tavolo è composto da 8 posti.
+        </p>
+      </div>
+
+      <div class="room-card">
+        <div class="room-title">Sala ricevimenti</div>
+
+        <div class="hall">
+
+          <button class="spouses-table active" data-table="sposi">
+            Tavolo degli sposi
+          </button>
+
+          <div class="tables-grid">
+
+            <button class="wedding-table" data-table="1">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 1</span></span>
+            </button>
+
+            <button class="wedding-table" data-table="2">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 2</span></span>
+            </button>
+
+            <button class="wedding-table" data-table="3">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 3</span></span>
+            </button>
+
+            <button class="wedding-table" data-table="4">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 4</span></span>
+            </button>
+
+            <button class="wedding-table" data-table="5">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 5</span></span>
+            </button>
+
+            <button class="wedding-table" data-table="6">
+              <span class="seat s1"></span>
+              <span class="seat s2"></span>
+              <span class="seat s3"></span>
+              <span class="seat s4"></span>
+              <span class="seat s5"></span>
+              <span class="seat s6"></span>
+              <span class="seat s7"></span>
+              <span class="seat s8"></span>
+              <span class="table-center"><span>Tavolo 6</span></span>
+            </button>
+
+          </div>
+        </div>
+
+        <div class="room-note">
+          I nomi inseriti vengono salvati automaticamente sul dispositivo.
+        </div>
+      </div>
+
+      <div class="details-card" id="detailsCard">
+
+        <div class="details-header">
+          <div class="details-icon">▦</div>
+
+          <div class="details-title">
+            <small>Tavolo selezionato</small>
+            <h2 id="selectedTableTitle">Tavolo degli sposi</h2>
+          </div>
+        </div>
+
+        <div class="edit-table-name">
+          <label for="tableNameInput">Nome tavolo modificabile</label>
+          <input
+            id="tableNameInput"
+            class="name-input"
+            type="text"
+            placeholder="Scrivi il nome del tavolo"
+          />
+        </div>
+
+        <div class="seats-title">Posti del tavolo</div>
+
+        <div class="seats-grid" id="seatsGrid"></div>
+
+        <div class="summary" id="summaryBox">
+          0 posti compilati su 8.
+        </div>
+
+      </div>
+
+      <a class="back-event" href="index.html">
+        <span style="font-size:24px;">←</span>
+        <span>Torna all’evento</span>
+      </a>
+
+      <div class="bottom-ornament"><span>♡</span></div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const defaultTables = {
+      sposi: {
+        name: "Tavolo degli sposi",
+        seats: ["Martina", "Luca", "", "", "", "", "", ""]
+      },
+      1: {
+        name: "Tavolo 1",
+        seats: ["", "", "", "", "", "", "", ""]
+      },
+      2: {
+        name: "Tavolo 2",
+        seats: ["", "", "", "", "", "", "", ""]
+      },
+      3: {
+        name: "Tavolo 3",
+        seats: ["", "", "", "", "", "", "", ""]
+      },
+      4: {
+        name: "Tavolo 4",
+        seats: ["", "", "", "", "", "", "", ""]
+      },
+      5: {
+        name: "Tavolo 5",
+        seats: ["", "", "", "", "", "", "", ""]
+      },
+      6: {
+        name: "Tavolo 6",
+        seats: ["", "", "", "", "", "", "", ""]
+      }
+    };
+
+    const storageKey = "pixelup_tavoli_martina_luca";
+
+    let tablesData = JSON.parse(localStorage.getItem(storageKey)) || defaultTables;
+    let selectedTable = "sposi";
+
+    const tableButtons = document.querySelectorAll("[data-table]");
+    const selectedTableTitle = document.getElementById("selectedTableTitle");
+    const tableNameInput = document.getElementById("tableNameInput");
+    const seatsGrid = document.getElementById("seatsGrid");
+    const summaryBox = document.getElementById("summaryBox");
+
+    function saveTables() {
+      localStorage.setItem(storageKey, JSON.stringify(tablesData));
+    }
+
+    function getFilledSeats(tableId) {
+      return tablesData[tableId].seats.filter((name) => name.trim() !== "").length;
+    }
+
+    function updateTableVisualNames() {
+      Object.keys(tablesData).forEach((tableId) => {
+        const button = document.querySelector('[data-table="' + tableId + '"]');
+
+        if (!button) return;
+
+        if (tableId === "sposi") {
+          button.textContent = tablesData[tableId].name;
+        } else {
+          const centerText = button.querySelector(".table-center span");
+          centerText.textContent = tablesData[tableId].name;
+        }
+
+        const seats = button.querySelectorAll(".seat");
+        seats.forEach((seat, index) => {
+          if (tablesData[tableId].seats[index] && tablesData[tableId].seats[index].trim() !== "") {
+            seat.classList.add("filled");
+          } else {
+            seat.classList.remove("filled");
+          }
+        });
+      });
+    }
+
+    function renderSelectedTable() {
+      const table = tablesData[selectedTable];
+
+      selectedTableTitle.textContent = table.name;
+      tableNameInput.value = table.name;
+      seatsGrid.innerHTML = "";
+
+      table.seats.forEach((seatName, index) => {
+        const row = document.createElement("div");
+        row.className = "seat-row";
+
+        row.innerHTML = `
+          <div class="seat-label">Posto ${index + 1}</div>
+          <input
+            class="seat-input"
+            type="text"
+            placeholder="Nome ospite"
+            value="${seatName}"
+            data-seat-index="${index}"
+          />
+        `;
+
+        seatsGrid.appendChild(row);
+      });
+
+      const filled = getFilledSeats(selectedTable);
+      summaryBox.textContent = filled + " posti compilati su 8.";
+
+      updateTableVisualNames();
+    }
+
+    tableButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedTable = button.dataset.table;
+
+        tableButtons.forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        renderSelectedTable();
+
+        setTimeout(() => {
+          document.getElementById("detailsCard").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }, 120);
+      });
+    });
+
+    tableNameInput.addEventListener("input", () => {
+      tablesData[selectedTable].name = tableNameInput.value || "Tavolo";
+      saveTables();
+      renderSelectedTable();
+    });
+
+    seatsGrid.addEventListener("input", (event) => {
+      if (!event.target.classList.contains("seat-input")) return;
+
+      const seatIndex = event.target.dataset.seatIndex;
+      tablesData[selectedTable].seats[seatIndex] = event.target.value;
+
+      saveTables();
+
+      const filled = getFilledSeats(selectedTable);
+      summaryBox.textContent = filled + " posti compilati su 8.";
+
+      updateTableVisualNames();
+    });
+
+    updateTableVisualNames();
+    renderSelectedTable();
+  </script>
+
+</body>
+</html>
