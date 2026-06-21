@@ -6,6 +6,22 @@
 
   <title>Tavoli | PixelUp Events</title>
 
+  <script>
+    const codiceCorretto = "EVENTO2026";
+    const accessoSalvato = sessionStorage.getItem("accesso_evento_privato");
+
+    if (accessoSalvato !== "ok") {
+      const codiceInserito = prompt("Area riservata. Inserisci il codice per accedere:");
+
+      if (codiceInserito === codiceCorretto) {
+        sessionStorage.setItem("accesso_evento_privato", "ok");
+      } else {
+        alert("Codice errato. Accesso non autorizzato.");
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
   <style>
     :root {
       --cream: #fbf4e8;
