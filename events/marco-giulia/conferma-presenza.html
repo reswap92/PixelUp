@@ -424,56 +424,43 @@
 
 
     /* ESIGENZE PARTICOLARI / ACCESSIBILITÀ */
-    .needs-options {
+    .accessibility-options {
       width: calc(100% - 44px);
       margin-left: 44px;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 9px;
       margin-bottom: 12px;
     }
 
-    .need-btn {
-      min-height: 46px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(255, 252, 246, 0.95);
-      color: var(--text);
+    .flag-option {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
       gap: 10px;
-      padding: 0 14px;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid rgba(190, 178, 158, 0.65);
+      border-radius: 12px;
+      background: rgba(255, 252, 246, 0.75);
+      color: var(--text);
+      font-size: 14px;
+      text-transform: none;
+      letter-spacing: 0;
       cursor: pointer;
-      font-size: 14px;
-      letter-spacing: 0.3px;
-      box-shadow: 0 7px 16px rgba(60, 45, 28, 0.08);
-      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
-      text-align: left;
+      box-shadow: 0 5px 12px rgba(60, 45, 28, 0.05);
     }
 
-    .need-btn:active {
-      transform: scale(0.97);
-      opacity: 0.9;
-    }
-
-    .need-btn.active {
-      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
-      color: #fff;
-      border-color: rgba(214, 193, 145, 0.95);
-      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.18);
-    }
-
-    .need-check {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: 1.2px solid currentColor;
-      display: grid;
-      place-items: center;
-      font-size: 14px;
-      line-height: 1;
+    .flag-option input {
+      width: 18px;
+      height: 18px;
+      accent-color: #4d5a3a;
       flex: 0 0 auto;
+    }
+
+    .flag-option span {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #3f3b34;
+      line-height: 1.25;
     }
 
     .submit-btn {
@@ -737,26 +724,26 @@
             <label>Esigenze particolari</label>
           </div>
 
-          <div class="needs-options">
-            <button type="button" class="need-btn" data-need="Accessibilità / carrozzina">
-              <span class="need-check">✓</span>
+          <div class="accessibility-options">
+            <label class="flag-option">
+              <input type="checkbox" value="Accessibilità / carrozzina">
               <span>Accessibilità / carrozzina</span>
-            </button>
+            </label>
 
-            <button type="button" class="need-btn" data-need="Seggiolone bambino">
-              <span class="need-check">✓</span>
+            <label class="flag-option">
+              <input type="checkbox" value="Seggiolone bambino">
               <span>Seggiolone bambino</span>
-            </button>
+            </label>
 
-            <button type="button" class="need-btn" data-need="Posto comodo / vicino uscita">
-              <span class="need-check">✓</span>
+            <label class="flag-option">
+              <input type="checkbox" value="Posto comodo / vicino uscita">
               <span>Posto comodo / vicino uscita</span>
-            </button>
+            </label>
 
-            <button type="button" class="need-btn" data-need="Altro">
-              <span class="need-check">✓</span>
+            <label class="flag-option">
+              <input type="checkbox" value="Altro">
               <span>Altro</span>
-            </button>
+            </label>
           </div>
 
           <textarea
@@ -836,11 +823,9 @@
   const form = document.getElementById("rsvpForm");
   const successMessage = document.getElementById("successMessage");
   const companionsContainer = document.getElementById("companionsContainer");
-  const needButtons = document.querySelectorAll(".need-btn");
 
   let attendanceValue = "si";
   let guestsValue = "1";
-  let esigenzeValue = [];
 
   function getGuestNumber(value) {
     if (value === "4+") return 4;
@@ -898,24 +883,7 @@
       guestButtons.forEach((btn) => btn.classList.remove("active"));
       button.classList.add("active");
       guestsValue = button.dataset.guests;
-
-    
-  needButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const value = button.dataset.need;
-      button.classList.toggle("active");
-
-      if (button.classList.contains("active")) {
-        if (!esigenzeValue.includes(value)) {
-          esigenzeValue.push(value);
-        }
-      } else {
-        esigenzeValue = esigenzeValue.filter((item) => item !== value);
-      }
-    });
-  });
-
-  renderCompanionFields(guestsValue);
+      renderCompanionFields(guestsValue);
     });
   });
 
@@ -928,6 +896,14 @@
     const allergie = document.getElementById("allergie").value.trim();
     const note = document.getElementById("note").value.trim();
     const dettagliEsigenze = document.getElementById("dettagliEsigenze").value.trim();
+
+    const esigenzeSelezionate = Array.from(
+      document.querySelectorAll(".accessibility-options input:checked")
+    ).map((checkbox) => checkbox.value);
+
+    const esigenzeText = esigenzeSelezionate.length > 0
+      ? esigenzeSelezionate.join(", ")
+      : "Nessuna esigenza indicata";
 
     const companionCards = document.querySelectorAll(".companion-card");
 
@@ -954,8 +930,6 @@
     if (!accompagnatoriText) {
       accompagnatoriText = "Nessun accompagnatore indicato\n";
     }
-
-    const esigenzeText = esigenzeValue.length > 0 ? esigenzeValue.join(", ") : "Nessuna esigenza indicata";
 
     const destinatario = "emiliaweddingevents@libero.it";
 
@@ -984,7 +958,7 @@
           numeroAccompagnatori: guestsValue,
           accompagnatori: accompagnatoriArray,
           allergie: allergie || "",
-          esigenzeParticolari: esigenzeValue,
+          esigenzeParticolari: esigenzeSelezionate,
           dettagliEsigenze: dettagliEsigenze || "",
           note: note || "",
           evento: "Roberta & Alessandro",
