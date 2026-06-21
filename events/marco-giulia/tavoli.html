@@ -567,6 +567,135 @@
       padding: 0 10px;
     }
 
+
+    /* INVITATI CONFERMATI */
+
+    .guests-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      padding: 18px 16px;
+      margin-bottom: 18px;
+    }
+
+    .guests-header {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .guests-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #f5efe5;
+      border: 1px solid rgba(176,138,69,0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 30px;
+    }
+
+    .guests-title small {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .guests-title h2 {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--green-dark);
+      line-height: 1;
+    }
+
+    .guests-text {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .guests-button {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(214, 193, 145, 0.95);
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(54, 64, 42, 0.20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .guests-status {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .guests-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .guest-item {
+      border-radius: 18px;
+      border: 1px solid rgba(218, 205, 184, 0.72);
+      background: rgba(255, 252, 246, 0.76);
+      padding: 14px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .guest-name {
+      color: var(--green-dark);
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .guest-meta {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .guest-meta strong {
+      color: var(--green-dark);
+    }
+
+    .guest-companions {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(177, 145, 85, 0.30);
+    }
+
+    .guest-companions ul {
+      padding-left: 18px;
+      margin-top: 5px;
+    }
+
+
     @media (max-width: 390px) {
       .hero {
         min-height: 300px;
@@ -655,6 +784,36 @@
           Tocca un tavolo per visualizzare o modificare gli ospiti seduti.
           Ogni tavolo è composto da 8 posti.
         </p>
+      </div>
+
+
+      <div class="guests-card" id="guestsCard">
+
+        <div class="guests-header">
+          <div class="guests-icon">☑</div>
+
+          <div class="guests-title">
+            <small>Lista automatica</small>
+            <h2>Invitati confermati</h2>
+          </div>
+        </div>
+
+        <p class="guests-text">
+          Qui compaiono automaticamente gli invitati che hanno confermato la presenza dalla pagina RSVP.
+          La wedding planner può consultarli e inserirli nei tavoli.
+        </p>
+
+        <button class="guests-button" id="loadGuestsBtn" type="button">
+          <span>↻</span>
+          <span>Mostra / aggiorna invitati</span>
+        </button>
+
+        <div class="guests-status" id="guestsStatus">
+          Premi il pulsante per caricare gli invitati confermati.
+        </div>
+
+        <div class="guests-list" id="guestsList"></div>
+
       </div>
 
       <div class="room-card">
@@ -790,7 +949,30 @@
 
   </main>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const eventId = "roberta-alessandro";
+
     const defaultTables = {
       sposi: {
         name: "Tavolo degli sposi",
@@ -832,6 +1014,10 @@
     const tableNameInput = document.getElementById("tableNameInput");
     const seatsGrid = document.getElementById("seatsGrid");
     const summaryBox = document.getElementById("summaryBox");
+
+    const loadGuestsBtn = document.getElementById("loadGuestsBtn");
+    const guestsStatus = document.getElementById("guestsStatus");
+    const guestsList = document.getElementById("guestsList");
 
     function saveTables() {
       localStorage.setItem(storageKey, JSON.stringify(tablesData));
@@ -882,7 +1068,7 @@
             class="seat-input"
             type="text"
             placeholder="Nome ospite"
-            value="${seatName}"
+            value="${seatName.replace(/"/g, "&quot;")}"
             data-seat-index="${index}"
           />
         `;
@@ -894,6 +1080,90 @@
       summaryBox.textContent = filled + " posti compilati su 8.";
 
       updateTableVisualNames();
+    }
+
+    async function loadConfirmedGuests() {
+      guestsStatus.textContent = "Caricamento invitati in corso...";
+      guestsList.innerHTML = "";
+      loadGuestsBtn.disabled = true;
+
+      try {
+        const guestsRef = collection(db, "eventGuests", eventId, "guests");
+        const snapshot = await getDocs(guestsRef);
+
+        const guests = [];
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+
+          if (data.presenza === "si") {
+            guests.push({
+              id: docSnap.id,
+              ...data
+            });
+          }
+        });
+
+        guests.sort((a, b) => {
+          const aTime = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+          const bTime = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+          return bTime - aTime;
+        });
+
+        if (guests.length === 0) {
+          guestsStatus.textContent = "Nessun invitato confermato trovato.";
+          return;
+        }
+
+        guestsStatus.textContent = "Invitati confermati trovati: " + guests.length;
+
+        guests.forEach((guest) => {
+          const item = document.createElement("div");
+          item.className = "guest-item";
+
+          const accompagnatori = Array.isArray(guest.accompagnatori) ? guest.accompagnatori : [];
+
+          let companionsHtml = "";
+
+          if (accompagnatori.length > 0) {
+            companionsHtml = `
+              <div class="guest-companions">
+                <strong>Accompagnatori:</strong>
+                <ul>
+                  ${accompagnatori.map((acc) => `
+                    <li>${acc.nome || "Nome non indicato"}${acc.eta ? " - Età: " + acc.eta : ""}</li>
+                  `).join("")}
+                </ul>
+              </div>
+            `;
+          } else {
+            companionsHtml = `
+              <div class="guest-companions">
+                <strong>Accompagnatori:</strong> nessuno indicato
+              </div>
+            `;
+          }
+
+          item.innerHTML = `
+            <div class="guest-name">${guest.nome || "Nome non indicato"}</div>
+
+            <div class="guest-meta">
+              <div><strong>Numero accompagnatori:</strong> ${guest.numeroAccompagnatori || "0"}</div>
+              ${companionsHtml}
+              <div><strong>Allergie/intolleranze:</strong> ${guest.allergie || "Nessuna indicata"}</div>
+              <div><strong>Note:</strong> ${guest.note || "Nessuna nota"}</div>
+            </div>
+          `;
+
+          guestsList.appendChild(item);
+        });
+
+      } catch (error) {
+        console.error("Errore caricamento invitati:", error);
+        guestsStatus.textContent = "Errore nel caricamento degli invitati. Controlla regole Firebase e connessione.";
+      } finally {
+        loadGuestsBtn.disabled = false;
+      }
     }
 
     tableButtons.forEach((button) => {
@@ -936,6 +1206,8 @@
 
       updateTableVisualNames();
     });
+
+    loadGuestsBtn.addEventListener("click", loadConfirmedGuests);
 
     updateTableVisualNames();
     renderSelectedTable();
