@@ -638,7 +638,7 @@
   <main class="app">
 
     <div class="demo-banner">
-      <strong>Demo interattiva</strong> · puoi cliccare e provare le sezioni, ma nessun dato verrà salvato.
+      <strong>Demo interattiva</strong> · puoi modificare e aggiungere dati, ma restano solo in questa prova e non vengono salvati.
     </div>
 
     <header class="topbar">
@@ -763,7 +763,7 @@
 
         <div class="section-title">
           <h2>Scadenze prossime</h2>
-          <button class="edit-btn" type="button" onclick="fakeAdd('scadenza')">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddDeadline()">+ Demo</button>
         </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -774,7 +774,7 @@
 
         <div class="section-title">
           <h2>Fornitori</h2>
-          <button class="edit-btn" type="button" onclick="fakeAdd('fornitore')">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddSupplier()">+ Demo</button>
         </div>
 
         <div class="list-card" id="supplierList"></div>
@@ -785,7 +785,7 @@
 
         <div class="section-title">
           <h2>Agenda</h2>
-          <button class="edit-btn" type="button" onclick="fakeAdd('appuntamento')">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddAgendaItem()">+ Demo</button>
         </div>
 
         <div class="list-card" id="agendaList"></div>
@@ -796,7 +796,7 @@
 
         <div class="section-title">
           <h2>Documenti</h2>
-          <button class="edit-btn" type="button" onclick="fakeAdd('documento')">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddDocument()">+ Demo</button>
         </div>
 
         <div class="list-card" id="documentList"></div>
@@ -836,7 +836,7 @@
           live online o attività.
         </p>
 
-        <a href="mailto:backtagofficialme@gmail.com?subject=Richiesta%20PixelUp%20Event%20Board&body=Ciao,%20vorrei%20provare%20PixelUp%20Event%20Board.">
+        <a href="/checkout.html?piano=dashboard-singola">
           Richiedi la tua dashboard
         </a>
       </div>
@@ -1025,36 +1025,90 @@
 
     function demoEditSummary(type) {
       let label = "";
+      let currentValue = 0;
 
-      if (type === "budget") label = "Budget totale";
-      if (type === "due") label = "Da saldare";
-      if (type === "paid") label = "Saldato";
+      if (type === "budget") {
+        label = "Budget totale";
+        currentValue = data.budget;
+      }
+
+      if (type === "due") {
+        label = "Da saldare";
+        currentValue = data.due;
+      }
+
+      if (type === "paid") {
+        label = "Saldato";
+        currentValue = data.paid;
+      }
+
+      const newValue = prompt("Modifica " + label + ":", currentValue);
+
+      if (newValue === null) return;
+
+      const cleanValue = Number(String(newValue).replace(".", "").replace(",", "."));
+
+      if (isNaN(cleanValue) || cleanValue < 0) {
+        showToast("<strong>Importo non valido</strong><br>Inserisci un numero corretto.");
+        return;
+      }
+
+      if (type === "budget") data.budget = cleanValue;
+      if (type === "due") data.due = cleanValue;
+      if (type === "paid") data.paid = cleanValue;
+
+      renderSummary();
 
       showToast(
-        "<strong>" + label + "</strong><br>" +
-        "Nella versione reale questo box può essere modificato dall'organizzatore. " +
-        "In questa demo pubblica la modifica è disattivata e non viene salvato nulla."
+        "<strong>Modifica demo aggiornata</strong><br>" +
+        "Il valore è cambiato solo in questa prova. Ricaricando la pagina torneranno i dati demo iniziali."
       );
+    }
+
+    function closeOtherSections(activeId) {
+      const sectionIds = [
+        "deadlineSection",
+        "supplierSection",
+        "agendaSection",
+        "documentSection",
+        "clientSection"
+      ];
+
+      sectionIds.forEach((sectionId) => {
+        if (sectionId !== activeId) {
+          const section = document.getElementById(sectionId);
+          if (section) section.classList.remove("show");
+        }
+      });
     }
 
     function toggleSection(id) {
       const section = document.getElementById(id);
-      section.classList.toggle("show");
+      if (!section) return;
 
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
+      const wasOpen = section.classList.contains("show");
+
+      closeOtherSections(id);
+
+      if (wasOpen) {
+        section.classList.remove("show");
+        return;
       }
+
+      section.classList.add("show");
+
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
     }
 
     function renderDeadlines() {
       const list = document.getElementById("deadlineList");
 
-      list.innerHTML = data.deadlines.map((item) => {
+      list.innerHTML = data.deadlines.map((item, index) => {
         const date = formatDate(item.date);
         const missing = Math.max(Number(item.total) - Number(item.paid), 0);
         const isPaid = missing <= 0;
@@ -1108,7 +1162,7 @@
             <div class="row-right">
               <strong>${euro(missing)}</strong>
               <small>${isPaid ? "saldato" : "da saldare"}</small>
-              <button class="edit-btn" type="button" onclick="fakeEdit('scadenza')">Modifica</button>
+              <button class="edit-btn" type="button" onclick="demoEditDeadline(${index})">Modifica</button>
             </div>
           </div>
         `;
@@ -1118,7 +1172,7 @@
     function renderSuppliers() {
       const list = document.getElementById("supplierList");
 
-      list.innerHTML = data.suppliers.map((item) => {
+      list.innerHTML = data.suppliers.map((item, index) => {
         const cleanPhone = item.phone ? item.phone.replace(/\D/g, "") : "";
         const phoneLink = cleanPhone ? `tel:${cleanPhone}` : "#";
 
@@ -1160,7 +1214,7 @@
             <div class="row-right">
               <strong>Contatto</strong>
               <small>fornitore</small>
-              <button class="edit-btn" type="button" onclick="fakeEdit('fornitore')">Modifica</button>
+              <button class="edit-btn" type="button" onclick="demoEditSupplier(${index})">Modifica</button>
             </div>
           </div>
         `;
@@ -1177,6 +1231,7 @@
       });
 
       list.innerHTML = sortedAgenda.map((item) => {
+        const realIndex = data.agenda.indexOf(item);
         const date = formatDate(item.date);
 
         return `
@@ -1196,7 +1251,7 @@
             <div class="row-right">
               <strong>${item.time || "--:--"}</strong>
               <small>appuntamento</small>
-              <button class="edit-btn" type="button" onclick="fakeEdit('appuntamento')">Modifica</button>
+              <button class="edit-btn" type="button" onclick="demoEditAgendaItem(${realIndex})">Modifica</button>
             </div>
           </div>
         `;
@@ -1206,7 +1261,7 @@
     function renderDocuments() {
       const list = document.getElementById("documentList");
 
-      list.innerHTML = data.documents.map((item) => {
+      list.innerHTML = data.documents.map((item, index) => {
         return `
           <div class="deadline-row">
             <div class="date-box">
@@ -1233,27 +1288,299 @@
             <div class="row-right">
               <strong>File</strong>
               <small>documento</small>
-              <button class="edit-btn" type="button" onclick="fakeEdit('documento')">Modifica</button>
+              <button class="edit-btn" type="button" onclick="demoEditDocument(${index})">Modifica</button>
             </div>
           </div>
         `;
       }).join("");
     }
 
-    function fakeEdit(type) {
-      showToast(
-        "<strong>Modifica " + type + "</strong><br>" +
-        "Nella versione reale qui si apre la modifica e i dati vengono salvati nella dashboard. " +
-        "In questa demo pubblica il salvataggio è bloccato."
-      );
+    function updateTotalsFromDeadlines() {
+      const totalDue = data.deadlines.reduce((sum, item) => {
+        return sum + Math.max(Number(item.total) - Number(item.paid), 0);
+      }, 0);
+
+      const totalPaid = data.deadlines.reduce((sum, item) => {
+        return sum + Number(item.paid);
+      }, 0);
+
+      data.due = totalDue;
+      data.paid = totalPaid;
+      renderSummary();
     }
 
-    function fakeAdd(type) {
-      showToast(
-        "<strong>Aggiungi " + type + "</strong><br>" +
-        "Questa funzione è attiva nella dashboard reale. " +
-        "Qui è solo una demo interattiva, quindi non crea nuovi dati."
-      );
+    function cleanNumber(value) {
+      return Number(String(value).replace(".", "").replace(",", "."));
+    }
+
+    function demoAddDeadline() {
+      const name = prompt("Nuova voce / servizio:", "Nuova scadenza");
+      if (name === null) return;
+
+      const supplier = prompt("Fornitore:", "");
+      if (supplier === null) return;
+
+      const total = prompt("Importo totale:", "0");
+      if (total === null) return;
+
+      const paid = prompt("Importo già pagato:", "0");
+      if (paid === null) return;
+
+      const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+      if (date === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      const cleanTotal = cleanNumber(total);
+      const cleanPaid = cleanNumber(paid);
+
+      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+        showToast("<strong>Importi non validi</strong><br>Inserisci numeri corretti.");
+        return;
+      }
+
+      const finalPaid = Math.min(cleanPaid, cleanTotal);
+      const missing = Math.max(cleanTotal - finalPaid, 0);
+
+      let automaticStatus = "Da saldare";
+      if (finalPaid > 0 && missing > 0) automaticStatus = "Acconto versato";
+      if (missing <= 0) automaticStatus = "Saldato";
+
+      data.deadlines.push({
+        name: name || "Nuova scadenza",
+        supplier: supplier || "Fornitore non indicato",
+        total: cleanTotal,
+        paid: finalPaid,
+        date: date || "2026-08-01",
+        status: automaticStatus,
+        notes: notes || ""
+      });
+
+      updateTotalsFromDeadlines();
+      renderDeadlines();
+
+      showToast("<strong>Scadenza aggiunta</strong><br>È visibile solo in questa demo e non viene salvata.");
+    }
+
+    function demoEditDeadline(index) {
+      const item = data.deadlines[index];
+      if (!item) return;
+
+      const name = prompt("Voce / servizio:", item.name);
+      if (name === null) return;
+
+      const supplier = prompt("Fornitore:", item.supplier);
+      if (supplier === null) return;
+
+      const total = prompt("Importo totale:", item.total);
+      if (total === null) return;
+
+      const paid = prompt("Importo già pagato:", item.paid);
+      if (paid === null) return;
+
+      const date = prompt("Data scadenza formato AAAA-MM-GG:", item.date);
+      if (date === null) return;
+
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+
+      const cleanTotal = cleanNumber(total);
+      const cleanPaid = cleanNumber(paid);
+
+      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+        showToast("<strong>Importi non validi</strong><br>Inserisci numeri corretti.");
+        return;
+      }
+
+      const finalPaid = Math.min(cleanPaid, cleanTotal);
+      const missing = Math.max(cleanTotal - finalPaid, 0);
+
+      let automaticStatus = "Da saldare";
+      if (finalPaid > 0 && missing > 0) automaticStatus = "Acconto versato";
+      if (missing <= 0) automaticStatus = "Saldato";
+
+      data.deadlines[index] = {
+        name: name || item.name,
+        supplier: supplier || item.supplier,
+        total: cleanTotal,
+        paid: finalPaid,
+        date: date || item.date,
+        status: automaticStatus,
+        notes: notes || ""
+      };
+
+      updateTotalsFromDeadlines();
+      renderDeadlines();
+
+      showToast("<strong>Scadenza modificata</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoAddSupplier() {
+      const service = prompt("Servizio:", "Nuovo fornitore");
+      if (service === null) return;
+
+      const name = prompt("Nome fornitore:", "");
+      if (name === null) return;
+
+      const phone = prompt("Numero di telefono:", "");
+      if (phone === null) return;
+
+      const email = prompt("Email:", "");
+      if (email === null) return;
+
+      data.suppliers.push({
+        service: service || "Nuovo fornitore",
+        name: name || "Nome non indicato",
+        phone: phone || "Telefono non indicato",
+        email: email || "Email non indicata"
+      });
+
+      renderSuppliers();
+
+      showToast("<strong>Fornitore aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+    }
+
+    function demoEditSupplier(index) {
+      const item = data.suppliers[index];
+      if (!item) return;
+
+      const service = prompt("Servizio:", item.service);
+      if (service === null) return;
+
+      const name = prompt("Nome fornitore:", item.name);
+      if (name === null) return;
+
+      const phone = prompt("Numero di telefono:", item.phone);
+      if (phone === null) return;
+
+      const email = prompt("Email:", item.email);
+      if (email === null) return;
+
+      data.suppliers[index] = {
+        service: service || item.service,
+        name: name || item.name,
+        phone: phone || item.phone,
+        email: email || item.email
+      };
+
+      renderSuppliers();
+
+      showToast("<strong>Fornitore modificato</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoAddAgendaItem() {
+      const title = prompt("Titolo appuntamento:", "Nuovo appuntamento");
+      if (title === null) return;
+
+      const place = prompt("Luogo:", "");
+      if (place === null) return;
+
+      const date = prompt("Data formato AAAA-MM-GG:", "2026-08-01");
+      if (date === null) return;
+
+      const time = prompt("Ora formato HH:MM:", "18:00");
+      if (time === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      data.agenda.push({
+        title: title || "Nuovo appuntamento",
+        place: place || "Luogo non indicato",
+        date: date || "",
+        time: time || "",
+        notes: notes || ""
+      });
+
+      renderAgenda();
+
+      showToast("<strong>Appuntamento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+    }
+
+    function demoEditAgendaItem(index) {
+      const item = data.agenda[index];
+      if (!item) return;
+
+      const title = prompt("Titolo appuntamento:", item.title);
+      if (title === null) return;
+
+      const place = prompt("Luogo:", item.place);
+      if (place === null) return;
+
+      const date = prompt("Data formato AAAA-MM-GG:", item.date);
+      if (date === null) return;
+
+      const time = prompt("Ora formato HH:MM:", item.time);
+      if (time === null) return;
+
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+
+      data.agenda[index] = {
+        title: title || item.title,
+        place: place || item.place,
+        date: date || item.date,
+        time: time || item.time,
+        notes: notes || ""
+      };
+
+      renderAgenda();
+
+      showToast("<strong>Appuntamento modificato</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoAddDocument() {
+      const name = prompt("Nome documento:", "Nuovo documento");
+      if (name === null) return;
+
+      const category = prompt("Categoria:", "Preventivi");
+      if (category === null) return;
+
+      const url = prompt("Link Google Drive / PDF:", "#");
+      if (url === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      data.documents.push({
+        name: name || "Nuovo documento",
+        category: category || "Altro",
+        url: url || "#",
+        notes: notes || ""
+      });
+
+      renderDocuments();
+
+      showToast("<strong>Documento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+    }
+
+    function demoEditDocument(index) {
+      const item = data.documents[index];
+      if (!item) return;
+
+      const name = prompt("Nome documento:", item.name);
+      if (name === null) return;
+
+      const category = prompt("Categoria:", item.category);
+      if (category === null) return;
+
+      const url = prompt("Link Google Drive / PDF:", item.url);
+      if (url === null) return;
+
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+
+      data.documents[index] = {
+        name: name || item.name,
+        category: category || item.category,
+        url: url || "#",
+        notes: notes || ""
+      };
+
+      renderDocuments();
+
+      showToast("<strong>Documento modificato</strong><br>La modifica resta solo in questa demo.");
     }
 
     function fakeDocument() {
