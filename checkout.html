@@ -703,22 +703,19 @@
       },
 
       onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert(
-            "Pagamento completato ✅\n\n" +
-            "Grazie " + ((details.payer && details.payer.name && details.payer.name.given_name) ? details.payer.name.given_name : "") +
-            ". Ora ti contatteremo per attivare il servizio PixelUp."
-          );
+  return actions.order.capture().then(function(details) {
+    alert(
+      "Pagamento completato ✅\n\n" +
+      "Grazie " + ((details.payer && details.payer.name && details.payer.name.given_name) ? details.payer.name.given_name : "") +
+      ". Ora ti spieghiamo come completare l’attivazione."
+    );
 
-          const paidWhatsappMessage = encodeURIComponent(
-            "Ciao PixelUp, ho appena completato il pagamento per: " + plan.title + ".\n\n" +
-            "Vorrei procedere con l'attivazione.\n\n" +
-            "ID pagamento PayPal: " + data.orderID + "\n\n" +
-            "Nome evento/progetto: \n" +
-            "Data evento: \n" +
-            "Email da usare per l'accesso: \n" +
-            "Richieste particolari: "
-          );
+    sessionStorage.setItem("pixelup_last_plan", plan.title);
+    sessionStorage.setItem("pixelup_paypal_order", data.orderID);
+
+    window.location.href = "/grazie.html";
+  });
+},
 
           window.location.href = "https://wa.me/" + whatsappNumber + "?text=" + paidWhatsappMessage;
         });
