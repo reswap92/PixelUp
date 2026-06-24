@@ -860,60 +860,61 @@
       document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
     }
 
-    function toggleDeadlines() {
-      const section = document.getElementById("deadlineSection");
-      section.classList.toggle("show");
+    function closeOtherSections(activeSectionId) {
+      const sectionIds = [
+        "deadlineSection",
+        "supplierSection",
+        "agendaSection",
+        "documentSection"
+      ];
 
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
+      sectionIds.forEach((sectionId) => {
+        if (sectionId !== activeSectionId) {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.classList.remove("show");
+          }
+        }
+      });
+    }
+
+    function openSingleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
+      const wasOpen = section.classList.contains("show");
+
+      closeOtherSections(sectionId);
+
+      if (wasOpen) {
+        section.classList.remove("show");
+        return;
       }
+
+      section.classList.add("show");
+
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
+
+    function toggleDeadlines() {
+      openSingleSection("deadlineSection");
     }
 
     function toggleSuppliers() {
-      const section = document.getElementById("supplierSection");
-      section.classList.toggle("show");
-
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
-      }
+      openSingleSection("supplierSection");
     }
 
     function toggleAgenda() {
-      const section = document.getElementById("agendaSection");
-      section.classList.toggle("show");
-
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
-      }
+      openSingleSection("agendaSection");
     }
 
     function toggleDocuments() {
-      const section = document.getElementById("documentSection");
-      section.classList.toggle("show");
-
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
-      }
+      openSingleSection("documentSection");
     }
 
     function renderDeadlines() {
