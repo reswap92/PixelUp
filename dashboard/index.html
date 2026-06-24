@@ -612,6 +612,35 @@
   text-transform: uppercase;
 }
 
+.quick-guide {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(77, 90, 58, 0.08);
+  border: 1px solid rgba(77, 90, 58, 0.16);
+  font-family: Arial, sans-serif;
+}
+
+.quick-guide strong {
+  display: block;
+  color: var(--green-dark);
+  font-size: 13px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.quick-guide ol {
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.quick-guide li {
+  margin-bottom: 5px;
+}
+
     @media (max-width: 390px) {
       .content {
         padding-left: 16px;
@@ -679,6 +708,16 @@
     </button>
 
     <div class="projects-list" id="projectsList"></div>
+
+    <div class="quick-guide">
+      <strong>Guida rapida</strong>
+      <ol>
+        <li>Clicca “Nuovo progetto” per creare una dashboard.</li>
+        <li>Inserisci nome evento e data.</li>
+        <li>Compila budget, scadenze, fornitori, agenda e documenti.</li>
+        <li>Da “I miei progetti” copia il link sposi/cliente.</li>
+      </ol>
+    </div>
 
   </div>
 </div>
