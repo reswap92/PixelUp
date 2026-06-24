@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Grazie per l'acquisto | PixelUp Event Board</title>
+
+  <meta name="description" content="Grazie per aver acquistato PixelUp Event Board. Invia i dati per attivare la tua dashboard." />
+
+  <style>
+    :root {
+      --green: #183d2b;
+      --green-2: #2e5038;
+      --gold: #b68b45;
+      --gold-2: #d5aa5d;
+      --cream: #fbf4e8;
+      --cream-2: #fffaf2;
+      --text: #1f2c24;
+      --muted: #7b7166;
+      --line: rgba(182, 139, 69, 0.28);
+      --shadow: 0 24px 70px rgba(36, 27, 15, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255,250,242,0.95), rgba(251,244,232,0.97)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90") center/cover fixed no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255, 252, 246, 0.93);
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      padding: 36px 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      text-align: center;
+    }
+
+    .icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      color: white;
+      font-size: 36px;
+      box-shadow: 0 18px 38px rgba(24, 61, 43, 0.22);
+    }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--green);
+      font-size: 46px;
+      line-height: 1;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .info-box {
+      background: rgba(77, 90, 58, 0.09);
+      border: 1px solid rgba(77, 90, 58, 0.18);
+      border-radius: 24px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 22px;
+    }
+
+    .info-box strong {
+      display: block;
+      color: var(--green);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .info-box ul {
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      color: #3f4d43;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .delivery {
+      margin-bottom: 24px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 900;
+      border: 0;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #1f6b46, #2f8f5d);
+      color: white;
+      box-shadow: 0 16px 34px rgba(31,107,70,0.18);
+    }
+
+    .btn-home {
+      background: rgba(255,255,255,0.72);
+      color: var(--green);
+      border: 1px solid rgba(182,139,69,0.32);
+    }
+
+    .small-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 18px;
+      }
+
+      .page {
+        padding: 30px 22px;
+        border-radius: 28px;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+    <div class="icon">✓</div>
+
+    <h1>Pagamento ricevuto</h1>
+
+    <p class="subtitle">
+      Grazie per aver acquistato PixelUp Event Board.
+      Ora ci servono pochi dati per attivare correttamente la tua dashboard.
+    </p>
+
+    <div class="info-box">
+      <strong>Inviaci questi dati su WhatsApp:</strong>
+
+      <ul>
+        <li>Nome evento o nome progetto</li>
+        <li>Data dell’evento</li>
+        <li>Email da usare per l’accesso</li>
+        <li>Eventuali richieste particolari da inserire</li>
+      </ul>
+    </div>
+
+    <div class="delivery">
+      Entro 24 ore riceverai il link della tua dashboard PixelUp con email e codice di accesso.
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener noreferrer">
+        Invia dati su WhatsApp
+      </a>
+
+      <a class="btn btn-home" href="/">
+        Torna alla home
+      </a>
+    </div>
+
+    <div class="small-note">
+      Se hai già inviato i dati, non devi fare altro: ti ricontatteremo appena la dashboard sarà pronta.
+    </div>
+  </main>
+
+  <script>
+    const whatsappNumber = "393519780804";
+
+    const message = encodeURIComponent(
+      "Ciao PixelUp, ho completato il pagamento e vorrei attivare la mia dashboard.\n\n" +
+      "Nome evento/progetto:\n" +
+      "Data evento:\n" +
+      "Email da usare per l'accesso:\n" +
+      "Richieste particolari:\n"
+    );
+
+    document.getElementById("whatsappBtn").href =
+      "https://wa.me/" + whatsappNumber + "?text=" + message;
+  </script>
+
+</body>
+</html>
