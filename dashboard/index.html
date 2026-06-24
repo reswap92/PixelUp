@@ -1214,7 +1214,18 @@
       return;
     }
 
-    list.innerHTML = data.deadlines.map((item, index) => {
+    const sortedDeadlines = [...data.deadlines].sort((a, b) => {
+      const dateA = new Date(a.date || "9999-12-31");
+      const dateB = new Date(b.date || "9999-12-31");
+
+      if (isNaN(dateA)) return 1;
+      if (isNaN(dateB)) return -1;
+
+      return dateA - dateB;
+    });
+
+    list.innerHTML = sortedDeadlines.map((item) => {
+      const realIndex = data.deadlines.indexOf(item);
       const date = formatDate(item.date);
       const missing = Math.max(Number(item.total) - Number(item.paid), 0);
       const isPaid = missing <= 0;
@@ -1268,7 +1279,7 @@
           <div class="row-right">
             <strong>${euro(missing)}</strong>
             <small>${isPaid ? "saldato" : "da saldare"}</small>
-            <button class="edit-btn" type="button" onclick="editDeadline(${index})">Modifica</button>
+            <button class="edit-btn" type="button" onclick="editDeadline(${realIndex})">Modifica</button>
           </div>
         </div>
       `;
