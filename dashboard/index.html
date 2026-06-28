@@ -434,6 +434,25 @@
       text-transform: uppercase;
     }
 
+    .drive-box strong {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      color: var(--green-dark);
+    }
+
+    .drive-box small {
+      margin-top: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--gold);
+    }
+
     .row-info h3 {
       font-size: 15px;
       font-weight: 600;
@@ -725,7 +744,7 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="monogram">R|A</div>
+        <div class="monogram" id="projectMonogram">R|A</div>
         <h2>Area privata wedding</h2>
         <p>
           Gestisci budget, acconti, saldi, scadenze e fornitori del matrimonio in modo semplice e ordinato.
@@ -1127,11 +1146,40 @@
     data.paid = totalPaid;
   }
 
+  function getProjectMonogram(projectName) {
+    const cleanName = String(projectName || "")
+      .replaceAll("&", " ")
+      .replaceAll("|", " ")
+      .replaceAll("+", " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (!cleanName) return "W|B";
+
+    const parts = cleanName
+      .split(" ")
+      .filter((word) => word.length > 0);
+
+    if (parts.length === 1) {
+      return parts[0].charAt(0).toUpperCase();
+    }
+
+    const firstInitial = parts[0].charAt(0).toUpperCase();
+    const secondInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+
+    return firstInitial + "|" + secondInitial;
+  }
+
   function renderSummary() {
     const projectTitle = document.getElementById("projectTitle");
+    const projectMonogram = document.getElementById("projectMonogram");
 
     if (projectTitle) {
       projectTitle.textContent = data.projectName || "Wedding Board";
+    }
+
+    if (projectMonogram) {
+      projectMonogram.textContent = getProjectMonogram(data.projectName);
     }
 
     document.getElementById("budgetValue").textContent = euro(data.budget);
@@ -1788,9 +1836,9 @@
     list.innerHTML = data.documents.map((item, index) => {
       return `
         <div class="deadline-row">
-          <div class="date-box">
-<strong>DRIVE</strong>
-<small>LINK</small>
+          <div class="date-box drive-box">
+            <strong>DRIVE</strong>
+            <small>LINK</small>
           </div>
 
           <div class="row-info">
