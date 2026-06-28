@@ -2286,9 +2286,15 @@ function addDocument() {
           return;
         }
 
+        if (!projectOwner) {
+          alert("Questo progetto non ha un proprietario assegnato. Controlla Firebase prima di modificarlo.");
+          window.location.href = "/dashboard/";
+          return;
+        }
+
         data = normalizeData({
           ...remoteData,
-          ownerEmail: projectOwner || loggedEmail
+          ownerEmail: projectOwner
         });
 
         const needsInitialData =
@@ -2297,7 +2303,7 @@ function addDocument() {
           remoteData.budget === undefined ||
           remoteData.due === undefined ||
           remoteData.paid === undefined ||
-          remoteData.ownerEmail === undefined ||
+          false ||
           !Array.isArray(remoteData.deadlines) ||
           !Array.isArray(remoteData.suppliers) ||
           !Array.isArray(remoteData.agenda) ||
@@ -2307,15 +2313,9 @@ function addDocument() {
           await setDoc(eventRef, data, { merge: true });
         }
       } else {
-        data = structuredClone(defaultData);
-        data.projectName = "Nuovo progetto";
-        data.ownerEmail = loggedEmail;
-        data.ownerRole = loggedRole;
-        data.accessCode = loggedCode;
-        data.createdAt = new Date().toISOString();
-        data.updatedAt = new Date().toISOString();
-
-        await setDoc(eventRef, data, { merge: true });
+        alert("Questo progetto non esiste o è stato eliminato. Apri un progetto dalla lista oppure creane uno nuovo.");
+        window.location.href = "/dashboard/";
+        return;
       }
 
       firebaseReady = true;
@@ -2324,7 +2324,17 @@ function addDocument() {
   } else {
     firebaseReady = false;
     data = structuredClone(defaultData);
-    renderAll();
+
+    const hero = document.querySelector(".hero");
+    const content = document.querySelector(".content");
+
+    if (hero) {
+      hero.style.display = "none";
+    }
+
+    if (content) {
+      content.style.display = "none";
+    }
 
     setTimeout(() => {
       const menu = document.getElementById("projectMenu");
