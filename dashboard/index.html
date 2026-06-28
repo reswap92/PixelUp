@@ -787,11 +787,11 @@
 
       <div class="summary-grid">
 
-        <div class="summary-card" onclick="editSummary('budget')">
+        <div class="summary-card" onclick="alert('Il totale si calcola automaticamente sommando saldato e da saldare.')">
           <div class="icon">▣</div>
-          <p>Budget</p>
+          <p>Totale</p>
           <strong id="budgetValue">€ 0</strong>
-          <small>totale evento</small>
+          <small>spesa prevista</small>
         </div>
 
         <div class="summary-card" onclick="editSummary('due')">
@@ -1182,11 +1182,13 @@
       projectMonogram.textContent = getProjectMonogram(data.projectName);
     }
 
-    document.getElementById("budgetValue").textContent = euro(data.budget);
+    const totalReal = Number(data.paid) + Number(data.due);
+
+    data.budget = totalReal;
+
+    document.getElementById("budgetValue").textContent = euro(totalReal);
     document.getElementById("dueValue").textContent = euro(data.due);
     document.getElementById("paidValue").textContent = euro(data.paid);
-
-    const totalReal = Number(data.paid) + Number(data.due);
     const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
 
     document.getElementById("paidPercent").textContent = percent + "%";
@@ -1198,8 +1200,8 @@
     let currentValue = 0;
 
     if (type === "budget") {
-      label = "Budget totale";
-      currentValue = data.budget;
+      alert("Il totale si calcola automaticamente sommando saldato e da saldare.");
+      return;
     }
 
     if (type === "due") {
@@ -2121,12 +2123,13 @@ function addDocument() {
         const budget = Number(project.budget) || 0;
         const paid = Number(project.paid) || 0;
         const due = Number(project.due) || 0;
+        const total = paid + due;
 
         list.innerHTML += `
           <div class="project-item">
             <div>
               <h4>${name}</h4>
-              <p>Budget: ${euro(budget)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+              <p>Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
             </div>
 
             <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
