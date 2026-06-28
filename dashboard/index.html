@@ -1779,7 +1779,7 @@
           line-height:1.4;
         ">
           Nessun documento inserito.<br>
-          Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive o PDF.
+          Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive.
         </div>
       `;
       return;
@@ -1789,8 +1789,8 @@
       return `
         <div class="deadline-row">
           <div class="date-box">
-            <strong>PDF</strong>
-            <small>DOC</small>
+<strong>DRIVE</strong>
+<small>LINK</small>
           </div>
 
           <div class="row-info">
@@ -1805,7 +1805,7 @@
                 rel="noopener noreferrer"
                 style="color:#4d5a3a; font-weight:bold;"
               >
-                Apri documento
+                Apri Google Drive
               </a>
             </p>
           </div>
@@ -1835,66 +1835,87 @@
       `;
     }).join("");
   }
+function addDocument() {
+  const name = prompt("Nome documento:", "Nuovo documento");
+  if (name === null) return;
 
-  function addDocument() {
-    const name = prompt("Nome documento:", "Nuovo documento");
-    if (name === null) return;
+  const category = prompt("Categoria:", "Google Drive");
+  if (category === null) return;
 
-    const category = prompt("Categoria:", "Preventivi");
-    if (category === null) return;
+  const url = prompt("Link Google Drive:", "");
+  if (url === null) return;
 
-    const url = prompt("Link Google Drive / PDF:", "");
-    if (url === null) return;
+  const notes = prompt("Note:", "");
+  if (notes === null) return;
 
-    const notes = prompt("Note:", "");
-    if (notes === null) return;
+  const cleanUrl = url.trim();
 
-    if (!url.trim()) {
-      alert("Inserisci un link valido al documento.");
-      return;
-    }
-
-    data.documents.push({
-      name: name || "Nuovo documento",
-      category: category || "Altro",
-      url: url.trim(),
-      notes: notes || ""
-    });
-
-    renderDocuments();
-    saveData();
+  if (!cleanUrl) {
+    alert("Inserisci un link Google Drive valido.");
+    return;
   }
 
-  function editDocument(index) {
-    const item = data.documents[index];
+  if (!cleanUrl.includes("drive.google.com")) {
+    const confirmOtherLink = confirm(
+      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
+    );
 
-    const name = prompt("Nome documento:", item.name);
-    if (name === null) return;
-
-    const category = prompt("Categoria:", item.category);
-    if (category === null) return;
-
-    const url = prompt("Link Google Drive / PDF:", item.url);
-    if (url === null) return;
-
-    const notes = prompt("Note:", item.notes);
-    if (notes === null) return;
-
-    if (!url.trim()) {
-      alert("Inserisci un link valido al documento.");
-      return;
-    }
-
-    data.documents[index] = {
-      name: name || item.name,
-      category: category || item.category,
-      url: url.trim(),
-      notes: notes || ""
-    };
-
-    renderDocuments();
-    saveData();
+    if (!confirmOtherLink) return;
   }
+
+  data.documents.push({
+    name: name || "Nuovo documento",
+    category: category || "Google Drive",
+    url: cleanUrl,
+    notes: notes || "",
+    type: "drive"
+  });
+
+  renderDocuments();
+  saveData();
+}
+
+ function editDocument(index) {
+  const item = data.documents[index];
+
+  const name = prompt("Nome documento:", item.name);
+  if (name === null) return;
+
+  const category = prompt("Categoria:", item.category || "Google Drive");
+  if (category === null) return;
+
+  const url = prompt("Link Google Drive:", item.url);
+  if (url === null) return;
+
+  const notes = prompt("Note:", item.notes);
+  if (notes === null) return;
+
+  const cleanUrl = url.trim();
+
+  if (!cleanUrl) {
+    alert("Inserisci un link Google Drive valido.");
+    return;
+  }
+
+  if (!cleanUrl.includes("drive.google.com")) {
+    const confirmOtherLink = confirm(
+      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
+    );
+
+    if (!confirmOtherLink) return;
+  }
+
+  data.documents[index] = {
+    name: name || item.name,
+    category: category || "Google Drive",
+    url: cleanUrl,
+    notes: notes || "",
+    type: "drive"
+  };
+
+  renderDocuments();
+  saveData();
+}
 
   function deleteDocument(index) {
     const item = data.documents[index];
