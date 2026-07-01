@@ -598,7 +598,7 @@
     const plans = {
       "dashboard-singola": {
         title: "Dashboard Singola",
-        subtitle: "Una dashboard privata per gestire un singolo evento con budget, scadenze, fornitori, agenda e documenti.",
+        subtitle: "Una dashboard privata per gestire un singolo evento con budget, scadenze, fornitori, agenda, documenti, contatti e report.",
         price: "4.99",
         priceText: "€ 4,99",
         priceType: "una tantum",
@@ -607,6 +607,7 @@
           "1 dashboard privata PixelUp",
           "Budget, saldato e da saldare",
           "Scadenze, fornitori, agenda e documenti",
+          "Checklist, timeline, note e report PDF",
           "Link cliente in sola lettura",
           "Email e codice di accesso",
           "Consegna entro 24 ore dalla ricezione dei dati"
@@ -614,62 +615,191 @@
         note: "Dopo il pagamento inviaci nome evento, data evento ed email di accesso. Entro 24 ore riceverai il link della dashboard con email e codice."
       },
 
-      "pagina-evento": {
-        title: "Pagina Evento",
-        subtitle: "Una pagina elegante e personalizzata da condividere con invitati, clienti o partecipanti.",
-        price: "19.90",
-        priceText: "€ 19,90",
+      "dashboard-personalizzata": {
+        title: "Dashboard Personalizzata",
+        subtitle: "Una dashboard adattata al tuo lavoro, evento o progetto: fotografi, celebranti, creator, attività locali e professionisti.",
+        price: "9.90",
+        priceText: "€ 9,90",
         priceType: "una tantum",
-        paypalAmount: "19.90",
+        paypalAmount: "9.90",
         features: [
-          "Pagina evento personalizzata",
-          "Programma, mappa e informazioni utili",
-          "Menù, dress code, lista regalo e tavoli",
-          "Contatti e link pronti da condividere",
-          "Prima bozza entro 24 ore dalla ricezione dei dati"
-        ],
-        note: "Per la pagina evento puoi anche richiedere acconto 50% e saldo alla consegna scrivendoci su WhatsApp."
-      },
-
-      "evento-completo": {
-        title: "Evento Completo",
-        subtitle: "Il pacchetto più completo: dashboard privata per la gestione + pagina evento personalizzata.",
-        price: "29.90",
-        priceText: "€ 29,90",
-        priceType: "una tantum",
-        paypalAmount: "29.90",
-        features: [
-          "Dashboard privata PixelUp",
-          "Pagina evento per invitati o partecipanti",
-          "Budget, saldato, da saldare e scadenze",
-          "Fornitori, agenda e documenti",
-          "Link privato + email e codice di accesso",
+          "1 dashboard personalizzata PixelUp",
+          "1 progetto incluso",
+          "Sezioni adattate al tuo lavoro",
+          "Clienti, scadenze, documenti, pagamenti, contatti e note",
+          "Report e link condivisibile se previsto",
+          "Configurazione iniziale inclusa",
           "Consegna entro 24 ore dalla ricezione dei dati"
         ],
-        note: "Dopo il pagamento inviaci nome evento, data evento, email di accesso e richieste particolari. Entro 24 ore ti invieremo i link di attivazione."
+        note: "Dopo il pagamento inviaci che attività fai, cosa vuoi gestire, nome progetto ed email di accesso. Ti prepariamo la dashboard personalizzata."
+      },
+
+      "slot-progetto-extra": {
+        title: "Slot Progetto Extra",
+        subtitle: "Aggiungi un nuovo progetto alla tua dashboard personalizzata o al tuo account PixelUp.",
+        price: "2.90",
+        priceText: "€ 2,90",
+        priceType: "una tantum",
+        paypalAmount: "2.90",
+        features: [
+          "1 slot progetto aggiuntivo",
+          "Attivazione manuale sul tuo account",
+          "Valido per dashboard personalizzata o account già attivo",
+          "Non cancella i progetti esistenti",
+          "Attivazione dopo verifica pagamento"
+        ],
+        note: "Dopo il pagamento scrivici l'email del tuo account PixelUp. Aumenteremo manualmente il numero massimo di progetti disponibili."
+      },
+
+      "pagina-evento-semplice": {
+        title: "Pagina Evento Semplice",
+        subtitle: "Una pagina evento digitale per compleanni, feste, battesimi, comunioni, eventi privati o attività locali.",
+        price: "29.00",
+        priceText: "€ 29",
+        priceType: "una tantum",
+        paypalAmount: "29.00",
+        features: [
+          "Pagina evento personalizzata",
+          "Data, programma e informazioni utili",
+          "Location con Google Maps",
+          "Contatti e link pronti da condividere",
+          "3/4 sezioni personalizzate",
+          "Prima bozza entro 24 ore dalla ricezione dei dati"
+        ],
+        note: "Dopo il pagamento inviaci nome evento, data, luogo, testi, immagini e sezioni da inserire."
+      },
+
+      "pagina-evento-wedding": {
+        title: "Pagina Evento Wedding",
+        subtitle: "Una pagina wedding completa ed elegante da condividere con invitati, sposi e clienti.",
+        price: "79.00",
+        priceText: "€ 79",
+        priceType: "una tantum",
+        paypalAmount: "79.00",
+        features: [
+          "Pagina evento wedding personalizzata",
+          "Countdown, programma, location e Google Maps",
+          "Menù, dress code, lista regalo e tavoli",
+          "Conferma presenza se prevista",
+          "Contatti e link pronti da condividere",
+          "Assistenza fino all'evento per modifiche principali"
+        ],
+        note: "Dopo il pagamento inviaci nomi sposi, data, luogo, testi, immagini e sezioni richieste. Ti prepariamo la prima bozza."
+      },
+
+      "pagina-live-break": {
+        title: "Pagina Live / Game / Break",
+        subtitle: "Una pagina per creator, gamer, live break, spacchettamenti, squadre, partecipanti e risultati.",
+        price: "29.00",
+        priceText: "€ 29",
+        priceType: "una tantum",
+        paypalAmount: "29.00",
+        features: [
+          "Pagina live personalizzata",
+          "Sezione squadre o partecipanti",
+          "Link diretta",
+          "Regole evento",
+          "Registro risultati o carte",
+          "Configurazione iniziale inclusa"
+        ],
+        note: "Dopo il pagamento inviaci tipo di live, nomi sezioni, link diretta e regole da mostrare nella pagina."
+      },
+
+      "evento-completo-wedding": {
+        title: "Wedding Completo",
+        subtitle: "Il pacchetto completo: dashboard privata per la gestione + pagina evento wedding personalizzata.",
+        price: "99.00",
+        priceText: "€ 99",
+        priceType: "una tantum",
+        paypalAmount: "99.00",
+        features: [
+          "Dashboard privata PixelUp",
+          "Pagina evento wedding personalizzata",
+          "Budget, saldato, da saldare e scadenze",
+          "Fornitori, agenda, documenti, checklist e timeline",
+          "Contatta sposi e report PDF",
+          "Link sposi e link invitati",
+          "Assistenza fino all'evento per modifiche principali"
+        ],
+        note: "Dopo il pagamento inviaci nome evento, data, email di accesso, testi pagina evento e richieste particolari. Ti invieremo i link di attivazione."
+      },
+
+      "live-completo": {
+        title: "Live Completo",
+        subtitle: "Pagina live + configurazione iniziale per creator, gamer, break live o eventi con partecipanti.",
+        price: "49.00",
+        priceText: "€ 49",
+        priceType: "una tantum",
+        paypalAmount: "49.00",
+        features: [
+          "Pagina live personalizzata",
+          "Configurazione squadre, partecipanti o sezioni",
+          "Link diretta",
+          "Registro risultati o carte",
+          "Regole evento",
+          "Assistenza configurazione iniziale"
+        ],
+        note: "Dopo il pagamento inviaci dati della live, partecipanti/squadre, regole e link diretta."
       },
 
       "piano-planner": {
-        title: "Piano Planner",
+        title: "Piano Wedding Planner",
         subtitle: "Pensato per wedding planner, event planner e professionisti che vogliono gestire più progetti.",
         price: "9.90",
         priceText: "€ 9,90",
-        priceType: "al mese",
+        priceType: "primo mese",
         paypalAmount: "9.90",
         features: [
           "Fino a 5 dashboard private attive",
           "Area 'I miei progetti'",
+          "Rubrica fornitori",
+          "Report PDF",
           "Link privato per ogni cliente",
-          "Possibilità di aggiungere pagine evento",
-          "Attivazione manuale dell’account planner"
+          "Attivazione manuale dell'account planner"
         ],
-        note: "Il pagamento PayPal iniziale attiva il primo mese. Per rinnovi automatici useremo un abbonamento dedicato quando sarà attivo."
+        note: "Questo pagamento attiva il primo mese. Per ora il rinnovo è gestito manualmente: potrai disattivare scrivendo all'assistenza prima del rinnovo."
+      },
+
+      "piano-planner-annuale": {
+        title: "Piano Wedding Planner Annuale",
+        subtitle: "La soluzione annuale per wedding planner e professionisti che vogliono lavorare con più eventi durante l'anno.",
+        price: "99.00",
+        priceText: "€ 99",
+        priceType: "all'anno",
+        paypalAmount: "99.00",
+        features: [
+          "Fino a 5 dashboard private attive",
+          "Area 'I miei progetti'",
+          "Rubrica fornitori",
+          "Report PDF",
+          "Link privato per ogni cliente",
+          "Assistenza base inclusa",
+          "Attivazione annuale manuale"
+        ],
+        note: "Dopo il pagamento inviaci l'email da usare per l'account planner. Attiveremo manualmente il piano annuale."
+      },
+
+      "progetto-avanzato": {
+        title: "Progetto Avanzato",
+        subtitle: "Per richieste particolari, funzioni extra, grafiche personalizzate o dashboard più complesse.",
+        price: "49.00",
+        priceText: "da € 49",
+        priceType: "preventivo",
+        paypalAmount: "49.00",
+        features: [
+          "Analisi richiesta",
+          "Personalizzazione avanzata",
+          "Funzioni particolari o sezioni extra",
+          "Dashboard o pagina su misura",
+          "Preventivo finale in base alla richiesta"
+        ],
+        note: "Prima di pagare un progetto avanzato consigliamo di scriverci per confermare prezzo e fattibilità."
       }
     };
 
     const urlParams = new URLSearchParams(window.location.search);
-    const selectedPlan = urlParams.get("piano") || "evento-completo";
-    const plan = plans[selectedPlan] || plans["evento-completo"];
+    const selectedPlan = urlParams.get("piano") || "dashboard-singola";
+    const plan = plans[selectedPlan] || plans["dashboard-singola"];
 
     const whatsappNumber = "393519780804";
 
