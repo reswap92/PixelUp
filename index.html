@@ -1384,6 +1384,68 @@
       text-align: center;
     }
 
+
+    .mobile-menu-btn,
+    .mobile-menu,
+    .mobile-hero-actions,
+    .mobile-demo-top {
+      display: none;
+    }
+
+    .mobile-menu-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--gold);
+      background: rgba(255,255,255,0.62);
+      color: var(--green);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      border-top: 1px solid rgba(182,139,69,0.16);
+      padding: 10px 0 16px;
+      animation: mobileMenuFade 0.2s ease;
+    }
+
+    .mobile-menu.show {
+      display: grid;
+      gap: 9px;
+    }
+
+    .mobile-menu a {
+      min-height: 46px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.62);
+      border: 1px solid rgba(182,139,69,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    @keyframes mobileMenuFade {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mobile-hero-actions {
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: -8px 0 22px;
+    }
+
+    .mobile-hero-actions .btn {
+      min-height: 48px;
+      flex: 1 1 135px;
+      border-radius: 14px;
+      padding: 0 14px;
+    }
+
     @media (max-width: 980px) {
       .nav-links {
         display: none;
@@ -1672,6 +1734,100 @@
       }
     }
 
+
+    @media (max-width: 640px) {
+      .nav {
+        height: 72px;
+      }
+
+      .nav-links {
+        display: none !important;
+      }
+
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .mobile-menu-btn {
+        display: grid;
+        place-items: center;
+      }
+
+      .mobile-demo-top {
+        display: inline-flex;
+      }
+
+      .nav-actions .btn {
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 12px;
+        border-radius: 12px;
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .hero .eyebrow {
+        margin-bottom: 14px;
+        font-size: 12px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        line-height: 0.94;
+        margin-bottom: 18px;
+      }
+
+      .hero p {
+        font-size: 15px;
+        line-height: 1.55;
+        margin-bottom: 22px;
+      }
+
+      .mobile-hero-actions {
+        display: flex;
+      }
+
+      .demo-hero-card {
+        display: none;
+      }
+
+      .mini-note {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .brand-text small {
+        display: none;
+      }
+
+      .brand-text strong {
+        font-size: 28px;
+      }
+
+      .nav-actions .btn {
+        padding: 0 10px;
+        min-height: 38px;
+      }
+
+      .mobile-menu-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+      }
+
+      .mobile-hero-actions .btn {
+        min-height: 46px;
+        font-size: 13px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1697,9 +1853,21 @@
           </div>
 
           <div class="nav-actions">
+            <a class="btn btn-outline mobile-demo-top" href="/dasgboardemo/demo.html">Demo</a>
             <a class="btn btn-outline" href="/dasgboardemo/accedi.html">Accedi</a>
+            <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Apri menu">
+              ☰
+            </button>
           </div>
         </nav>
+
+        <div class="mobile-menu" id="mobileMenu">
+          <a href="#funzionalita" onclick="closeMobileMenu()">Funzionalità</a>
+          <a href="#demo" onclick="closeMobileMenu()">Demo</a>
+          <a href="#prezzi" onclick="closeMobileMenu()">Prezzi</a>
+          <a href="#contatti" onclick="closeMobileMenu()">Contatti</a>
+          <a href="/dasgboardemo/accedi.html" onclick="closeMobileMenu()">Accedi</a>
+        </div>
       </div>
     </header>
 
@@ -1723,6 +1891,11 @@
               Gestisci budget, scadenze, fornitori, pagamenti, agenda e documenti
               in un’unica area elegante e sempre aggiornata.
             </p>
+
+            <div class="mobile-hero-actions">
+              <a class="btn btn-primary" href="/dasgboardemo/demo.html">Guarda demo</a>
+              <a class="btn btn-outline" href="/dasgboardemo/accedi.html">Accedi</a>
+            </div>
 
             <a class="demo-hero-card" href="/dasgboardemo/demo.html">
               <div>
@@ -2279,6 +2452,18 @@
   </div>
 
   <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobileMenu");
+      if (!menu) return;
+      menu.classList.toggle("show");
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById("mobileMenu");
+      if (!menu) return;
+      menu.classList.remove("show");
+    }
+
     const contactForm = document.getElementById("contactForm");
 
     if (contactForm) {
