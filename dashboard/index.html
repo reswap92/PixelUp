@@ -726,6 +726,10 @@
       Nuovo progetto
     </button>
 
+    <button class="project-main-btn secondary" type="button" onclick="editEventInfo()">
+      Modifica evento
+    </button>
+
     <div class="projects-list" id="projectsList"></div>
 
     <div class="quick-guide">
@@ -889,6 +893,24 @@
   >
     + Aggiungi
   </button>
+
+  <button 
+    type="button" 
+    onclick="useSavedSupplier()" 
+    style="
+      border:1px solid rgba(177,145,85,0.45);
+      background:rgba(255,252,246,0.95);
+      color:#4d5a3a;
+      border-radius:999px;
+      padding:7px 11px;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    "
+  >
+    Rubrica
+  </button>
 </div>
         <div class="list-card" id="supplierList"></div>
 
@@ -970,7 +992,8 @@
     getDocs,
     deleteDoc,
     query,
-    where
+    where,
+    addDoc
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -1760,15 +1783,18 @@
     const email = prompt("Email:", item.email);
     if (email === null) return;
 
-    data.suppliers[index] = {
+    const updatedSupplier = {
       service: service || item.service,
       name: name || item.name,
       phone: phone || item.phone,
       email: email || item.email
     };
 
+    data.suppliers[index] = updatedSupplier;
+
     renderSuppliers();
     saveData();
+    saveSupplierToBook(updatedSupplier);
   }
 
   function deleteSupplier(index) {
@@ -1800,15 +1826,206 @@
     const email = prompt("Email:", "");
     if (email === null) return;
 
-    data.suppliers.push({
+    const newSupplier = {
       service: service || "Nuovo fornitore",
       name: name || "Nome non indicato",
       phone: phone || "Telefono non indicato",
       email: email || "Email non indicata"
-    });
+    };
+
+    data.suppliers.push(newSupplier);
 
     renderSuppliers();
     saveData();
+    saveSupplierToBook(newSupplier);
+  }
+
+
+  async function editEventInfo() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di modificare le informazioni evento.");
+      return;
+    }
+
+    const projectName = prompt("Nome evento / sposi:", data.projectName || "");
+    if (projectName === null) return;
+
+    const cleanProjectName = projectName.trim();
+
+    if (!cleanProjectName) {
+      alert("Inserisci un nome evento valido.");
+      return;
+    }
+
+    const weddingDate = prompt(
+      "Data e ora evento formato AAAA-MM-GGTHH:MM:SS:",
+      data.weddingDate || "2026-08-27T15:00:00"
+    );
+
+    if (weddingDate === null) return;
+
+    const cleanWeddingDate = weddingDate.trim();
+
+    if (!cleanWeddingDate) {
+      alert("Inserisci una data evento valida.");
+      return;
+    }
+
+    const testDate = new Date(cleanWeddingDate);
+
+    if (isNaN(testDate)) {
+      const confirmDate = confirm(
+        "La data inserita non sembra valida.\n\n" +
+        "Formato consigliato: 2026-08-27T15:00:00\n\n" +
+        "Vuoi salvarla comunque?"
+      );
+
+      if (!confirmDate) return;
+    }
+
+    data.projectName = cleanProjectName;
+    data.weddingDate = cleanWeddingDate;
+
+    renderSummary();
+    updateCountdown();
+    saveData();
+
+    alert("Informazioni evento aggiornate correttamente.");
+  }
+
+  function makeSupplierBookKey(item) {
+    return String(
+      (item.service || "") + " " +
+      (item.name || "") + " " +
+      (item.phone || "") + " " +
+      (item.email || "")
+    )
+      .toLowerCase()
+      .trim()
+      .replaceAll("à", "a")
+      .replaceAll("è", "e")
+      .replaceAll("é", "e")
+      .replaceAll("ì", "i")
+      .replaceAll("ò", "o")
+      .replaceAll("ù", "u")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  async function saveSupplierToBook(item) {
+    if (!item || !loggedEmail) return;
+
+    const supplierData = {
+      ownerEmail: loggedEmail,
+      service: item.service || "",
+      name: item.name || "",
+      phone: item.phone || "",
+      email: item.email || "",
+      searchKey: makeSupplierBookKey(item),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!supplierData.service && !supplierData.name) return;
+
+    try {
+      const q = query(
+        collection(db, "supplierBook"),
+        where("ownerEmail", "==", loggedEmail),
+        where("searchKey", "==", supplierData.searchKey)
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        supplierData.createdAt = new Date().toISOString();
+        await addDoc(collection(db, "supplierBook"), supplierData);
+      } else {
+        const existingDoc = snapshot.docs[0];
+        await setDoc(existingDoc.ref, supplierData, { merge: true });
+      }
+    } catch (error) {
+      console.error("Errore salvataggio rubrica fornitori:", error);
+    }
+  }
+
+  async function getSavedSuppliers() {
+    const q = query(
+      collection(db, "supplierBook"),
+      where("ownerEmail", "==", loggedEmail)
+    );
+
+    const snapshot = await getDocs(q);
+    const suppliers = [];
+
+    snapshot.forEach((docSnap) => {
+      suppliers.push({
+        id: docSnap.id,
+        ...docSnap.data()
+      });
+    });
+
+    suppliers.sort((a, b) => {
+      const aText = String((a.service || "") + " " + (a.name || "")).toLowerCase();
+      const bText = String((b.service || "") + " " + (b.name || "")).toLowerCase();
+      return aText.localeCompare(bText);
+    });
+
+    return suppliers;
+  }
+
+  async function useSavedSupplier() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di aggiungere fornitori.");
+      return;
+    }
+
+    try {
+      const suppliers = await getSavedSuppliers();
+
+      if (!suppliers.length) {
+        alert("Non hai ancora fornitori salvati in rubrica.\n\nAggiungi un fornitore: verrà salvato automaticamente per i prossimi progetti.");
+        return;
+      }
+
+      const listText = suppliers.map((item, index) => {
+        return (index + 1) + " = " + 
+          (item.service || "Servizio") + " - " + 
+          (item.name || "Nome non indicato") + 
+          (item.phone ? " - " + item.phone : "") + 
+          (item.email ? " - " + item.email : "");
+      }).join("\n");
+
+      const choice = prompt(
+        "Scegli un fornitore dalla rubrica scrivendo il numero:\n\n" + listText,
+        "1"
+      );
+
+      if (choice === null) return;
+
+      const index = Number(choice.trim()) - 1;
+
+      if (isNaN(index) || index < 0 || index >= suppliers.length) {
+        alert("Scelta non valida.");
+        return;
+      }
+
+      const selected = suppliers[index];
+
+      data.suppliers.push({
+        service: selected.service || "Nuovo fornitore",
+        name: selected.name || "Nome non indicato",
+        phone: selected.phone || "Telefono non indicato",
+        email: selected.email || "Email non indicata"
+      });
+
+      renderSuppliers();
+      saveData();
+
+      alert("Fornitore aggiunto al progetto.");
+    } catch (error) {
+      console.error("Errore caricamento rubrica fornitori:", error);
+      alert("Errore nel caricamento della rubrica fornitori.");
+    }
   }
 
   function toggleDocuments() {
@@ -2286,15 +2503,9 @@ function addDocument() {
           return;
         }
 
-        if (!projectOwner) {
-          alert("Questo progetto non ha un proprietario assegnato. Controlla Firebase prima di modificarlo.");
-          window.location.href = "/dashboard/";
-          return;
-        }
-
         data = normalizeData({
           ...remoteData,
-          ownerEmail: projectOwner
+          ownerEmail: projectOwner || loggedEmail
         });
 
         const needsInitialData =
@@ -2303,7 +2514,7 @@ function addDocument() {
           remoteData.budget === undefined ||
           remoteData.due === undefined ||
           remoteData.paid === undefined ||
-          false ||
+          remoteData.ownerEmail === undefined ||
           !Array.isArray(remoteData.deadlines) ||
           !Array.isArray(remoteData.suppliers) ||
           !Array.isArray(remoteData.agenda) ||
@@ -2313,9 +2524,15 @@ function addDocument() {
           await setDoc(eventRef, data, { merge: true });
         }
       } else {
-        alert("Questo progetto non esiste o è stato eliminato. Apri un progetto dalla lista oppure creane uno nuovo.");
-        window.location.href = "/dashboard/";
-        return;
+        data = structuredClone(defaultData);
+        data.projectName = "Nuovo progetto";
+        data.ownerEmail = loggedEmail;
+        data.ownerRole = loggedRole;
+        data.accessCode = loggedCode;
+        data.createdAt = new Date().toISOString();
+        data.updatedAt = new Date().toISOString();
+
+        await setDoc(eventRef, data, { merge: true });
       }
 
       firebaseReady = true;
@@ -2324,17 +2541,7 @@ function addDocument() {
   } else {
     firebaseReady = false;
     data = structuredClone(defaultData);
-
-    const hero = document.querySelector(".hero");
-    const content = document.querySelector(".content");
-
-    if (hero) {
-      hero.style.display = "none";
-    }
-
-    if (content) {
-      content.style.display = "none";
-    }
+    renderAll();
 
     setTimeout(() => {
       const menu = document.getElementById("projectMenu");
@@ -2369,4 +2576,6 @@ function addDocument() {
   window.editDocument = editDocument;
   window.deleteDocument = deleteDocument;
   window.copySpousesLink = copySpousesLink;
+  window.editEventInfo = editEventInfo;
+  window.useSavedSupplier = useSavedSupplier;
 </script>
