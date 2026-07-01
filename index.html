@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>PixelUp Event Board | Dashboard e pagine digitali per eventi</title>
+  <title>PixelUp Dashboard Wedding | Dashboard e pagine digitali per eventi</title>
 
   <meta name="description" content="Crea dashboard private e pagine evento digitali per matrimoni, cerimonie, feste, live, eventi aziendali e attività locali. Gestisci budget, scadenze, fornitori, documenti e link per clienti e invitati." />
 
@@ -678,6 +678,169 @@
       border: 1px solid rgba(182,139,69,0.15);
     }
 
+    .mini-dashboard-preview {
+      background: #fffaf2;
+      border: 1px solid rgba(182,139,69,0.22);
+      border-radius: 24px;
+      min-height: 292px;
+      padding: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 38px rgba(36,27,15,0.09);
+    }
+
+    .mini-dashboard-hero {
+      height: 78px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(24,61,43,0.15), rgba(24,61,43,0.36)),
+        url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=700&q=80") center/cover;
+      margin-bottom: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    .mini-dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-bottom: 9px;
+    }
+
+    .mini-dashboard-stats div {
+      background: white;
+      border: 1px solid rgba(182,139,69,0.16);
+      border-radius: 12px;
+      padding: 8px 5px;
+      text-align: center;
+      min-height: 55px;
+    }
+
+    .mini-dashboard-stats small {
+      display: block;
+      font-size: 8px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .mini-dashboard-stats strong {
+      color: var(--green);
+      font-size: 11px;
+    }
+
+    .mini-dashboard-line {
+      height: 42px;
+      background: white;
+      border: 1px solid rgba(182,139,69,0.16);
+      border-radius: 14px;
+      margin-bottom: 8px;
+      padding: 8px 10px;
+    }
+
+    .mini-dashboard-line strong {
+      display: block;
+      color: var(--green);
+      font-size: 10px;
+      margin-bottom: 3px;
+    }
+
+    .mini-dashboard-line span {
+      display: block;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .mini-dashboard-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+    }
+
+    .mini-dashboard-actions div {
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(24,61,43,0.06);
+      border: 1px solid rgba(182,139,69,0.16);
+      border-radius: 11px;
+      color: var(--green);
+      font-size: 8px;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .mini-event-preview {
+      background: #fffaf2;
+      border: 1px solid rgba(182,139,69,0.22);
+      border-radius: 24px;
+      min-height: 292px;
+      padding: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 38px rgba(36,27,15,0.09);
+      text-align: center;
+    }
+
+    .mini-event-hero {
+      height: 102px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(24,61,43,0.08), rgba(24,61,43,0.32)),
+        url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=700&q=80") center/cover;
+      margin-bottom: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    .mini-event-preview h4 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--green);
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .mini-event-preview p {
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mini-event-preview .mini-btn {
+      display: inline-flex;
+      margin: 0 0 10px;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid rgba(182,139,69,0.22);
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .mini-event-preview .mini-icons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    .mini-event-preview .mini-icons span {
+      min-height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: white;
+      border: 1px solid rgba(182,139,69,0.15);
+      color: var(--green);
+      font-size: 8px;
+      padding: 4px;
+    }
+
     .mini-event {
       text-align: center;
     }
@@ -1342,26 +1505,36 @@
         font-size: 24px;
       }
 
+      .hero-grid {
+        gap: 22px;
+      }
+
       .mockup-wrap {
-        min-height: 500px;
+        min-height: 430px;
+        margin-top: 8px;
+        overflow: visible;
       }
 
       .phone {
-        width: 225px;
+        width: 210px;
       }
 
       .phone-inner {
-        min-height: 470px;
+        min-height: 440px;
       }
 
       .phone-1 {
-        left: -8px;
+        left: 50%;
         top: 0;
+        transform: translateX(-72%) rotate(-4deg);
       }
 
       .phone-2 {
-        right: -18px;
-        top: 58px;
+        right: auto;
+        left: 50%;
+        top: 48px;
+        transform: translateX(-28%) rotate(5deg);
+        opacity: 0.9;
       }
 
       .phone-head strong {
@@ -1417,6 +1590,28 @@
         font-size: 50px;
       }
     }
+
+    @media (max-width: 430px) {
+      .mockup-wrap {
+        min-height: 420px;
+        margin-top: 4px;
+      }
+
+      .phone {
+        width: 214px;
+      }
+
+      .phone-1 {
+        left: 50%;
+        transform: translateX(-50%) rotate(0deg);
+        top: 0;
+      }
+
+      .phone-2 {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 
@@ -1430,7 +1625,7 @@
             <div class="brand-icon">♡</div>
             <div class="brand-text">
               <strong>Pixel<span>Up</span></strong>
-              <small>Event Board</small>
+              <small>Dashboard Wedding</small>
             </div>
           </a>
 
@@ -1476,7 +1671,7 @@
 
               <div>
                 <strong>Guarda la demo interattiva</strong>
-                <p>Prova la dashboard evento da telefono: budget, scadenze, fornitori, agenda e documenti.</p>
+                <p>Prova la dashboard wedding da telefono: totale, scadenze, fornitori, agenda, documenti, checklist e timeline.</p>
               </div>
 
               <small>Apri demo →</small>
@@ -1506,7 +1701,7 @@
                   <div class="phone-cards">
                     <div class="phone-card">
                       <span>▣</span>
-                      <small>Budget</small>
+                      <small>Totale</small>
                       <strong>€ 35.000</strong>
                     </div>
                     <div class="phone-card">
@@ -1531,6 +1726,8 @@
                     <div>Fornitori</div>
                     <div>Agenda</div>
                     <div>Documenti</div>
+                    <div>Checklist</div>
+                    <div>Timeline</div>
                   </div>
                 </div>
               </div>
@@ -1596,25 +1793,49 @@
                 <ul class="check-list">
                   <li>Budget, saldato e da saldare</li>
                   <li>Scadenze e promemoria</li>
-                  <li>Fornitori con contatti rapidi</li>
+                  <li>Fornitori con rubrica riutilizzabile</li>
                   <li>Agenda appuntamenti</li>
-                  <li>Documenti e preventivi</li>
-                  <li>Link privato in sola lettura</li>
+                  <li>Documenti Google Drive</li>
+                  <li>Checklist e timeline evento</li>
+                  <li>Link sposi in sola lettura</li>
                 </ul>
               </div>
 
-              <div class="mini-screen">
-                <div class="mini-screen-top"></div>
-                <div class="mini-screen-grid">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+              <div class="mini-dashboard-preview">
+                <div class="mini-dashboard-hero">Roberta & Alessandro</div>
+
+                <div class="mini-dashboard-stats">
+                  <div>
+                    <small>Totale</small>
+                    <strong>€ 35.000</strong>
+                  </div>
+                  <div>
+                    <small>Da saldare</small>
+                    <strong>€ 6.250</strong>
+                  </div>
+                  <div>
+                    <small>Saldato</small>
+                    <strong>€ 28.750</strong>
+                  </div>
                 </div>
-                <div class="mini-screen-list"></div>
-                <div class="mini-screen-grid" style="margin-top:10px;">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+
+                <div class="mini-dashboard-line">
+                  <strong>Prossima scadenza</strong>
+                  <span>Saldo location · 15 Luglio 2026</span>
+                </div>
+
+                <div class="mini-dashboard-line">
+                  <strong>Timeline evento</strong>
+                  <span>Cerimonia · Aperitivo · Cena · Taglio torta</span>
+                </div>
+
+                <div class="mini-dashboard-actions">
+                  <div>Scadenze</div>
+                  <div>Fornitori</div>
+                  <div>Agenda</div>
+                  <div>Documenti</div>
+                  <div>Checklist</div>
+                  <div>Link sposi</div>
                 </div>
               </div>
             </article>
@@ -1638,17 +1859,21 @@
                 </ul>
               </div>
 
-              <div class="mini-screen mini-event">
-                <div class="mini-event-img"></div>
-                <h4>Il tuo evento</h4>
+              <div class="mini-event-preview">
+                <div class="mini-event-hero">Il nostro giorno</div>
+
+                <h4>Villa Aurora</h4>
+                <p>14 Settembre 2026 · Bergamo</p>
+
                 <div class="mini-btn">Vedi mappa</div>
+
                 <div class="mini-icons">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
+                  <span>Programma</span>
+                  <span>Menù</span>
+                  <span>Lista regalo</span>
+                  <span>Dress code</span>
+                  <span>Tavoli</span>
+                  <span>Contatti</span>
                 </div>
               </div>
             </article>
@@ -2006,7 +2231,7 @@
 
     <footer>
       <div class="container">
-        © 2026 PixelUp Event Board — Dashboard e pagine digitali per eventi.
+        © 2026 PixelUp Dashboard Wedding — Dashboard e pagine digitali per eventi.
       </div>
     </footer>
 
