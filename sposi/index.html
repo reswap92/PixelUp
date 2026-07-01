@@ -353,7 +353,9 @@
     .deadline-section,
     .supplier-section,
     .agenda-section,
-    .document-section {
+    .document-section,
+    .checklist-section,
+    .timeline-section {
       display: none;
       animation: fade 0.22s ease;
     }
@@ -361,7 +363,9 @@
     .deadline-section.show,
     .supplier-section.show,
     .agenda-section.show,
-    .document-section.show {
+    .document-section.show,
+    .checklist-section.show,
+    .timeline-section.show {
       display: block;
     }
 
@@ -576,9 +580,9 @@
 
         <div class="summary-card">
           <div class="icon">▣</div>
-          <p>Budget</p>
+          <p>Totale</p>
           <strong id="budgetValue">€ 0</strong>
-          <small>totale evento</small>
+          <small>spesa prevista</small>
         </div>
 
         <div class="summary-card">
@@ -628,6 +632,16 @@
         <span>Documenti</span>
       </button>
 
+      <button class="secondary-action" type="button" onclick="toggleTimeline()">
+        <span>☷</span>
+        <span>Timeline evento</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleChecklist()">
+        <span>✓</span>
+        <span>Checklist condivisa</span>
+      </button>
+
       <div class="deadline-section" id="deadlineSection">
 
         <div class="section-title">
@@ -672,6 +686,28 @@
 
       </div>
 
+      <div class="timeline-section" id="timelineSection">
+
+        <div class="section-title">
+          <h2>Timeline evento</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="timelineList"></div>
+
+      </div>
+
+      <div class="checklist-section" id="checklistSection">
+
+        <div class="section-title">
+          <h2>Checklist condivisa</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="checklistList"></div>
+
+      </div>
+
       <div class="bottom-note">
         Questa pagina è in sola lettura. Le modifiche vengono aggiornate dalla wedding planner.
       </div>
@@ -702,9 +738,9 @@
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const currentEventId = urlParams.get("event") || "roberta-alessandro";
+    const currentEventId = urlParams.get("event") || "";
 
-    const eventRef = doc(db, "weddingEvents", currentEventId);
+    const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
     const defaultData = {
       projectName: "Roberta & Alessandro",
@@ -715,7 +751,9 @@
       deadlines: [],
       suppliers: [],
       agenda: [],
-      documents: []
+      documents: [],
+      checklist: [],
+      timeline: []
     };
 
     let data = structuredClone(defaultData);
@@ -742,6 +780,14 @@
         merged.documents = [];
       }
 
+      if (!Array.isArray(merged.checklist)) {
+        merged.checklist = [];
+      }
+
+      if (!Array.isArray(merged.timeline)) {
+        merged.timeline = [];
+      }
+
       merged.projectName = merged.projectName || "Wedding Board";
       merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
       merged.budget = Number(merged.budget) || 0;
@@ -755,7 +801,8 @@
         paid: Number(item.paid) || 0,
         date: item.date || "",
         status: item.status || "Da saldare",
-        notes: item.notes || ""
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
       }));
 
       merged.suppliers = merged.suppliers.map((item) => ({
@@ -771,14 +818,32 @@
         place: item.place || "",
         date: item.date || "",
         time: item.time || "",
-        notes: item.notes || ""
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
       }));
 
       merged.documents = merged.documents.map((item) => ({
         name: item.name || "",
         category: item.category || "",
         url: item.url || "",
-        notes: item.notes || ""
+        notes: item.notes || "",
+        type: item.type || "drive",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.checklist = merged.checklist.map((item) => ({
+        title: item.title || "",
+        done: item.done === true,
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.timeline = merged.timeline.map((item) => ({
+        time: item.time || "",
+        title: item.title || "",
+        place: item.place || "",
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
       }));
 
       return merged;
@@ -850,11 +915,13 @@
         projectMonogram.textContent = makeMonogram(data.projectName || "Wedding");
       }
 
-      document.getElementById("budgetValue").textContent = euro(data.budget);
+      const totalReal = Number(data.paid) + Number(data.due);
+
+      document.getElementById("budgetValue").textContent = euro(totalReal);
       document.getElementById("dueValue").textContent = euro(data.due);
       document.getElementById("paidValue").textContent = euro(data.paid);
 
-      const percent = data.budget > 0 ? Math.round((data.paid / data.budget) * 100) : 0;
+      const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
 
       document.getElementById("paidPercent").textContent = percent + "%";
       document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
@@ -865,7 +932,9 @@
         "deadlineSection",
         "supplierSection",
         "agendaSection",
-        "documentSection"
+        "documentSection",
+        "timelineSection",
+        "checklistSection"
       ];
 
       sectionIds.forEach((sectionId) => {
@@ -917,10 +986,20 @@
       openSingleSection("documentSection");
     }
 
+    function toggleTimeline() {
+      openSingleSection("timelineSection");
+    }
+
+    function toggleChecklist() {
+      openSingleSection("checklistSection");
+    }
+
     function renderDeadlines() {
       const list = document.getElementById("deadlineList");
 
-      if (!data.deadlines.length) {
+      const visibleDeadlines = data.deadlines.filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleDeadlines.length) {
         list.innerHTML = `
           <div class="deadline-row">
             <div class="date-box">
@@ -940,7 +1019,7 @@
         return;
       }
 
-      list.innerHTML = data.deadlines.map((item) => {
+      list.innerHTML = visibleDeadlines.map((item) => {
         const date = formatDate(item.date);
         const missing = Math.max(Number(item.total) - Number(item.paid), 0);
         const isPaid = missing <= 0;
@@ -1016,7 +1095,9 @@
     function renderAgenda() {
       const list = document.getElementById("agendaList");
 
-      if (!data.agenda.length) {
+      const visibleAgenda = data.agenda.filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleAgenda.length) {
         list.innerHTML = `
           <div class="deadline-row">
             <div class="date-box">
@@ -1036,7 +1117,7 @@
         return;
       }
 
-      const sortedAgenda = [...data.agenda].sort((a, b) => {
+      const sortedAgenda = [...visibleAgenda].sort((a, b) => {
         const dateA = new Date(dateToISO(a.date || "") + "T" + (a.time || "00:00"));
         const dateB = new Date(dateToISO(b.date || "") + "T" + (b.time || "00:00"));
         return dateA - dateB;
@@ -1071,7 +1152,9 @@
     function renderDocuments() {
       const list = document.getElementById("documentList");
 
-      if (!data.documents || data.documents.length === 0) {
+      const visibleDocuments = (data.documents || []).filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleDocuments.length) {
         list.innerHTML = `
           <div class="deadline-row">
             <div class="date-box">
@@ -1091,12 +1174,12 @@
         return;
       }
 
-      list.innerHTML = data.documents.map((item) => {
+      list.innerHTML = visibleDocuments.map((item) => {
         return `
           <div class="deadline-row">
             <div class="date-box">
-              <strong>PDF</strong>
-              <small>DOC</small>
+              <strong>DRIVE</strong>
+              <small>LINK</small>
             </div>
 
             <div class="row-info">
@@ -1111,7 +1194,7 @@
                   rel="noopener noreferrer"
                   style="color:#4d5a3a; font-weight:bold;"
                 >
-                  Apri documento
+                  Apri Google Drive
                 </a>
               </p>
             </div>
@@ -1119,6 +1202,106 @@
             <div class="row-right">
               <strong>File</strong>
               <small>documento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+
+    function renderTimeline() {
+      const list = document.getElementById("timelineList");
+      const visibleTimeline = (data.timeline || [])
+        .filter((item) => item.visibleToSpouses === true)
+        .sort((a, b) => String(a.time || "99:99").localeCompare(String(b.time || "99:99")));
+
+      if (!list) return;
+
+      if (!visibleTimeline.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>ORA</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna timeline condivisa</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--:--</strong>
+              <small>timeline</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleTimeline.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong style="font-size:13px;">${item.time || "--:--"}</strong>
+              <small>ORA</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.title}</h3>
+              <p>${item.place || "Luogo non indicato"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.time || "--:--"}</strong>
+              <small>momento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderChecklist() {
+      const list = document.getElementById("checklistList");
+      const visibleChecklist = (data.checklist || []).filter((item) => item.visibleToSpouses === true);
+
+      if (!list) return;
+
+      if (!visibleChecklist.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>✓</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna checklist condivisa</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--</strong>
+              <small>checklist</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleChecklist.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${item.done ? "✓" : "○"}</strong>
+              <small>CHECK</small>
+            </div>
+
+            <div class="row-info">
+              <h3 style="${item.done ? "text-decoration:line-through; opacity:0.72;" : ""}">${item.title}</h3>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.done ? "Fatto" : "Da fare"}</strong>
+              <small>stato</small>
             </div>
           </div>
         `;
@@ -1157,13 +1340,27 @@
       secondsEl.textContent = String(seconds).padStart(2, "0");
     }
 
-    onSnapshot(eventRef, (snapshot) => {
+    if (!eventRef) {
+      renderSummary();
+      renderDeadlines();
+      renderSuppliers();
+      renderAgenda();
+      renderDocuments();
+      renderTimeline();
+      renderChecklist();
+      updateCountdown();
+
+      alert("Link sposi non valido. Apri il link ricevuto dalla wedding planner.");
+    } else {
+      onSnapshot(eventRef, (snapshot) => {
       if (!snapshot.exists()) {
         renderSummary();
         renderDeadlines();
         renderSuppliers();
         renderAgenda();
         renderDocuments();
+        renderTimeline();
+        renderChecklist();
         updateCountdown();
         return;
       }
@@ -1175,8 +1372,11 @@
       renderSuppliers();
       renderAgenda();
       renderDocuments();
+      renderTimeline();
+      renderChecklist();
       updateCountdown();
     });
+    }
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
@@ -1185,6 +1385,8 @@
     window.toggleSuppliers = toggleSuppliers;
     window.toggleAgenda = toggleAgenda;
     window.toggleDocuments = toggleDocuments;
+    window.toggleTimeline = toggleTimeline;
+    window.toggleChecklist = toggleChecklist;
   </script>
 
 </body>
