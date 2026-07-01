@@ -142,6 +142,42 @@
       justify-content:center;
       flex-wrap:wrap;
     }
+
+    .support-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .support-actions .button{
+      width:100%;
+      margin-top:0;
+      text-align:center;
+    }
+    .button.whatsapp{
+      background:linear-gradient(135deg,#1f6b46,#2f8f5d);
+      color:white;
+      border:0;
+    }
+    .button.light{
+      background:rgba(255,252,246,.95);
+      color:var(--green-dark);
+      border:1px solid rgba(177,145,85,.45);
+      box-shadow:none;
+    }
+    .copy-msg{
+      display:none;
+      margin-top:10px;
+      color:var(--green-dark);
+      font-family:Arial,sans-serif;
+      font-size:13px;
+      text-align:center;
+    }
+    .copy-msg.show{display:block}
+    @media(max-width:600px){
+      .support-actions{grid-template-columns:1fr}
+    }
+
     @media(max-width:600px){
       h1{font-size:28px}
       .card{padding:18px}
@@ -168,7 +204,36 @@
         <li>descrizione del problema;</li>
         <li>eventuale screenshot dell’errore.</li>
       </ul>
-      <a class="button" href="mailto:info@pixelup.it?subject=Assistenza%20Dashboard%20PixelUp&body=Buongiorno%2C%0A%0Aho%20bisogno%20di%20assistenza%20per%20la%20Dashboard%20Wedding%20PixelUp.%0A%0AEmail%20utilizzata%3A%20%0ANome%20progetto%3A%20%0ADescrizione%20problema%3A%20%0A%0AGrazie.">Scrivi all’assistenza</a>
+      <div class="support-actions">
+        <a 
+          class="button" 
+          href="mailto:info@pixelup.it?subject=Dashboard%20Assistenza&body=Buongiorno%2C%0A%0Aho%20bisogno%20di%20assistenza%20per%20la%20Dashboard%20PixelUp.%0A%0AEmail%20utilizzata%3A%20%0ANome%20progetto%3A%20%0AProblema%20riscontrato%3A%20%0A%0AGrazie."
+        >
+          Scrivi email
+        </a>
+
+        <a
+          class="button whatsapp"
+          href="https://wa.me/393519780804?text=Buongiorno%2C%20ho%20bisogno%20di%20assistenza%20per%20la%20Dashboard%20PixelUp.%0A%0AEmail%20utilizzata%3A%0ANome%20progetto%3A%0AProblema%20riscontrato%3A"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp
+        </a>
+      </div>
+
+      <button class="button light" type="button" onclick="copySupportEmail()" style="width:100%; margin-top:10px;">
+        Copia email info@pixelup.it
+      </button>
+
+      <div id="copyMsg" class="copy-msg">
+        Email copiata: info@pixelup.it
+      </div>
+
+      <p style="margin-top:14px; font-family:Arial,sans-serif; font-size:13px; color:#7b6f62; line-height:1.45;">
+        Se il tasto email non apre l’app corretta, copia l’indirizzo e scrivi manualmente a <strong>info@pixelup.it</strong>.
+      </p>
+
       <div class="note" style="margin-top:16px;">Tempo indicativo di risposta: 24/48 ore lavorative.</div>
     </section>
 
@@ -246,5 +311,23 @@
       </div>
     </footer>
   </main>
+
+  <script>
+    function copySupportEmail() {
+      const email = "info@pixelup.it";
+      const msg = document.getElementById("copyMsg");
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(function() {
+          if (msg) msg.classList.add("show");
+        }).catch(function() {
+          prompt("Copia questa email:", email);
+        });
+      } else {
+        prompt("Copia questa email:", email);
+      }
+    }
+  </script>
+
 </body>
 </html>
