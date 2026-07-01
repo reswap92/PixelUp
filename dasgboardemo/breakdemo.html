@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Demo Interattiva | PixelUp Break Live</title>
+
+  <style>
+    :root {
+      --dark: #071018;
+      --dark-2: #0d1a25;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-dark: rgba(11, 24, 34, 0.92);
+      --text: #101820;
+      --muted: #6d7680;
+      --gold: #d7aa45;
+      --gold-2: #f0cc73;
+      --green: #2f6f4e;
+      --green-dark: #1d4b35;
+      --red: #a34242;
+      --blue: #1d5d9f;
+      --line: rgba(215, 170, 69, 0.32);
+      --shadow: 0 18px 44px rgba(0, 0, 0, 0.20);
+      --soft-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      --hero-image:
+        linear-gradient(180deg, rgba(6, 12, 18, 0.20), rgba(6, 12, 18, 0.72)),
+        url("https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(215,170,69,0.16), transparent 28%),
+        linear-gradient(180deg, #08121b 0%, #101d27 48%, #071018 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 560px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(215,170,69,0.12), transparent 30%),
+        linear-gradient(180deg, #0c1722 0%, #10202c 48%, #091018 100%);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 80px rgba(0,0,0,0.35);
+      padding-bottom: 36px;
+    }
+
+    .demo-banner {
+      background: linear-gradient(135deg, #d7aa45, #f0cc73);
+      color: #101820;
+      padding: 11px 18px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+    }
+
+    .hero {
+      min-height: 420px;
+      padding: 18px 22px 30px;
+      background: var(--hero-image) center top / cover no-repeat;
+      color: white;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 64px;
+      background: #10202c;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+      box-shadow: 0 -8px 28px rgba(16,32,44,0.82);
+    }
+
+    .topbar {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 3;
+      font-family: Arial, sans-serif;
+    }
+
+    .brand {
+      color: #f0cc73;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .round-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,204,115,0.55);
+      background: rgba(10,20,30,0.45);
+      color: #f0cc73;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      padding-top: 35px;
+    }
+
+    .logo-ball {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(240,204,115,0.75);
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.24), transparent 24%),
+        rgba(12, 24, 35, 0.68);
+      color: var(--gold-2);
+      font-size: 38px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.28);
+      backdrop-filter: blur(5px);
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 12vw, 70px);
+      line-height: 0.92;
+      font-weight: 400;
+      margin-bottom: 12px;
+      text-shadow: 0 8px 22px rgba(0,0,0,0.44);
+    }
+
+    .hero h1 span {
+      color: var(--gold-2);
+      font-style: italic;
+    }
+
+    .hero p {
+      font-family: Arial, sans-serif;
+      color: rgba(255,255,255,0.9);
+      font-size: 15px;
+      line-height: 1.48;
+      max-width: 390px;
+      margin: 0 auto 18px;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(163, 66, 66, 0.92);
+      border: 1px solid rgba(255,255,255,0.25);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 5px rgba(255,255,255,0.12);
+    }
+
+    .hero-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      min-height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(240,204,115,0.62);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: var(--soft-shadow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 13px;
+      font-weight: 800;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #111820;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      backdrop-filter: blur(6px);
+    }
+
+    .content {
+      position: relative;
+      z-index: 4;
+      padding: 0 20px 28px;
+      margin-top: -8px;
+    }
+
+    .stats {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 22px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.65);
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      min-height: 78px;
+      border-radius: 15px;
+      background: #f9f6ef;
+      border: 1px solid rgba(215,170,69,0.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .stat strong {
+      font-size: 24px;
+      color: var(--dark);
+      line-height: 1;
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+    }
+
+    .stat small {
+      margin-top: 6px;
+      color: var(--gold);
+      font-size: 9px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 18px;
+      margin: 10px 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      height: 1px;
+      width: 44%;
+      background: rgba(215,170,69,0.35);
+    }
+
+    .section-divider span {
+      padding: 0 10px;
+      font-size: 17px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+      margin-bottom: 16px;
+    }
+
+    .action-card {
+      min-height: 116px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(215,170,69,0.25);
+      box-shadow: var(--soft-shadow);
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      gap: 7px;
+      color: var(--text);
+    }
+
+    .action-card span {
+      font-size: 28px;
+      line-height: 1;
+      color: var(--gold);
+    }
+
+    .action-card strong {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      line-height: 1.1;
+      color: var(--dark);
+      font-family: Arial, sans-serif;
+    }
+
+    .action-card small {
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      line-height: 1.25;
+    }
+
+    .section {
+      display: none;
+      animation: fade 0.23s ease;
+    }
+
+    .section.show {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(215,170,69,0.22);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .card.dark {
+      background: var(--panel-dark);
+      color: white;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .section-title h2 {
+      color: var(--dark);
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .dark .section-title h2 {
+      color: white;
+    }
+
+    .section-title span,
+    .section-title button {
+      color: var(--gold);
+      background: transparent;
+      border: 0;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .team-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .team-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(215,170,69,0.16);
+    }
+
+    .team-info h3 {
+      color: var(--dark);
+      font-size: 17px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .team-info p {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .team-right {
+      text-align: right;
+      min-width: 86px;
+      font-family: Arial, sans-serif;
+    }
+
+    .team-right strong {
+      display: block;
+      color: var(--dark);
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .mini-btn {
+      min-height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(215,170,69,0.44);
+      background: #fffaf0;
+      color: var(--dark);
+      padding: 0 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      font-weight: 800;
+    }
+
+    .mini-btn.sold {
+      background: rgba(47,111,78,0.12);
+      color: var(--green-dark);
+      cursor: default;
+    }
+
+    .mini-btn.danger {
+      color: var(--red);
+      border-color: rgba(163,66,66,0.35);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-family: Arial, sans-serif;
+      margin-top: 5px;
+      border: 1px solid rgba(215,170,69,0.24);
+      color: #876223;
+      background: rgba(215,170,69,0.10);
+    }
+
+    .status-pill.ok {
+      color: var(--green-dark);
+      background: rgba(47,111,78,0.12);
+      border-color: rgba(47,111,78,0.22);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 11px;
+    }
+
+    .form-grid label {
+      color: var(--dark);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 800;
+    }
+
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(190,178,158,.75);
+      background: rgba(255,252,246,.88);
+      padding: 0 14px;
+      color: var(--text);
+      outline: none;
+      font-size: 15px;
+    }
+
+    .form-grid textarea {
+      min-height: 72px;
+      resize: vertical;
+      padding-top: 12px;
+    }
+
+    .submit {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(240,204,115,0.72);
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #111820;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 14px;
+      font-weight: 900;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 12px 25px rgba(215,170,69,.18);
+    }
+
+    .ducks-track {
+      height: 246px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(71,154,204,0.35), rgba(37,102,145,0.62)),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 48px);
+      border: 1px solid rgba(255,255,255,0.20);
+      overflow: hidden;
+      position: relative;
+      margin: 12px 0;
+    }
+
+    .finish-line {
+      position: absolute;
+      right: 18px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: repeating-linear-gradient(0deg, #fff 0 10px, #111 10px 20px);
+      opacity: 0.8;
+    }
+
+    .duck {
+      position: absolute;
+      left: 12px;
+      width: 54px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      transition: left 2.2s cubic-bezier(.16,.76,.24,1);
+      filter: drop-shadow(0 8px 8px rgba(0,0,0,.22));
+    }
+
+    .duck small {
+      position: absolute;
+      bottom: -5px;
+      right: -4px;
+      min-width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: #fff;
+      color: #111;
+      font-size: 11px;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      font-weight: 900;
+      border: 1px solid rgba(0,0,0,.18);
+    }
+
+    .duck.d1 { top: 20px; }
+    .duck.d2 { top: 66px; }
+    .duck.d3 { top: 112px; }
+    .duck.d4 { top: 158px; }
+    .duck.d5 { top: 204px; }
+
+    .leaderboard {
+      display: grid;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .leader-row {
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(215,170,69,0.16);
+      font-family: Arial, sans-serif;
+    }
+
+    .leader-row strong {
+      color: var(--dark);
+    }
+
+    .leader-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .cards-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-hit {
+      padding: 12px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(215,170,69,0.16);
+    }
+
+    .card-hit h3 {
+      font-size: 16px;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+
+    .card-hit p {
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .summary-box {
+      background: rgba(47,111,78,0.10);
+      border: 1px solid rgba(47,111,78,0.20);
+      color: var(--green-dark);
+      border-radius: 16px;
+      padding: 12px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.42;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      width: min(92%, 430px);
+      background: rgba(7,16,24,0.96);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.35;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      text-align: center;
+      border: 1px solid rgba(215,170,69,0.28);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 420px) {
+      .content {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .hero {
+        min-height: 395px;
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .hero h1 {
+        font-size: 47px;
+      }
+
+      .hero-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .action-grid {
+        gap: 9px;
+      }
+
+      .action-card {
+        min-height: 104px;
+        padding: 12px 6px;
+      }
+
+      .action-card strong {
+        font-size: 11px;
+      }
+
+      .team-row {
+        grid-template-columns: 1fr;
+      }
+
+      .team-right {
+        text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .ducks-track {
+        height: 246px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+    <div class="demo-banner">
+      DEMO INTERATTIVA · puoi provare squadre, paperelle e registro carte, ma nulla viene salvato e nessun pagamento è reale.
+    </div>
+
+    <section class="hero">
+      <div class="topbar">
+        <a class="round-btn" href="/" aria-label="Torna a PixelUp">⌂</a>
+        <div class="brand">PixelUp Break</div>
+        <button class="round-btn" type="button" onclick="showSection('live')">▶</button>
+      </div>
+
+      <div class="hero-content">
+        <div class="logo-ball">⚽</div>
+        <div class="live-pill"><span class="live-dot"></span> Demo Live Break</div>
+        <h1>Demo <span>Box Break</span></h1>
+        <p>
+          Prova come funzionano acquisto squadra, paperelle,
+          link diretta e registro carte. È una simulazione cliccabile PixelUp.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="btn btn-primary" type="button" onclick="showSection('teams')">
+            Prova squadre
+          </button>
+
+          <button class="btn btn-secondary" type="button" onclick="showSection('ducks')">
+            Gioco paperelle
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="soldCount">0</strong>
+          <small>Vendute</small>
+        </div>
+        <div class="stat">
+          <strong id="availableCount">0</strong>
+          <small>Disponibili</small>
+        </div>
+        <div class="stat">
+          <strong id="totalMoney">€ 0</strong>
+          <small>Totale</small>
+        </div>
+        <div class="stat">
+          <strong id="hitsCount">0</strong>
+          <small>Carte</small>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>⚽</span></div>
+
+      <div class="action-grid">
+        <button class="action-card" type="button" onclick="showSection('teams')">
+          <span>🏟</span>
+          <strong>Squadre</strong>
+          <small>Prezzi e acquisti</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="showSection('ducks')">
+          <span>🦆</span>
+          <strong>Paperelle</strong>
+          <small>Assegnazione random</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="showSection('live')">
+          <span>▶</span>
+          <strong>Diretta</strong>
+          <small>Link live Facebook</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="showSection('cards')">
+          <span>🃏</span>
+          <strong>Carte</strong>
+          <small>Registro uscite</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="showSection('admin')">
+          <span>⚙</span>
+          <strong>Admin</strong>
+          <small>Configura evento</small>
+        </button>
+
+        <button class="action-card" type="button" onclick="showSection('rules')">
+          <span>ⓘ</span>
+          <strong>Regole</strong>
+          <small>Come funziona</small>
+        </button>
+      </div>
+
+      <div class="section show" id="teams">
+        <div class="card">
+          <div class="section-title">
+            <h2>Prova squadre</h2>
+            <button type="button" onclick="addTeamPrompt()">+ Squadra</button>
+          </div>
+
+          <div class="summary-box">
+            Le squadre vengono bloccate solo in questa demo. Non parte nessun pagamento reale e i dati non vengono salvati.
+          </div>
+
+          <div class="team-list" id="teamsList"></div>
+        </div>
+      </div>
+
+      <div class="section" id="buy">
+        <div class="card">
+          <div class="section-title">
+            <h2>Conferma acquisto</h2>
+            <span>prova</span>
+          </div>
+
+          <form class="form-grid" id="buyForm">
+            <label>Squadra scelta</label>
+            <input id="buyTeam" type="text" readonly>
+
+            <label>Prezzo</label>
+            <input id="buyPrice" type="text" readonly>
+
+            <label>Nome / nickname</label>
+            <input id="buyerName" type="text" placeholder="Es. Vincenzo, Marco, IG...">
+
+            <label>Metodo pagamento</label>
+            <select id="paymentMethod">
+              <option value="PayPal">PayPal</option>
+              <option value="Bonifico">Bonifico</option>
+            </select>
+
+            <label>Note</label>
+            <textarea id="buyNotes" placeholder="Es. pagamento inviato, nickname Facebook, ecc."></textarea>
+
+            <button class="submit" type="submit">Blocca squadra nella demo</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="section" id="ducks">
+        <div class="card dark">
+          <div class="section-title">
+            <h2>Gioco paperelle</h2>
+            <button type="button" onclick="buyDuckPrompt()">+ Paperella</button>
+          </div>
+
+          <p style="font-family:Arial,sans-serif;color:rgba(255,255,255,.82);font-size:13px;line-height:1.45;">
+            Costo paperella simulato: <strong>€ 10</strong>. Il creatore imposta l’ordine delle squadre premio.
+            La gara assegna le squadre rimaste in base alla classifica.
+          </p>
+
+          <div class="ducks-track">
+            <div class="finish-line"></div>
+            <div class="duck d1" id="duck1">🦆<small>1</small></div>
+            <div class="duck d2" id="duck2">🦆<small>2</small></div>
+            <div class="duck d3" id="duck3">🦆<small>3</small></div>
+            <div class="duck d4" id="duck4">🦆<small>4</small></div>
+            <div class="duck d5" id="duck5">🦆<small>5</small></div>
+          </div>
+
+          <button class="submit" type="button" onclick="runDuckRace()">Avvia gara di prova</button>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Paperelle acquistate</h2>
+            <span id="ducksCount">0</span>
+          </div>
+
+          <div class="leaderboard" id="ducksList"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Classifica / premi</h2>
+            <span>ordine squadre</span>
+          </div>
+
+          <div class="leaderboard" id="duckResults"></div>
+        </div>
+      </div>
+
+      <div class="section" id="live">
+        <div class="card">
+          <div class="section-title">
+            <h2>Diretta live</h2>
+            <span>Facebook</span>
+          </div>
+
+          <div class="summary-box">
+            Inserisci il link della diretta: chi partecipa apre il live direttamente dalla pagina evento.
+          </div>
+
+          <form class="form-grid" id="liveForm">
+            <label>Titolo diretta</label>
+            <input id="liveTitle" type="text" value="Topps Champions League Break - Live ore 21:30">
+
+            <label>Link diretta</label>
+            <input id="liveLink" type="text" value="https://facebook.com/">
+
+            <button class="submit" type="submit">Aggiorna link di prova</button>
+          </form>
+
+          <button class="submit" style="margin-top:12px;" type="button" onclick="openLive()">Apri diretta</button>
+        </div>
+      </div>
+
+      <div class="section" id="cards">
+        <div class="card">
+          <div class="section-title">
+            <h2>Carte uscite</h2>
+            <button type="button" onclick="addCardPrompt()">+ Carta</button>
+          </div>
+
+          <div class="summary-box">
+            Durante la live puoi registrare le carte uscite per squadra e partecipante.
+          </div>
+
+          <div class="cards-list" id="cardsList"></div>
+        </div>
+      </div>
+
+      <div class="section" id="admin">
+        <div class="card">
+          <div class="section-title">
+            <h2>Admin demo</h2>
+            <span>configura</span>
+          </div>
+
+          <div class="summary-box">
+            Questa sezione simula l’area di configurazione del creator. In una versione reale i dati verrebbero salvati nell’account.
+          </div>
+
+          <form class="form-grid" id="eventForm">
+            <label>Titolo evento</label>
+            <input id="eventTitle" type="text" value="Champions Box Break">
+
+            <label>Box da aprire</label>
+            <textarea id="boxesInfo">2 box Topps Chrome
+1 box Merlin
+1 box Stadium Club</textarea>
+
+            <label>Costo paperella</label>
+            <input id="duckPrice" type="text" value="10">
+
+            <label>Ordine squadre premio paperelle</label>
+            <textarea id="prizeOrder">Napoli
+Lazio
+Benfica
+PSV
+Ajax</textarea>
+
+            <button class="submit" type="submit">Salva configurazione di prova</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="section" id="rules">
+        <div class="card">
+          <div class="section-title">
+            <h2>Regole</h2>
+            <span>trasparenza</span>
+          </div>
+
+          <div class="team-list">
+            <div class="team-row">
+              <div class="team-info">
+                <h3>1. Prova squadre</h3>
+                <p>Ogni squadra ha un prezzo. Quando viene scelta e confermata, viene bloccata.</p>
+              </div>
+            </div>
+
+            <div class="team-row">
+              <div class="team-info">
+                <h3>2. Squadre rimaste</h3>
+                <p>Le squadre invendute possono essere assegnate con paperelle di prova.</p>
+              </div>
+            </div>
+
+            <div class="team-row">
+              <div class="team-info">
+                <h3>3. Diretta</h3>
+                <p>Il creatore apre i box in live. Le carte vanno alla squadra comprata o assegnata.</p>
+              </div>
+            </div>
+
+            <div class="team-row">
+              <div class="team-info">
+                <h3>4. Registro carte</h3>
+                <p>Le carte uscite possono essere segnate per squadra e partecipante.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let teams = [
+      { name: "Roma", price: 30, buyer: "", payment: "" },
+      { name: "Milan", price: 45, buyer: "Marco", payment: "PayPal" },
+      { name: "Inter", price: 45, buyer: "", payment: "" },
+      { name: "Juventus", price: 45, buyer: "", payment: "" },
+      { name: "Napoli", price: 40, buyer: "", payment: "" },
+      { name: "Real Madrid", price: 80, buyer: "Luca", payment: "Bonifico" },
+      { name: "Barcellona", price: 70, buyer: "", payment: "" },
+      { name: "Manchester City", price: 75, buyer: "", payment: "" },
+      { name: "PSG", price: 65, buyer: "", payment: "" },
+      { name: "Benfica", price: 18, buyer: "", payment: "" }
+    ];
+
+    let selectedTeamIndex = null;
+
+    let ducks = [
+      { number: 1, buyer: "Andrea" },
+      { number: 2, buyer: "Sara" },
+      { number: 3, buyer: "Michele" }
+    ];
+
+    let hits = [
+      { team: "Milan", player: "Leão", type: "Base", owner: "Marco", note: "Topps Chrome" },
+      { team: "Real Madrid", player: "Bellingham", type: "Insert", owner: "Luca", note: "Merlin" }
+    ];
+
+    let duckResults = [];
+
+    function euro(value) {
+      return "€ " + Number(value || 0).toLocaleString("it-IT", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3300);
+    }
+
+    function showSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      document.querySelectorAll(".section").forEach((section) => {
+        section.classList.remove("show");
+      });
+
+      target.classList.add("show");
+
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+
+    function renderStats() {
+      const sold = teams.filter((team) => team.buyer).length;
+      const available = teams.length - sold;
+      const total = teams.filter((team) => team.buyer).reduce((sum, team) => sum + Number(team.price || 0), 0);
+
+      document.getElementById("soldCount").textContent = sold;
+      document.getElementById("availableCount").textContent = available;
+      document.getElementById("totalMoney").textContent = euro(total);
+      document.getElementById("hitsCount").textContent = hits.length;
+    }
+
+    function renderTeams() {
+      const list = document.getElementById("teamsList");
+
+      list.innerHTML = teams.map((team, index) => {
+        const sold = Boolean(team.buyer);
+
+        return `
+          <div class="team-row">
+            <div class="team-info">
+              <h3>${team.name}</h3>
+              <p>${sold ? "Venduta a " + team.buyer + " · " + team.payment : "Disponibile per il break"}</p>
+              <span class="status-pill ${sold ? "ok" : ""}">
+                ${sold ? "Venduta" : "Disponibile"}
+              </span>
+            </div>
+
+            <div class="team-right">
+              <strong>${euro(team.price)}</strong>
+              ${
+                sold
+                  ? `<button class="mini-btn sold" type="button">Bloccata</button>`
+                  : `<button class="mini-btn" type="button" onclick="openBuy(${index})">Compra</button>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      renderStats();
+    }
+
+    function openBuy(index) {
+      selectedTeamIndex = index;
+      const team = teams[index];
+
+      document.getElementById("buyTeam").value = team.name;
+      document.getElementById("buyPrice").value = euro(team.price);
+      document.getElementById("buyerName").value = "";
+      document.getElementById("buyNotes").value = "";
+
+      showSection("buy");
+    }
+
+    document.getElementById("buyForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      if (selectedTeamIndex === null) return;
+
+      const buyer = document.getElementById("buyerName").value.trim();
+      const payment = document.getElementById("paymentMethod").value;
+
+      if (!buyer) {
+        showToast("Inserisci nome o nickname per bloccare la squadra.");
+        return;
+      }
+
+      teams[selectedTeamIndex].buyer = buyer;
+      teams[selectedTeamIndex].payment = payment;
+
+      showToast(teams[selectedTeamIndex].name + " bloccata per " + buyer + ". Modalità demo: nessun pagamento reale con " + payment + ".");
+      renderTeams();
+      renderCards();
+      showSection("teams");
+    });
+
+    function addTeamPrompt() {
+      const name = prompt("Nome squadra:", "Atalanta");
+      if (name === null) return;
+
+      const price = prompt("Prezzo squadra:", "20");
+      if (price === null) return;
+
+      teams.push({
+        name: name || "Nuova squadra",
+        price: Number(String(price).replace(",", ".")) || 0,
+        buyer: "",
+        payment: ""
+      });
+
+      renderTeams();
+      showToast("Squadra aggiunta solo in questa prova.");
+    }
+
+    function renderDucks() {
+      const list = document.getElementById("ducksList");
+      const count = document.getElementById("ducksCount");
+
+      count.textContent = ducks.length;
+
+      if (!ducks.length) {
+        list.innerHTML = `<div class="leader-row"><strong>--</strong><span>Nessuna paperella acquistata.</span><span>€ 0</span></div>`;
+        return;
+      }
+
+      list.innerHTML = ducks.map((duck) => {
+        return `
+          <div class="leader-row">
+            <strong>#${duck.number}</strong>
+            <span>${duck.buyer}</span>
+            <span>€ 10</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function buyDuckPrompt() {
+      const nextNumber = ducks.length + 1;
+      const buyer = prompt("Nome / nickname per paperella n. " + nextNumber + ":", "Vincenzo");
+      if (buyer === null) return;
+
+      ducks.push({
+        number: nextNumber,
+        buyer: buyer || "Partecipante"
+      });
+
+      renderDucks();
+      showToast("Paperella #" + nextNumber + " acquistata in modalità prova.");
+    }
+
+    function runDuckRace() {
+      const duckEls = [1,2,3,4,5].map((num) => document.getElementById("duck" + num));
+      const rankings = [1,2,3,4,5].sort(() => Math.random() - 0.5);
+
+      duckEls.forEach((duck, index) => {
+        duck.style.left = "12px";
+      });
+
+      setTimeout(() => {
+        rankings.forEach((num, index) => {
+          const duck = document.getElementById("duck" + num);
+          const finish = 78 - (index * 8);
+          duck.style.left = finish + "%";
+        });
+      }, 120);
+
+      setTimeout(() => {
+        const prizeOrder = document.getElementById("prizeOrder").value
+          .split("\\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        duckResults = rankings.map((num, index) => {
+          const duckBuyer = ducks.find((duck) => duck.number === num);
+          return {
+            position: index + 1,
+            duck: num,
+            buyer: duckBuyer ? duckBuyer.buyer : "Paperella libera",
+            prize: prizeOrder[index] || "Nessuna squadra"
+          };
+        });
+
+        renderDuckResults();
+        showToast("Gara paperelle completata. Classifica generata in prova.");
+      }, 2500);
+    }
+
+    function renderDuckResults() {
+      const list = document.getElementById("duckResults");
+
+      if (!duckResults.length) {
+        list.innerHTML = `<div class="leader-row"><strong>--</strong><span>Avvia la gara per generare la classifica.</span><span>🦆</span></div>`;
+        return;
+      }
+
+      list.innerHTML = duckResults.map((row) => {
+        return `
+          <div class="leader-row">
+            <strong>${row.position}°</strong>
+            <span>Paperella #${row.duck} · ${row.buyer}</span>
+            <span>${row.prize}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("liveForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      showToast("Link live aggiornato solo in questa prova.");
+    });
+
+    function openLive() {
+      const link = document.getElementById("liveLink").value.trim();
+
+      if (!link) {
+        showToast("Inserisci prima un link diretta.");
+        return;
+      }
+
+      window.open(link, "_blank");
+    }
+
+    function renderCards() {
+      const list = document.getElementById("cardsList");
+
+      if (!hits.length) {
+        list.innerHTML = `<div class="card-hit"><h3>Nessuna carta registrata</h3><p>Durante la live puoi aggiungere le carte uscite.</p></div>`;
+        return;
+      }
+
+      list.innerHTML = hits.map((hit, index) => {
+        return `
+          <div class="card-hit">
+            <h3>${hit.team} · ${hit.player}</h3>
+            <p>${hit.type} · Proprietario: ${hit.owner || ownerByTeam(hit.team) || "Non assegnato"}</p>
+            <p>${hit.note || ""}</p>
+          </div>
+        `;
+      }).join("");
+
+      renderStats();
+    }
+
+    function ownerByTeam(teamName) {
+      const team = teams.find((item) => item.name.toLowerCase() === String(teamName).toLowerCase());
+      return team ? team.buyer : "";
+    }
+
+    function addCardPrompt() {
+      const availableTeams = teams.map((team) => team.name).join(", ");
+      const team = prompt("Squadra carta:\\n" + availableTeams, "Roma");
+      if (team === null) return;
+
+      const player = prompt("Giocatore:", "Dybala");
+      if (player === null) return;
+
+      const type = prompt("Tipo carta:", "Base / Refractor / Insert / Numbered");
+      if (type === null) return;
+
+      const note = prompt("Note:", "Topps Chrome");
+      if (note === null) return;
+
+      hits.push({
+        team: team || "Squadra",
+        player: player || "Giocatore",
+        type: type || "Carta",
+        owner: ownerByTeam(team) || "",
+        note: note || ""
+      });
+
+      renderCards();
+      showToast("Carta registrata solo in questa prova.");
+    }
+
+    document.getElementById("eventForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      showToast("Configurazione evento aggiornata solo in questa prova.");
+    });
+
+    renderTeams();
+    renderDucks();
+    renderDuckResults();
+    renderCards();
+  </script>
+</body>
+</html>
