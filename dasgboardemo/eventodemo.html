@@ -4,23 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Prova Pagina Evento | PixelUp</title>
+  <title>Prova Pagina Evento | PixelUp Events</title>
 
   <style>
+
     :root {
       --cream: #fbf4e8;
-      --cream-light: #fffaf2;
-      --card: rgba(255, 252, 246, 0.96);
+      --cream-light: #fffaf1;
+      --card: rgba(255, 252, 246, 0.94);
       --text: #263122;
       --muted: #7b6f62;
       --gold: #b19155;
+      --gold-soft: #d8c498;
       --green: #4d5a3a;
       --green-dark: #344028;
-      --border: rgba(223, 212, 193, 0.85);
-      --shadow: 0 18px 35px rgba(60, 45, 28, 0.12);
-      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.08);
+      --line: rgba(177, 145, 85, 0.45);
+      --shadow: 0 14px 35px rgba(60, 45, 28, 0.13);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+
+      /*
+        Puoi cambiare immagine di sfondo sostituendo questo link.
+        Consiglio: usa una foto larga, elegante, orizzontale.
+      */
       --hero-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=90");
-      --location-image: url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=90");
     }
 
     * {
@@ -30,6 +36,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
       background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
@@ -37,14 +47,9 @@
       font-family: Georgia, "Times New Roman", serif;
     }
 
-    button {
-      cursor: pointer;
-      font-family: inherit;
-    }
-
     a {
-      text-decoration: none;
       color: inherit;
+      text-decoration: none;
     }
 
     .app {
@@ -53,13 +58,628 @@
       min-height: 100vh;
       margin: 0 auto;
       background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
-      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
       overflow: hidden;
       position: relative;
-      padding-bottom: 34px;
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
     }
 
-    .demo-banner {
+    /* HERO */
+
+    .hero {
+      min-height: 385px;
+      padding: 18px 22px 30px;
+      position: relative;
+      color: var(--text);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 248, 235, 0.18) 0%,
+          rgba(255, 246, 230, 0.45) 58%,
+          rgba(255, 246, 230, 0.94) 100%
+        ),
+        var(--hero-image) center top / cover no-repeat;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 64px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+      box-shadow: 0 -8px 26px rgba(255, 246, 230, 0.65);
+    }
+
+    .topbar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 3;
+      font-family: Arial, sans-serif;
+    }
+
+    .menu-icon,
+    .heart-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .heart-icon {
+      border: 1px solid rgba(104, 85, 49, 0.38);
+      background: rgba(255, 255, 255, 0.35);
+      font-size: 22px;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 5px;
+      color: var(--green);
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-left: 5px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding-top: 18px;
+    }
+
+    .monogram {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 23px;
+      letter-spacing: 2px;
+      position: relative;
+      background: rgba(255, 250, 241, 0.20);
+    }
+
+    .monogram::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 50%;
+      border: 1px solid rgba(177, 145, 85, 0.55);
+    }
+
+    h1 {
+      font-size: clamp(50px, 12vw, 70px);
+      font-weight: 400;
+      line-height: 0.95;
+      color: var(--green-dark);
+      text-shadow: 0 3px 20px rgba(255, 255, 255, 0.70);
+      margin-bottom: 10px;
+    }
+
+    .amp {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .ornament {
+      width: 190px;
+      height: 18px;
+      margin: 4px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      opacity: 0.95;
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: "";
+      height: 1px;
+      background: var(--line);
+      flex: 1;
+    }
+
+    .ornament span {
+      padding: 0 12px;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .date {
+      font-size: 25px;
+      color: var(--text);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-style: italic;
+      color: #4f4a3c;
+      margin-top: -2px;
+    }
+
+    .hero-buttons {
+      position: relative;
+      z-index: 4;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 0 4px;
+    }
+
+    .btn {
+      min-height: 54px;
+      border-radius: 15px;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      box-shadow: var(--soft-shadow);
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:active,
+    .small-card:active,
+    .map-card:active,
+    .heart-icon:active,
+    .menu-icon:active {
+      transform: scale(0.985);
+      opacity: 0.92;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: white;
+      border-color: rgba(214, 193, 145, 0.95);
+      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 252, 246, 0.88);
+      color: var(--text);
+    }
+
+    .btn .ico {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    /* CONTENT */
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 0 22px 34px;
+      margin-top: -1px;
+    }
+
+    .countdown {
+      background: rgba(255, 252, 246, 0.88);
+      border-radius: 21px;
+      padding: 17px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      margin-bottom: 26px;
+    }
+
+    .count-box {
+      min-height: 76px;
+      border-radius: 13px;
+      background: rgba(255, 252, 246, 0.94);
+      box-shadow: 0 8px 18px rgba(61, 45, 28, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(230, 218, 198, 0.8);
+    }
+
+    .count-box strong {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 400;
+      color: var(--green-dark);
+      letter-spacing: 1px;
+    }
+
+    .count-box small {
+      margin-top: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.2px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 18px;
+      margin: 6px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      height: 1px;
+      width: 44%;
+      background: rgba(177, 145, 85, 0.34);
+    }
+
+    .section-divider span {
+      padding: 0 10px;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.18fr 0.92fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: 19px;
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      box-shadow: var(--soft-shadow);
+      padding: 18px 14px;
+      min-height: 250px;
+    }
+
+    .panel-title {
+      text-align: center;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 7px;
+    }
+
+    .mini-ornament {
+      width: 56px;
+      height: 12px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .mini-ornament::before,
+    .mini-ornament::after {
+      content: "";
+      height: 1px;
+      background: rgba(177, 145, 85, 0.55);
+      flex: 1;
+    }
+
+    .mini-ornament span {
+      padding: 0 5px;
+    }
+
+    .program-list {
+      display: grid;
+      gap: 15px;
+      position: relative;
+      padding-left: 47px;
+    }
+
+    .program-list::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 9px;
+      bottom: 9px;
+      width: 1px;
+      background: rgba(177, 145, 85, 0.34);
+    }
+
+    .program-item {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      align-items: center;
+      min-height: 34px;
+      font-size: 16px;
+      position: relative;
+    }
+
+    .program-item .round {
+      position: absolute;
+      left: -47px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 252, 246, 0.96);
+      border: 1px solid rgba(225, 211, 184, 0.9);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      box-shadow: 0 5px 14px rgba(60, 45, 28, 0.1);
+      font-size: 18px;
+    }
+
+    .program-item .hour {
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .program-item .label {
+      color: var(--text);
+    }
+
+    .map-panel {
+      padding: 18px 12px 13px;
+    }
+
+    .location-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 4px 0 14px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .fake-map {
+      height: 136px;
+      border-radius: 13px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 50%, rgba(74, 95, 66, 0.25), transparent 12%),
+        linear-gradient(145deg, #d7e2ce 0%, #e5e8d8 45%, #c9d9e2 46%, #a7c7d6 100%);
+      position: relative;
+      border: 1px solid rgba(230, 218, 198, 0.9);
+    }
+
+    .fake-map::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(20deg, transparent 48%, rgba(255, 255, 255, 0.7) 49%, transparent 51%),
+        linear-gradient(80deg, transparent 57%, rgba(255, 255, 255, 0.65) 58%, transparent 60%),
+        linear-gradient(145deg, transparent 47%, rgba(255, 255, 255, 0.55) 48%, transparent 50%);
+      opacity: 0.72;
+    }
+
+    .pin {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 252, 246, 0.96);
+      border: 1px solid rgba(97, 80, 47, 0.48);
+      position: absolute;
+      left: 50%;
+      top: 51%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 16px rgba(60, 45, 28, 0.2);
+      font-size: 25px;
+    }
+
+    .map-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      background: rgba(255, 252, 246, 0.94);
+      border-radius: 0 0 13px 13px;
+      border: 1px solid rgba(230, 218, 198, 0.9);
+      border-top: 0;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .small-card {
+      min-height: 99px;
+      border-radius: 15px;
+      background: var(--card);
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      box-shadow: var(--soft-shadow);
+      padding: 13px 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .small-card .icon {
+      color: var(--gold);
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .small-card h3 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .small-card p {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.15;
+      color: var(--muted);
+    }
+
+    .small-card .arrow {
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      color: var(--gold);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .logo-card {
+      justify-content: center;
+      gap: 4px;
+      background:
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.92), rgba(255, 250, 241, 0.92)),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(251, 244, 232, 0.92));
+    }
+
+    .logo-card .floral {
+      color: var(--gold);
+      font-size: 40px;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .quote {
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      border-radius: 15px;
+      box-shadow: var(--soft-shadow);
+      padding: 18px 20px 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    .quote-mark {
+      color: var(--gold);
+      font-size: 30px;
+      line-height: 0;
+      vertical-align: -9px;
+      margin-right: 4px;
+    }
+
+    .quote-heart {
+      display: block;
+      color: var(--gold);
+      font-style: normal;
+      margin-top: 7px;
+      font-size: 19px;
+    }
+
+    @media (max-width: 390px) {
+      .app {
+        max-width: 100%;
+      }
+
+      .hero {
+        min-height: 362px;
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .content {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      .hero-buttons {
+        gap: 9px;
+      }
+
+      .btn {
+        min-height: 50px;
+        font-size: 13px;
+        letter-spacing: 0.7px;
+      }
+
+      .countdown {
+        gap: 7px;
+        padding: 14px;
+      }
+
+      .count-box strong {
+        font-size: 33px;
+      }
+
+      .main-grid {
+        gap: 11px;
+      }
+
+      .program-item {
+        grid-template-columns: 50px 1fr;
+        font-size: 14px;
+      }
+
+      .cards {
+        gap: 9px;
+      }
+
+      .small-card {
+        min-height: 94px;
+        padding: 12px 6px;
+      }
+
+      .small-card h3 {
+        font-size: 12px;
+      }
+
+      .small-card p {
+        font-size: 12px;
+      }
+    }
+  
+
+    /* SEZIONI PROVA INTERATTIVA */
+    .test-banner {
       background: linear-gradient(135deg, #344028, #4d5a3a);
       color: #fffaf2;
       padding: 11px 18px;
@@ -70,521 +690,278 @@
       letter-spacing: 0.2px;
     }
 
-    .demo-banner strong {
+    .test-banner strong {
       color: #f0d69a;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .topbar {
-      height: 66px;
-      padding: 0 20px;
-      background: rgba(255, 252, 246, 0.96);
-      border-bottom: 1px solid rgba(223, 212, 193, 0.75);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(8px);
+    .event-section {
+      display: none;
+      margin-top: 14px;
+      animation: fadeInEvent 0.22s ease;
     }
 
-    .circle-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid rgba(177, 145, 85, 0.45);
-      background: rgba(255, 255, 255, 0.55);
-      display: grid;
-      place-items: center;
-      color: var(--green);
-      font-size: 22px;
-    }
-
-    .top-title {
-      text-align: center;
-      line-height: 1.15;
-    }
-
-    .top-title h1 {
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--green-dark);
-    }
-
-    .top-title p {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
-    .hero {
-      min-height: 370px;
-      background:
-        linear-gradient(180deg, rgba(35, 38, 28, 0.10), rgba(35, 38, 28, 0.56)),
-        var(--hero-image) center / cover no-repeat;
-      color: white;
-      padding: 36px 24px 64px;
-      display: flex;
-      align-items: flex-end;
-      text-align: center;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      left: -8%;
-      bottom: -1px;
-      width: 116%;
-      height: 56px;
-      background: var(--cream);
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      z-index: 1;
-    }
-
-    .hero-content {
-      width: 100%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .monogram {
-      width: 86px;
-      height: 86px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 24px;
-      letter-spacing: 2px;
-      background: rgba(255, 250, 241, 0.30);
-      border: 1px solid rgba(177, 145, 85, 0.78);
-      backdrop-filter: blur(5px);
-    }
-
-    .hero small {
+    .event-section.show {
       display: block;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 11px;
-      color: rgba(255,255,255,0.86);
-      margin-bottom: 8px;
     }
 
-    .hero h2 {
-      font-size: 45px;
-      line-height: 0.95;
-      font-weight: 400;
-      margin-bottom: 12px;
-      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+    @keyframes fadeInEvent {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .hero p {
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-      line-height: 1.45;
-      opacity: 0.95;
-      max-width: 390px;
-      margin: 0 auto;
-    }
-
-    .content {
-      padding: 18px 20px 24px;
-    }
-
-    .date-card {
-      margin: -38px auto 20px;
-      position: relative;
-      z-index: 4;
-      width: 90%;
-      background: rgba(255, 252, 246, 0.94);
-      border: 1px solid rgba(223, 212, 193, 0.85);
-      border-radius: 24px;
-      padding: 18px 16px;
-      color: var(--text);
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .date-card small {
-      display: block;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-      color: var(--gold);
-      font-size: 11px;
-      margin-bottom: 6px;
-    }
-
-    .date-card strong {
-      display: block;
-      color: var(--green-dark);
-      font-size: 28px;
-      font-weight: 400;
-    }
-
-    .intro-card,
-    .section-card,
-    .quote-card,
-    .cta-card {
+    .section-card {
       background: var(--card);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      border-radius: 19px;
       box-shadow: var(--soft-shadow);
-      border-radius: 22px;
-      padding: 18px;
-      margin-bottom: 16px;
+      padding: 18px 14px;
+      margin-bottom: 14px;
     }
 
-    .intro-card {
+    .section-card h2 {
+      text-align: center;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .section-card h3 {
+      color: var(--green-dark);
+      font-size: 23px;
+      font-weight: 400;
+      margin-bottom: 8px;
       text-align: center;
     }
 
-    .intro-card h3 {
-      color: var(--green-dark);
-      font-size: 27px;
-      font-weight: 400;
-      margin-bottom: 8px;
-    }
-
-    .intro-card p {
+    .section-card p,
+    .section-card li {
       font-family: Arial, sans-serif;
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
-    .location-img {
-      height: 170px;
-      border-radius: 20px;
-      background: var(--location-image) center / cover no-repeat;
-      margin-bottom: 14px;
+    .close-section {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--gold);
+      background: rgba(255,252,246,.92);
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      font-size: 13px;
+      margin-top: 10px;
+      box-shadow: var(--soft-shadow);
+      cursor: pointer;
+    }
+
+    .demo-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .demo-form label {
+      font-family: Arial, sans-serif;
+      color: var(--green-dark);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .demo-form input,
+    .demo-form textarea,
+    .demo-form select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(190,178,158,.75);
+      background: rgba(255,252,246,.78);
+      border-radius: 13px;
+      padding: 0 14px;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .demo-form textarea {
+      min-height: 76px;
+      padding-top: 12px;
+      resize: vertical;
+    }
+
+    .demo-submit {
+      width: 100%;
+      min-height: 54px;
+      border: 1.5px solid rgba(214,193,145,.95);
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(54,64,42,.20);
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .choice-pill {
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(190,178,158,.75);
+      background: rgba(255,252,246,.82);
+      color: var(--text);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .choice-pill.active {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: #fff;
+      border-color: rgba(214,193,145,.95);
+    }
+
+    .menu-block {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu-item-test {
+      padding: 13px;
+      border-radius: 15px;
+      background: rgba(255,250,242,.78);
+      border: 1px solid rgba(177,145,85,.16);
+    }
+
+    .timeline-test {
+      display: grid;
+      gap: 12px;
+      padding-left: 4px;
+    }
+
+    .timeline-test-row {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(177,145,85,.18);
+    }
+
+    .timeline-test-row:last-child {
+      border-bottom: 0;
+    }
+
+    .time-demo {
+      width: 54px;
+      height: 54px;
+      border-radius: 15px;
+      background: rgba(177,145,85,.12);
+      border: 1px solid rgba(177,145,85,.22);
+      color: var(--green-dark);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .tables-preview {
+      min-height: 390px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.8), transparent 35%),
+        linear-gradient(145deg, #f9f0e1 0%, #eadbc7 100%);
+      border: 1px solid rgba(211,192,162,.75);
+      box-shadow: inset 0 0 40px rgba(99,76,42,.10);
+      padding: 22px 10px;
       position: relative;
       overflow: hidden;
     }
 
-    .location-img::after {
-      content: "⌖";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: rgba(255, 252, 246, 0.88);
-      border: 1px solid rgba(177,145,85,0.45);
-      color: var(--gold);
-      font-size: 32px;
-      box-shadow: var(--soft-shadow);
-    }
-
-    .location-info {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .location-info h3 {
-      font-size: 25px;
+    .spouses-table-demo {
+      width: 225px;
+      min-height: 60px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fffaf1, #eadfcd);
+      border: 1px solid rgba(177,145,85,.45);
+      box-shadow: 0 14px 24px rgba(70,51,28,.14);
+      margin: 0 auto 28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
       color: var(--green-dark);
-      font-weight: 400;
-    }
-
-    .location-info p {
-      font-family: Arial, sans-serif;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-      margin-top: 4px;
-    }
-
-    .map-btn {
-      border: 1px solid var(--gold);
-      background: rgba(255,252,246,0.95);
-      color: var(--green-dark);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-family: Arial, sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .grid-actions {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 18px 0;
-    }
-
-    .action-card {
-      min-height: 128px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--soft-shadow);
-      padding: 16px 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      gap: 8px;
-      transition: transform 0.18s ease, opacity 0.18s ease;
-    }
-
-    .action-card:active {
-      transform: scale(0.97);
-      opacity: 0.9;
-    }
-
-    .action-card span {
-      color: var(--gold);
-      font-size: 28px;
-      line-height: 1;
-    }
-
-    .action-card strong {
-      color: var(--green-dark);
-      font-size: 18px;
-      line-height: 1.05;
-      font-weight: 400;
+      font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 1.2px;
+      cursor: pointer;
     }
 
-    .action-card small {
-      color: var(--muted);
-      font-family: Arial, sans-serif;
-      font-size: 11px;
-      line-height: 1.3;
+    .tables-grid-demo {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 18px;
+      justify-items:center;
     }
 
-    .demo-section {
-      display: none;
-      animation: fade 0.22s ease;
-    }
-
-    .demo-section.show {
-      display: block;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .section-title h3 {
-      color: var(--green-dark);
-      font-size: 24px;
-      font-weight: 400;
-    }
-
-    .section-title span {
-      font-family: Arial, sans-serif;
-      color: var(--gold);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-    }
-
-    .timeline-row,
-    .table-row,
-    .contact-row {
-      display: grid;
-      grid-template-columns: 64px 1fr;
-      gap: 14px;
-      padding: 13px 0;
-      border-bottom: 1px solid rgba(177,145,85,0.18);
-      align-items: center;
-    }
-
-    .timeline-row:last-child,
-    .table-row:last-child,
-    .contact-row:last-child {
-      border-bottom: none;
-    }
-
-    .time-box {
-      width: 58px;
-      height: 58px;
-      border-radius: 16px;
-      background: rgba(177,145,85,0.12);
-      border: 1px solid rgba(177,145,85,0.22);
-      color: var(--green-dark);
-      display: grid;
-      place-items: center;
-      font-size: 17px;
-    }
-
-    .row-info h4 {
-      color: var(--green-dark);
-      font-size: 18px;
-      font-weight: 400;
-      margin-bottom: 4px;
-    }
-
-    .row-info p {
-      font-family: Arial, sans-serif;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.38;
-    }
-
-    .menu-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .menu-item {
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(255,250,242,0.78);
-      border: 1px solid rgba(177,145,85,0.16);
-    }
-
-    .menu-item h4 {
-      color: var(--green-dark);
-      font-size: 18px;
-      font-weight: 400;
-      margin-bottom: 5px;
-    }
-
-    .menu-item p {
-      font-family: Arial, sans-serif;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .gift-box {
-      text-align: center;
-    }
-
-    .gift-box .gift {
-      font-size: 38px;
-      margin-bottom: 8px;
-    }
-
-    .gift-box h4 {
-      color: var(--green-dark);
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 8px;
-    }
-
-    .gift-box p {
-      font-family: Arial, sans-serif;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .gift-btn {
-      display: inline-flex;
-      margin-top: 14px;
-      min-height: 44px;
-      align-items: center;
-      justify-content: center;
-      padding: 0 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #b19155, #d7b36b);
-      color: white;
-      font-family: Arial, sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
+    .table-demo {
+      width: 124px;
+      height: 124px;
       border: 0;
+      background: transparent;
+      position: relative;
+      cursor: pointer;
     }
 
-    .quote-card {
-      text-align: center;
-      padding: 24px 20px;
+    .table-demo-center {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 42%, #fffdf7 0%, #fff8ed 52%, #e6d4b9 100%);
+      border: 6px solid #dfd0b7;
+      box-shadow: 0 14px 22px rgba(68,48,27,.18), inset 0 0 0 2px rgba(255,255,255,.7);
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px;
+      text-align:center;
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    .quote-card p {
-      color: #766b5f;
-      font-size: 22px;
-      line-height: 1.35;
-      font-style: italic;
+    .seat-demo {
+      width: 18px;
+      height:18px;
+      border-radius:50%;
+      background:#d8c49f;
+      border:1px solid rgba(97,80,47,.20);
+      position:absolute;
+      box-shadow:0 4px 8px rgba(60,45,28,.10);
     }
 
-    .quote-card span {
-      display: block;
-      color: var(--gold);
-      font-size: 28px;
-      margin-top: 12px;
-    }
-
-    .cta-card {
-      text-align: center;
-      background: linear-gradient(135deg, #344028, #4d5a3a);
-      color: white;
-      border: none;
-      box-shadow: var(--shadow);
-    }
-
-    .cta-card h3 {
-      font-size: 26px;
-      font-weight: 400;
-      margin-bottom: 8px;
-    }
-
-    .cta-card p {
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      line-height: 1.45;
-      opacity: 0.9;
-      margin-bottom: 14px;
-    }
-
-    .cta-card a {
-      display: inline-flex;
-      min-height: 46px;
-      align-items: center;
-      justify-content: center;
-      padding: 0 20px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #b19155, #d7b36b);
-      color: white;
-      font-family: Arial, sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-    }
-
-    .bottom-note {
-      margin-top: 18px;
-      text-align: center;
-      color: var(--muted);
-      font-family: Arial, sans-serif;
-      font-size: 13px;
-      line-height: 1.4;
-    }
+    .seat-demo.filled { background: var(--green); }
+    .sd1 { top: 3px; left: 53px; }
+    .sd2 { top: 18px; right: 18px; }
+    .sd3 { top: 53px; right: 3px; }
+    .sd4 { right: 18px; bottom: 18px; }
+    .sd5 { bottom: 3px; left: 53px; }
+    .sd6 { left: 18px; bottom: 18px; }
+    .sd7 { top: 53px; left: 3px; }
+    .sd8 { top: 18px; left: 18px; }
 
     .toast {
       position: fixed;
@@ -592,18 +969,18 @@
       bottom: 22px;
       transform: translateX(-50%) translateY(20px);
       width: min(92%, 430px);
-      background: rgba(52, 64, 40, 0.97);
+      background: rgba(52,64,40,.97);
       color: white;
       padding: 14px 16px;
       border-radius: 16px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+      box-shadow: 0 14px 30px rgba(0,0,0,.18);
       font-family: Arial, sans-serif;
       font-size: 13px;
       line-height: 1.35;
       z-index: 200;
       opacity: 0;
       pointer-events: none;
-      transition: 0.25s ease;
+      transition: .25s ease;
       text-align: center;
     }
 
@@ -613,30 +990,19 @@
     }
 
     @media (max-width: 390px) {
-      .content {
-        padding-left: 16px;
-        padding-right: 16px;
+      .choice-grid {
+        grid-template-columns: 1fr;
       }
-
-      .hero h2 {
-        font-size: 38px;
+      .tables-grid-demo {
+        gap: 20px 12px;
       }
-
-      .grid-actions {
-        gap: 9px;
+      .table-demo {
+        width: 116px;
+        height: 116px;
       }
-
-      .action-card {
-        min-height: 118px;
-        padding: 13px 7px;
-      }
-
-      .action-card strong {
-        font-size: 15px;
-      }
-
-      .action-card small {
-        font-size: 10px;
+      .table-demo-center {
+        width: 76px;
+        height: 76px;
       }
     }
   </style>
@@ -646,310 +1012,370 @@
 
   <main class="app">
 
-    <div class="demo-banner">
-      <strong>Prova pagina evento</strong> · puoi cliccare le sezioni per vedere come funziona una pagina evento PixelUp.
+    <div class="test-banner">
+      <strong>Prova pagina evento</strong> · puoi cliccare e compilare, ma nessun dato viene salvato.
     </div>
 
-    <header class="topbar">
-      <button class="circle-btn" type="button" onclick="goBack()">‹</button>
-
-      <div class="top-title">
-        <h1>Pagina Evento</h1>
-        <p>PixelUp Pagina Evento</p>
-      </div>
-
-      <button class="circle-btn" type="button" onclick="showToast('Questa è una prova pagina evento creata con PixelUp.')">♡</button>
-    </header>
-
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-content">
-        <div class="monogram">S|L</div>
-        <small>Il nostro giorno</small>
-        <h2>Sofia & Lorenzo</h2>
-        <p>
-          Siamo felici di condividere con voi le informazioni più importanti
-          per vivere insieme questo giorno speciale.
-        </p>
+
+      <div class="topbar">
+        <button class="menu-icon" type="button" onclick="showToast('Menu di prova: nella pagina reale può aprire tutte le sezioni evento.')">☰</button>
+        <div class="brand">PixelUp Events</div>
+        <button class="heart-icon" type="button" onclick="openSection('lista')">♡</button>
       </div>
+
+      <div class="hero-content">
+
+        <div class="monogram">M|G</div>
+
+        <h1>Martina <span class="amp">&amp;</span> Gabriele</h1>
+
+        <div class="ornament">
+          <span>♡</span>
+        </div>
+
+        <div class="date" style="margin-bottom: 12px;">12 Settembre 2026</div>
+        <div class="subtitle">Benvenuti al nostro matrimonio</div>
+
+        <div class="hero-buttons">
+
+          <button class="btn btn-primary" type="button" onclick="openSection('rsvp')">
+            <span class="ico">✓</span>
+            <span>Conferma presenza</span>
+          </button>
+
+          <button class="btn btn-secondary" type="button" onclick="openSection('rito')">
+            <span class="ico">⌖</span>
+            <span>Rito</span>
+          </button>
+
+        </div>
+
+      </div>
+
     </section>
 
+    <!-- CONTENUTO -->
     <section class="content">
 
-      <div class="date-card">
-        <small>Data evento</small>
-        <strong>14 Settembre 2026</strong>
-      </div>
+      <div class="countdown" aria-label="Countdown evento">
+        <div class="count-box">
+          <strong id="days">000</strong>
+          <small>Giorni</small>
+        </div>
 
-      <div class="intro-card">
-        <h3>Benvenuti nella nostra pagina evento</h3>
-        <p>
-          Qui trovate programma, location, menù, dress code, tavoli,
-          contatti e tutte le informazioni utili.
-        </p>
-      </div>
+        <div class="count-box">
+          <strong id="hours">00</strong>
+          <small>Ore</small>
+        </div>
 
-      <div class="section-card">
-        <div class="location-img"></div>
+        <div class="count-box">
+          <strong id="minutes">00</strong>
+          <small>Minuti</small>
+        </div>
 
-        <div class="location-info">
-          <div>
-            <h3>Villa Aurora</h3>
-            <p>Via dei Giardini 12<br>Bergamo, Lombardia</p>
-          </div>
-
-          <button class="map-btn" type="button" onclick="openMap()">
-            Apri mappa →
-          </button>
+        <div class="count-box">
+          <strong id="seconds">00</strong>
+          <small>Secondi</small>
         </div>
       </div>
 
-      <div class="grid-actions">
-
-        <button class="action-card" type="button" onclick="toggleSection('programma')">
-          <span>◷</span>
-          <strong>Programma</strong>
-          <small>Orari e momenti</small>
-        </button>
-
-        <button class="action-card" type="button" onclick="toggleSection('menu')">
-          <span>⌂</span>
-          <strong>Menù</strong>
-          <small>Cena e buffet</small>
-        </button>
-
-        <button class="action-card" type="button" onclick="toggleSection('lista')">
-          <span>🎁</span>
-          <strong>Lista regalo</strong>
-          <small>Contributo libero</small>
-        </button>
-
-        <button class="action-card" type="button" onclick="toggleSection('dress')">
-          <span>◈</span>
-          <strong>Dress code</strong>
-          <small>Elegante naturale</small>
-        </button>
-
-        <button class="action-card" type="button" onclick="toggleSection('tavoli')">
-          <span>▦</span>
-          <strong>Tavoli</strong>
-          <small>Composizione esempio</small>
-        </button>
-
-        <button class="action-card" type="button" onclick="toggleSection('contatti')">
-          <span>♡</span>
-          <strong>Contatti</strong>
-          <small>Info evento</small>
-        </button>
-
-      </div>
-
-      <div class="demo-section" id="programma">
-        <div class="section-card">
-          <div class="section-title">
-            <h3>Programma</h3>
-            <span>prova</span>
-          </div>
-
-          <div class="timeline">
-            <div class="timeline-row">
-              <div class="time-box">15:30</div>
-              <div class="row-info">
-                <h4>Arrivo ospiti</h4>
-                <p>Accoglienza in villa e indicazioni per la cerimonia.</p>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="time-box">16:00</div>
-              <div class="row-info">
-                <h4>Cerimonia</h4>
-                <p>Momento principale nel giardino della location.</p>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="time-box">18:00</div>
-              <div class="row-info">
-                <h4>Aperitivo</h4>
-                <p>Buffet e brindisi di benvenuto.</p>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="time-box">20:00</div>
-              <div class="row-info">
-                <h4>Cena</h4>
-                <p>Servizio al tavolo nella sala principale.</p>
-              </div>
-            </div>
-
-            <div class="timeline-row">
-              <div class="time-box">22:30</div>
-              <div class="row-info">
-                <h4>Taglio torta e party</h4>
-                <p>Torta, musica e festa finale.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="demo-section" id="menu">
-        <div class="section-card">
-          <div class="section-title">
-            <h3>Menù</h3>
-            <span>prova</span>
-          </div>
-
-          <div class="menu-list">
-            <div class="menu-item">
-              <h4>Aperitivo</h4>
-              <p>Finger food, isole gastronomiche, bollicine e analcolici.</p>
-            </div>
-
-            <div class="menu-item">
-              <h4>Primi</h4>
-              <p>Risotto cremoso alle erbe fini e ravioli con ripieno delicato.</p>
-            </div>
-
-            <div class="menu-item">
-              <h4>Secondo</h4>
-              <p>Filetto con contorno di stagione e proposta vegetariana su richiesta.</p>
-            </div>
-
-            <div class="menu-item">
-              <h4>Dolce</h4>
-              <p>Taglio torta, buffet dolci e caffetteria.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="demo-section" id="lista">
-        <div class="section-card gift-box">
-          <div class="gift">🎁</div>
-          <h4>Lista regalo</h4>
-          <p>
-            La vostra presenza è il regalo più bello.
-            Per chi desidera contribuire, nella pagina evento reale qui può essere inserito
-            un IBAN, un link lista regalo o un messaggio personalizzato.
-          </p>
-
-          <button class="gift-btn" type="button" onclick="showToast('In una pagina evento reale questo pulsante può aprire lista regalo, IBAN o link dedicato.')">
-            Apri lista esempio
-          </button>
-        </div>
-      </div>
-
-      <div class="demo-section" id="dress">
-        <div class="section-card">
-          <div class="section-title">
-            <h3>Dress code</h3>
-            <span>prova</span>
-          </div>
-
-          <div class="menu-list">
-            <div class="menu-item">
-              <h4>Elegante naturale</h4>
-              <p>
-                Toni chiari, sabbia, verde salvia, beige, cipria e colori delicati.
-                Evitare bianco totale e colori troppo accesi.
-              </p>
-            </div>
-
-            <div class="menu-item">
-              <h4>Consiglio</h4>
-              <p>
-                Parte dell’evento si svolgerà in giardino: meglio scegliere scarpe comode.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="demo-section" id="tavoli">
-        <div class="section-card">
-          <div class="section-title">
-            <h3>Tavoli</h3>
-            <span>prova</span>
-          </div>
-
-          <div class="timeline">
-            <div class="table-row">
-              <div class="time-box">1</div>
-              <div class="row-info">
-                <h4>Tavolo Magnolia</h4>
-                <p>Famiglia Rossi · Famiglia Bianchi · 8 ospiti</p>
-              </div>
-            </div>
-
-            <div class="table-row">
-              <div class="time-box">2</div>
-              <div class="row-info">
-                <h4>Tavolo Ulivo</h4>
-                <p>Amici università · Colleghi · 8 ospiti</p>
-              </div>
-            </div>
-
-            <div class="table-row">
-              <div class="time-box">3</div>
-              <div class="row-info">
-                <h4>Tavolo Lavanda</h4>
-                <p>Cugini e amici stretti · 8 ospiti</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="demo-section" id="contatti">
-        <div class="section-card">
-          <div class="section-title">
-            <h3>Contatti</h3>
-            <span>prova</span>
-          </div>
-
-          <div class="timeline">
-            <div class="contact-row">
-              <div class="time-box">☏</div>
-              <div class="row-info">
-                <h4>Event planner</h4>
-                <p>PixelUp Eventi<br>Telefono e WhatsApp disponibili nella pagina evento reale.</p>
-              </div>
-            </div>
-
-            <div class="contact-row">
-              <div class="time-box">@</div>
-              <div class="row-info">
-                <h4>Email evento</h4>
-                <p>evento@pixelup.it<br>Per richieste, intolleranze o comunicazioni utili.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="quote-card">
-        <p>
-          “La cosa migliore da fare è condividere i momenti più belli con le persone giuste.”
-        </p>
+      <div class="section-divider">
         <span>♡</span>
       </div>
 
-      <div class="cta-card">
-        <h3>Vuoi una pagina evento personalizzata?</h3>
-        <p>
-          PixelUp può creare una pagina evento personalizzata per invitati, sposi,
-          clienti o partecipanti, pronta da condividere da telefono.
-        </p>
+      <!-- PROGRAMMA + LOCATION -->
+      <div class="main-grid">
 
-      <a href="/checkout.html?piano=pagina-evento">
-  Richiedi pagina evento
-</a>
+        <section class="panel">
+          <h2 class="panel-title">Programma</h2>
+          <div class="mini-ornament">
+            <span>♡</span>
+          </div>
 
-      <div class="bottom-note">
-        Questa è una prova pubblica. In una pagina evento reale testi, foto, data,
-        programma, mappa, menù e tavoli vengono personalizzati per ogni evento.
+          <div class="program-list">
+
+            <div class="program-item">
+              <span class="round">♾</span>
+              <span class="hour">15:00</span>
+              <span class="label"> —  Rito religioso</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">♧</span>
+              <span class="hour">17:00</span>
+              <span class="label">—  Aperitivo</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">☽</span>
+              <span class="hour">20:00</span>
+              <span class="label">—  Cena</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">✧</span>
+              <span class="hour">23:00</span>
+              <span class="label">—  Taglio torta</span>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="panel map-panel">
+          <h2 class="panel-title">Location</h2>
+          <div class="mini-ornament">
+            <span>♡</span>
+          </div>
+
+          <div class="location-line">
+            <span>⌖</span>
+            <span>Villa Aurora, Bergamo</span>
+          </div>
+
+          <div class="fake-map">
+            <div class="pin">⌖</div>
+          </div>
+
+          <button class="map-card" type="button" onclick="openMap()">
+            <span>Apri mappa</span>
+            <span>→</span>
+          </button>
+        </section>
+
+      </div>
+
+      <div class="cards">
+
+        <button class="small-card" type="button" onclick="openSection('menu')">
+          <span class="icon">⌂</span>
+          <h3>Menu</h3>
+          <p>Scopri il menu</p>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="small-card" type="button" onclick="openSection('lista')">
+          <span class="icon">🎁︎</span>
+          <h3>Lista Regalo</h3>
+          <p>Il vostro contributo<br>è il nostro regalo più bello</p>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="small-card" type="button" onclick="openSection('tavoli')">
+          <span class="icon">▦</span>
+          <h3>Tavoli</h3>
+          <p>Scopri la composizione</p>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="small-card" type="button" onclick="openSection('contatti')">
+          <span class="icon">♡</span>
+          <h3>Contatti</h3>
+          <p>Wedding planner</p>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="small-card" type="button" onclick="openSection('dress')">
+          <span class="icon">◈</span>
+          <h3>Dress Code</h3>
+          <p>Elegante naturale</p>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="small-card logo-card" type="button" onclick="showToast('Dettaglio evento di prova: nella pagina reale può aprire storia, foto o messaggio degli sposi.')">
+          <span class="floral">M|G</span>
+          <p>❦</p>
+        </button>
+
+      </div>
+
+      <div class="event-section" id="rsvp">
+        <div class="section-card">
+          <h2>Conferma presenza</h2>
+          <h3>La tua presenza renderà il nostro giorno ancora più speciale</h3>
+
+          <form class="demo-form" id="rsvpForm">
+            <label>Confermi la tua presenza?</label>
+            <div class="choice-grid">
+              <button type="button" class="choice-pill active" data-attendance="Sì, ci sarò">✓ Sì, ci sarò!</button>
+              <button type="button" class="choice-pill" data-attendance="Non posso partecipare">× Non posso partecipare</button>
+            </div>
+
+            <label for="guestName">Nome e Cognome</label>
+            <input id="guestName" type="text" placeholder="Scrivi qui il tuo nome">
+
+            <label for="guestCount">N. accompagnatori</label>
+            <select id="guestCount">
+              <option value="0">0 accompagnatori</option>
+              <option value="1" selected>1 accompagnatore</option>
+              <option value="2">2 accompagnatori</option>
+              <option value="3">3 accompagnatori</option>
+              <option value="4+">4+ accompagnatori</option>
+            </select>
+
+            <div id="companionsFields"></div>
+
+            <label for="allergies">Allergie o intolleranze</label>
+            <input id="allergies" type="text" placeholder="Scrivi eventuali allergie">
+
+            <label for="needs">Esigenze particolari</label>
+            <textarea id="needs" placeholder="Accessibilità, seggiolone, note utili..."></textarea>
+
+            <button class="demo-submit" type="submit">Invia conferma di prova</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="event-section" id="rito">
+        <div class="section-card">
+          <h2>Rito</h2>
+          <div class="timeline-test">
+            <div class="timeline-test-row">
+              <div class="time-demo">15:00</div>
+              <div>
+                <h3 style="text-align:left;margin-bottom:4px;">Cerimonia</h3>
+                <p>Il rito si svolgerà nella chiesa principale, con arrivo ospiti consigliato entro le 14:45.</p>
+              </div>
+            </div>
+            <div class="timeline-test-row">
+              <div class="time-demo">15:45</div>
+              <div>
+                <h3 style="text-align:left;margin-bottom:4px;">Uscita sposi</h3>
+                <p>Lancio riso e foto di gruppo all’esterno della chiesa.</p>
+              </div>
+            </div>
+          </div>
+          <button class="close-section" type="button" onclick="closeSections()">Chiudi sezione</button>
+        </div>
+      </div>
+
+      <div class="event-section" id="menu">
+        <div class="section-card">
+          <h2>Menu</h2>
+          <div class="menu-block">
+            <div class="menu-item-test">
+              <h3>Aperitivo</h3>
+              <p>Finger food, isole gastronomiche, bollicine e analcolici.</p>
+            </div>
+            <div class="menu-item-test">
+              <h3>Primi</h3>
+              <p>Risotto cremoso alle erbe fini e ravioli con ripieno delicato.</p>
+            </div>
+            <div class="menu-item-test">
+              <h3>Secondo</h3>
+              <p>Filetto con contorno di stagione e proposta vegetariana su richiesta.</p>
+            </div>
+            <div class="menu-item-test">
+              <h3>Dolce</h3>
+              <p>Taglio torta, buffet dolci, caffetteria e open bar.</p>
+            </div>
+          </div>
+          <button class="close-section" type="button" onclick="closeSections()">Chiudi sezione</button>
+        </div>
+      </div>
+
+      <div class="event-section" id="lista">
+        <div class="section-card">
+          <h2>Lista regalo</h2>
+          <h3>Un regalo dal cuore</h3>
+          <p style="text-align:center;">
+            La vostra presenza è il regalo più bello. Per chi desidera contribuire,
+            nella pagina reale qui può essere inserito un IBAN, un link lista regalo o un messaggio personalizzato.
+          </p>
+          <button class="close-section" type="button" onclick="showToast('Lista regalo di prova: nessun pagamento viene effettuato.')">Apri lista di prova</button>
+        </div>
+      </div>
+
+      <div class="event-section" id="dress">
+        <div class="section-card">
+          <h2>Dress code</h2>
+          <div class="menu-item-test">
+            <h3>Elegante naturale</h3>
+            <p>Toni chiari, sabbia, verde salvia, beige, cipria e colori delicati. Evitare bianco totale e colori troppo accesi.</p>
+          </div>
+          <button class="close-section" type="button" onclick="closeSections()">Chiudi sezione</button>
+        </div>
+      </div>
+
+      <div class="event-section" id="tavoli">
+        <div class="section-card">
+          <h2>Tavoli</h2>
+          <h3>Composizione sala</h3>
+          <p style="text-align:center;margin-bottom:14px;">Tocca un tavolo per vedere gli ospiti seduti. Questa è una versione di prova e non salva modifiche.</p>
+
+          <div class="tables-preview">
+            <button class="spouses-table-demo" type="button" onclick="showTableDetails('Tavolo degli sposi', 'Martina, Gabriele, testimoni e genitori')">Tavolo degli sposi</button>
+
+            <div class="tables-grid-demo">
+              <button class="table-demo" type="button" onclick="showTableDetails('Tavolo Magnolia', 'Famiglia Rossi · Famiglia Bianchi · 8 ospiti')">
+                <span class="seat-demo sd1 filled"></span><span class="seat-demo sd2 filled"></span><span class="seat-demo sd3 filled"></span><span class="seat-demo sd4 filled"></span>
+                <span class="seat-demo sd5 filled"></span><span class="seat-demo sd6 filled"></span><span class="seat-demo sd7"></span><span class="seat-demo sd8"></span>
+                <span class="table-demo-center">Magnolia</span>
+              </button>
+
+              <button class="table-demo" type="button" onclick="showTableDetails('Tavolo Ulivo', 'Amici università · Colleghi · 8 ospiti')">
+                <span class="seat-demo sd1 filled"></span><span class="seat-demo sd2 filled"></span><span class="seat-demo sd3 filled"></span><span class="seat-demo sd4 filled"></span>
+                <span class="seat-demo sd5 filled"></span><span class="seat-demo sd6"></span><span class="seat-demo sd7"></span><span class="seat-demo sd8"></span>
+                <span class="table-demo-center">Ulivo</span>
+              </button>
+
+              <button class="table-demo" type="button" onclick="showTableDetails('Tavolo Lavanda', 'Cugini e amici stretti · 8 ospiti')">
+                <span class="seat-demo sd1 filled"></span><span class="seat-demo sd2 filled"></span><span class="seat-demo sd3 filled"></span><span class="seat-demo sd4"></span>
+                <span class="seat-demo sd5"></span><span class="seat-demo sd6"></span><span class="seat-demo sd7"></span><span class="seat-demo sd8"></span>
+                <span class="table-demo-center">Lavanda</span>
+              </button>
+
+              <button class="table-demo" type="button" onclick="showTableDetails('Tavolo Edera', 'Amici degli sposi · 8 ospiti')">
+                <span class="seat-demo sd1 filled"></span><span class="seat-demo sd2 filled"></span><span class="seat-demo sd3 filled"></span><span class="seat-demo sd4 filled"></span>
+                <span class="seat-demo sd5 filled"></span><span class="seat-demo sd6 filled"></span><span class="seat-demo sd7 filled"></span><span class="seat-demo sd8"></span>
+                <span class="table-demo-center">Edera</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="quote" id="tableDetails">
+            <span class="quote-mark">“</span>
+            Tocca un tavolo per visualizzare la composizione.
+            <span class="quote-heart">♡</span>
+          </div>
+
+          <button class="close-section" type="button" onclick="closeSections()">Chiudi sezione</button>
+        </div>
+      </div>
+
+      <div class="event-section" id="contatti">
+        <div class="section-card">
+          <h2>Contatti</h2>
+          <div class="timeline-test">
+            <div class="timeline-test-row">
+              <div class="time-demo">☏</div>
+              <div>
+                <h3 style="text-align:left;margin-bottom:4px;">Wedding planner</h3>
+                <p>PixelUp Events · telefono e WhatsApp personalizzabili nella pagina reale.</p>
+              </div>
+            </div>
+            <div class="timeline-test-row">
+              <div class="time-demo">@</div>
+              <div>
+                <h3 style="text-align:left;margin-bottom:4px;">Email evento</h3>
+                <p>evento@pixelup.it · per richieste, intolleranze o comunicazioni utili.</p>
+              </div>
+            </div>
+          </div>
+          <button class="close-section" type="button" onclick="closeSections()">Chiudi sezione</button>
+        </div>
+      </div>
+
+      <div class="quote">
+        <span class="quote-mark">“</span>
+        La cosa migliore da fare, la più bella da vedere,<br>
+        è quella di condividere il nostro giorno con voi.
+        <span class="quote-heart">♡</span>
+      </div>
+
+      <div class="quote" style="font-style:normal;font-family:Arial,sans-serif;font-size:13px;">
+        Questa è una prova interattiva PixelUp. Puoi cliccare e compilare, ma nessun dato viene salvato.
         <br><br>
         <a href="/privacy-policy.html" style="color:#4d5a3a;font-weight:bold;">Privacy</a>
         ·
@@ -965,18 +1391,62 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    function toggleSection(id) {
-      const section = document.getElementById(id);
-      section.classList.toggle("show");
+    const weddingDate = new Date("2026-09-12T15:00:00").getTime();
 
-      if (section.classList.contains("show")) {
-        setTimeout(() => {
-          section.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }, 120);
+    const daysElement = document.getElementById("days");
+    const hoursElement = document.getElementById("hours");
+    const minutesElement = document.getElementById("minutes");
+    const secondsElement = document.getElementById("seconds");
+
+    let attendanceValue = "Sì, ci sarò";
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance <= 0) {
+        daysElement.textContent = "000";
+        hoursElement.textContent = "00";
+        minutesElement.textContent = "00";
+        secondsElement.textContent = "00";
+        return;
       }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      daysElement.textContent = String(days).padStart(3, "0");
+      hoursElement.textContent = String(hours).padStart(2, "0");
+      minutesElement.textContent = String(minutes).padStart(2, "0");
+      secondsElement.textContent = String(seconds).padStart(2, "0");
+    }
+
+    function closeSections() {
+      document.querySelectorAll(".event-section").forEach((section) => {
+        section.classList.remove("show");
+      });
+    }
+
+    function openSection(id) {
+      const section = document.getElementById(id);
+      if (!section) return;
+
+      const wasOpen = section.classList.contains("show");
+
+      closeSections();
+
+      if (wasOpen) return;
+
+      section.classList.add("show");
+
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
     }
 
     function showToast(message) {
@@ -991,14 +1461,70 @@
 
     function openMap() {
       window.open(
-        "https://www.google.com/maps/search/?api=1&query=Bergamo+Lombardia+Villa+evento",
+        "https://www.google.com/maps/search/?api=1&query=Villa+Aurora+Bergamo",
         "_blank"
       );
     }
 
-    function goBack() {
-      window.location.href = "/dasgboardemo/";
+    function showTableDetails(title, people) {
+      const box = document.getElementById("tableDetails");
+      box.innerHTML = `
+        <span class="quote-mark">“</span>
+        <strong style="color:#344028;">${title}</strong><br>
+        <span style="font-family:Arial,sans-serif;font-size:13px;color:#7b6f62;">${people}</span>
+        <span class="quote-heart">♡</span>
+      `;
     }
+
+    function renderCompanions() {
+      const count = document.getElementById("guestCount").value;
+      const box = document.getElementById("companionsFields");
+
+      let number = Number(count);
+
+      if (count === "4+") number = 4;
+
+      box.innerHTML = "";
+
+      for (let i = 1; i <= number; i++) {
+        const wrap = document.createElement("div");
+        wrap.style.marginTop = "10px";
+        wrap.innerHTML = `
+          <label>Accompagnatore ${i}</label>
+          <div style="display:grid;grid-template-columns:1fr 85px;gap:8px;">
+            <input type="text" placeholder="Nome e cognome">
+            <input type="number" min="0" placeholder="Età">
+          </div>
+        `;
+        box.appendChild(wrap);
+      }
+    }
+
+    document.querySelectorAll(".choice-pill").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".choice-pill").forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        attendanceValue = button.dataset.attendance;
+      });
+    });
+
+    document.getElementById("guestCount").addEventListener("change", renderCompanions);
+
+    document.getElementById("rsvpForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("guestName").value.trim() || "ospite";
+      showToast("Conferma di prova per " + name + " registrata solo su questa pagina. Nessun dato viene salvato.");
+      this.reset();
+      document.querySelectorAll(".choice-pill").forEach((btn) => btn.classList.remove("active"));
+      document.querySelector(".choice-pill").classList.add("active");
+      attendanceValue = "Sì, ci sarò";
+      renderCompanions();
+    });
+
+    renderCompanions();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
   </script>
 
 </body>
