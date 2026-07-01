@@ -714,6 +714,115 @@
   margin-bottom: 5px;
 }
 
+
+.report-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.report-info-card {
+  background: rgba(77, 90, 58, 0.08);
+  border: 1px solid rgba(77, 90, 58, 0.16);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 12px;
+  color: var(--green-dark);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.report-info-card strong {
+  display: block;
+  color: var(--green-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.project-card-pro {
+  background: rgba(255, 252, 246, 0.94);
+  border: 1px solid rgba(223, 212, 193, 0.92);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 11px;
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.07);
+}
+
+.project-card-pro-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.project-card-pro h4 {
+  font-size: 17px;
+  color: var(--green-dark);
+  margin-bottom: 5px;
+}
+
+.project-card-pro p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.project-card-pro-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.project-badge {
+  border: 1px solid rgba(177,145,85,0.24);
+  background: rgba(177,145,85,0.08);
+  color: #8a6729;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.project-card-pro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: flex-end;
+}
+
+.project-pill-btn {
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.project-pill-btn.danger {
+  color:#8a3d2c;
+  border-color:rgba(138,61,44,0.35);
+}
+
+@media (max-width: 390px) {
+  .project-card-pro-top {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-pro-actions {
+    justify-content: flex-start;
+  }
+}
+
     @media (max-width: 390px) {
       .content {
         padding-left: 16px;
@@ -924,7 +1033,7 @@
 
       <button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
-  <span>Riepilogo / Backup</span>
+  <span>Report progetto</span>
 </button>
 
       <div class="deadline-section" id="deadlineSection">
@@ -1141,24 +1250,38 @@
 <div class="backup-section" id="backupSection">
 
   <div class="section-title">
-    <h2>Riepilogo / Backup</h2>
-    <span>Esporta dati</span>
+    <h2>Report progetto</h2>
+    <span>PDF e riepilogo</span>
   </div>
 
   <div class="list-card">
-    <p style="color:#7b6f62; font-family:Arial,sans-serif; font-size:13px; line-height:1.45; margin-bottom:12px;">
-      Copia o scarica un riepilogo del progetto. Utile come backup manuale o per inviare un riassunto ordinato.
-    </p>
+    <div class="report-info-card">
+      <strong>Riepilogo professionale</strong>
+      Genera un PDF ordinato del progetto, più leggibile del vecchio backup tecnico.
+      Il PDF interno contiene tutto; il PDF sposi contiene solo le voci rese visibili agli sposi.
+    </div>
 
-    <button class="main-action" type="button" onclick="copyProjectSummary()">
-      <span>▤</span>
-      <span>Copia riepilogo progetto</span>
-    </button>
+    <div class="report-actions">
+      <button class="main-action" type="button" onclick="downloadInternalReportPDF()">
+        <span>⇩</span>
+        <span>Scarica PDF interno</span>
+      </button>
 
-    <button class="secondary-action" type="button" onclick="downloadProjectBackup()">
-      <span>⇩</span>
-      <span>Scarica backup TXT</span>
-    </button>
+      <button class="secondary-action" type="button" onclick="downloadSpousesReportPDF()">
+        <span>♡</span>
+        <span>Scarica PDF sposi</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="copyProjectSummary()">
+        <span>▤</span>
+        <span>Copia riepilogo testuale</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="downloadProjectBackup()">
+        <span>TXT</span>
+        <span>Scarica copia TXT</span>
+      </button>
+    </div>
   </div>
 
 </div>
@@ -1172,6 +1295,8 @@
     </section>
 
   </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
@@ -1665,6 +1790,8 @@
     const notes = prompt("Note:", item.notes || "");
     if (notes === null) return;
 
+    const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
 
@@ -1717,7 +1844,7 @@
     const paid = prompt("Importo già pagato / saldato:", "0");
     if (paid === null) return;
 
-    const date = prompt("Data scadenza formato GG-MM-AAAA:", "01-08-2026");
+    const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
     if (date === null) return;
 
     const notes = prompt("Note:", "");
@@ -1751,7 +1878,7 @@
       supplier: supplier || "Fornitore non indicato",
       total: cleanTotal,
       paid: finalPaid,
-      date: date || "01-08-2026",
+      date: date || "2026-08-01",
       status: automaticStatus,
       notes: notes || "",
       visibleToSpouses: visibleToSpouses
@@ -2590,6 +2717,8 @@ function addDocument() {
 
       list.innerHTML = "";
 
+      let activeCount = 0;
+
       snapshot.forEach((docSnap) => {
         const project = docSnap.data();
 
@@ -2597,63 +2726,72 @@ function addDocument() {
           return;
         }
 
-        const id = docSnap.id;
+        activeCount++;
 
+        const id = docSnap.id;
         const name = project.projectName || id;
-        const budget = Number(project.budget) || 0;
         const paid = Number(project.paid) || 0;
         const due = Number(project.due) || 0;
         const total = paid + due;
+        const deadlinesCount = Array.isArray(project.deadlines) ? project.deadlines.length : 0;
+        const suppliersCount = Array.isArray(project.suppliers) ? project.suppliers.length : 0;
+        const agendaCount = Array.isArray(project.agenda) ? project.agenda.length : 0;
+        const documentsCount = Array.isArray(project.documents) ? project.documents.length : 0;
+        const checklistCount = Array.isArray(project.checklist) ? project.checklist.length : 0;
+        const timelineCount = Array.isArray(project.timeline) ? project.timeline.length : 0;
+        const dateText = project.weddingDate ? new Date(project.weddingDate).toLocaleDateString("it-IT") : "Data non indicata";
+        const percent = total > 0 ? Math.round((paid / total) * 100) : 0;
 
         list.innerHTML += `
-          <div class="project-item">
-            <div>
-              <h4>${name}</h4>
-              <p>Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-            </div>
+          <div class="project-card-pro">
+            <div class="project-card-pro-top">
+              <div>
+                <h4>${name}</h4>
+                <p>Data evento: ${dateText}</p>
+                <p>Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)} · Pagamenti: ${percent}%</p>
 
-            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-              <a href="/dashboard/?event=${id}">
-                Apri
-              </a>
+                <div class="project-card-pro-badges">
+                  <span class="project-badge">${deadlinesCount} scadenze</span>
+                  <span class="project-badge">${suppliersCount} fornitori</span>
+                  <span class="project-badge">${agendaCount} agenda</span>
+                  <span class="project-badge">${documentsCount} documenti</span>
+                  <span class="project-badge">${checklistCount} checklist</span>
+                  <span class="project-badge">${timelineCount} timeline</span>
+                </div>
+              </div>
 
-              <button 
-                type="button" 
-                onclick="copySpousesLink('${id}')"
-                style="
-                  border:1px solid rgba(177,145,85,0.45);
-                  background:rgba(255,252,246,0.95);
-                  color:#4d5a3a;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-family:Arial,sans-serif;
-                  font-size:12px;
-                  text-transform:uppercase;
-                "
-              >
-                Copia
-              </button>
+              <div class="project-card-pro-actions">
+                <a class="project-pill-btn" href="/dashboard/?event=${id}">
+                  Apri
+                </a>
 
-              <button 
-                type="button" 
-                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
-                style="
-                  border:1px solid rgba(138,61,44,0.35);
-                  background:rgba(255,252,246,0.95);
-                  color:#8a3d2c;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-family:Arial,sans-serif;
-                  font-size:12px;
-                  text-transform:uppercase;
-                "
-              >
-                Elimina
-              </button>
+                <button class="project-pill-btn" type="button" onclick="copySpousesLink('${id}')">
+                  Link sposi
+                </button>
+
+                <button class="project-pill-btn danger" type="button" onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')">
+                  Elimina
+                </button>
+              </div>
             </div>
           </div>
         `;
       });
+
+      if (activeCount === 0) {
+        list.innerHTML = `
+          <div style="
+            padding:16px 0;
+            text-align:center;
+            color:#7b6f62;
+            font-family:Arial,sans-serif;
+            font-size:13px;
+          ">
+            Nessun progetto attivo trovato.<br>
+            Apri i progetti archiviati o crea un nuovo progetto.
+          </div>
+        `;
+      }
 
     } catch (error) {
       console.error("Errore caricamento progetti:", error);
@@ -3137,6 +3275,451 @@ function addDocument() {
     return lines.join("\\n");
   }
 
+
+  function getReportDateLabel(value) {
+    const date = new Date(value);
+
+    if (isNaN(date)) {
+      return value || "Data non indicata";
+    }
+
+    return date.toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+  function sanitizeReportText(value) {
+    return String(value || "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function reportFileName(type) {
+    return type + "-" + makeProjectId(data.projectName || "progetto") + "-" + new Date().toISOString().slice(0, 10) + ".pdf";
+  }
+
+  function createWeddingReportPDF(mode) {
+    const jsPDFConstructor = window.jspdf && window.jspdf.jsPDF;
+
+    if (!jsPDFConstructor) {
+      alert("Generatore PDF non caricato. Controlla la connessione e riprova.");
+      return;
+    }
+
+    const isSpouses = mode === "spouses";
+    const doc = new jsPDFConstructor({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4"
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 16;
+    const contentWidth = pageWidth - margin * 2;
+
+    const green = [77, 90, 58];
+    const greenDark = [52, 64, 40];
+    const gold = [177, 145, 85];
+    const textColor = [38, 49, 34];
+    const muted = [123, 111, 98];
+    const cream = [251, 244, 232];
+
+    let y = 20;
+
+    function addFooter() {
+      const page = doc.internal.getNumberOfPages();
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(150, 140, 125);
+      doc.text("PixelUp Dashboard Wedding", margin, pageHeight - 10);
+      doc.text("Pagina " + page, pageWidth - margin, pageHeight - 10, { align: "right" });
+    }
+
+    function addHeader(title) {
+      doc.setFillColor(cream[0], cream[1], cream[2]);
+      doc.rect(0, 0, pageWidth, 18, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(title, margin, 11);
+    }
+
+    function newPage(title) {
+      addFooter();
+      doc.addPage();
+      addHeader(title || "Report progetto");
+      y = 28;
+    }
+
+    function ensureSpace(needed, title) {
+      if (y + needed > pageHeight - 22) {
+        newPage(title || "Report progetto");
+      }
+    }
+
+    function sectionTitle(title, subtitle) {
+      ensureSpace(18);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(title, margin, y);
+      y += 5;
+
+      if (subtitle) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(muted[0], muted[1], muted[2]);
+        const lines = doc.splitTextToSize(sanitizeReportText(subtitle), contentWidth);
+        doc.text(lines, margin, y);
+        y += lines.length * 4 + 4;
+      } else {
+        y += 4;
+      }
+
+      doc.setDrawColor(gold[0], gold[1], gold[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 8;
+    }
+
+    function textBlock(text, size = 10) {
+      const clean = sanitizeReportText(text);
+      if (!clean) return;
+
+      const lines = doc.splitTextToSize(clean, contentWidth);
+      ensureSpace(lines.length * 5 + 4);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(size);
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      doc.text(lines, margin, y);
+      y += lines.length * 5 + 4;
+    }
+
+    function emptyText(label) {
+      textBlock(label, 10);
+    }
+
+    function smallLabel(text, x, yPos) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text(text, x, yPos);
+    }
+
+    function statBox(x, title, value, note) {
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(x, y, 54, 30, 4, 4, "FD");
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text(title, x + 5, y + 8);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(value, x + 5, y + 18);
+
+      if (note) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.text(note, x + 5, y + 25);
+      }
+    }
+
+    function rowCard(title, lines, rightText) {
+      const cleanLines = (lines || [])
+        .map(sanitizeReportText)
+        .filter(Boolean);
+
+      const allText = [sanitizeReportText(title), ...cleanLines].join(" ");
+      const estimatedLines = Math.max(2, doc.splitTextToSize(allText, contentWidth - 16).length);
+      const height = Math.max(20, 12 + estimatedLines * 4);
+
+      ensureSpace(height + 4);
+
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(margin, y, contentWidth, height, 4, 4, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(sanitizeReportText(title) || "Voce", margin + 5, y + 8);
+
+      let lineY = y + 14;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+
+      cleanLines.forEach((line) => {
+        const split = doc.splitTextToSize(line, rightText ? contentWidth - 42 : contentWidth - 12);
+        doc.text(split, margin + 5, lineY);
+        lineY += split.length * 4;
+      });
+
+      if (rightText) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.text(String(rightText), pageWidth - margin - 5, y + 8, { align: "right" });
+      }
+
+      y += height + 5;
+    }
+
+    function documentCard(item) {
+      const height = 24;
+      ensureSpace(height + 5);
+
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(margin, y, contentWidth, height, 4, 4, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(sanitizeReportText(item.name) || "Documento", margin + 5, y + 8);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text("Categoria: " + (sanitizeReportText(item.category) || "Non indicata"), margin + 5, y + 14);
+
+      if (item.url) {
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.textWithLink("Apri documento Drive", margin + 5, y + 20, { url: item.url });
+      }
+
+      y += height + 5;
+    }
+
+    const projectName = sanitizeReportText(data.projectName || "Wedding Board");
+    const monogram = getProjectMonogram(projectName);
+    const weddingDate = getReportDateLabel(data.weddingDate);
+    const totalReal = Number(data.paid) + Number(data.due);
+    const percent = totalReal > 0 ? Math.round((Number(data.paid) / totalReal) * 100) : 0;
+    const generated = new Date().toLocaleDateString("it-IT") + " " + new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+
+    const deadlines = isSpouses ? (data.deadlines || []).filter((item) => item.visibleToSpouses === true) : (data.deadlines || []);
+    const agenda = isSpouses ? (data.agenda || []).filter((item) => item.visibleToSpouses === true) : (data.agenda || []);
+    const documents = isSpouses ? (data.documents || []).filter((item) => item.visibleToSpouses === true) : (data.documents || []);
+    const checklist = isSpouses ? (data.checklist || []).filter((item) => item.visibleToSpouses === true) : (data.checklist || []);
+    const timeline = isSpouses ? (data.timeline || []).filter((item) => item.visibleToSpouses === true) : (data.timeline || []);
+    const suppliers = data.suppliers || [];
+
+    /* Copertina */
+    doc.setFillColor(251, 244, 232);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    doc.setDrawColor(gold[0], gold[1], gold[2]);
+    doc.setLineWidth(0.4);
+    doc.roundedRect(18, 20, pageWidth - 36, pageHeight - 40, 7, 7);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(gold[0], gold[1], gold[2]);
+    doc.text("PIXELUP WEDDING BOARD", pageWidth / 2, 42, { align: "center" });
+
+    doc.setFont("times", "italic");
+    doc.setFontSize(24);
+    doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+    doc.text(monogram, pageWidth / 2, 74, { align: "center" });
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(28);
+    const titleLines = doc.splitTextToSize(projectName, pageWidth - 52);
+    doc.text(titleLines, pageWidth / 2, 100, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor(muted[0], muted[1], muted[2]);
+    doc.text(weddingDate, pageWidth / 2, 126, { align: "center" });
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+    doc.text(isSpouses ? "Report per sposi" : "Report interno wedding", pageWidth / 2, 152, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(muted[0], muted[1], muted[2]);
+    doc.text("Generato il " + generated, pageWidth / 2, 164, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(150, 140, 125);
+    doc.text(
+      isSpouses
+        ? "Contiene solo le informazioni rese visibili agli sposi."
+        : "Contiene dati interni del progetto. Non condividere senza controllo.",
+      pageWidth / 2,
+      pageHeight - 34,
+      { align: "center" }
+    );
+
+    /* Panoramica */
+    doc.addPage();
+    addHeader("Panoramica progetto");
+    y = 30;
+
+    sectionTitle("Panoramica", "Riepilogo economico e stato del progetto.");
+
+    statBox(margin, "Totale", euro(totalReal), "spesa prevista");
+    statBox(margin + 62, "Saldato", euro(data.paid), "già pagato");
+    statBox(margin + 124, "Da saldare", euro(data.due), "residuo");
+    y += 38;
+
+    textBlock("Avanzamento pagamenti: " + percent + "%", 11);
+    textBlock("Stato progetto: " + (data.projectStatus || "In lavorazione"), 10);
+
+    /* Scadenze */
+    newPage("Scadenze");
+    sectionTitle("Scadenze e pagamenti", isSpouses ? "Solo scadenze condivise con gli sposi." : "Elenco completo delle scadenze interne.");
+
+    if (deadlines.length) {
+      deadlines
+        .slice()
+        .sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"))
+        .forEach((item) => {
+          const missing = Math.max(Number(item.total) - Number(item.paid), 0);
+          rowCard(
+            item.name || "Scadenza",
+            [
+              "Fornitore: " + (item.supplier || "Non indicato"),
+              "Data: " + getReportDateLabel(item.date),
+              "Totale: " + euro(item.total) + " · Pagato: " + euro(item.paid) + " · Residuo: " + euro(missing),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            missing <= 0 ? "Saldato" : euro(missing)
+          );
+        });
+    } else {
+      emptyText("Nessuna scadenza presente in questo report.");
+    }
+
+    if (!isSpouses) {
+      newPage("Fornitori");
+      sectionTitle("Fornitori", "Contatti utili collegati al progetto.");
+
+      if (suppliers.length) {
+        suppliers.forEach((item) => {
+          rowCard(
+            item.service || "Fornitore",
+            [
+              "Nome: " + (item.name || "Non indicato"),
+              "Telefono: " + (item.phone || "Non indicato"),
+              "Email: " + (item.email || "Non indicata")
+            ],
+            "Contatto"
+          );
+        });
+      } else {
+        emptyText("Nessun fornitore inserito.");
+      }
+    }
+
+    /* Agenda */
+    newPage("Agenda");
+    sectionTitle("Agenda", isSpouses ? "Appuntamenti condivisi con gli sposi." : "Appuntamenti e promemoria del progetto.");
+
+    if (agenda.length) {
+      agenda
+        .slice()
+        .sort((a, b) => new Date((a.date || "") + "T" + (a.time || "00:00")) - new Date((b.date || "") + "T" + (b.time || "00:00")))
+        .forEach((item) => {
+          rowCard(
+            item.title || "Appuntamento",
+            [
+              "Data: " + getReportDateLabel(item.date) + " · Ore: " + (item.time || "--:--"),
+              "Luogo: " + (item.place || "Non indicato"),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            item.time || "--:--"
+          );
+        });
+    } else {
+      emptyText("Nessun appuntamento presente in questo report.");
+    }
+
+    /* Documenti */
+    newPage("Documenti");
+    sectionTitle("Documenti Drive", isSpouses ? "Documenti condivisi con gli sposi." : "Documenti e link utili al progetto.");
+
+    if (documents.length) {
+      documents.forEach((item) => documentCard(item));
+    } else {
+      emptyText("Nessun documento presente in questo report.");
+    }
+
+    /* Checklist */
+    newPage("Checklist");
+    sectionTitle("Checklist", isSpouses ? "Attività condivise con gli sposi." : "Attività operative del progetto.");
+
+    if (checklist.length) {
+      checklist.forEach((item) => {
+        rowCard(
+          (item.done ? "✓ " : "○ ") + (item.title || "Voce checklist"),
+          [
+            "Stato: " + (item.done ? "Completata" : "Da fare"),
+            item.notes ? "Note: " + item.notes : ""
+          ],
+          item.done ? "Fatto" : "Da fare"
+        );
+      });
+    } else {
+      emptyText("Nessuna voce checklist presente in questo report.");
+    }
+
+    /* Timeline */
+    newPage("Timeline evento");
+    sectionTitle("Timeline evento", "Momenti principali del giorno evento.");
+
+    if (timeline.length) {
+      timeline
+        .slice()
+        .sort((a, b) => String(a.time || "99:99").localeCompare(String(b.time || "99:99")))
+        .forEach((item) => {
+          rowCard(
+            item.title || "Momento evento",
+            [
+              "Ora: " + (item.time || "--:--"),
+              "Luogo: " + (item.place || "Non indicato"),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            item.time || "--:--"
+          );
+        });
+    } else {
+      emptyText("Nessun momento timeline presente in questo report.");
+    }
+
+    if (!isSpouses) {
+      newPage("Note interne");
+      sectionTitle("Note interne", "Questa pagina è solo per la wedding planner.");
+      textBlock(data.projectNotes || "Nessuna nota interna inserita.", 10);
+    }
+
+    addFooter();
+
+    doc.save(reportFileName(isSpouses ? "report-sposi" : "report-interno"));
+  }
+
+  function downloadInternalReportPDF() {
+    createWeddingReportPDF("internal");
+  }
+
+  function downloadSpousesReportPDF() {
+    createWeddingReportPDF("spouses");
+  }
+
+
   function copyProjectSummary() {
     const summary = buildProjectSummary();
 
@@ -3464,6 +4047,8 @@ function addDocument() {
   window.saveProjectNotes = saveProjectNotes;
   window.toggleBackup = toggleBackup;
   window.copyProjectSummary = copyProjectSummary;
+  window.downloadInternalReportPDF = downloadInternalReportPDF;
+  window.downloadSpousesReportPDF = downloadSpousesReportPDF;
   window.downloadProjectBackup = downloadProjectBackup;
   window.archiveCurrentProject = archiveCurrentProject;
   window.showArchivedProjects = showArchivedProjects;
