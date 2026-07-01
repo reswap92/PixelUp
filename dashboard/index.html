@@ -373,7 +373,8 @@
 .checklist-section,
 .timeline-section,
 .notes-section,
-.backup-section {
+.backup-section,
+.spouse-contact-section {
   display: none;
   animation: fade 0.22s ease;
 }
@@ -385,7 +386,8 @@
 .checklist-section.show,
 .timeline-section.show,
 .notes-section.show,
-.backup-section.show {
+.backup-section.show,
+.spouse-contact-section.show {
   display: block;
 }
 
@@ -715,6 +717,101 @@
 }
 
 
+.spouse-contact-section {
+  display: none;
+  animation: fade 0.22s ease;
+}
+
+.spouse-contact-section.show {
+  display: block;
+}
+
+.spouse-contact-card {
+  background: rgba(255, 252, 246, 0.94);
+  border: 1px solid rgba(223, 212, 193, 0.92);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 11px;
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.07);
+}
+
+.spouse-contact-top {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 11px;
+}
+
+.spouse-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(177,145,85,0.11);
+  border: 1px solid rgba(177,145,85,0.28);
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.spouse-contact-card h3 {
+  color: var(--green-dark);
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.spouse-contact-card p {
+  font-family: Arial, sans-serif;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.spouse-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.spouse-action-btn {
+  min-height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(177,145,85,0.38);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spouse-action-btn.whatsapp {
+  background: rgba(77,90,58,0.10);
+}
+
+.spouse-action-btn.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.spouse-note {
+  background: rgba(77, 90, 58, 0.08);
+  border: 1px solid rgba(77, 90, 58, 0.16);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 12px;
+  color: var(--green-dark);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .report-actions {
   display: grid;
   gap: 10px;
@@ -1031,6 +1128,11 @@
   <span>Note progetto</span>
 </button>
 
+      <button class="secondary-action" type="button" onclick="toggleSpouseContacts()">
+  <span>♡</span>
+  <span>Contatta sposi</span>
+</button>
+
       <button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
   <span>Report progetto</span>
@@ -1247,6 +1349,40 @@
 
 </div>
 
+
+<div class="spouse-contact-section" id="spouseContactSection">
+
+  <div class="section-title">
+    <h2>Contatta sposi</h2>
+    <button 
+      type="button" 
+      onclick="addSpouseContact()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div class="spouse-note">
+      Salva qui i recapiti degli sposi. Da telefono puoi chiamare, aprire WhatsApp o inviare una email direttamente dalla dashboard.
+    </div>
+
+    <div id="spouseContactList"></div>
+  </div>
+
+</div>
+
 <div class="backup-section" id="backupSection">
 
   <div class="section-title">
@@ -1364,7 +1500,9 @@
 
     checklist: [],
 
-    timeline: []
+    timeline: [],
+
+    spouseContacts: []
   };
 
   let data = structuredClone(defaultData);
@@ -1400,6 +1538,10 @@
 
     if (!Array.isArray(safeRemoteData.timeline)) {
       merged.timeline = defaultData.timeline || [];
+    }
+
+    if (!Array.isArray(safeRemoteData.spouseContacts)) {
+      merged.spouseContacts = defaultData.spouseContacts || [];
     }
 
     merged.projectName = merged.projectName || "Wedding Board";
@@ -1463,6 +1605,13 @@
       place: item.place || "",
       notes: item.notes || "",
       visibleToSpouses: item.visibleToSpouses === true
+    }));
+
+    merged.spouseContacts = merged.spouseContacts.map((item) => ({
+      role: item.role || "",
+      name: item.name || "",
+      phone: item.phone || "",
+      email: item.email || ""
     }));
 
     return merged;
@@ -1628,6 +1777,7 @@
       "checklistSection",
       "timelineSection",
       "notesSection",
+      "spouseContactSection",
       "backupSection"
     ];
 
@@ -2259,7 +2409,54 @@
     data.projectName = cleanProjectName;
     data.weddingDate = cleanWeddingDate;
 
+    const editContacts = confirm("Vuoi aggiornare anche i recapiti sposi?");
+    if (editContacts) {
+      const existingBride = (data.spouseContacts || [])[0] || {};
+      const existingGroom = (data.spouseContacts || [])[1] || {};
+
+      const brideName = prompt("Nome sposa / primo contatto:", existingBride.name || "");
+      if (brideName === null) return;
+
+      const bridePhone = prompt("Telefono sposa / primo contatto:", existingBride.phone || "");
+      if (bridePhone === null) return;
+
+      const brideEmail = prompt("Email sposa / primo contatto:", existingBride.email || "");
+      if (brideEmail === null) return;
+
+      const groomName = prompt("Nome sposo / secondo contatto:", existingGroom.name || "");
+      if (groomName === null) return;
+
+      const groomPhone = prompt("Telefono sposo / secondo contatto:", existingGroom.phone || "");
+      if (groomPhone === null) return;
+
+      const groomEmail = prompt("Email sposo / secondo contatto:", existingGroom.email || "");
+      if (groomEmail === null) return;
+
+      const updatedContacts = [];
+
+      if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
+        updatedContacts.push({
+          role: existingBride.role || "Sposa",
+          name: brideName.trim(),
+          phone: bridePhone.trim(),
+          email: brideEmail.trim()
+        });
+      }
+
+      if (groomName.trim() || groomPhone.trim() || groomEmail.trim()) {
+        updatedContacts.push({
+          role: existingGroom.role || "Sposo",
+          name: groomName.trim(),
+          phone: groomPhone.trim(),
+          email: groomEmail.trim()
+        });
+      }
+
+      data.spouseContacts = updatedContacts;
+    }
+
     renderSummary();
+    renderSpouseContacts();
     updateCountdown();
     saveData();
 
@@ -2644,6 +2841,44 @@ function addDocument() {
 
     if (weddingDate === null) return;
 
+    const brideName = prompt("Nome sposa / primo contatto:", "");
+    if (brideName === null) return;
+
+    const bridePhone = prompt("Telefono sposa / primo contatto:", "");
+    if (bridePhone === null) return;
+
+    const brideEmail = prompt("Email sposa / primo contatto:", "");
+    if (brideEmail === null) return;
+
+    const groomName = prompt("Nome sposo / secondo contatto:", "");
+    if (groomName === null) return;
+
+    const groomPhone = prompt("Telefono sposo / secondo contatto:", "");
+    if (groomPhone === null) return;
+
+    const groomEmail = prompt("Email sposo / secondo contatto:", "");
+    if (groomEmail === null) return;
+
+    const spouseContacts = [];
+
+    if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
+      spouseContacts.push({
+        role: "Sposa",
+        name: brideName.trim(),
+        phone: bridePhone.trim(),
+        email: brideEmail.trim()
+      });
+    }
+
+    if (groomName.trim() || groomPhone.trim() || groomEmail.trim()) {
+      spouseContacts.push({
+        role: "Sposo",
+        name: groomName.trim(),
+        phone: groomPhone.trim(),
+        email: groomEmail.trim()
+      });
+    }
+
     const emptyProject = {
       projectName: cleanName,
       weddingDate: weddingDate || "2026-08-27T15:00:00",
@@ -2662,6 +2897,7 @@ function addDocument() {
       projectNotes: "",
       checklist: [],
       timeline: [],
+      spouseContacts: spouseContacts,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -3177,6 +3413,190 @@ function addDocument() {
     alert("Note progetto salvate.");
   }
 
+
+  function toggleSpouseContacts() {
+    openSingleSection("spouseContactSection");
+    renderSpouseContacts();
+  }
+
+  function cleanPhoneNumber(phone) {
+    return String(phone || "").replace(/\D/g, "");
+  }
+
+  function makeWhatsAppNumber(phone) {
+    const clean = cleanPhoneNumber(phone);
+
+    if (!clean) return "";
+
+    if (clean.startsWith("39")) {
+      return clean;
+    }
+
+    return "39" + clean;
+  }
+
+  function makeSpouseWhatsAppMessage(contact) {
+    return encodeURIComponent(
+      "Ciao " + (contact.name || "") + ", sono la vostra wedding planner.\n\n" +
+      "Ti scrivo per un aggiornamento sul matrimonio " + (data.projectName || "") + "."
+    );
+  }
+
+  function renderSpouseContacts() {
+    const list = document.getElementById("spouseContactList");
+    if (!list) return;
+
+    if (!data.spouseContacts || data.spouseContacts.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun recapito sposi inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per salvare telefono, WhatsApp o email.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = data.spouseContacts.map((contact, index) => {
+      const cleanPhone = cleanPhoneNumber(contact.phone);
+      const phoneLink = cleanPhone ? "tel:" + cleanPhone : "#";
+      const whatsappNumber = makeWhatsAppNumber(contact.phone);
+      const whatsappLink = whatsappNumber
+        ? "https://wa.me/" + whatsappNumber + "?text=" + makeSpouseWhatsAppMessage(contact)
+        : "#";
+
+      const subject = encodeURIComponent("Aggiornamento matrimonio - " + (data.projectName || "Wedding"));
+      const body = encodeURIComponent(
+        "Ciao " + (contact.name || "") + ",\n\n" +
+        "ti scrivo per un aggiornamento relativo al matrimonio " + (data.projectName || "") + ".\n\n" +
+        "Grazie."
+      );
+
+      const emailLink = contact.email
+        ? "mailto:" + contact.email + "?subject=" + subject + "&body=" + body
+        : "#";
+
+      return `
+        <div class="spouse-contact-card">
+          <div class="spouse-contact-top">
+            <div class="spouse-avatar">♡</div>
+
+            <div>
+              <h3>${contact.name || "Nome non indicato"}</h3>
+              <p>${contact.role || "Sposo/Sposa"}</p>
+              <p>Tel: ${contact.phone || "Non inserito"}</p>
+              <p>Email: ${contact.email || "Non inserita"}</p>
+            </div>
+          </div>
+
+          <div class="spouse-actions">
+            <a class="spouse-action-btn ${cleanPhone ? "" : "disabled"}" href="${phoneLink}">
+              Chiama
+            </a>
+
+            <a class="spouse-action-btn whatsapp ${whatsappNumber ? "" : "disabled"}" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>
+
+            <a class="spouse-action-btn ${contact.email ? "" : "disabled"}" href="${emailLink}">
+              Email
+            </a>
+          </div>
+
+          <div style="margin-top:8px; display:flex; gap:7px; flex-wrap:wrap;">
+            <button class="edit-btn" type="button" onclick="editSpouseContact(${index})">Modifica</button>
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteSpouseContact(${index})"
+              style="color:#8a3d2c;border-color:rgba(138,61,44,0.35);"
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addSpouseContact(defaultRole = "Sposa", defaultName = "", defaultPhone = "", defaultEmail = "") {
+    const role = prompt("Ruolo contatto:", defaultRole);
+    if (role === null) return;
+
+    const name = prompt("Nome:", defaultName);
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", defaultPhone);
+    if (phone === null) return;
+
+    const email = prompt("Email:", defaultEmail);
+    if (email === null) return;
+
+    if (!name.trim() && !phone.trim() && !email.trim()) {
+      alert("Inserisci almeno nome, telefono o email.");
+      return;
+    }
+
+    data.spouseContacts.push({
+      role: role || "Sposo/Sposa",
+      name: name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    });
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+  function editSpouseContact(index) {
+    const contact = data.spouseContacts[index];
+
+    const role = prompt("Ruolo contatto:", contact.role || "");
+    if (role === null) return;
+
+    const name = prompt("Nome:", contact.name || "");
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", contact.phone || "");
+    if (phone === null) return;
+
+    const email = prompt("Email:", contact.email || "");
+    if (email === null) return;
+
+    data.spouseContacts[index] = {
+      role: role || contact.role || "Sposo/Sposa",
+      name: name || contact.name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    };
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+  function deleteSpouseContact(index) {
+    const contact = data.spouseContacts[index];
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo recapito?\n\n" +
+      (contact.name || "Contatto")
+    );
+
+    if (!confirmDelete) return;
+
+    data.spouseContacts.splice(index, 1);
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+
   function toggleBackup() {
     openSingleSection("backupSection");
   }
@@ -3192,6 +3612,17 @@ function addDocument() {
     lines.push("Totale: " + euro(Number(data.paid) + Number(data.due)));
     lines.push("Saldato: " + euro(data.paid));
     lines.push("Da saldare: " + euro(data.due));
+    lines.push("");
+
+    lines.push("RECAPITI SPOSI");
+    if (data.spouseContacts && data.spouseContacts.length) {
+      data.spouseContacts.forEach((item, index) => {
+        lines.push((index + 1) + ". " + (item.role || "Contatto") + " - " + (item.name || ""));
+        lines.push("   Tel: " + (item.phone || "Non inserito") + " | Email: " + (item.email || "Non inserita"));
+      });
+    } else {
+      lines.push("Nessun recapito sposi inserito.");
+    }
     lines.push("");
 
     lines.push("SCADENZE");
@@ -3579,6 +4010,27 @@ function addDocument() {
     textBlock("Avanzamento pagamenti: " + percent + "%", 11);
     textBlock("Stato progetto: " + (data.projectStatus || "In lavorazione"), 10);
 
+    if (!isSpouses) {
+      newPage("Recapiti sposi");
+      sectionTitle("Recapiti sposi", "Contatti rapidi inseriti nella dashboard.");
+
+      if (data.spouseContacts && data.spouseContacts.length) {
+        data.spouseContacts.forEach((item) => {
+          rowCard(
+            item.role || "Contatto",
+            [
+              "Nome: " + (item.name || "Non indicato"),
+              "Telefono: " + (item.phone || "Non inserito"),
+              "Email: " + (item.email || "Non inserita")
+            ],
+            "Sposi"
+          );
+        });
+      } else {
+        emptyText("Nessun recapito sposi inserito.");
+      }
+    }
+
     /* Scadenze */
     newPage("Scadenze");
     sectionTitle("Scadenze e pagamenti", isSpouses ? "Solo scadenze condivise con gli sposi." : "Elenco completo delle scadenze interne.");
@@ -3928,6 +4380,7 @@ function addDocument() {
     renderChecklist();
     renderTimeline();
     renderProjectNotes();
+    renderSpouseContacts();
     updateCountdown();
   }
 
@@ -3968,6 +4421,7 @@ function addDocument() {
           !Array.isArray(remoteData.documents) ||
           !Array.isArray(remoteData.checklist) ||
           !Array.isArray(remoteData.timeline) ||
+          !Array.isArray(remoteData.spouseContacts) ||
           remoteData.projectNotes === undefined ||
           remoteData.archived === undefined ||
           remoteData.projectStatus === undefined;
@@ -4045,6 +4499,10 @@ function addDocument() {
   window.deleteTimelineItem = deleteTimelineItem;
   window.toggleProjectNotes = toggleProjectNotes;
   window.saveProjectNotes = saveProjectNotes;
+  window.toggleSpouseContacts = toggleSpouseContacts;
+  window.addSpouseContact = addSpouseContact;
+  window.editSpouseContact = editSpouseContact;
+  window.deleteSpouseContact = deleteSpouseContact;
   window.toggleBackup = toggleBackup;
   window.copyProjectSummary = copyProjectSummary;
   window.downloadInternalReportPDF = downloadInternalReportPDF;
