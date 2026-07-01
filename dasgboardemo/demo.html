@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Demo PixelUp Dashboard Wedding</title>
+  <title>Prova interattiva PixelUp Dashboard Wedding</title>
 
   <style>
     :root {
@@ -669,14 +669,14 @@
   <main class="app">
 
     <div class="demo-banner">
-      <strong>Demo interattiva</strong> · puoi modificare e aggiungere dati, ma restano solo in questa prova e non vengono salvati.
+      <strong>Prova interattiva</strong> · puoi modificare e aggiungere dati per testare il funzionamento; le modifiche non vengono salvate.
     </div>
 
     <header class="topbar">
       <button class="circle-btn" type="button" onclick="goHome()">‹</button>
 
       <div class="top-title">
-        <h1 id="projectTitle">Demo Wedding</h1>
+        <h1 id="projectTitle">Prova Wedding</h1>
         <p>PixelUp Dashboard Wedding</p>
       </div>
 
@@ -814,7 +814,7 @@
 
         <div class="section-title">
           <h2>Scadenze prossime</h2>
-          <button class="edit-btn" type="button" onclick="demoAddDeadline()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddDeadline()">+ Prova</button>
         </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -825,7 +825,7 @@
 
         <div class="section-title">
           <h2>Fornitori</h2>
-          <button class="edit-btn" type="button" onclick="demoAddSupplier()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddSupplier()">+ Prova</button>
         </div>
 
         <div class="list-card" id="supplierList"></div>
@@ -836,7 +836,7 @@
 
         <div class="section-title">
           <h2>Agenda</h2>
-          <button class="edit-btn" type="button" onclick="demoAddAgendaItem()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddAgendaItem()">+ Prova</button>
         </div>
 
         <div class="list-card" id="agendaList"></div>
@@ -847,7 +847,7 @@
 
         <div class="section-title">
           <h2>Documenti</h2>
-          <button class="edit-btn" type="button" onclick="demoAddDocument()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddDocument()">+ Prova</button>
         </div>
 
         <div class="list-card" id="documentList"></div>
@@ -858,7 +858,7 @@
 
         <div class="section-title">
           <h2>Checklist</h2>
-          <button class="edit-btn" type="button" onclick="demoAddChecklistItem()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddChecklistItem()">+ Prova</button>
         </div>
 
         <div class="list-card" id="checklistList"></div>
@@ -869,7 +869,7 @@
 
         <div class="section-title">
           <h2>Timeline evento</h2>
-          <button class="edit-btn" type="button" onclick="demoAddTimelineItem()">+ Demo</button>
+          <button class="edit-btn" type="button" onclick="demoAddTimelineItem()">+ Prova</button>
         </div>
 
         <div class="list-card" id="timelineList"></div>
@@ -880,7 +880,7 @@
 
         <div class="section-title">
           <h2>Note progetto</h2>
-          <button class="edit-btn" type="button" onclick="demoSaveNotes()">Salva demo</button>
+          <button class="edit-btn" type="button" onclick="demoSaveNotes()">Salva prova</button>
         </div>
 
         <div class="list-card">
@@ -902,17 +902,17 @@
         <div class="demo-info-card">
           <strong>Esporta riepilogo progetto</strong>
           Nella versione reale puoi copiare o scaricare un backup testuale del progetto.
-          In questa demo puoi provare la funzione, ma il file contiene solo dati dimostrativi.
+          In questa prova puoi provare la funzione, ma il file contiene solo dati dimostrativi.
         </div>
 
         <button class="secondary-action" type="button" onclick="demoCopySummary()">
           <span>▤</span>
-          <span>Copia riepilogo demo</span>
+          <span>Copia riepilogo di prova</span>
         </button>
 
         <button class="secondary-action" type="button" onclick="demoDownloadBackup()">
           <span>⇩</span>
-          <span>Scarica backup demo</span>
+          <span>Scarica backup di prova</span>
         </button>
 
       </div>
@@ -937,7 +937,7 @@
 
         <button class="secondary-action" type="button" onclick="openEventDemo()">
           <span>♡</span>
-          <span>Apri demo pagina evento</span>
+          <span>Apri prova pagina evento</span>
         </button>
 
       </div>
@@ -967,7 +967,7 @@
 
   <script>
     const data = {
-      projectName: "Demo Wedding",
+      projectName: "Prova Wedding",
       eventDate: "2026-08-27T15:00:00",
       budget: 35000,
       due: 6250,
@@ -1074,19 +1074,19 @@
           name: "Preventivo location",
           category: "Preventivi",
           url: "#",
-          notes: "Documento demo non scaricabile."
+          notes: "Documento di prova non scaricabile."
         },
         {
           name: "Contratto catering",
           category: "Contratti",
           url: "#",
-          notes: "Documento demo non scaricabile."
+          notes: "Documento di prova non scaricabile."
         },
         {
           name: "Bozza menù evento",
           category: "Menù",
           url: "#",
-          notes: "Documento demo non scaricabile."
+          notes: "Documento di prova non scaricabile."
         }
       ],
 
@@ -1241,7 +1241,7 @@
 
       showToast(
         "<strong>Modifica demo aggiornata</strong><br>" +
-        "Il valore è cambiato solo in questa prova. Ricaricando la pagina torneranno i dati demo iniziali."
+        "Il valore è cambiato solo in questa prova. Ricaricando la pagina torneranno i dati di prova iniziali."
       );
     }
 
@@ -1561,7 +1561,7 @@
       });
 
       renderChecklist();
-      showToast("<strong>Voce checklist aggiunta</strong><br>È visibile solo in questa demo e non viene salvata.");
+      showToast("<strong>Voce checklist aggiunta</strong><br>È visibile solo in questa prova e non viene salvata.");
     }
 
     function demoEditChecklist(index) {
@@ -1581,13 +1581,13 @@
       };
 
       renderChecklist();
-      showToast("<strong>Checklist modificata</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Checklist modificata</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoToggleChecklist(index) {
       data.checklist[index].done = !data.checklist[index].done;
       renderChecklist();
-      showToast("<strong>Stato checklist aggiornato</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Stato checklist aggiornato</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoAddTimelineItem() {
@@ -1611,7 +1611,7 @@
       });
 
       renderTimeline();
-      showToast("<strong>Momento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+      showToast("<strong>Momento aggiunto</strong><br>È visibile solo in questa prova e non viene salvato.");
     }
 
     function demoEditTimeline(index) {
@@ -1638,7 +1638,7 @@
       };
 
       renderTimeline();
-      showToast("<strong>Timeline modificata</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Timeline modificata</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoSaveNotes() {
@@ -1651,7 +1651,7 @@
     function buildDemoSummary() {
       const lines = [];
 
-      lines.push("RIEPILOGO DEMO PIXELUP");
+      lines.push("RIEPILOGO PROVA PIXELUP");
       lines.push("");
       lines.push("Evento: " + data.projectName);
       lines.push("Totale: " + euro(Number(data.paid) + Number(data.due)));
@@ -1700,7 +1700,7 @@
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(summary)
-          .then(() => showToast("<strong>Riepilogo copiato</strong><br>È un riepilogo demo, non collegato a Firebase."))
+          .then(() => showToast("<strong>Riepilogo copiato</strong><br>È un riepilogo di prova, non collegato a Firebase."))
           .catch(() => prompt("Copia il riepilogo:", summary));
       } else {
         prompt("Copia il riepilogo:", summary);
@@ -1714,14 +1714,14 @@
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "backup-demo-pixelup.txt";
+      link.download = "backup-prova-pixelup.txt";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
       URL.revokeObjectURL(url);
 
-      showToast("<strong>Backup demo scaricato</strong><br>Nella versione reale il backup contiene i dati del progetto.");
+      showToast("<strong>Backup di prova scaricato</strong><br>Nella versione reale il backup contiene i dati del progetto.");
     }
 
     function updateTotalsFromDeadlines() {
@@ -1789,7 +1789,7 @@
       updateTotalsFromDeadlines();
       renderDeadlines();
 
-      showToast("<strong>Scadenza aggiunta</strong><br>È visibile solo in questa demo e non viene salvata.");
+      showToast("<strong>Scadenza aggiunta</strong><br>È visibile solo in questa prova e non viene salvata.");
     }
 
     function demoEditDeadline(index) {
@@ -1842,7 +1842,7 @@
       updateTotalsFromDeadlines();
       renderDeadlines();
 
-      showToast("<strong>Scadenza modificata</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Scadenza modificata</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoAddSupplier() {
@@ -1867,7 +1867,7 @@
 
       renderSuppliers();
 
-      showToast("<strong>Fornitore aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+      showToast("<strong>Fornitore aggiunto</strong><br>È visibile solo in questa prova e non viene salvato.");
     }
 
     function demoEditSupplier(index) {
@@ -1895,7 +1895,7 @@
 
       renderSuppliers();
 
-      showToast("<strong>Fornitore modificato</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Fornitore modificato</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoAddAgendaItem() {
@@ -1924,7 +1924,7 @@
 
       renderAgenda();
 
-      showToast("<strong>Appuntamento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+      showToast("<strong>Appuntamento aggiunto</strong><br>È visibile solo in questa prova e non viene salvato.");
     }
 
     function demoEditAgendaItem(index) {
@@ -1956,7 +1956,7 @@
 
       renderAgenda();
 
-      showToast("<strong>Appuntamento modificato</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Appuntamento modificato</strong><br>La modifica resta solo in questa prova.");
     }
 
     function demoAddDocument() {
@@ -1981,7 +1981,7 @@
 
       renderDocuments();
 
-      showToast("<strong>Documento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+      showToast("<strong>Documento aggiunto</strong><br>È visibile solo in questa prova e non viene salvato.");
     }
 
     function demoEditDocument(index) {
@@ -2009,12 +2009,12 @@
 
       renderDocuments();
 
-      showToast("<strong>Documento modificato</strong><br>La modifica resta solo in questa demo.");
+      showToast("<strong>Documento modificato</strong><br>La modifica resta solo in questa prova.");
     }
 
     function fakeDocument() {
       showToast(
-        "<strong>Documento demo</strong><br>" +
+        "<strong>Documento di prova</strong><br>" +
         "Nella versione reale questo pulsante apre un link Google Drive condiviso dalla wedding planner."
       );
     }
@@ -2022,7 +2022,7 @@
     function showDemoMessage() {
       showToast(
         "<strong>PixelUp Dashboard Wedding</strong><br>" +
-        "Questa demo mostra come apparirebbe l'area privata di un evento vista da telefono."
+        "Questa prova mostra come apparirebbe l'area privata di un evento vista da telefono."
       );
     }
 
