@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistenza | PixelUp</title>
+
+  <style>
+    :root {
+      --cream:#fbf4e8;
+      --cream-light:#fffaf2;
+      --card:rgba(255,252,246,.96);
+      --text:#263122;
+      --muted:#7b6f62;
+      --gold:#b19155;
+      --green:#4d5a3a;
+      --green-dark:#344028;
+      --border:rgba(223,212,193,.85);
+      --shadow:0 18px 35px rgba(60,45,28,.12);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      min-height:100vh;
+      background:linear-gradient(180deg,#fff8ed 0%,#fbf1e2 55%,#fffaf2 100%);
+      color:var(--text);
+      font-family:Georgia,"Times New Roman",serif;
+      line-height:1.65;
+    }
+    a{color:var(--green-dark);font-weight:bold;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .page{width:100%;max-width:900px;margin:0 auto;padding:24px 18px 50px}
+    .topbar{
+      background:rgba(255,252,246,.96);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+      text-align:center;
+    }
+    .brand{
+      color:var(--gold);
+      font-size:15px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      font-family:Arial,sans-serif;
+    }
+    h1{
+      font-size:34px;
+      font-weight:400;
+      color:var(--green-dark);
+      line-height:1.15;
+    }
+    .subtitle{
+      margin-top:10px;
+      color:var(--muted);
+      font-family:Arial,sans-serif;
+      font-size:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin-bottom:18px;
+    }
+    h2{
+      color:var(--green-dark);
+      font-size:24px;
+      font-weight:400;
+      margin-bottom:10px;
+      line-height:1.2;
+    }
+    p{margin-bottom:12px;color:var(--text);font-size:16px}
+    ul{margin:8px 0 14px 20px;color:var(--text)}
+    li{margin-bottom:7px}
+    .note{
+      background:rgba(77,90,58,.08);
+      border:1px solid rgba(77,90,58,.18);
+      border-radius:18px;
+      padding:16px;
+      color:var(--green-dark);
+      font-family:Arial,sans-serif;
+      font-size:14px;
+      margin-bottom:18px;
+    }
+    .button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 22px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--green) 0%,#3c472d 100%);
+      color:white;
+      font-family:Arial,sans-serif;
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-top:8px;
+      box-shadow:0 12px 25px rgba(54,64,42,.18);
+    }
+    .steps{counter-reset:step;list-style:none;margin-left:0}
+    .steps li{
+      counter-increment:step;
+      background:rgba(255,252,246,.85);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:14px 14px 14px 54px;
+      margin-bottom:10px;
+      position:relative;
+    }
+    .steps li::before{
+      content:counter(step);
+      position:absolute;
+      left:15px;
+      top:14px;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      background:var(--gold);
+      color:white;
+      display:grid;
+      place-items:center;
+      font-family:Arial,sans-serif;
+      font-weight:bold;
+      font-size:13px;
+    }
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      font-family:Arial,sans-serif;
+      font-size:13px;
+      margin-top:26px;
+    }
+    .footer-links{
+      margin-top:12px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    @media(max-width:600px){
+      h1{font-size:28px}
+      .card{padding:18px}
+      .button{width:100%}
+    }
+  </style>
+
+</head>
+<body>
+  <main class="page">
+    <section class="topbar">
+      <div class="brand">PixelUp</div>
+      <h1>Assistenza</h1>
+      <p class="subtitle">Supporto Dashboard Wedding PixelUp</p>
+    </section>
+
+    <section class="card">
+      <h2>Hai problemi di accesso?</h2>
+      <p>Se hai perso il codice, non riesci ad accedere o non trovi il tuo progetto, puoi contattare l’assistenza PixelUp.</p>
+      <p>Scrivi indicando:</p>
+      <ul>
+        <li>email utilizzata per l’accesso;</li>
+        <li>nome del progetto o degli sposi, se disponibile;</li>
+        <li>descrizione del problema;</li>
+        <li>eventuale screenshot dell’errore.</li>
+      </ul>
+      <a class="button" href="mailto:info@pixelup.it?subject=Assistenza%20Dashboard%20PixelUp&body=Buongiorno%2C%0A%0Aho%20bisogno%20di%20assistenza%20per%20la%20Dashboard%20Wedding%20PixelUp.%0A%0AEmail%20utilizzata%3A%20%0ANome%20progetto%3A%20%0ADescrizione%20problema%3A%20%0A%0AGrazie.">Scrivi all’assistenza</a>
+      <div class="note" style="margin-top:16px;">Tempo indicativo di risposta: 24/48 ore lavorative.</div>
+    </section>
+
+    <section class="card">
+      <h2>Recupero codice di accesso</h2>
+      <p>Il recupero codice è gestito manualmente per garantire un controllo corretto degli accessi.</p>
+      <ol class="steps">
+        <li>Invia una richiesta a info@pixelup.it.</li>
+        <li>Indica l’email usata per accedere alla dashboard.</li>
+        <li>PixelUp verifica l’account e il progetto collegato.</li>
+        <li>Se i dati corrispondono, riceverai nuovamente le credenziali o un nuovo codice di accesso.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Cosa include l’assistenza</h2>
+      <p>L’assistenza PixelUp copre problemi tecnici collegati all’utilizzo della dashboard.</p>
+      <ul>
+        <li>problemi di accesso;</li>
+        <li>codice non funzionante;</li>
+        <li>dashboard non visibile;</li>
+        <li>errore nell’apertura di un progetto;</li>
+        <li>difficoltà nel copiare il link sposi;</li>
+        <li>malfunzionamenti tecnici della dashboard.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Cosa non include l’assistenza</h2>
+      <p>L’assistenza non comprende attività operative o professionali che restano a carico dell’utente.</p>
+      <ul>
+        <li>inserimento dati al posto dell’utente;</li>
+        <li>gestione completa dell’evento;</li>
+        <li>contatto diretto con fornitori o sposi;</li>
+        <li>caricamento o sistemazione file su Google Drive;</li>
+        <li>consulenza fiscale, legale o contrattuale;</li>
+        <li>personalizzazioni grafiche o funzionali non concordate.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Guida rapida all’utilizzo</h2>
+      <ol class="steps">
+        <li>Vai su pixelup.it e clicca su Accedi.</li>
+        <li>Inserisci email e codice di accesso.</li>
+        <li>Apri “I miei progetti” o crea un nuovo progetto.</li>
+        <li>Compila scadenze, fornitori, agenda, documenti, checklist e timeline.</li>
+        <li>Usa “Copia link sposi” per condividere la visuale dedicata agli sposi/clienti.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Documenti Google Drive</h2>
+      <p>La dashboard non carica direttamente file PDF. I documenti vengono collegati tramite link Google Drive o link esterni.</p>
+      <p>Prima di inserire un link, verifica che:</p>
+      <ul>
+        <li>il file sia presente su Google Drive;</li>
+        <li>il link sia corretto;</li>
+        <li>i permessi siano impostati in modo adeguato;</li>
+        <li>solo le persone autorizzate possano visualizzarlo.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Contatto diretto</h2>
+      <p>Email: <a href="mailto:info@pixelup.it">info@pixelup.it</a></p>
+      <p>Oggetto consigliato: <strong>Assistenza Dashboard PixelUp</strong></p>
+    </section>
+
+    <footer class="footer">
+      <p>© PixelUp - Dashboard Wedding</p>
+      <div class="footer-links">
+        <a href="/termini-e-condizioni.html">Termini e Condizioni</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
