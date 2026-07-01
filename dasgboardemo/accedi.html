@@ -379,7 +379,7 @@
         const firebaseEmail = String(accessData.email || "").trim().toLowerCase();
         const active = accessData.active === true;
         const role = accessData.role || "cliente";
-        const maxProjects = Number(accessData.maxProjects || 1);
+        const maxProjects = Number(accessData.maxProjects || 0);
         const redirect = accessData.redirect || "/dashboard/";
 
         if (!active) {
