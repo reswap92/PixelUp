@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Demo PixelUp Event Board</title>
+  <title>Demo PixelUp Dashboard Wedding</title>
 
   <style>
     :root {
@@ -389,6 +389,37 @@
       display: block;
     }
 
+    .notes-area {
+      width: 100%;
+      min-height: 190px;
+      resize: vertical;
+      border: 1px solid rgba(177,145,85,0.35);
+      border-radius: 18px;
+      background: rgba(255,252,246,0.95);
+      padding: 14px;
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .readonly-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 7px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(77,90,58,0.18);
+      background: rgba(77,90,58,0.08);
+      color: var(--green);
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
     @keyframes fade {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
@@ -645,8 +676,8 @@
       <button class="circle-btn" type="button" onclick="goHome()">‹</button>
 
       <div class="top-title">
-        <h1 id="projectTitle">Demo Evento</h1>
-        <p>PixelUp Event Board</p>
+        <h1 id="projectTitle">Demo Wedding</h1>
+        <p>PixelUp Dashboard Wedding</p>
       </div>
 
       <button class="circle-btn" type="button" onclick="showDemoMessage()">♡</button>
@@ -654,13 +685,13 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="monogram">P|U</div>
+        <div class="monogram" id="projectMonogram">D|W</div>
 
-        <h2>Area privata evento</h2>
+        <h2>Dashboard Wedding</h2>
 
         <p>
-          Una dashboard elegante per seguire budget, pagamenti, scadenze,
-          fornitori, agenda e documenti in un unico link.
+          Una dashboard elegante per gestire budget, scadenze, fornitori,
+          agenda, documenti, checklist, timeline evento e area sposi.
         </p>
 
         <div class="countdown-card">
@@ -700,11 +731,11 @@
 
       <div class="summary-grid">
 
-        <div class="summary-card" onclick="demoEditSummary('budget')">
+        <div class="summary-card" onclick="showToast('<strong>Totale automatico</strong><br>Il totale si aggiorna sommando saldato e da saldare.')">
           <div class="icon">▣</div>
-          <p>Budget</p>
+          <p>Totale</p>
           <strong id="budgetValue">€ 35.000</strong>
-          <small>totale evento</small>
+          <small>spesa prevista</small>
         </div>
 
         <div class="summary-card" onclick="demoEditSummary('due')">
@@ -754,9 +785,29 @@
         <span>Documenti</span>
       </button>
 
+      <button class="secondary-action" type="button" onclick="toggleSection('checklistSection')">
+        <span>✓</span>
+        <span>Checklist</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleSection('timelineSection')">
+        <span>☷</span>
+        <span>Timeline evento</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleSection('notesSection')">
+        <span>✎</span>
+        <span>Note progetto</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleSection('backupSection')">
+        <span>▤</span>
+        <span>Riepilogo / Backup</span>
+      </button>
+
       <button class="secondary-action" type="button" onclick="toggleSection('clientSection')">
         <span>♡</span>
-        <span>Area cliente</span>
+        <span>Area sposi</span>
       </button>
 
       <div class="demo-section" id="deadlineSection">
@@ -803,23 +854,85 @@
 
       </div>
 
+      <div class="demo-section" id="checklistSection">
+
+        <div class="section-title">
+          <h2>Checklist</h2>
+          <button class="edit-btn" type="button" onclick="demoAddChecklistItem()">+ Demo</button>
+        </div>
+
+        <div class="list-card" id="checklistList"></div>
+
+      </div>
+
+      <div class="demo-section" id="timelineSection">
+
+        <div class="section-title">
+          <h2>Timeline evento</h2>
+          <button class="edit-btn" type="button" onclick="demoAddTimelineItem()">+ Demo</button>
+        </div>
+
+        <div class="list-card" id="timelineList"></div>
+
+      </div>
+
+      <div class="demo-section" id="notesSection">
+
+        <div class="section-title">
+          <h2>Note progetto</h2>
+          <button class="edit-btn" type="button" onclick="demoSaveNotes()">Salva demo</button>
+        </div>
+
+        <div class="list-card">
+          <textarea id="projectNotesInput" class="notes-area" placeholder="Scrivi una nota interna demo..."></textarea>
+          <p style="margin-top:10px; color:#7b6f62; font-family:Arial,sans-serif; font-size:12px; line-height:1.4;">
+            Le note sono interne alla wedding planner e nella versione reale non vengono mostrate agli sposi.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="demo-section" id="backupSection">
+
+        <div class="section-title">
+          <h2>Riepilogo / Backup</h2>
+          <span>demo</span>
+        </div>
+
+        <div class="demo-info-card">
+          <strong>Esporta riepilogo progetto</strong>
+          Nella versione reale puoi copiare o scaricare un backup testuale del progetto.
+          In questa demo puoi provare la funzione, ma il file contiene solo dati dimostrativi.
+        </div>
+
+        <button class="secondary-action" type="button" onclick="demoCopySummary()">
+          <span>▤</span>
+          <span>Copia riepilogo demo</span>
+        </button>
+
+        <button class="secondary-action" type="button" onclick="demoDownloadBackup()">
+          <span>⇩</span>
+          <span>Scarica backup demo</span>
+        </button>
+
+      </div>
+
       <div class="demo-section" id="clientSection">
 
         <div class="section-title">
-          <h2>Area cliente</h2>
+          <h2>Area sposi</h2>
           <span>sola lettura</span>
         </div>
 
         <div class="demo-info-card">
           <strong>Link privato per il cliente</strong>
           In una dashboard reale, qui l'organizzatore copia il link da inviare al cliente.
-          Il cliente può vedere tutto, ma non può modificare nulla.
+          Gli sposi possono vedere solo le voci rese visibili e non possono modificare nulla.
         </div>
 
         <div class="demo-info-card">
-          <strong>Pagina evento personalizzata</strong>
-          Puoi abbinare anche una pagina elegante per invitati o partecipanti con programma,
-          mappa, menù, lista regalo, tavoli e contatti.
+          <strong>Link sposi in sola lettura</strong>
+          La wedding può condividere scadenze, agenda, documenti, checklist e timeline evento in una pagina pulita per gli sposi.
         </div>
 
         <button class="secondary-action" type="button" onclick="openEventDemo()">
@@ -854,7 +967,7 @@
 
   <script>
     const data = {
-      projectName: "Demo Evento",
+      projectName: "Demo Wedding",
       eventDate: "2026-08-27T15:00:00",
       budget: 35000,
       due: 6250,
@@ -975,7 +1088,54 @@
           url: "#",
           notes: "Documento demo non scaricabile."
         }
-      ]
+      ],
+
+      checklist: [
+        {
+          title: "Location confermata",
+          done: true,
+          notes: "Contratto e acconto registrati."
+        },
+        {
+          title: "Timeline evento da completare",
+          done: false,
+          notes: "Manca conferma orario taglio torta."
+        },
+        {
+          title: "Documenti condivisi con gli sposi",
+          done: true,
+          notes: "Drive aggiornato."
+        }
+      ],
+
+      timeline: [
+        {
+          time: "15:00",
+          title: "Cerimonia",
+          place: "Location evento",
+          notes: "Arrivo ospiti dalle 14:30."
+        },
+        {
+          time: "17:00",
+          title: "Aperitivo",
+          place: "Giardino",
+          notes: "Musica soft in sottofondo."
+        },
+        {
+          time: "20:00",
+          title: "Cena",
+          place: "Sala principale",
+          notes: "Ingresso sposi prima del servizio."
+        },
+        {
+          time: "23:00",
+          title: "Taglio torta",
+          place: "Area esterna",
+          notes: "Confermare piano B in caso di pioggia."
+        }
+      ],
+
+      projectNotes: "Gli sposi preferiscono uno stile elegante e naturale. Attenzione al menù vegetariano per alcuni ospiti. Confermare orari con fotografo e DJ nella settimana prima dell’evento."
     };
 
     function euro(value) {
@@ -1010,13 +1170,34 @@
       }, 3400);
     }
 
+    function makeMonogram(projectName) {
+      const cleanName = String(projectName || "")
+        .replaceAll("&", " ")
+        .replaceAll("|", " ")
+        .replaceAll("+", " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (!cleanName) return "D|W";
+
+      const parts = cleanName.split(" ").filter(Boolean);
+
+      if (parts.length === 1) {
+        return parts[0].charAt(0).toUpperCase();
+      }
+
+      return parts[0].charAt(0).toUpperCase() + "|" + parts[parts.length - 1].charAt(0).toUpperCase();
+    }
+
     function renderSummary() {
+      const totalReal = Number(data.paid) + Number(data.due);
+
       document.getElementById("projectTitle").textContent = data.projectName;
-      document.getElementById("budgetValue").textContent = euro(data.budget);
+      document.getElementById("projectMonogram").textContent = makeMonogram(data.projectName);
+      document.getElementById("budgetValue").textContent = euro(totalReal);
       document.getElementById("dueValue").textContent = euro(data.due);
       document.getElementById("paidValue").textContent = euro(data.paid);
 
-      const totalReal = Number(data.paid) + Number(data.due);
       const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
 
       document.getElementById("paidPercent").textContent = percent + "%";
@@ -1028,8 +1209,8 @@
       let currentValue = 0;
 
       if (type === "budget") {
-        label = "Budget totale";
-        currentValue = data.budget;
+        showToast("<strong>Totale automatico</strong><br>Nella nuova dashboard il totale si calcola da saldato + da saldare.");
+        return;
       }
 
       if (type === "due") {
@@ -1053,7 +1234,6 @@
         return;
       }
 
-      if (type === "budget") data.budget = cleanValue;
       if (type === "due") data.due = cleanValue;
       if (type === "paid") data.paid = cleanValue;
 
@@ -1071,6 +1251,10 @@
         "supplierSection",
         "agendaSection",
         "documentSection",
+        "checklistSection",
+        "timelineSection",
+        "notesSection",
+        "backupSection",
         "clientSection"
       ];
 
@@ -1265,8 +1449,8 @@
         return `
           <div class="deadline-row">
             <div class="date-box">
-              <strong>PDF</strong>
-              <small>DOC</small>
+              <strong>DRIVE</strong>
+              <small>LINK</small>
             </div>
 
             <div class="row-info">
@@ -1280,7 +1464,7 @@
                   onclick="fakeDocument()"
                   style="color:#4d5a3a; font-weight:bold;"
                 >
-                  Apri documento
+                  Apri Google Drive
                 </a>
               </p>
             </div>
@@ -1293,6 +1477,251 @@
           </div>
         `;
       }).join("");
+    }
+
+
+    function renderChecklist() {
+      const list = document.getElementById("checklistList");
+
+      list.innerHTML = data.checklist.map((item, index) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${item.done ? "✓" : "○"}</strong>
+              <small>CHECK</small>
+            </div>
+
+            <div class="row-info">
+              <h3 style="${item.done ? "text-decoration:line-through; opacity:0.72;" : ""}">${item.title}</h3>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+              <span class="readonly-pill">Visibile agli sposi</span>
+            </div>
+
+            <div class="row-right">
+              <strong>${item.done ? "Fatto" : "Da fare"}</strong>
+              <small>stato</small>
+              <button class="edit-btn" type="button" onclick="demoToggleChecklist(${index})">Spunta</button>
+              <button class="edit-btn" type="button" onclick="demoEditChecklist(${index})">Modifica</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderTimeline() {
+      const list = document.getElementById("timelineList");
+
+      const sortedTimeline = [...data.timeline].sort((a, b) => {
+        return String(a.time || "99:99").localeCompare(String(b.time || "99:99"));
+      });
+
+      list.innerHTML = sortedTimeline.map((item) => {
+        const realIndex = data.timeline.indexOf(item);
+
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong style="font-size:13px;">${item.time || "--:--"}</strong>
+              <small>ORA</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.title}</h3>
+              <p>${item.place || "Luogo non indicato"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+              <span class="readonly-pill">Visibile agli sposi</span>
+            </div>
+
+            <div class="row-right">
+              <strong>${item.time || "--:--"}</strong>
+              <small>momento</small>
+              <button class="edit-btn" type="button" onclick="demoEditTimeline(${realIndex})">Modifica</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderProjectNotes() {
+      const input = document.getElementById("projectNotesInput");
+      if (input) input.value = data.projectNotes || "";
+    }
+
+    function demoAddChecklistItem() {
+      const title = prompt("Voce checklist:", "Nuova attività");
+      if (title === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      data.checklist.push({
+        title: title || "Nuova attività",
+        done: false,
+        notes: notes || ""
+      });
+
+      renderChecklist();
+      showToast("<strong>Voce checklist aggiunta</strong><br>È visibile solo in questa demo e non viene salvata.");
+    }
+
+    function demoEditChecklist(index) {
+      const item = data.checklist[index];
+      if (!item) return;
+
+      const title = prompt("Voce checklist:", item.title);
+      if (title === null) return;
+
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+
+      data.checklist[index] = {
+        title: title || item.title,
+        done: item.done === true,
+        notes: notes || ""
+      };
+
+      renderChecklist();
+      showToast("<strong>Checklist modificata</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoToggleChecklist(index) {
+      data.checklist[index].done = !data.checklist[index].done;
+      renderChecklist();
+      showToast("<strong>Stato checklist aggiornato</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoAddTimelineItem() {
+      const time = prompt("Ora formato HH:MM:", "18:00");
+      if (time === null) return;
+
+      const title = prompt("Momento evento:", "Nuovo momento");
+      if (title === null) return;
+
+      const place = prompt("Luogo:", "");
+      if (place === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      data.timeline.push({
+        time: time || "",
+        title: title || "Nuovo momento",
+        place: place || "",
+        notes: notes || ""
+      });
+
+      renderTimeline();
+      showToast("<strong>Momento aggiunto</strong><br>È visibile solo in questa demo e non viene salvato.");
+    }
+
+    function demoEditTimeline(index) {
+      const item = data.timeline[index];
+      if (!item) return;
+
+      const time = prompt("Ora formato HH:MM:", item.time);
+      if (time === null) return;
+
+      const title = prompt("Momento evento:", item.title);
+      if (title === null) return;
+
+      const place = prompt("Luogo:", item.place || "");
+      if (place === null) return;
+
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+
+      data.timeline[index] = {
+        time: time || item.time,
+        title: title || item.title,
+        place: place || "",
+        notes: notes || ""
+      };
+
+      renderTimeline();
+      showToast("<strong>Timeline modificata</strong><br>La modifica resta solo in questa demo.");
+    }
+
+    function demoSaveNotes() {
+      const input = document.getElementById("projectNotesInput");
+      data.projectNotes = input ? input.value : data.projectNotes;
+
+      showToast("<strong>Note demo salvate</strong><br>Restano solo finché non ricarichi la pagina.");
+    }
+
+    function buildDemoSummary() {
+      const lines = [];
+
+      lines.push("RIEPILOGO DEMO PIXELUP");
+      lines.push("");
+      lines.push("Evento: " + data.projectName);
+      lines.push("Totale: " + euro(Number(data.paid) + Number(data.due)));
+      lines.push("Saldato: " + euro(data.paid));
+      lines.push("Da saldare: " + euro(data.due));
+      lines.push("");
+
+      lines.push("SCADENZE");
+      data.deadlines.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.name + " - " + item.supplier + " - " + euro(item.total));
+      });
+      lines.push("");
+
+      lines.push("FORNITORI");
+      data.suppliers.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.service + " - " + item.name + " - " + item.phone + " - " + item.email);
+      });
+      lines.push("");
+
+      lines.push("AGENDA");
+      data.agenda.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.date + " " + item.time + " - " + item.title);
+      });
+      lines.push("");
+
+      lines.push("CHECKLIST");
+      data.checklist.forEach((item, index) => {
+        lines.push((index + 1) + ". [" + (item.done ? "X" : " ") + "] " + item.title);
+      });
+      lines.push("");
+
+      lines.push("TIMELINE");
+      data.timeline.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.time + " - " + item.title + " - " + item.place);
+      });
+      lines.push("");
+
+      lines.push("NOTE INTERNE");
+      lines.push(data.projectNotes || "Nessuna nota.");
+
+      return lines.join("\\n");
+    }
+
+    function demoCopySummary() {
+      const summary = buildDemoSummary();
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(summary)
+          .then(() => showToast("<strong>Riepilogo copiato</strong><br>È un riepilogo demo, non collegato a Firebase."))
+          .catch(() => prompt("Copia il riepilogo:", summary));
+      } else {
+        prompt("Copia il riepilogo:", summary);
+      }
+    }
+
+    function demoDownloadBackup() {
+      const summary = buildDemoSummary();
+      const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "backup-demo-pixelup.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+
+      showToast("<strong>Backup demo scaricato</strong><br>Nella versione reale il backup contiene i dati del progetto.");
     }
 
     function updateTotalsFromDeadlines() {
@@ -1537,7 +1966,7 @@
       const category = prompt("Categoria:", "Preventivi");
       if (category === null) return;
 
-      const url = prompt("Link Google Drive / PDF:", "#");
+      const url = prompt("Link Google Drive:", "#");
       if (url === null) return;
 
       const notes = prompt("Note:", "");
@@ -1565,7 +1994,7 @@
       const category = prompt("Categoria:", item.category);
       if (category === null) return;
 
-      const url = prompt("Link Google Drive / PDF:", item.url);
+      const url = prompt("Link Google Drive:", item.url);
       if (url === null) return;
 
       const notes = prompt("Note:", item.notes || "");
@@ -1586,13 +2015,13 @@
     function fakeDocument() {
       showToast(
         "<strong>Documento demo</strong><br>" +
-        "Nella versione reale questo pulsante apre un PDF, un preventivo, un contratto o un link Google Drive."
+        "Nella versione reale questo pulsante apre un link Google Drive condiviso dalla wedding planner."
       );
     }
 
     function showDemoMessage() {
       showToast(
-        "<strong>PixelUp Event Board</strong><br>" +
+        "<strong>PixelUp Dashboard Wedding</strong><br>" +
         "Questa demo mostra come apparirebbe l'area privata di un evento vista da telefono."
       );
     }
@@ -1639,6 +2068,9 @@
     renderSuppliers();
     renderAgenda();
     renderDocuments();
+    renderChecklist();
+    renderTimeline();
+    renderProjectNotes();
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
