@@ -20,7 +20,1605 @@
       --gold-2: #d5aa5d;
       --cream: #fbf4e8;
       --cream-2: #fffaf2;
-      --text: #1f2c24;
+      --text: #1f2c24;<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PixelUp — Dashboard e pagine evento digitali</title>
+  <meta name="description" content="PixelUp crea dashboard e pagine evento digitali per wedding planner, eventi privati e creator. Gestisci scadenze, fornitori, documenti, RSVP, report e link condivisi." />
+
+  <style>
+    :root{
+      --bg:#fffaf2;
+      --cream:#fbf4e8;
+      --panel:#ffffff;
+      --card:#fffdf8;
+      --ink:#213024;
+      --muted:#6f675d;
+      --green:#0f3b2e;
+      --green2:#174f3d;
+      --gold:#b58a3b;
+      --gold2:#d7b56d;
+      --line:#e8ddca;
+      --shadow:0 18px 45px rgba(36,28,16,.10);
+      --soft:0 10px 25px rgba(36,28,16,.07);
+      --radius:24px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(215,181,109,.18), transparent 28%),
+        radial-gradient(circle at 95% 12%, rgba(15,59,46,.08), transparent 32%),
+        linear-gradient(180deg,#fffdf8 0%,#fbf4e8 48%,#fffaf2 100%);
+      color:var(--ink);
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button,input,select,textarea{font:inherit}
+    .wrap{width:min(var(--max),92%);margin:0 auto}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(255,253,248,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:max-content;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:
+        linear-gradient(135deg,var(--green) 0 48%,transparent 48%),
+        linear-gradient(45deg,var(--gold) 0 50%,var(--green2) 50%);
+      position:relative;
+      box-shadow:0 8px 20px rgba(15,59,46,.16);
+    }
+
+    .brand-mark::after{
+      content:"P";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      color:white;
+      font-family:Georgia,serif;
+      font-size:24px;
+      font-weight:700;
+    }
+
+    .brand-name{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:30px;
+      color:var(--green);
+      line-height:1;
+      letter-spacing:-.8px;
+    }
+
+    .brand-name span{color:var(--gold)}
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap:24px;
+      color:#252b27;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-height:46px;
+      border-radius:10px;
+      padding:0 22px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--green);
+      font-weight:700;
+      font-size:14px;
+      transition:.18s ease;
+      box-shadow:0 4px 14px rgba(20,30,24,.04);
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:var(--soft);
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--green),#06281f);
+      color:white;
+      border-color:rgba(15,59,46,.9);
+    }
+
+    .btn.gold{
+      background:linear-gradient(135deg,var(--gold),#d7b56d);
+      color:#1d221e;
+      border-color:rgba(181,138,59,.7);
+    }
+
+    .mobile-menu-btn{
+      display:none;
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:white;
+      color:var(--green);
+      font-size:22px;
+    }
+
+    .hero{
+      position:relative;
+      padding:72px 0 64px;
+      border-bottom:1px solid var(--line);
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      right:-80px;
+      top:30px;
+      width:270px;
+      height:270px;
+      opacity:.22;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 0 38%, var(--gold) 39% 40%, transparent 41%),
+        radial-gradient(circle at 35% 35%, transparent 0 22%, var(--green) 23% 24%, transparent 25%);
+      border-radius:50%;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      gap:54px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:8px 12px;
+      border:1px solid rgba(181,138,59,.24);
+      border-radius:999px;
+      color:var(--green);
+      background:rgba(255,255,255,.70);
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:22px;
+    }
+
+    .eyebrow span{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:white;
+      background:var(--green);
+      font-size:12px;
+    }
+
+    h1{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(46px,6.2vw,82px);
+      line-height:.98;
+      letter-spacing:-2.7px;
+      color:var(--green);
+      margin-bottom:22px;
+      max-width:760px;
+    }
+
+    .hero-sub{
+      max-width:630px;
+      color:#3d453f;
+      font-size:20px;
+      line-height:1.55;
+      margin-bottom:28px;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:24px;
+    }
+
+    .trust-line{
+      display:flex;
+      align-items:flex-start;
+      gap:11px;
+      color:#48524b;
+      max-width:560px;
+      font-size:15px;
+    }
+
+    .check{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(181,138,59,.35);
+      color:var(--gold);
+      flex:0 0 auto;
+      font-weight:900;
+      background:white;
+    }
+
+    .device-stage{
+      position:relative;
+      min-height:475px;
+    }
+
+    .laptop{
+      position:absolute;
+      right:20px;
+      top:10px;
+      width:82%;
+      min-height:360px;
+      border-radius:26px;
+      background:#0b251e;
+      box-shadow:var(--shadow);
+      border:10px solid #121816;
+      padding:18px;
+      overflow:hidden;
+    }
+
+    .screen{
+      height:100%;
+      min-height:320px;
+      border-radius:14px;
+      background:#f8f4ed;
+      display:grid;
+      grid-template-columns:120px 1fr;
+      overflow:hidden;
+    }
+
+    .side{
+      background:linear-gradient(180deg,#103b2d,#06231b);
+      color:white;
+      padding:18px 14px;
+      font-size:12px;
+    }
+
+    .side-logo{
+      font-family:Georgia,serif;
+      color:#f6d797;
+      font-size:20px;
+      margin-bottom:18px;
+    }
+
+    .side ul{list-style:none;display:grid;gap:13px;color:rgba(255,255,255,.88)}
+
+    .dash{padding:18px;overflow:hidden}
+
+    .hello{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:18px;
+    }
+
+    .hello h3{
+      color:#173729;
+      font-size:21px;
+      font-family:Georgia,serif;
+      font-weight:500;
+    }
+
+    .avatar{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#ead4b0,#fff);
+      border:1px solid #e0ccb0;
+    }
+
+    .dash-stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .dash-stat,.dash-card{
+      background:white;
+      border:1px solid #eadfce;
+      border-radius:14px;
+      padding:13px;
+      box-shadow:0 5px 14px rgba(0,0,0,.04);
+    }
+
+    .dash-stat small{color:var(--muted);font-size:10px}
+    .dash-stat strong{display:block;color:var(--green);font-size:18px;margin-top:5px}
+
+    .dash-bottom{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .dash-card h4{
+      font-size:14px;
+      color:var(--green);
+      margin-bottom:9px;
+    }
+
+    .line-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      border-top:1px solid #eee2d1;
+      padding:8px 0;
+      font-size:11px;
+      color:#596257;
+    }
+
+    .phone{
+      position:absolute;
+      right:0;
+      bottom:0;
+      width:210px;
+      border:9px solid #111;
+      border-radius:32px;
+      background:#111;
+      box-shadow:0 20px 45px rgba(0,0,0,.22);
+      overflow:hidden;
+      z-index:3;
+    }
+
+    .phone-screen{
+      background:#fff8ed;
+      min-height:395px;
+      border-radius:22px;
+      overflow:hidden;
+    }
+
+    .phone-img{
+      height:150px;
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.35)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80") center/cover;
+      display:grid;
+      place-items:center;
+      color:white;
+      text-align:center;
+      padding:15px;
+    }
+
+    .phone-img strong{
+      font-family:Georgia,serif;
+      font-size:22px;
+      font-weight:400;
+    }
+
+    .phone-count{
+      margin:-20px 16px 12px;
+      background:white;
+      border-radius:14px;
+      padding:11px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:5px;
+      box-shadow:0 9px 18px rgba(0,0,0,.13);
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .phone-count b{font-size:17px;color:var(--green)}
+    .phone-count small{font-size:7px;color:var(--gold);text-transform:uppercase}
+
+    .phone-menu{
+      padding:7px 14px 16px;
+      display:grid;
+      gap:9px;
+    }
+
+    .phone-pill{
+      min-height:38px;
+      border-radius:12px;
+      background:white;
+      border:1px solid #eadfce;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:0 10px;
+      font-size:11px;
+      color:var(--green);
+    }
+
+    section{padding:48px 0}
+
+    .section-head{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .section-head h2{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(32px,4vw,46px);
+      color:var(--green);
+      font-weight:500;
+      line-height:1.05;
+      letter-spacing:-.8px;
+    }
+
+    .section-head p{
+      max-width:720px;
+      margin:12px auto 0;
+      color:var(--muted);
+      font-size:17px;
+    }
+
+    .solutions{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+    }
+
+    .solution{
+      background:rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:var(--soft);
+      min-height:320px;
+      display:grid;
+      grid-template-columns:100px 1fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    .solution-icon{
+      width:92px;
+      height:92px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#fff7e8,#f0dfc1);
+      border:1px solid #eadcc6;
+      display:grid;
+      place-items:center;
+      color:var(--gold);
+      font-size:48px;
+    }
+
+    .solution h3{
+      font-family:Georgia,serif;
+      color:var(--green);
+      font-size:25px;
+      font-weight:500;
+      margin-bottom:8px;
+    }
+
+    .solution p{
+      color:#4b554d;
+      font-size:14px;
+      margin-bottom:14px;
+    }
+
+    .ticks{
+      list-style:none;
+      display:grid;
+      gap:8px;
+      color:#263122;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .ticks li{
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+    }
+
+    .ticks li::before{
+      content:"✓";
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:var(--green);
+      color:white;
+      display:inline-grid;
+      place-items:center;
+      font-size:11px;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+
+    .custom-dashboard {
+      background:
+        radial-gradient(circle at 0% 0%, rgba(181,138,59,.14), transparent 30%),
+        linear-gradient(135deg, rgba(15,59,46,.97), rgba(7,40,32,.96));
+      color: white;
+      border-radius: 30px;
+      padding: 34px;
+      box-shadow: 0 22px 55px rgba(15,59,46,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .custom-dashboard::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,181,109,.32);
+      box-shadow: inset 0 0 0 26px rgba(215,181,109,.06);
+    }
+
+    .custom-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 34px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .custom-dashboard h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px,4vw,48px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -.9px;
+      margin-bottom: 14px;
+    }
+
+    .custom-dashboard p {
+      color: rgba(255,255,255,.82);
+      font-size: 16px;
+      margin-bottom: 18px;
+      max-width: 640px;
+    }
+
+    .custom-price {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .custom-price-card {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 16px 18px;
+      min-width: 185px;
+      backdrop-filter: blur(8px);
+    }
+
+    .custom-price-card span {
+      display: block;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 5px;
+    }
+
+    .custom-price-card strong {
+      display: block;
+      color: #f2cf82;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .custom-price-card small {
+      display: block;
+      color: rgba(255,255,255,.72);
+      margin-top: 6px;
+      font-size: 12px;
+    }
+
+    .custom-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin: 18px 0 22px;
+      list-style: none;
+    }
+
+    .custom-list li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      color: rgba(255,255,255,.88);
+      font-size: 13px;
+    }
+
+    .custom-list li::before {
+      content: "✓";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(215,181,109,.95);
+      color: #17241c;
+      display: inline-grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 900;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .custom-form-card {
+      background: rgba(255,255,255,.94);
+      color: var(--ink);
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 18px 38px rgba(0,0,0,.14);
+    }
+
+    .custom-form-card h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--green);
+      font-size: 25px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .custom-form-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .custom-mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .custom-note {
+      margin-top: 12px;
+      color: rgba(255,255,255,.66);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:14px;
+    }
+
+    .feature{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:16px;
+      min-height:112px;
+      padding:16px 10px;
+      text-align:center;
+      box-shadow:0 7px 18px rgba(0,0,0,.035);
+      display:grid;
+      place-items:center;
+      gap:9px;
+    }
+
+    .feature .ico{
+      color:var(--green);
+      font-size:30px;
+      line-height:1;
+    }
+
+    .feature strong{
+      font-size:13px;
+      color:#202a23;
+    }
+
+    .demo-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .demo-card{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--soft);
+    }
+
+    .demo-img{
+      min-height:170px;
+      background:#f3ebdf;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .demo-img.dashboard{
+      background:
+        linear-gradient(135deg,rgba(15,59,46,.92),rgba(15,59,46,.10)),
+        url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80") center/cover;
+    }
+
+    .demo-img.evento{
+      background:
+        linear-gradient(135deg,rgba(255,250,240,.10),rgba(15,59,46,.30)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80") center/cover;
+    }
+
+    .demo-img.live{
+      background:
+        linear-gradient(135deg,rgba(5,15,24,.75),rgba(5,15,24,.15)),
+        url("https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=900&q=80") center/cover;
+    }
+
+    .demo-overlay{
+      position:absolute;
+      inset:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.90);
+      border:1px solid rgba(255,255,255,.65);
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:18px;
+      color:var(--green);
+    }
+
+    .demo-overlay span{font-size:38px;margin-bottom:6px}
+    .demo-body{padding:18px 20px 22px}
+    .demo-body h3{font-family:Georgia,serif;color:var(--green);font-size:23px;font-weight:500;margin-bottom:12px}
+
+    .pricing{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+      align-items:start;
+    }
+
+    .price-box{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--soft);
+      overflow:hidden;
+    }
+
+    .price-head{
+      min-height:60px;
+      padding:0 20px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:white;
+      background:linear-gradient(135deg,var(--green),#072820);
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .price-box:nth-child(2) .price-head{
+      background:linear-gradient(135deg,var(--gold),#c79d4d);
+      color:#1e251f;
+    }
+
+    .price-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:18px 20px;
+      border-bottom:1px solid #eee3d2;
+      font-size:15px;
+    }
+
+    .price-line:last-child{border-bottom:0}
+
+    .price-line strong{
+      font-size:20px;
+      color:var(--green);
+      white-space:nowrap;
+    }
+
+    .price-line span small{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .price-note{
+      margin:18px auto 0;
+      max-width:930px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:11px 18px;
+      background:rgba(255,255,255,.78);
+    }
+
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:18px;
+      position:relative;
+    }
+
+    .step{text-align:center;position:relative}
+
+    .step-num{
+      width:36px;
+      height:36px;
+      margin:0 auto 12px;
+      border-radius:50%;
+      background:var(--green);
+      color:white;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      box-shadow:0 8px 18px rgba(15,59,46,.17);
+    }
+
+    .step-icon{
+      width:78px;
+      height:78px;
+      border-radius:50%;
+      margin:0 auto 12px;
+      background:white;
+      border:1px solid var(--line);
+      display:grid;
+      place-items:center;
+      font-size:32px;
+      color:var(--gold);
+      box-shadow:var(--soft);
+    }
+
+    .step h3{
+      color:var(--green);
+      font-size:15px;
+      margin-bottom:6px;
+    }
+
+    .step p{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .bottom-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:22px;
+      align-items:stretch;
+    }
+
+    .collab,.support{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--soft);
+      padding:28px;
+    }
+
+    .collab-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:center;
+    }
+
+    .collab h2,.support h2{
+      font-family:Georgia,serif;
+      color:var(--green);
+      font-size:32px;
+      font-weight:500;
+      margin-bottom:12px;
+    }
+
+    .collab p,.support p{
+      color:#4c554d;
+      margin-bottom:16px;
+    }
+
+    .form{display:grid;gap:10px}
+
+    .field{
+      width:100%;
+      min-height:42px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:0 12px;
+      background:#fffdf8;
+      color:#202822;
+      outline:none;
+    }
+
+    textarea.field{
+      min-height:74px;
+      padding-top:10px;
+      resize:vertical;
+    }
+
+    .support-list{
+      list-style:none;
+      display:grid;
+      gap:12px;
+      color:#3d473f;
+      font-size:14px;
+    }
+
+    .support-list li{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+    }
+
+    .footer{
+      background:linear-gradient(135deg,var(--green),#06271e);
+      color:white;
+      padding:28px 0;
+      margin-top:22px;
+    }
+
+    .footer-grid{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:22px;
+      flex-wrap:wrap;
+    }
+
+    .footer .brand-name{color:white;font-size:27px}
+    .footer .brand-name span{color:#e2bf78}
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:24px;
+      font-size:14px;
+      color:rgba(255,255,255,.86);
+    }
+
+    .copyright{
+      color:rgba(255,255,255,.75);
+      font-size:13px;
+    }
+
+    @media (max-width:1040px){
+      .hero-grid{grid-template-columns:1fr;gap:34px}
+      .device-stage{min-height:430px}
+      .laptop{left:0;right:auto;width:88%}
+      .phone{right:4%}
+      .solutions{grid-template-columns:1fr}
+      .solution{min-height:auto}
+      .custom-grid{grid-template-columns:1fr}
+      .features{grid-template-columns:repeat(3,1fr)}
+      .demo-grid,.pricing{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .bottom-grid,.collab-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width:760px){
+      .nav{min-height:66px}
+      .brand-name{font-size:25px}
+      .menu,.nav-actions{display:none}
+      .mobile-menu-btn{display:grid;place-items:center}
+      .mobile-panel{
+        display:none;
+        border-top:1px solid var(--line);
+        padding:12px 0 18px;
+      }
+      .mobile-panel.show{display:grid;gap:10px}
+      .mobile-panel a{
+        min-height:42px;
+        display:flex;
+        align-items:center;
+        border:1px solid var(--line);
+        background:white;
+        border-radius:12px;
+        padding:0 14px;
+        font-weight:700;
+        color:var(--green);
+      }
+
+      .hero{padding:46px 0 42px}
+      .hero-sub{font-size:17px}
+      .hero-actions .btn{width:100%}
+      .device-stage{min-height:390px}
+      .laptop{
+        position:relative;
+        width:100%;
+        right:auto;
+        top:auto;
+        min-height:300px;
+        padding:13px;
+        border-width:7px;
+      }
+      .screen{grid-template-columns:85px 1fr;min-height:265px}
+      .side{padding:13px 9px;font-size:10px}
+      .side ul{gap:10px}
+      .dash{padding:12px}
+      .dash-stats{grid-template-columns:1fr 1fr}
+      .dash-bottom{grid-template-columns:1fr}
+      .phone{width:165px;right:0;bottom:-6px}
+      .phone-screen{min-height:300px}
+      .phone-img{height:110px}
+      .phone-count{grid-template-columns:repeat(2,1fr)}
+      section{padding:38px 0}
+      .solution{grid-template-columns:1fr;text-align:left}
+      .custom-dashboard{padding:24px 18px;border-radius:24px}
+      .custom-list,.custom-mini-grid{grid-template-columns:1fr}
+      .custom-price-card{width:100%}
+      .features{grid-template-columns:1fr 1fr}
+      .steps{grid-template-columns:1fr}
+      .price-note{border-radius:18px}
+      .footer-grid{display:grid}
+    }
+
+    @media (max-width:420px){
+      .wrap{width:min(94%,var(--max))}
+      h1{font-size:43px}
+      .feature{min-height:96px}
+      .phone{display:none}
+      .device-stage{min-height:auto}
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <nav class="nav" aria-label="Navigazione principale">
+        <a href="#top" class="brand" aria-label="PixelUp home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">Pixel<span>Up</span></span>
+        </a>
+
+        <div class="menu">
+          <a href="#soluzioni">Funzionalità</a>
+          <a href="#demo">Demo</a>
+          <a href="#prezzi">Prezzi</a>
+          <a href="#dashboard-personalizzata">Su misura</a>
+          <a href="#collabora">Collabora</a>
+          <a href="#contatti">Contatti</a>
+        </div>
+
+        <div class="nav-actions">
+          <a class="btn" href="/dashboard/">Accedi</a>
+          <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp">Richiedi accesso</a>
+        </div>
+
+        <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Apri menu">☰</button>
+      </nav>
+
+      <div class="mobile-panel" id="mobilePanel">
+        <a href="#soluzioni" onclick="toggleMobileMenu()">Funzionalità</a>
+        <a href="#demo" onclick="toggleMobileMenu()">Demo</a>
+        <a href="#prezzi" onclick="toggleMobileMenu()">Prezzi</a>
+        <a href="#dashboard-personalizzata" onclick="toggleMobileMenu()">Su misura</a>
+        <a href="#collabora" onclick="toggleMobileMenu()">Collabora</a>
+        <a href="#contatti" onclick="toggleMobileMenu()">Contatti</a>
+        <a href="/dashboard/">Accedi</a>
+        <a href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp">Richiedi accesso</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow"><span>✓</span> Soluzioni digitali per eventi professionali</div>
+
+          <h1>Dashboard e pagine evento digitali per wedding planner, eventi e creator.</h1>
+
+          <p class="hero-sub">
+            Organizza matrimoni, eventi privati e live digitali con dashboard, link personalizzati, documenti, conferme presenza e report.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#demo">Guarda le prove interattive →</a>
+            <a class="btn" href="#prezzi">Scopri i prezzi</a>
+          </div>
+
+          <div class="trust-line">
+            <span class="check">✓</span>
+            <span>Soluzioni per wedding planner, celebranti, eventi privati e creator live.</span>
+          </div>
+        </div>
+
+        <div class="device-stage" aria-hidden="true">
+          <div class="laptop">
+            <div class="screen">
+              <aside class="side">
+                <div class="side-logo">PixelUp</div>
+                <ul>
+                  <li>Dashboard</li>
+                  <li>Agenda</li>
+                  <li>Scadenze</li>
+                  <li>Fornitori</li>
+                  <li>Documenti</li>
+                  <li>Report</li>
+                </ul>
+              </aside>
+
+              <div class="dash">
+                <div class="hello">
+                  <h3>Ciao, Sara!</h3>
+                  <div class="avatar"></div>
+                </div>
+
+                <div class="dash-stats">
+                  <div class="dash-stat"><small>Scadenze</small><strong>12</strong></div>
+                  <div class="dash-stat"><small>Fornitori</small><strong>18</strong></div>
+                  <div class="dash-stat"><small>Budget</small><strong>€ 24.850</strong></div>
+                  <div class="dash-stat"><small>Checklist</small><strong>76%</strong></div>
+                </div>
+
+                <div class="dash-bottom">
+                  <div class="dash-card">
+                    <h4>Prossime scadenze</h4>
+                    <div class="line-row"><span>Conferma catering</span><b>15 mag</b></div>
+                    <div class="line-row"><span>Invio partecipazioni</span><b>20 mag</b></div>
+                    <div class="line-row"><span>Prova menù</span><b>29 mag</b></div>
+                  </div>
+
+                  <div class="dash-card">
+                    <h4>Timeline evento</h4>
+                    <div class="line-row"><span>Cerimonia</span><b>16:00</b></div>
+                    <div class="line-row"><span>Aperitivo</span><b>18:00</b></div>
+                    <div class="line-row"><span>Cena</span><b>20:00</b></div>
+                    <div class="line-row"><span>Taglio torta</span><b>23:00</b></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-img">
+                <strong>Marco & Giulia</strong>
+              </div>
+
+              <div class="phone-count">
+                <div><b>34</b><small>Giorni</small></div>
+                <div><b>12</b><small>Ore</small></div>
+                <div><b>45</b><small>Minuti</small></div>
+                <div><b>20</b><small>Secondi</small></div>
+              </div>
+
+              <div class="phone-menu">
+                <div class="phone-pill">▣ Programma</div>
+                <div class="phone-pill">⌖ Dove siamo</div>
+                <div class="phone-pill">♡ Lista regalo</div>
+                <div class="phone-pill">✓ RSVP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="soluzioni">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Le soluzioni PixelUp</h2>
+          <p>Tre linee semplici per comunicare meglio, lavorare con più ordine e offrire un’esperienza digitale più professionale.</p>
+        </div>
+
+        <div class="solutions">
+          <article class="solution">
+            <div class="solution-icon">💍</div>
+            <div>
+              <h3>PixelUp Wedding</h3>
+              <p>La soluzione completa per gestire ogni matrimonio in modo semplice e professionale.</p>
+              <ul class="ticks">
+                <li>Dashboard Wedding</li>
+                <li>Pagina Evento Wedding</li>
+                <li>Link sposi</li>
+                <li>Report PDF</li>
+                <li>Contatta sposi</li>
+                <li>Rubrica fornitori</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="solution">
+            <div class="solution-icon">🥂</div>
+            <div>
+              <h3>PixelUp Eventi</h3>
+              <p>Pagine evento eleganti e funzionali per qualsiasi tipo di evento privato o aziendale.</p>
+              <ul class="ticks">
+                <li>Pagina evento</li>
+                <li>Conferma presenza</li>
+                <li>Mappa</li>
+                <li>Menù</li>
+                <li>Programma</li>
+                <li>Contatti</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="solution">
+            <div class="solution-icon">🎥</div>
+            <div>
+              <h3>PixelUp Live</h3>
+              <p>Soluzioni digitali per gare, competizioni, dirette e eventi con risultati live.</p>
+              <ul class="ticks">
+                <li>Pagina live</li>
+                <li>Squadre/partecipanti</li>
+                <li>Link diretta</li>
+                <li>Registro risultati</li>
+                <li>Gestione evento</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard-personalizzata">
+      <div class="wrap">
+        <div class="custom-dashboard">
+          <div class="custom-grid">
+            <div>
+              <div class="eyebrow" style="background:rgba(255,255,255,.12);color:#f2cf82;border-color:rgba(242,207,130,.28);">
+                <span style="background:#f2cf82;color:#17241c;">+</span> Dashboard su misura
+              </div>
+
+              <h2>Personalizza la tua dashboard</h2>
+
+              <p>
+                Hai un’attività, un evento o un progetto diverso dal wedding?
+                Raccontaci cosa vuoi gestire e adattiamo PixelUp al tuo lavoro:
+                clienti, scadenze, documenti, pagamenti, note, contatti e report.
+              </p>
+
+              <div class="custom-price">
+                <div class="custom-price-card">
+                  <span>Dashboard personalizzata</span>
+                  <strong>9,90 €</strong>
+                  <small>1 progetto incluso</small>
+                </div>
+
+                <div class="custom-price-card">
+                  <span>Slot progetto extra</span>
+                  <strong>2,90 €</strong>
+                  <small>per ogni nuovo progetto</small>
+                </div>
+              </div>
+
+              <ul class="custom-list">
+                <li>Fotografi e videomaker</li>
+                <li>Celebranti e professionisti eventi</li>
+                <li>Creator e attività locali</li>
+                <li>Clienti, documenti e scadenze</li>
+                <li>Contatti e note interne</li>
+                <li>Report e link condivisi</li>
+              </ul>
+
+              <a class="btn gold" href="mailto:info@pixelup.it?subject=Dashboard%20personalizzata%20PixelUp">Richiedi dashboard personalizzata</a>
+
+              <p class="custom-note">
+                Per richieste avanzate, funzioni particolari o grafiche completamente personalizzate,
+                prepariamo un preventivo su misura a partire da 49 €.
+              </p>
+            </div>
+
+            <div class="custom-form-card">
+              <h3>Raccontaci cosa ti serve</h3>
+              <p>Compila una richiesta veloce: ti risponderemo con una proposta adatta al tuo lavoro.</p>
+
+              <form class="form" action="mailto:info@pixelup.it" method="post" enctype="text/plain">
+                <input class="field" name="nome" placeholder="Nome" />
+                <input class="field" name="email" placeholder="Email / WhatsApp" />
+
+                <div class="custom-mini-grid">
+                  <input class="field" name="attivita" placeholder="Che attività fai?" />
+                  <select class="field" name="tipo_dashboard">
+                    <option value="">Tipo dashboard...</option>
+                    <option>Fotografo / Videomaker</option>
+                    <option>Celebrante</option>
+                    <option>Creator / Live</option>
+                    <option>Attività locale</option>
+                    <option>Evento privato</option>
+                    <option>Altro</option>
+                  </select>
+                </div>
+
+                <textarea class="field" name="cosa_gestire" placeholder="Cosa vuoi gestire? Esempio: clienti, pagamenti, documenti, appuntamenti, scadenze, note, report..."></textarea>
+
+                <button class="btn primary" type="submit">Invia richiesta</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="funzionalita">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Funzioni principali</h2>
+        </div>
+
+        <div class="features">
+          <div class="feature"><div class="ico">▣</div><strong>Scadenze</strong></div>
+          <div class="feature"><div class="ico">👥</div><strong>Fornitori</strong></div>
+          <div class="feature"><div class="ico">📖</div><strong>Agenda</strong></div>
+          <div class="feature"><div class="ico">▧</div><strong>Documenti Drive</strong></div>
+          <div class="feature"><div class="ico">☑</div><strong>Checklist</strong></div>
+          <div class="feature"><div class="ico">◇</div><strong>Timeline evento</strong></div>
+          <div class="feature"><div class="ico">✉</div><strong>Contatta sposi</strong></div>
+          <div class="feature"><div class="ico">PDF</div><strong>Report PDF</strong></div>
+          <div class="feature"><div class="ico">🔗</div><strong>Link sposi</strong></div>
+          <div class="feature"><div class="ico">✓</div><strong>RSVP</strong></div>
+          <div class="feature"><div class="ico">⌖</div><strong>Google Maps</strong></div>
+          <div class="feature"><div class="ico">◉</div><strong>Diretta live</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Prove interattive</h2>
+          <p>Apri le prove già pronte e scopri come può funzionare PixelUp in base al tipo di evento.</p>
+        </div>
+
+        <div class="demo-grid">
+          <article class="demo-card">
+            <div class="demo-img dashboard">
+              <div class="demo-overlay">
+                <div>
+                  <span>▣</span>
+                  <strong>Dashboard Wedding</strong>
+                </div>
+              </div>
+            </div>
+            <div class="demo-body">
+              <h3>Prova Dashboard Wedding</h3>
+              <a class="btn primary" href="/dashboard/demo.html">Apri prova</a>
+            </div>
+          </article>
+
+          <article class="demo-card">
+            <div class="demo-img evento">
+              <div class="demo-overlay">
+                <div>
+                  <span>♡</span>
+                  <strong>Pagina Evento</strong>
+                </div>
+              </div>
+            </div>
+            <div class="demo-body">
+              <h3>Prova Pagina Evento</h3>
+              <a class="btn primary" href="/dashboard/eventodemo.html">Apri prova</a>
+            </div>
+          </article>
+
+          <article class="demo-card">
+            <div class="demo-img live">
+              <div class="demo-overlay">
+                <div>
+                  <span>▶</span>
+                  <strong>Break Live</strong>
+                </div>
+              </div>
+            </div>
+            <div class="demo-body">
+              <h3>Prova Break Live</h3>
+              <a class="btn primary" href="/dashboard/breakdemo.html">Apri prova</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="prezzi">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Prezzi</h2>
+          <p>Soluzioni semplici, trasparenti e adatte sia a chi gestisce un solo evento sia a chi lavora con più clienti.</p>
+        </div>
+
+        <div class="pricing">
+          <div class="price-box">
+            <div class="price-head">▣ A) Dashboard</div>
+            <div class="price-line"><span>Dashboard Singola<small>1 progetto evento</small></span><strong>4,90 €</strong></div>
+            <div class="price-line"><span>Dashboard Personalizzata<small>1 progetto incluso</small></span><strong>9,90 €</strong></div>
+            <div class="price-line"><span>Slot progetto extra<small>per dashboard personalizzate</small></span><strong>2,90 €</strong></div>
+            <div class="price-line"><span>Piano Wedding Planner<small>fino a 5 dashboard attive</small></span><strong>9,90 €/mese</strong></div>
+            <div class="price-line"><span>Piano Annuale<small>fino a 5 dashboard attive</small></span><strong>99 €/anno</strong></div>
+          </div>
+
+          <div class="price-box">
+            <div class="price-head">▣ B) Pagine Evento</div>
+            <div class="price-line"><span>Evento semplice<small>pagina evento base</small></span><strong>29 €</strong></div>
+            <div class="price-line"><span>Evento Wedding<small>pagina wedding completa</small></span><strong>79 €</strong></div>
+            <div class="price-line"><span>Live / Game / Break<small>pagina per dirette e creator</small></span><strong>29 €</strong></div>
+          </div>
+
+          <div class="price-box">
+            <div class="price-head">▣ C) Pacchetti Completi</div>
+            <div class="price-line"><span>Wedding completo<small>dashboard + pagina evento</small></span><strong>99 €</strong></div>
+            <div class="price-line"><span>Live completo<small>pagina live + configurazione</small></span><strong>49 €</strong></div>
+          </div>
+        </div>
+
+        <p class="price-note">
+          I prezzi includono configurazione iniziale e assistenza base. Le pagine evento wedding includono assistenza fino all’evento. Richieste molto personalizzate o sezioni extra possono essere quotate separatamente.
+        </p>
+      </div>
+    </section>
+
+    <section id="come-funziona">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Come funziona</h2>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-icon">🛒</div>
+            <h3>Scegli il servizio</h3>
+            <p>Seleziona la soluzione più adatta al tuo evento o alla tua attività.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-icon">💳</div>
+            <h3>Richiedi la prova o effettua il pagamento</h3>
+            <p>Prova gratuita o acquisto rapido e sicuro.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-icon">🔑</div>
+            <h3>Ricevi accesso o link personalizzato</h3>
+            <p>Ti inviamo tutto via email in pochi minuti.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-icon">⚙</div>
+            <h3>Configura dashboard o pagina evento</h3>
+            <p>Personalizza contenuti, immagini e impostazioni.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-icon">✈</div>
+            <h3>Condividi con sposi, invitati o partecipanti</h3>
+            <p>Tutto pronto per essere condiviso facilmente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="collabora">
+      <div class="wrap bottom-grid">
+        <div class="collab">
+          <div class="collab-grid">
+            <div>
+              <h2>Collabora con PixelUp</h2>
+              <p><strong>Vuoi provare PixelUp gratis?</strong></p>
+              <p>
+                Cerchiamo wedding planner, celebranti, creator e professionisti degli eventi per testare le nostre soluzioni digitali in cambio di feedback e collaborazione social.
+              </p>
+              <a class="btn primary" href="mailto:info@pixelup.it?subject=Collaborazione%20PixelUp">Proponi una collaborazione</a>
+            </div>
+
+            <form class="form" action="mailto:info@pixelup.it" method="post" enctype="text/plain">
+              <input class="field" name="nome" placeholder="Nome" />
+              <select class="field" name="settore">
+                <option value="">Settore...</option>
+                <option>Wedding planner</option>
+                <option>Celebrante</option>
+                <option>Creator / Live</option>
+                <option>Evento privato</option>
+                <option>Altro</option>
+              </select>
+              <input class="field" name="profilo_social" placeholder="Profilo social" />
+              <textarea class="field" name="messaggio" placeholder="Raccontaci cosa vorresti provare..."></textarea>
+              <button class="btn primary" type="submit">Proponi una collaborazione</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="support" id="contatti">
+          <h2>Assistenza</h2>
+          <p><strong>Assistenza inclusa</strong></p>
+          <p>Ti aiutiamo nella configurazione iniziale e nelle modifiche principali fino all’evento, in base al pacchetto scelto.</p>
+
+          <ul class="support-list">
+            <li><span class="check">✉</span><span>Email: <a href="mailto:info@pixelup.it">info@pixelup.it</a></span></li>
+            <li><span class="check">✓</span><span>Risposta entro 24/48 ore lavorative</span></li>
+            <li><span class="check">↻</span><span>Il piano mensile può essere disattivato scrivendo all’assistenza prima del rinnovo.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <a href="#top" class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <span class="brand-name">Pixel<span>Up</span></span>
+          <span style="display:block;color:rgba(255,255,255,.70);font-size:12px;margin-top:4px;">Soluzioni digitali per eventi</span>
+        </span>
+      </a>
+
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="termini.html">Termini</a>
+        <a href="cookie.html">Cookie</a>
+        <a href="assistenza.html">Assistenza</a>
+      </div>
+
+      <div class="copyright">© 2026 PixelUp. Tutti i diritti riservati.</div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu(){
+      const panel = document.getElementById("mobilePanel");
+      if (!panel) return;
+      panel.classList.toggle("show");
+    }
+  </script>
+
+</body>
+</html>
+
       --muted: #7b7166;
       --line: rgba(182, 139, 69, 0.28);
       --shadow: 0 24px 70px rgba(36, 27, 15, 0.12);
