@@ -369,7 +369,11 @@
 .deadline-section,
 .supplier-section,
 .agenda-section,
-.document-section {
+.document-section,
+.checklist-section,
+.timeline-section,
+.notes-section,
+.backup-section {
   display: none;
   animation: fade 0.22s ease;
 }
@@ -377,8 +381,58 @@
 .deadline-section.show,
 .supplier-section.show,
 .agenda-section.show,
-.document-section.show {
+.document-section.show,
+.checklist-section.show,
+.timeline-section.show,
+.notes-section.show,
+.backup-section.show {
   display: block;
+}
+
+.check-item {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(177, 145, 85, 0.18);
+}
+
+.check-item:last-child {
+  border-bottom: 0;
+}
+
+.check-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  font-size: 17px;
+  display: grid;
+  place-items: center;
+}
+
+.check-toggle.done {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+.notes-area {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  border: 1px solid rgba(177,145,85,0.35);
+  border-radius: 18px;
+  background: rgba(255,252,246,0.95);
+  padding: 14px;
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  outline: none;
 }
 
     @keyframes fade {
@@ -730,6 +784,14 @@
       Modifica evento
     </button>
 
+    <button class="project-main-btn secondary" type="button" onclick="archiveCurrentProject()">
+      Archivia progetto
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
+      Progetti archiviati
+    </button>
+
     <div class="projects-list" id="projectsList"></div>
 
     <div class="quick-guide">
@@ -843,6 +905,26 @@
       <button class="secondary-action" type="button" onclick="toggleDocuments()">
   <span>▧</span>
   <span>Documenti</span>
+</button>
+
+      <button class="secondary-action" type="button" onclick="toggleChecklist()">
+  <span>✓</span>
+  <span>Checklist</span>
+</button>
+
+      <button class="secondary-action" type="button" onclick="toggleTimeline()">
+  <span>◇</span>
+  <span>Timeline evento</span>
+</button>
+
+      <button class="secondary-action" type="button" onclick="toggleProjectNotes()">
+  <span>✎</span>
+  <span>Note progetto</span>
+</button>
+
+      <button class="secondary-action" type="button" onclick="toggleBackup()">
+  <span>▤</span>
+  <span>Riepilogo / Backup</span>
 </button>
 
       <div class="deadline-section" id="deadlineSection">
@@ -970,6 +1052,117 @@
 
 </div>
 
+<div class="checklist-section" id="checklistSection">
+
+  <div class="section-title">
+    <h2>Checklist</h2>
+    <button 
+      type="button" 
+      onclick="addChecklistItem()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
+  </div>
+
+  <div class="list-card" id="checklistList"></div>
+
+</div>
+
+<div class="timeline-section" id="timelineSection">
+
+  <div class="section-title">
+    <h2>Timeline evento</h2>
+    <button 
+      type="button" 
+      onclick="addTimelineItem()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
+  </div>
+
+  <div class="list-card" id="timelineList"></div>
+
+</div>
+
+<div class="notes-section" id="notesSection">
+
+  <div class="section-title">
+    <h2>Note progetto</h2>
+    <button 
+      type="button" 
+      onclick="saveProjectNotes()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      Salva
+    </button>
+  </div>
+
+  <div class="list-card">
+    <textarea id="projectNotesInput" class="notes-area" placeholder="Scrivi qui note interne, preferenze degli sposi, dettagli importanti o promemoria del progetto..."></textarea>
+    <p style="margin-top:10px; color:#7b6f62; font-family:Arial,sans-serif; font-size:12px; line-height:1.4;">
+      Le note progetto sono interne e non vengono mostrate agli sposi.
+    </p>
+  </div>
+
+</div>
+
+<div class="backup-section" id="backupSection">
+
+  <div class="section-title">
+    <h2>Riepilogo / Backup</h2>
+    <span>Esporta dati</span>
+  </div>
+
+  <div class="list-card">
+    <p style="color:#7b6f62; font-family:Arial,sans-serif; font-size:13px; line-height:1.45; margin-bottom:12px;">
+      Copia o scarica un riepilogo del progetto. Utile come backup manuale o per inviare un riassunto ordinato.
+    </p>
+
+    <button class="main-action" type="button" onclick="copyProjectSummary()">
+      <span>▤</span>
+      <span>Copia riepilogo progetto</span>
+    </button>
+
+    <button class="secondary-action" type="button" onclick="downloadProjectBackup()">
+      <span>⇩</span>
+      <span>Scarica backup TXT</span>
+    </button>
+  </div>
+
+</div>
+
       </div>
 
       <div class="bottom-note">
@@ -1032,6 +1225,9 @@
     ownerEmail: loggedEmail,
     ownerRole: loggedRole,
     accessCode: loggedCode,
+    projectStatus: "In lavorazione",
+    archived: false,
+    projectNotes: "",
 
     deadlines: [],
 
@@ -1039,7 +1235,11 @@
 
     agenda: [],
 
-    documents: []
+    documents: [],
+
+    checklist: [],
+
+    timeline: []
   };
 
   let data = structuredClone(defaultData);
@@ -1069,6 +1269,14 @@
       merged.documents = defaultData.documents || [];
     }
 
+    if (!Array.isArray(safeRemoteData.checklist)) {
+      merged.checklist = defaultData.checklist || [];
+    }
+
+    if (!Array.isArray(safeRemoteData.timeline)) {
+      merged.timeline = defaultData.timeline || [];
+    }
+
     merged.projectName = merged.projectName || "Wedding Board";
     merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
     merged.budget = Number(merged.budget) || 0;
@@ -1077,6 +1285,9 @@
     merged.ownerEmail = String(merged.ownerEmail || loggedEmail).trim().toLowerCase();
     merged.ownerRole = merged.ownerRole || loggedRole;
     merged.accessCode = merged.accessCode || loggedCode;
+    merged.projectStatus = merged.projectStatus || "In lavorazione";
+    merged.archived = merged.archived === true;
+    merged.projectNotes = String(merged.projectNotes || "");
 
     merged.deadlines = merged.deadlines.map((item) => ({
       name: item.name || "",
@@ -1085,7 +1296,8 @@
       paid: Number(item.paid) || 0,
       date: item.date || "",
       status: item.status || "Da saldare",
-      notes: item.notes || ""
+      notes: item.notes || "",
+      visibleToSpouses: item.visibleToSpouses === true
     }));
 
     merged.suppliers = merged.suppliers.map((item) => ({
@@ -1100,14 +1312,32 @@
       place: item.place || "",
       date: item.date || "",
       time: item.time || "",
-      notes: item.notes || ""
+      notes: item.notes || "",
+      visibleToSpouses: item.visibleToSpouses === true
     }));
 
     merged.documents = merged.documents.map((item) => ({
       name: item.name || "",
       category: item.category || "",
       url: item.url || "",
-      notes: item.notes || ""
+      notes: item.notes || "",
+      type: item.type || "drive",
+      visibleToSpouses: item.visibleToSpouses === true
+    }));
+
+    merged.checklist = merged.checklist.map((item) => ({
+      title: item.title || "",
+      done: item.done === true,
+      notes: item.notes || "",
+      visibleToSpouses: item.visibleToSpouses === true
+    }));
+
+    merged.timeline = merged.timeline.map((item) => ({
+      time: item.time || "",
+      title: item.title || "",
+      place: item.place || "",
+      notes: item.notes || "",
+      visibleToSpouses: item.visibleToSpouses === true
     }));
 
     return merged;
@@ -1269,7 +1499,11 @@
       "deadlineSection",
       "supplierSection",
       "agendaSection",
-      "documentSection"
+      "documentSection",
+      "checklistSection",
+      "timelineSection",
+      "notesSection",
+      "backupSection"
     ];
 
     sectionIds.forEach((sectionId) => {
@@ -1393,6 +1627,7 @@
             <p>${item.supplier}</p>
             <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)}</p>
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
 
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
@@ -1458,7 +1693,8 @@
       paid: finalPaid,
       date: date || item.date,
       status: automaticStatus,
-      notes: notes || ""
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
     };
 
     updateTotalsFromDeadlines();
@@ -1486,6 +1722,8 @@
 
     const notes = prompt("Note:", "");
     if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
 
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
@@ -1515,7 +1753,8 @@
       paid: finalPaid,
       date: date || "01-08-2026",
       status: automaticStatus,
-      notes: notes || ""
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
     });
 
     updateTotalsFromDeadlines();
@@ -1567,6 +1806,7 @@
             <p>${item.place}</p>
             <p>Ore: ${item.time || "--:--"}</p>
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
           </div>
 
           <div class="row-right">
@@ -1611,12 +1851,15 @@
     const notes = prompt("Note:", "");
     if (notes === null) return;
 
+    const visibleToSpouses = confirm("Vuoi rendere questo appuntamento visibile agli sposi?");
+
     data.agenda.push({
       title: title || "Nuovo appuntamento",
       place: place || "Luogo non indicato",
       date: date || "",
       time: time || "",
-      notes: notes || ""
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
     });
 
     renderAgenda();
@@ -1641,12 +1884,15 @@
     const notes = prompt("Note:", item.notes);
     if (notes === null) return;
 
+    const visibleToSpouses = confirm("Vuoi rendere questo appuntamento visibile agli sposi?");
+
     data.agenda[index] = {
       title: title || item.title,
       place: place || item.place,
       date: date || item.date,
       time: time || item.time,
-      notes: notes || ""
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
     };
 
     renderAgenda();
@@ -2064,6 +2310,7 @@
             <h3>${item.name}</h3>
             <p>Categoria: ${item.category || "Non indicata"}</p>
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
 
             <p style="margin-top:7px;">
               <a 
@@ -2115,6 +2362,8 @@ function addDocument() {
   const notes = prompt("Note:", "");
   if (notes === null) return;
 
+  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
   const cleanUrl = url.trim();
 
   if (!cleanUrl) {
@@ -2135,7 +2384,8 @@ function addDocument() {
     category: category || "Google Drive",
     url: cleanUrl,
     notes: notes || "",
-    type: "drive"
+    type: "drive",
+    visibleToSpouses: visibleToSpouses
   });
 
   renderDocuments();
@@ -2157,6 +2407,8 @@ function addDocument() {
   const notes = prompt("Note:", item.notes);
   if (notes === null) return;
 
+  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
   const cleanUrl = url.trim();
 
   if (!cleanUrl) {
@@ -2177,7 +2429,8 @@ function addDocument() {
     category: category || "Google Drive",
     url: cleanUrl,
     notes: notes || "",
-    type: "drive"
+    type: "drive",
+    visibleToSpouses: visibleToSpouses
   };
 
   renderDocuments();
@@ -2277,6 +2530,11 @@ function addDocument() {
       ownerEmail: loggedEmail,
       ownerRole: loggedRole,
       accessCode: loggedCode,
+      projectStatus: "In lavorazione",
+      archived: false,
+      projectNotes: "",
+      checklist: [],
+      timeline: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -2334,6 +2592,11 @@ function addDocument() {
 
       snapshot.forEach((docSnap) => {
         const project = docSnap.data();
+
+        if (project.archived === true) {
+          return;
+        }
+
         const id = docSnap.id;
 
         const name = project.projectName || id;
@@ -2481,12 +2744,607 @@ function addDocument() {
     secondsEl.textContent = String(seconds).padStart(2, "0");
   }
 
+
+  function toggleChecklist() {
+    openSingleSection("checklistSection");
+  }
+
+  function renderChecklist() {
+    const list = document.getElementById("checklistList");
+    if (!list) return;
+
+    if (!data.checklist || data.checklist.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessuna voce checklist inserita.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare la prima attività.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = data.checklist.map((item, index) => {
+      return `
+        <div class="check-item">
+          <button class="check-toggle ${item.done ? "done" : ""}" type="button" onclick="toggleChecklistDone(${index})">
+            ${item.done ? "✓" : ""}
+          </button>
+
+          <div class="row-info">
+            <h3 style="${item.done ? "text-decoration:line-through; opacity:0.72;" : ""}">${item.title}</h3>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
+          </div>
+
+          <div class="row-right">
+            <strong>${item.done ? "Fatto" : "Da fare"}</strong>
+            <small>checklist</small>
+
+            <button class="edit-btn" type="button" onclick="editChecklistItem(${index})">
+              Modifica
+            </button>
+
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteChecklistItem(${index})"
+              style="
+                color:#8a3d2c;
+                border-color:rgba(138,61,44,0.35);
+                margin-left:4px;
+              "
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addChecklistItem() {
+    const title = prompt("Voce checklist:", "Nuova attività");
+    if (title === null) return;
+
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questa voce visibile agli sposi?");
+
+    data.checklist.push({
+      title: title || "Nuova attività",
+      done: false,
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    });
+
+    renderChecklist();
+    saveData();
+  }
+
+  function editChecklistItem(index) {
+    const item = data.checklist[index];
+
+    const title = prompt("Voce checklist:", item.title);
+    if (title === null) return;
+
+    const notes = prompt("Note:", item.notes || "");
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questa voce visibile agli sposi?");
+
+    data.checklist[index] = {
+      title: title || item.title,
+      done: item.done === true,
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    };
+
+    renderChecklist();
+    saveData();
+  }
+
+  function toggleChecklistDone(index) {
+    data.checklist[index].done = !data.checklist[index].done;
+    renderChecklist();
+    saveData();
+  }
+
+  function deleteChecklistItem(index) {
+    const item = data.checklist[index];
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questa voce checklist?\n\n" +
+      item.title
+    );
+
+    if (!confirmDelete) return;
+
+    data.checklist.splice(index, 1);
+
+    renderChecklist();
+    saveData();
+  }
+
+  function toggleTimeline() {
+    openSingleSection("timelineSection");
+  }
+
+  function renderTimeline() {
+    const list = document.getElementById("timelineList");
+    if (!list) return;
+
+    if (!data.timeline || data.timeline.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun momento inserito nella timeline.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare la scaletta del giorno evento.
+        </div>
+      `;
+      return;
+    }
+
+    const sortedTimeline = [...data.timeline].sort((a, b) => {
+      return String(a.time || "99:99").localeCompare(String(b.time || "99:99"));
+    });
+
+    list.innerHTML = sortedTimeline.map((item) => {
+      const realIndex = data.timeline.indexOf(item);
+
+      return `
+        <div class="deadline-row">
+          <div class="date-box">
+            <strong style="font-size:13px;">${item.time || "--:--"}</strong>
+            <small>ORA</small>
+          </div>
+
+          <div class="row-info">
+            <h3>${item.title}</h3>
+            <p>${item.place || "Luogo non indicato"}</p>
+            ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
+          </div>
+
+          <div class="row-right">
+            <strong>${item.time || "--:--"}</strong>
+            <small>timeline</small>
+
+            <button class="edit-btn" type="button" onclick="editTimelineItem(${realIndex})">
+              Modifica
+            </button>
+
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteTimelineItem(${realIndex})"
+              style="
+                color:#8a3d2c;
+                border-color:rgba(138,61,44,0.35);
+                margin-left:4px;
+              "
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addTimelineItem() {
+    const time = prompt("Ora formato HH:MM:", "15:00");
+    if (time === null) return;
+
+    const title = prompt("Momento evento:", "Cerimonia");
+    if (title === null) return;
+
+    const place = prompt("Luogo:", "");
+    if (place === null) return;
+
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questo momento visibile agli sposi?");
+
+    data.timeline.push({
+      time: time || "",
+      title: title || "Momento evento",
+      place: place || "",
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    });
+
+    renderTimeline();
+    saveData();
+  }
+
+  function editTimelineItem(index) {
+    const item = data.timeline[index];
+
+    const time = prompt("Ora formato HH:MM:", item.time);
+    if (time === null) return;
+
+    const title = prompt("Momento evento:", item.title);
+    if (title === null) return;
+
+    const place = prompt("Luogo:", item.place || "");
+    if (place === null) return;
+
+    const notes = prompt("Note:", item.notes || "");
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questo momento visibile agli sposi?");
+
+    data.timeline[index] = {
+      time: time || item.time,
+      title: title || item.title,
+      place: place || "",
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    };
+
+    renderTimeline();
+    saveData();
+  }
+
+  function deleteTimelineItem(index) {
+    const item = data.timeline[index];
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo momento dalla timeline?\n\n" +
+      item.time + " - " + item.title
+    );
+
+    if (!confirmDelete) return;
+
+    data.timeline.splice(index, 1);
+
+    renderTimeline();
+    saveData();
+  }
+
+  function toggleProjectNotes() {
+    openSingleSection("notesSection");
+    renderProjectNotes();
+  }
+
+  function renderProjectNotes() {
+    const input = document.getElementById("projectNotesInput");
+    if (!input) return;
+
+    input.value = data.projectNotes || "";
+  }
+
+  function saveProjectNotes() {
+    const input = document.getElementById("projectNotesInput");
+    if (!input) return;
+
+    data.projectNotes = input.value || "";
+
+    saveData();
+    alert("Note progetto salvate.");
+  }
+
+  function toggleBackup() {
+    openSingleSection("backupSection");
+  }
+
+  function buildProjectSummary() {
+    const lines = [];
+
+    lines.push("RIEPILOGO PROGETTO PIXELUP");
+    lines.push("");
+    lines.push("Evento: " + (data.projectName || ""));
+    lines.push("Data evento: " + (data.weddingDate || ""));
+    lines.push("Stato progetto: " + (data.projectStatus || "In lavorazione"));
+    lines.push("Totale: " + euro(Number(data.paid) + Number(data.due)));
+    lines.push("Saldato: " + euro(data.paid));
+    lines.push("Da saldare: " + euro(data.due));
+    lines.push("");
+
+    lines.push("SCADENZE");
+    if (data.deadlines && data.deadlines.length) {
+      data.deadlines.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.name + " - " + item.supplier);
+        lines.push("   Data: " + item.date + " | Totale: " + euro(item.total) + " | Pagato: " + euro(item.paid));
+        lines.push("   Visibilità sposi: " + (item.visibleToSpouses ? "Sì" : "No"));
+        if (item.notes) lines.push("   Note: " + item.notes);
+      });
+    } else {
+      lines.push("Nessuna scadenza inserita.");
+    }
+    lines.push("");
+
+    lines.push("FORNITORI");
+    if (data.suppliers && data.suppliers.length) {
+      data.suppliers.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.service + " - " + item.name);
+        lines.push("   Tel: " + item.phone + " | Email: " + item.email);
+      });
+    } else {
+      lines.push("Nessun fornitore inserito.");
+    }
+    lines.push("");
+
+    lines.push("AGENDA");
+    if (data.agenda && data.agenda.length) {
+      data.agenda.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.date + " " + item.time + " - " + item.title);
+        lines.push("   Luogo: " + item.place + " | Visibilità sposi: " + (item.visibleToSpouses ? "Sì" : "No"));
+        if (item.notes) lines.push("   Note: " + item.notes);
+      });
+    } else {
+      lines.push("Nessun appuntamento inserito.");
+    }
+    lines.push("");
+
+    lines.push("DOCUMENTI");
+    if (data.documents && data.documents.length) {
+      data.documents.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.name + " - " + item.category);
+        lines.push("   Link: " + item.url);
+        lines.push("   Visibilità sposi: " + (item.visibleToSpouses ? "Sì" : "No"));
+        if (item.notes) lines.push("   Note: " + item.notes);
+      });
+    } else {
+      lines.push("Nessun documento inserito.");
+    }
+    lines.push("");
+
+    lines.push("CHECKLIST");
+    if (data.checklist && data.checklist.length) {
+      data.checklist.forEach((item, index) => {
+        lines.push((index + 1) + ". [" + (item.done ? "X" : " ") + "] " + item.title);
+        lines.push("   Visibilità sposi: " + (item.visibleToSpouses ? "Sì" : "No"));
+        if (item.notes) lines.push("   Note: " + item.notes);
+      });
+    } else {
+      lines.push("Nessuna voce checklist inserita.");
+    }
+    lines.push("");
+
+    lines.push("TIMELINE EVENTO");
+    if (data.timeline && data.timeline.length) {
+      data.timeline.forEach((item, index) => {
+        lines.push((index + 1) + ". " + item.time + " - " + item.title);
+        lines.push("   Luogo: " + item.place + " | Visibilità sposi: " + (item.visibleToSpouses ? "Sì" : "No"));
+        if (item.notes) lines.push("   Note: " + item.notes);
+      });
+    } else {
+      lines.push("Nessun momento timeline inserito.");
+    }
+    lines.push("");
+
+    lines.push("NOTE INTERNE");
+    lines.push(data.projectNotes || "Nessuna nota interna inserita.");
+    lines.push("");
+    lines.push("Backup generato il: " + new Date().toLocaleString("it-IT"));
+
+    return lines.join("\\n");
+  }
+
+  function copyProjectSummary() {
+    const summary = buildProjectSummary();
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(summary)
+        .then(() => alert("Riepilogo copiato."))
+        .catch(() => prompt("Copia il riepilogo:", summary));
+    } else {
+      prompt("Copia il riepilogo:", summary);
+    }
+  }
+
+  function downloadProjectBackup() {
+    const summary = buildProjectSummary();
+    const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const fileName = "backup-" + makeProjectId(data.projectName || "progetto") + "-" + new Date().toISOString().slice(0, 10) + ".txt";
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
+
+  async function archiveCurrentProject() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri un progetto prima di archiviarlo.");
+      return;
+    }
+
+    const confirmArchive = confirm(
+      "Vuoi archiviare questo progetto?\\n\\n" +
+      "Non verrà eliminato definitivamente e potrai recuperarlo dai Progetti archiviati."
+    );
+
+    if (!confirmArchive) return;
+
+    data.archived = true;
+    data.projectStatus = "Archiviato";
+    data.updatedAt = new Date().toISOString();
+
+    await setDoc(eventRef, {
+      archived: true,
+      projectStatus: "Archiviato",
+      updatedAt: data.updatedAt
+    }, { merge: true });
+
+    alert("Progetto archiviato.");
+    window.location.href = "/dashboard/";
+  }
+
+  async function showArchivedProjects() {
+    const list = document.getElementById("projectsList");
+
+    list.innerHTML = `
+      <div style="
+        padding:16px 0;
+        text-align:center;
+        color:#7b6f62;
+        font-family:Arial,sans-serif;
+        font-size:13px;
+      ">
+        Caricamento progetti archiviati...
+      </div>
+    `;
+
+    try {
+      const q = query(
+        collection(db, "weddingEvents"),
+        where("ownerEmail", "==", loggedEmail)
+      );
+
+      const snapshot = await getDocs(q);
+
+      const archivedProjects = [];
+
+      snapshot.forEach((docSnap) => {
+        const project = docSnap.data();
+
+        if (project.archived === true) {
+          archivedProjects.push({
+            id: docSnap.id,
+            ...project
+          });
+        }
+      });
+
+      if (!archivedProjects.length) {
+        list.innerHTML = `
+          <div style="
+            padding:16px 0;
+            text-align:center;
+            color:#7b6f62;
+            font-family:Arial,sans-serif;
+            font-size:13px;
+          ">
+            Nessun progetto archiviato.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = "";
+
+      archivedProjects.forEach((project) => {
+        const id = project.id;
+        const name = project.projectName || id;
+        const paid = Number(project.paid) || 0;
+        const due = Number(project.due) || 0;
+        const total = paid + due;
+
+        list.innerHTML += `
+          <div class="project-item">
+            <div>
+              <h4>${name}</h4>
+              <p>Archiviato · Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
+            </div>
+
+            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
+              <a href="/dashboard/?event=${id}">
+                Apri
+              </a>
+
+              <button 
+                type="button" 
+                onclick="restoreProject('${id}')"
+                style="
+                  border:1px solid rgba(77,90,58,0.35);
+                  background:rgba(255,252,246,0.95);
+                  color:#4d5a3a;
+                  border-radius:999px;
+                  padding:7px 11px;
+                  font-family:Arial,sans-serif;
+                  font-size:12px;
+                  text-transform:uppercase;
+                "
+              >
+                Ripristina
+              </button>
+
+              <button 
+                type="button" 
+                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\\\'")}')"
+                style="
+                  border:1px solid rgba(138,61,44,0.35);
+                  background:rgba(255,252,246,0.95);
+                  color:#8a3d2c;
+                  border-radius:999px;
+                  padding:7px 11px;
+                  font-family:Arial,sans-serif;
+                  font-size:12px;
+                  text-transform:uppercase;
+                "
+              >
+                Elimina
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    } catch (error) {
+      console.error("Errore caricamento archiviati:", error);
+      list.innerHTML = `
+        <div style="
+          padding:16px 0;
+          text-align:center;
+          color:#8a3d2c;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+        ">
+          Errore nel caricamento dei progetti archiviati.
+        </div>
+      `;
+    }
+  }
+
+  async function restoreProject(projectId) {
+    const confirmRestore = confirm("Vuoi ripristinare questo progetto tra gli attivi?");
+    if (!confirmRestore) return;
+
+    try {
+      await setDoc(doc(db, "weddingEvents", projectId), {
+        archived: false,
+        projectStatus: "In lavorazione",
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      await showArchivedProjects();
+      alert("Progetto ripristinato.");
+    } catch (error) {
+      console.error("Errore ripristino progetto:", error);
+      alert("Errore durante il ripristino del progetto.");
+    }
+  }
+
   function renderAll() {
     renderSummary();
     renderDeadlines();
     renderSuppliers();
     renderAgenda();
     renderDocuments();
+    renderChecklist();
+    renderTimeline();
+    renderProjectNotes();
     updateCountdown();
   }
 
@@ -2503,9 +3361,15 @@ function addDocument() {
           return;
         }
 
+        if (!projectOwner) {
+          alert("Questo progetto non ha un proprietario assegnato. Controlla Firebase prima di modificarlo.");
+          window.location.href = "/dashboard/";
+          return;
+        }
+
         data = normalizeData({
           ...remoteData,
-          ownerEmail: projectOwner || loggedEmail
+          ownerEmail: projectOwner
         });
 
         const needsInitialData =
@@ -2514,25 +3378,24 @@ function addDocument() {
           remoteData.budget === undefined ||
           remoteData.due === undefined ||
           remoteData.paid === undefined ||
-          remoteData.ownerEmail === undefined ||
+          false ||
           !Array.isArray(remoteData.deadlines) ||
           !Array.isArray(remoteData.suppliers) ||
           !Array.isArray(remoteData.agenda) ||
-          !Array.isArray(remoteData.documents);
+          !Array.isArray(remoteData.documents) ||
+          !Array.isArray(remoteData.checklist) ||
+          !Array.isArray(remoteData.timeline) ||
+          remoteData.projectNotes === undefined ||
+          remoteData.archived === undefined ||
+          remoteData.projectStatus === undefined;
 
         if (needsInitialData) {
           await setDoc(eventRef, data, { merge: true });
         }
       } else {
-        data = structuredClone(defaultData);
-        data.projectName = "Nuovo progetto";
-        data.ownerEmail = loggedEmail;
-        data.ownerRole = loggedRole;
-        data.accessCode = loggedCode;
-        data.createdAt = new Date().toISOString();
-        data.updatedAt = new Date().toISOString();
-
-        await setDoc(eventRef, data, { merge: true });
+        alert("Questo progetto non esiste o è stato eliminato. Apri un progetto dalla lista oppure creane uno nuovo.");
+        window.location.href = "/dashboard/";
+        return;
       }
 
       firebaseReady = true;
@@ -2541,7 +3404,17 @@ function addDocument() {
   } else {
     firebaseReady = false;
     data = structuredClone(defaultData);
-    renderAll();
+
+    const hero = document.querySelector(".hero");
+    const content = document.querySelector(".content");
+
+    if (hero) {
+      hero.style.display = "none";
+    }
+
+    if (content) {
+      content.style.display = "none";
+    }
 
     setTimeout(() => {
       const menu = document.getElementById("projectMenu");
@@ -2578,4 +3451,21 @@ function addDocument() {
   window.copySpousesLink = copySpousesLink;
   window.editEventInfo = editEventInfo;
   window.useSavedSupplier = useSavedSupplier;
+  window.toggleChecklist = toggleChecklist;
+  window.addChecklistItem = addChecklistItem;
+  window.editChecklistItem = editChecklistItem;
+  window.toggleChecklistDone = toggleChecklistDone;
+  window.deleteChecklistItem = deleteChecklistItem;
+  window.toggleTimeline = toggleTimeline;
+  window.addTimelineItem = addTimelineItem;
+  window.editTimelineItem = editTimelineItem;
+  window.deleteTimelineItem = deleteTimelineItem;
+  window.toggleProjectNotes = toggleProjectNotes;
+  window.saveProjectNotes = saveProjectNotes;
+  window.toggleBackup = toggleBackup;
+  window.copyProjectSummary = copyProjectSummary;
+  window.downloadProjectBackup = downloadProjectBackup;
+  window.archiveCurrentProject = archiveCurrentProject;
+  window.showArchivedProjects = showArchivedProjects;
+  window.restoreProject = restoreProject;
 </script>
