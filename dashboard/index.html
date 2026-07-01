@@ -1206,7 +1206,7 @@
   const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
   const loggedRole = String(localStorage.getItem("pixelup_role") || "cliente").trim().toLowerCase();
   const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
-  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 1);
+  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 0);
 
   if (!hasAccess || !loggedEmail) {
     window.location.href = "/dasgboardemo/accedi.html";
