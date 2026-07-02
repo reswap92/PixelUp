@@ -649,6 +649,11 @@
   background: rgba(255, 252, 246, 0.92);
   color: var(--green-dark);
 }
+    .project-main-btn.logout {
+  background: rgba(138, 61, 44, 0.10);
+  color: #8a3d2c;
+  border-color: rgba(138, 61, 44, 0.35);
+}
 
 .projects-list {
   margin-top: 14px;
@@ -1018,6 +1023,9 @@
     <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
       Progetti archiviati
     </button>
+    <button class="project-main-btn logout" type="button" onclick="logoutPixelUp()">
+  Esci
+</button>
 
     <div class="projects-list" id="projectsList"></div>
 
@@ -4532,4 +4540,17 @@ function addDocument() {
   window.archiveCurrentProject = archiveCurrentProject;
   window.showArchivedProjects = showArchivedProjects;
   window.restoreProject = restoreProject;
+  window.logoutPixelUp = function () {
+  const confirmLogout = confirm("Vuoi uscire dalla dashboard PixelUp?");
+
+  if (!confirmLogout) return;
+
+  localStorage.removeItem("pixelup_access");
+  localStorage.removeItem("pixelup_email");
+  localStorage.removeItem("pixelup_role");
+  localStorage.removeItem("pixelup_code");
+  localStorage.removeItem("pixelup_maxProjects");
+
+  window.location.href = "/dasgboardemo/accedi.html";
+};
 </script>
