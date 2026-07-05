@@ -559,7 +559,7 @@
     }
 
     .ducks-track {
-      height: 246px;
+      min-height: 246px;
       border-radius: 22px;
       background:
         linear-gradient(180deg, rgba(71,154,204,0.35), rgba(37,102,145,0.62)),
@@ -568,6 +568,22 @@
       overflow: hidden;
       position: relative;
       margin: 12px 0;
+    }
+
+    .race-timer {
+      display: grid;
+      place-items: center;
+      min-height: 42px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(240,204,115,0.28);
+      color: #f0cc73;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 12px;
     }
 
     .finish-line {
@@ -588,7 +604,8 @@
       display: grid;
       place-items: center;
       font-size: 32px;
-      transition: left 10s cubic-bezier(.16,.76,.24,1);
+      transition: none;
+      will-change: left, top, transform;
       filter: drop-shadow(0 8px 8px rgba(0,0,0,.22));
     }
 
@@ -609,11 +626,14 @@
       border: 1px solid rgba(0,0,0,.18);
     }
 
-    .duck.d1 { top: 20px; }
-    .duck.d2 { top: 66px; }
-    .duck.d3 { top: 112px; }
-    .duck.d4 { top: 158px; }
-    .duck.d5 { top: 204px; }
+    .duck.racing {
+      animation: duckBob 0.45s ease-in-out infinite alternate;
+    }
+
+    @keyframes duckBob {
+      from { transform: translateY(-2px) rotate(-2deg); }
+      to { transform: translateY(3px) rotate(3deg); }
+    }
 
     .leaderboard {
       display: grid;
@@ -937,13 +957,10 @@
             La gara assegna le squadre rimaste in base alla classifica.
           </p>
 
-          <div class="ducks-track">
+          <div class="race-timer" id="raceTimer">Pronto · 10.0 secondi</div>
+
+          <div class="ducks-track" id="duckTrack">
             <div class="finish-line"></div>
-            <div class="duck d1" id="duck1">🦆<small>1</small></div>
-            <div class="duck d2" id="duck2">🦆<small>2</small></div>
-            <div class="duck d3" id="duck3">🦆<small>3</small></div>
-            <div class="duck d4" id="duck4">🦆<small>4</small></div>
-            <div class="duck d5" id="duck5">🦆<small>5</small></div>
           </div>
 
           <button class="submit" type="button" onclick="runDuckRace()">Avvia Race Duck</button>
@@ -1027,11 +1044,26 @@
 1 box Merlin
 1 box Stadium Club</textarea>
 
+            <label>Squadre e prezzi</label>
+            <textarea id="teamsConfig" placeholder="Una squadra per riga. Esempio: Roma - 30">Roma - 30
+Milan - 45
+Inter - 45
+Juventus - 45
+Napoli - 40
+Real Madrid - 80
+Barcellona - 70
+Manchester City - 75
+PSG - 65
+Benfica - 18</textarea>
+
+            <label>Numero paperelle in gara</label>
+            <input id="duckCountInput" type="number" min="1" max="30" value="5">
+
             <label>Costo paperella</label>
             <input id="duckPrice" type="text" value="10">
 
-            <label>Ordine squadre premio paperelle</label>
-            <textarea id="prizeOrder">Napoli
+            <label>Squadre classifica Race Duck</label>
+            <textarea id="prizeOrder" placeholder="Una squadra premio per riga, in ordine di classifica">Napoli
 Lazio
 Benfica
 PSV
@@ -1108,8 +1140,14 @@ Ajax</textarea>
     let ducks = [
       { number: 1, buyer: "Andrea" },
       { number: 2, buyer: "Sara" },
-      { number: 3, buyer: "Michele" }
+      { number: 3, buyer: "Michele" },
+      { number: 4, buyer: "Paperella libera" },
+      { number: 5, buyer: "Paperella libera" }
     ];
+
+    let duckCount = 5;
+    let raceAnimationId = null;
+    let raceRunning = false;
 
     let hits = [
       { team: "Milan", player: "Leão", type: "Base", owner: "Marco", note: "Topps Chrome", image: "" },
@@ -1258,14 +1296,105 @@ Ajax</textarea>
       showToast("Squadra aggiunta.");
     }
 
+    function getDuckPrice() {
+      const input = document.getElementById("duckPrice");
+      return Number(String(input ? input.value : 10).replace(",", ".")) || 10;
+    }
+
+    function syncDuckCount(newCount) {
+      const finalCount = Math.max(1, Math.min(Number(newCount) || 5, 30));
+      duckCount = finalCount;
+
+      while (ducks.length < duckCount) {
+        ducks.push({ number: ducks.length + 1, buyer: "Paperella libera" });
+      }
+
+      if (ducks.length > duckCount) {
+        ducks = ducks.slice(0, duckCount);
+      }
+
+      ducks = ducks.map((duck, index) => ({
+        number: index + 1,
+        buyer: duck.buyer || "Paperella libera"
+      }));
+
+      const countInput = document.getElementById("duckCountInput");
+      if (countInput) countInput.value = duckCount;
+
+      renderDuckTrack();
+      renderDucks();
+      duckResults = [];
+      renderDuckResults();
+    }
+
+    function renderDuckTrack() {
+      const track = document.getElementById("duckTrack");
+      if (!track) return;
+
+      const laneHeight = 46;
+      const topPadding = 14;
+      const bottomPadding = 16;
+      const trackHeight = Math.max(246, topPadding + bottomPadding + (duckCount * laneHeight));
+      track.style.height = trackHeight + "px";
+
+      track.innerHTML = `<div class="finish-line"></div>` + ducks.map((duck, index) => {
+        const top = topPadding + (index * laneHeight);
+        return `<div class="duck" id="duck${duck.number}" style="top:${top}px; left:12px;">🦆<small>${duck.number}</small></div>`;
+      }).join("");
+
+      const timer = document.getElementById("raceTimer");
+      if (timer) timer.textContent = "Pronto · 10.0 secondi";
+    }
+
+    function parseTeamsConfig() {
+      const field = document.getElementById("teamsConfig");
+      if (!field) return;
+
+      const existingByName = new Map(
+        teams.map((team) => [team.name.trim().toLowerCase(), team])
+      );
+
+      const parsed = field.value
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const parts = line.split(/[-;|,]/);
+          const name = String(parts[0] || "").trim();
+          const priceText = String(parts[1] || "0").trim();
+          const previous = existingByName.get(name.toLowerCase());
+
+          return {
+            name: name || "Squadra",
+            price: Number(priceText.replace("€", "").replace(",", ".")) || 0,
+            buyer: previous ? previous.buyer : "",
+            payment: previous ? previous.payment : ""
+          };
+        });
+
+      if (!parsed.length) {
+        showToast("Inserisci almeno una squadra nella configurazione admin.");
+        return;
+      }
+
+      teams = parsed;
+    }
+
+    function updateTeamsConfigField() {
+      const field = document.getElementById("teamsConfig");
+      if (!field) return;
+      field.value = teams.map((team) => `${team.name} - ${team.price}`).join("\n");
+    }
+
     function renderDucks() {
       const list = document.getElementById("ducksList");
       const count = document.getElementById("ducksCount");
+      const price = getDuckPrice();
 
       count.textContent = ducks.length;
 
       if (!ducks.length) {
-        list.innerHTML = `<div class="leader-row"><strong>--</strong><span>Nessuna paperella acquistata.</span><span>€ 0</span></div>`;
+        list.innerHTML = `<div class="leader-row"><strong>--</strong><span>Nessuna paperella impostata.</span><span>€ 0</span></div>`;
         return;
       }
 
@@ -1274,54 +1403,187 @@ Ajax</textarea>
           <div class="leader-row">
             <strong>#${duck.number}</strong>
             <span>${duck.buyer}</span>
-            <span>€ 10</span>
+            <span>${euro(price)}</span>
           </div>
         `;
       }).join("");
     }
 
     function buyDuckPrompt() {
-      const nextNumber = ducks.length + 1;
-      const buyer = prompt("Nome / nickname per paperella n. " + nextNumber + ":", "Vincenzo");
+      const freeDuck = ducks.find((duck) => !duck.buyer || duck.buyer === "Paperella libera");
+
+      if (!freeDuck) {
+        showToast("Tutte le paperelle impostate dall'admin sono già assegnate.");
+        return;
+      }
+
+      const buyer = prompt("Nome / nickname per paperella n. " + freeDuck.number + ":", "Vincenzo");
       if (buyer === null) return;
 
-      ducks.push({
-        number: nextNumber,
-        buyer: buyer || "Partecipante"
-      });
+      freeDuck.buyer = buyer || "Partecipante";
 
       renderDucks();
-      showToast("Paperella #" + nextNumber + " acquistata.");
+      showToast("Paperella #" + freeDuck.number + " assegnata.");
     }
 
     function runDuckRace() {
-      const duckEls = [1,2,3,4,5].map((num) => document.getElementById("duck" + num));
-      const rankings = [1,2,3,4,5].sort(() => Math.random() - 0.5);
+      if (raceRunning) {
+        showToast("Race Duck è già in corso.");
+        return;
+      }
 
+      syncDuckCount(duckCount);
+
+      const track = document.getElementById("duckTrack");
+      const timer = document.getElementById("raceTimer");
+      const duration = 10000;
+      const duckEls = ducks.map((duck) => document.getElementById("duck" + duck.number)).filter(Boolean);
+
+      if (!track || !duckEls.length) return;
+
+      if (raceAnimationId) {
+        cancelAnimationFrame(raceAnimationId);
+      }
+
+      raceRunning = true;
       duckResults = [];
       renderDuckResults();
 
+      const maxLeft = Math.max(120, track.clientWidth - 86);
+      const startLeft = 12;
+      const finishLeftBase = Math.max(startLeft + 80, maxLeft - 22);
+
+      const rankings = ducks.map((duck) => duck.number);
+
+      // Ordine finale casuale, ma senza "sprint" artificiale: ogni paperella corre per 10 secondi.
+      for (let i = rankings.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rankings[i], rankings[j]] = [rankings[j], rankings[i]];
+      }
+
+      const finishMap = new Map();
+      rankings.forEach((num, index) => {
+        finishMap.set(num, finishLeftBase - (index * 16));
+      });
+
+      function smoothstep(x) {
+        return x * x * (3 - (2 * x));
+      }
+
+      function interpolatePoints(points, t) {
+        if (t <= points[0].t) return points[0].p;
+        for (let i = 1; i < points.length; i++) {
+          if (t <= points[i].t) {
+            const prev = points[i - 1];
+            const next = points[i];
+            const local = (t - prev.t) / (next.t - prev.t);
+            const smooth = smoothstep(local);
+            return prev.p + ((next.p - prev.p) * smooth);
+          }
+        }
+        return points[points.length - 1].p;
+      }
+
+      const laneData = ducks.map((duck, index) => {
+        const duckEl = document.getElementById("duck" + duck.number);
+        const top = Number((duckEl.style.top || "0").replace("px", "")) || (14 + index * 46);
+        const targetProgress = (finishMap.get(duck.number) - startLeft) / (maxLeft - startLeft);
+        const seed = Math.random() * 1000;
+
+        // Percorso realistico: punti intermedi diversi, sempre progressivi.
+        // Non c'è cambio brusco finale; la paperella corre continuamente per tutti i 10 secondi.
+        let p18 = 0.13 + Math.random() * 0.11;
+        let p36 = p18 + 0.13 + Math.random() * 0.12;
+        let p54 = p36 + 0.12 + Math.random() * 0.13;
+        let p72 = p54 + 0.11 + Math.random() * 0.12;
+        let p88 = p72 + 0.08 + Math.random() * 0.10;
+
+        const cap = Math.max(0.72, targetProgress - 0.035);
+        p18 = Math.min(p18, cap * 0.38);
+        p36 = Math.min(Math.max(p36, p18 + 0.06), cap * 0.58);
+        p54 = Math.min(Math.max(p54, p36 + 0.06), cap * 0.74);
+        p72 = Math.min(Math.max(p72, p54 + 0.05), cap * 0.88);
+        p88 = Math.min(Math.max(p88, p72 + 0.04), cap * 0.97);
+
+        return {
+          number: duck.number,
+          startTop: top,
+          phase: seed,
+          sway: 2.4 + Math.random() * 2.2,
+          targetProgress,
+          points: [
+            { t: 0.00, p: 0.00 },
+            { t: 0.18, p: p18 },
+            { t: 0.36, p: p36 },
+            { t: 0.54, p: p54 },
+            { t: 0.72, p: p72 },
+            { t: 0.88, p: p88 },
+            { t: 1.00, p: targetProgress }
+          ]
+        };
+      });
+
       duckEls.forEach((duck) => {
-        duck.style.transition = "none";
-        duck.style.left = "12px";
+        duck.classList.remove("racing");
+        duck.style.left = startLeft + "px";
       });
 
       // forza il reset grafico: ogni riavvio riparte dall'inizio
-      void document.querySelector(".ducks-track").offsetWidth;
+      void track.offsetWidth;
 
-      duckEls.forEach((duck) => {
-        duck.style.transition = "left 10s cubic-bezier(.16,.76,.24,1)";
-      });
+      duckEls.forEach((duck) => duck.classList.add("racing"));
+      if (timer) timer.textContent = "Race Duck in corso · 10.0 secondi";
 
-      setTimeout(() => {
-        rankings.forEach((num, index) => {
-          const duck = document.getElementById("duck" + num);
-          const finish = 78 - (index * 8);
-          duck.style.left = finish + "%";
+      const startTime = performance.now();
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        const secondsLeft = Math.max(0, (duration - elapsed) / 1000);
+
+        if (timer) {
+          timer.textContent = t < 1
+            ? "Race Duck in corso · " + secondsLeft.toFixed(1) + " secondi"
+            : "Race Duck concluso · 0.0 secondi";
+        }
+
+        laneData.forEach((lane) => {
+          const duck = document.getElementById("duck" + lane.number);
+          if (!duck) return;
+
+          let progress = interpolatePoints(lane.points, t);
+
+          // Movimento naturale: piccole onde durante tutta la corsa, mai uno sprint improvviso.
+          // L'envelope si chiude a 0 all'inizio e alla fine, quindi il traguardo resta preciso.
+          const envelope = Math.sin(Math.PI * t);
+          const waveA = Math.sin((t * 18) + lane.phase) * 0.028 * envelope;
+          const waveB = Math.cos((t * 31) + (lane.phase / 2)) * 0.014 * envelope;
+          const microStops = Math.sin((t * 8) + lane.phase) * 0.010 * envelope;
+
+          progress = progress + waveA + waveB - microStops;
+          progress = Math.max(0, Math.min(lane.targetProgress, progress));
+
+          // Negli ultimi secondi continua la corsa lineare verso il traguardo, senza scatto finale.
+          if (t > 0.88) {
+            const baseEnd = interpolatePoints(lane.points, t);
+            const naturalWave = Math.sin((t * 14) + lane.phase) * 0.006 * (1 - t);
+            progress = Math.max(0, Math.min(lane.targetProgress, baseEnd + naturalWave));
+          }
+
+          const wobbleY = Math.sin((t * 24) + lane.phase) * lane.sway;
+          const left = startLeft + ((maxLeft - startLeft) * progress);
+
+          duck.style.left = Math.max(startLeft, left) + "px";
+          duck.style.top = (lane.startTop + wobbleY) + "px";
         });
-      }, 120);
 
-      setTimeout(() => {
+        if (t < 1) {
+          raceAnimationId = requestAnimationFrame(animate);
+          return;
+        }
+
+        duckEls.forEach((duck) => duck.classList.remove("racing"));
+
         const prizeOrder = document.getElementById("prizeOrder").value
           .split("\n")
           .map((line) => line.trim())
@@ -1338,8 +1600,11 @@ Ajax</textarea>
         });
 
         renderDuckResults();
-        showToast("Race Duck completato. Classifica generata.");
-      }, 10300);
+        raceRunning = false;
+        showToast("Race Duck completato in 10 secondi precisi. Classifica generata.");
+      }
+
+      raceAnimationId = requestAnimationFrame(animate);
     }
 
     function renderDuckResults() {
@@ -1506,9 +1771,19 @@ Ajax</textarea>
 
     document.getElementById("eventForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      showToast("Configurazione evento aggiornata.");
+
+      parseTeamsConfig();
+      const requestedDuckCount = Number(document.getElementById("duckCountInput").value || 5);
+      syncDuckCount(requestedDuckCount);
+      updateTeamsConfigField();
+      renderTeams();
+      renderCards();
+
+      showToast("Configurazione admin aggiornata: squadre, prezzi, numero paperelle e classifica Race Duck.");
     });
 
+    updateTeamsConfigField();
+    syncDuckCount(duckCount);
     renderTeams();
     renderDucks();
     renderDuckResults();
