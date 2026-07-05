@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Prova Interattiva | PixelUp Break Live</title>
+  <title>Race Duck | PixelUp Break Live</title>
 
   <style>
     :root {
@@ -262,7 +262,7 @@
       border-radius: 22px;
       padding: 14px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 9px;
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,0.65);
@@ -588,7 +588,7 @@
       display: grid;
       place-items: center;
       font-size: 32px;
-      transition: left 2.2s cubic-bezier(.16,.76,.24,1);
+      transition: left 10s cubic-bezier(.16,.76,.24,1);
       filter: drop-shadow(0 8px 8px rgba(0,0,0,.22));
     }
 
@@ -680,6 +680,34 @@
       text-align: center;
     }
 
+
+    .section-title-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .card-photo {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 13px;
+      border: 1px solid rgba(215,170,69,0.20);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    body.client-view .admin-only {
+      display: none !important;
+    }
+
+    body.client-view .demo-banner {
+      background: linear-gradient(135deg, #2f6f4e, #75b087);
+      color: #ffffff;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -767,12 +795,12 @@
 
   <main class="app">
     <div class="demo-banner">
-      Prova interattiva · puoi comprare squadre, paperelle e registrare carte, ma nulla viene salvato.
+      Race Duck · acquisto squadre, diretta live e registro carte.
     </div>
 
     <section class="hero">
       <div class="topbar">
-        <button class="round-btn" type="button" onclick="showToast('Menu di prova: qui si potrebbero aprire eventi, regole e storico break.')">☰</button>
+        <button class="round-btn" type="button" onclick="showToast('Menu Race Duck: qui puoi gestire squadre, diretta, carte e regole.')">☰</button>
         <div class="brand">PixelUp Break</div>
         <button class="round-btn" type="button" onclick="showSection('live')">▶</button>
       </div>
@@ -782,17 +810,17 @@
         <div class="live-pill"><span class="live-dot"></span> Live Break Topps</div>
         <h1>Champions <span>Box Break</span></h1>
         <p>
-          Compra la tua squadra, partecipa all’assegnazione paperelle,
-          segui la diretta e controlla le carte uscite per ogni team.
+          Scegli la tua squadra, segui la live, partecipa a Race Duck
+          e controlla le carte uscite per ogni team.
         </p>
 
         <div class="hero-buttons">
           <button class="btn btn-primary" type="button" onclick="showSection('teams')">
-            Compra squadra
+            Squadre
           </button>
 
-          <button class="btn btn-secondary" type="button" onclick="showSection('ducks')">
-            Gioco paperelle
+          <button class="btn btn-secondary admin-only" type="button" onclick="showSection('ducks')">
+            Race Duck
           </button>
         </div>
       </div>
@@ -809,14 +837,6 @@
           <strong id="availableCount">0</strong>
           <small>Disponibili</small>
         </div>
-        <div class="stat">
-          <strong id="totalMoney">€ 0</strong>
-          <small>Totale</small>
-        </div>
-        <div class="stat">
-          <strong id="hitsCount">0</strong>
-          <small>Carte</small>
-        </div>
       </div>
 
       <div class="section-divider"><span>⚽</span></div>
@@ -828,10 +848,10 @@
           <small>Prezzi e acquisti</small>
         </button>
 
-        <button class="action-card" type="button" onclick="showSection('ducks')">
+        <button class="action-card admin-only" type="button" onclick="showSection('ducks')">
           <span>🦆</span>
-          <strong>Paperelle</strong>
-          <small>Assegnazione random</small>
+          <strong>Race Duck</strong>
+          <small>Gara random 10 secondi</small>
         </button>
 
         <button class="action-card" type="button" onclick="showSection('live')">
@@ -840,13 +860,13 @@
           <small>Link live Facebook</small>
         </button>
 
-        <button class="action-card" type="button" onclick="showSection('cards')">
+        <button class="action-card admin-only" type="button" onclick="showSection('cards')">
           <span>🃏</span>
           <strong>Carte</strong>
           <small>Registro uscite</small>
         </button>
 
-        <button class="action-card" type="button" onclick="showSection('admin')">
+        <button class="action-card admin-only" type="button" onclick="showSection('admin')">
           <span>⚙</span>
           <strong>Admin</strong>
           <small>Configura evento</small>
@@ -862,12 +882,12 @@
       <div class="section show" id="teams">
         <div class="card">
           <div class="section-title">
-            <h2>Compra squadra</h2>
-            <button type="button" onclick="addTeamPrompt()">+ Squadra</button>
+            <h2>Squadre</h2>
+            <button class="admin-only" type="button" onclick="addTeamPrompt()">+ Squadra</button>
           </div>
 
           <div class="summary-box">
-            Le squadre vendute vengono bloccate. In questa prova non parte nessun pagamento reale.
+            Le squadre vendute vengono bloccate: quando un cliente conferma nome e pagamento, la squadra risulta occupata e scala dalle disponibili.
           </div>
 
           <div class="team-list" id="teamsList"></div>
@@ -878,7 +898,7 @@
         <div class="card">
           <div class="section-title">
             <h2>Conferma acquisto</h2>
-            <span>prova</span>
+            <span>acquisto</span>
           </div>
 
           <form class="form-grid" id="buyForm">
@@ -900,16 +920,16 @@
             <label>Note</label>
             <textarea id="buyNotes" placeholder="Es. pagamento inviato, nickname Facebook, ecc."></textarea>
 
-            <button class="submit" type="submit">Blocca squadra di prova</button>
+            <button class="submit" type="submit">Conferma acquisto</button>
           </form>
         </div>
       </div>
 
-      <div class="section" id="ducks">
+      <div class="section admin-only" id="ducks">
         <div class="card dark">
           <div class="section-title">
-            <h2>Gioco paperelle</h2>
-            <button type="button" onclick="buyDuckPrompt()">+ Paperella</button>
+            <h2>Race Duck</h2>
+            <button class="admin-only" type="button" onclick="buyDuckPrompt()">+ Paperella</button>
           </div>
 
           <p style="font-family:Arial,sans-serif;color:rgba(255,255,255,.82);font-size:13px;line-height:1.45;">
@@ -926,7 +946,7 @@
             <div class="duck d5" id="duck5">🦆<small>5</small></div>
           </div>
 
-          <button class="submit" type="button" onclick="runDuckRace()">Avvia gara di prova</button>
+          <button class="submit" type="button" onclick="runDuckRace()">Avvia Race Duck</button>
         </div>
 
         <div class="card">
@@ -973,11 +993,14 @@
         </div>
       </div>
 
-      <div class="section" id="cards">
+      <div class="section admin-only" id="cards">
         <div class="card">
           <div class="section-title">
             <h2>Carte uscite</h2>
-            <button type="button" onclick="addCardPrompt()">+ Carta</button>
+            <div class="section-title-actions">
+              <button type="button" onclick="addCardPrompt()">+ Carta</button>
+              <button type="button" onclick="uploadCardPhoto()">Carica foto</button>
+            </div>
           </div>
 
           <div class="summary-box">
@@ -988,11 +1011,11 @@
         </div>
       </div>
 
-      <div class="section" id="admin">
+      <div class="section admin-only" id="admin">
         <div class="card">
           <div class="section-title">
             <h2>Admin evento</h2>
-            <span>configura</span>
+            <button type="button" onclick="copyClientLink()">Copia link clienti</button>
           </div>
 
           <form class="form-grid" id="eventForm">
@@ -1064,6 +1087,9 @@ Ajax</textarea>
   <div class="toast" id="toast"></div>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const isClientView = urlParams.get("view") === "cliente";
+
     let teams = [
       { name: "Roma", price: 30, buyer: "", payment: "" },
       { name: "Milan", price: 45, buyer: "Marco", payment: "PayPal" },
@@ -1086,8 +1112,8 @@ Ajax</textarea>
     ];
 
     let hits = [
-      { team: "Milan", player: "Leão", type: "Base", owner: "Marco", note: "Topps Chrome" },
-      { team: "Real Madrid", player: "Bellingham", type: "Insert", owner: "Luca", note: "Merlin" }
+      { team: "Milan", player: "Leão", type: "Base", owner: "Marco", note: "Topps Chrome", image: "" },
+      { team: "Real Madrid", player: "Bellingham", type: "Insert", owner: "Luca", note: "Merlin", image: "" }
     ];
 
     let duckResults = [];
@@ -1110,6 +1136,11 @@ Ajax</textarea>
     }
 
     function showSection(id) {
+      if (isClientView && ["ducks", "cards", "admin"].includes(id)) {
+        showToast("Area riservata all'admin dell'evento.");
+        return;
+      }
+
       const target = document.getElementById(id);
       if (!target) return;
 
@@ -1127,12 +1158,9 @@ Ajax</textarea>
     function renderStats() {
       const sold = teams.filter((team) => team.buyer).length;
       const available = teams.length - sold;
-      const total = teams.filter((team) => team.buyer).reduce((sum, team) => sum + Number(team.price || 0), 0);
 
       document.getElementById("soldCount").textContent = sold;
       document.getElementById("availableCount").textContent = available;
-      document.getElementById("totalMoney").textContent = euro(total);
-      document.getElementById("hitsCount").textContent = hits.length;
     }
 
     function renderTeams() {
@@ -1170,6 +1198,11 @@ Ajax</textarea>
       selectedTeamIndex = index;
       const team = teams[index];
 
+      if (team.buyer) {
+        showToast("Questa squadra è già stata venduta.");
+        return;
+      }
+
       document.getElementById("buyTeam").value = team.name;
       document.getElementById("buyPrice").value = euro(team.price);
       document.getElementById("buyerName").value = "";
@@ -1187,14 +1220,21 @@ Ajax</textarea>
       const payment = document.getElementById("paymentMethod").value;
 
       if (!buyer) {
-        showToast("Inserisci nome o nickname per bloccare la squadra.");
+        showToast("Inserisci nome o nickname per confermare la squadra.");
+        return;
+      }
+
+      if (teams[selectedTeamIndex].buyer) {
+        showToast("Questa squadra non è più disponibile.");
+        renderTeams();
+        showSection("teams");
         return;
       }
 
       teams[selectedTeamIndex].buyer = buyer;
       teams[selectedTeamIndex].payment = payment;
 
-      showToast(teams[selectedTeamIndex].name + " bloccata per " + buyer + ". Pagamento di prova: " + payment + ".");
+      showToast(teams[selectedTeamIndex].name + " acquistata da " + buyer + " con " + payment + ". Squadre disponibili aggiornate.");
       renderTeams();
       renderCards();
       showSection("teams");
@@ -1215,7 +1255,7 @@ Ajax</textarea>
       });
 
       renderTeams();
-      showToast("Squadra aggiunta solo in questa prova.");
+      showToast("Squadra aggiunta.");
     }
 
     function renderDucks() {
@@ -1251,15 +1291,26 @@ Ajax</textarea>
       });
 
       renderDucks();
-      showToast("Paperella #" + nextNumber + " acquistata in modalità prova.");
+      showToast("Paperella #" + nextNumber + " acquistata.");
     }
 
     function runDuckRace() {
       const duckEls = [1,2,3,4,5].map((num) => document.getElementById("duck" + num));
       const rankings = [1,2,3,4,5].sort(() => Math.random() - 0.5);
 
-      duckEls.forEach((duck, index) => {
+      duckResults = [];
+      renderDuckResults();
+
+      duckEls.forEach((duck) => {
+        duck.style.transition = "none";
         duck.style.left = "12px";
+      });
+
+      // forza il reset grafico: ogni riavvio riparte dall'inizio
+      void document.querySelector(".ducks-track").offsetWidth;
+
+      duckEls.forEach((duck) => {
+        duck.style.transition = "left 10s cubic-bezier(.16,.76,.24,1)";
       });
 
       setTimeout(() => {
@@ -1272,7 +1323,7 @@ Ajax</textarea>
 
       setTimeout(() => {
         const prizeOrder = document.getElementById("prizeOrder").value
-          .split("\\n")
+          .split("\n")
           .map((line) => line.trim())
           .filter(Boolean);
 
@@ -1287,8 +1338,8 @@ Ajax</textarea>
         });
 
         renderDuckResults();
-        showToast("Gara paperelle completata. Classifica generata in prova.");
-      }, 2500);
+        showToast("Race Duck completato. Classifica generata.");
+      }, 10300);
     }
 
     function renderDuckResults() {
@@ -1312,7 +1363,7 @@ Ajax</textarea>
 
     document.getElementById("liveForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      showToast("Link live aggiornato solo in questa prova.");
+      showToast("Link live aggiornato.");
     });
 
     function openLive() {
@@ -1337,6 +1388,7 @@ Ajax</textarea>
       list.innerHTML = hits.map((hit, index) => {
         return `
           <div class="card-hit">
+            ${hit.image ? `<img class="card-photo" src="${hit.image}" alt="Carta ${hit.player}">` : ""}
             <h3>${hit.team} · ${hit.player}</h3>
             <p>${hit.type} · Proprietario: ${hit.owner || ownerByTeam(hit.team) || "Non assegnato"}</p>
             <p>${hit.note || ""}</p>
@@ -1371,22 +1423,97 @@ Ajax</textarea>
         player: player || "Giocatore",
         type: type || "Carta",
         owner: ownerByTeam(team) || "",
-        note: note || ""
+        note: note || "",
+        image: ""
       });
 
       renderCards();
-      showToast("Carta registrata solo in questa prova.");
+      showToast("Carta registrata.");
+    }
+
+
+    function uploadCardPhoto() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+
+      input.addEventListener("change", function() {
+        const file = input.files && input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const availableTeams = teams.map((team) => team.name).join(", ");
+          const team = prompt("Squadra carta:\n" + availableTeams, "Roma");
+          if (team === null) return;
+
+          const player = prompt("Nome carta / giocatore:", "Dybala");
+          if (player === null) return;
+
+          const type = prompt("Tipo carta:", "Base / Refractor / Insert / Numbered");
+          if (type === null) return;
+
+          const note = prompt("Note:", "Topps Chrome");
+          if (note === null) return;
+
+          hits.push({
+            team: team || "Squadra",
+            player: player || "Carta",
+            type: type || "Carta",
+            owner: ownerByTeam(team) || "",
+            note: note || "",
+            image: event.target.result
+          });
+
+          renderCards();
+          showToast("Foto carta caricata e registrata.");
+        };
+
+        reader.readAsDataURL(file);
+      });
+
+      input.click();
+    }
+
+    function copyClientLink() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const clientLink = baseUrl + "?view=cliente";
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(clientLink).then(() => {
+          showToast("Link clienti copiato: possono acquistare squadre senza vedere admin e Race Duck.");
+        }).catch(() => {
+          prompt("Copia questo link clienti:", clientLink);
+        });
+        return;
+      }
+
+      prompt("Copia questo link clienti:", clientLink);
+    }
+
+    function applyClientView() {
+      if (!isClientView) return;
+
+      document.body.classList.add("client-view");
+
+      const banner = document.querySelector(".demo-banner");
+      if (banner) {
+        banner.textContent = "Area clienti · scegli e acquista la tua squadra disponibile.";
+      }
+
+      showSection("teams");
     }
 
     document.getElementById("eventForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      showToast("Configurazione evento aggiornata solo in questa prova.");
+      showToast("Configurazione evento aggiornata.");
     });
 
     renderTeams();
     renderDucks();
     renderDuckResults();
     renderCards();
+    applyClientView();
   </script>
 </body>
 </html>
