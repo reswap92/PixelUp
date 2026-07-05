@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sofia & Leonardo | PixelUp Event</title>
+  <meta name="description" content="Pagina evento wedding PixelUp in un unico file: home, storia, RSVP, menu, lista regalo, tavoli, dress code, mappa e contatti." />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#31462f;
+      --green2:#526a45;
+      --gold:#b78a46;
+      --gold2:#d6ba7c;
+      --ink:#233025;
+      --muted:#726757;
+      --cream:#fbf2e2;
+      --card:rgba(255,250,240,.84);
+      --card2:rgba(255,255,255,.74);
+      --line:rgba(183,138,70,.30);
+      --shadow:0 18px 45px rgba(61,43,22,.18);
+      --soft:0 8px 24px rgba(61,43,22,.10);
+      --hero:url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1600&q=90');
+      --venue:url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=90');
+      --flowers:url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1600&q=90');
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{min-height:100vh;background:#e9ddc9;color:var(--ink);font-family:'Montserrat',Arial,sans-serif;}
+    body::before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(255,250,240,.20),rgba(251,242,226,.76) 48%,rgba(249,239,221,.92)),var(--hero) center top/cover no-repeat;z-index:-2;}
+    body::after{content:"";position:fixed;inset:0;background:radial-gradient(circle at 8% 10%,rgba(214,186,124,.38),transparent 26%),radial-gradient(circle at 88% 28%,rgba(49,70,47,.22),transparent 30%),linear-gradient(90deg,rgba(255,255,255,.40),transparent 28%,transparent 70%,rgba(255,255,255,.28));z-index:-1;pointer-events:none;}
+    a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}button{cursor:pointer}
+    .app{width:100%;max-width:560px;min-height:100vh;margin:0 auto;position:relative;overflow:hidden;box-shadow:0 0 80px rgba(0,0,0,.15);background:rgba(255,246,230,.40);backdrop-filter:blur(1px)}
+    .topbar{position:sticky;top:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(255,250,240,.78);border-bottom:1px solid rgba(183,138,70,.18);backdrop-filter:blur(14px)}
+    .brand{text-align:center;line-height:1}.brand strong{display:block;font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:.8px;color:var(--green);font-weight:600}.brand small{display:block;margin-top:3px;font-size:10px;letter-spacing:2.2px;color:var(--gold);text-transform:uppercase;font-weight:700}
+    .round{width:42px;height:42px;border-radius:50%;border:1px solid rgba(183,138,70,.42);background:rgba(255,255,255,.54);color:var(--green);display:grid;place-items:center;font-size:22px;box-shadow:0 5px 14px rgba(80,55,25,.08)}
+    .menu-panel{position:fixed;inset:0;z-index:100;background:rgba(35,48,37,.42);display:none;padding:82px 20px 20px;backdrop-filter:blur(5px)}.menu-panel.show{display:block}.menu-card{max-width:520px;margin:0 auto;background:rgba(255,250,240,.96);border:1px solid var(--line);border-radius:28px;padding:18px;box-shadow:var(--shadow);max-height:calc(100vh - 105px);overflow:auto}.menu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.menu-head h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--green);font-weight:600}.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nav-btn{min-height:74px;border:1px solid rgba(183,138,70,.26);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,246,230,.72));box-shadow:var(--soft);display:flex;align-items:center;gap:10px;padding:12px;text-align:left;color:var(--ink)}.nav-btn span{width:36px;height:36px;min-width:36px;border-radius:50%;background:rgba(183,138,70,.12);display:grid;place-items:center;color:var(--gold);font-size:20px}.nav-btn strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.8px}.nav-btn small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+    .page{display:none;min-height:calc(100vh - 64px);animation:fade .28s ease}.page.show{display:block}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .hero{min-height:470px;position:relative;padding:36px 22px 38px;text-align:center;display:flex;align-items:center;justify-content:center;color:white;background:linear-gradient(180deg,rgba(26,33,25,.12),rgba(26,33,25,.18) 45%,rgba(255,245,229,.93) 100%),var(--hero) center/cover no-repeat}.hero::after{content:"";position:absolute;left:-8%;bottom:-1px;width:116%;height:70px;background:linear-gradient(180deg,rgba(251,242,226,.82),rgba(251,242,226,1));border-radius:50% 50% 0 0/100% 100% 0 0}.hero-inner{position:relative;z-index:2;width:100%;padding-top:16px}.monogram{width:118px;height:118px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center;background:rgba(255,255,255,.20);border:1px solid rgba(255,255,255,.88);box-shadow:0 18px 38px rgba(0,0,0,.20);font-family:'Cormorant Garamond',serif;font-size:37px;letter-spacing:4px;color:#fff;text-shadow:0 3px 14px rgba(0,0,0,.30);position:relative}.monogram::before{content:"";position:absolute;inset:9px;border-radius:50%;border:1px solid rgba(255,255,255,.58)}
+    h1{font-family:'Cormorant Garamond',serif;font-size:clamp(58px,13vw,86px);line-height:.90;font-weight:500;text-shadow:0 6px 26px rgba(0,0,0,.28);letter-spacing:-1px}.amp{font-family:'Great Vibes',cursive;color:#f0d493;font-size:.95em}.subtitle-script{font-family:'Great Vibes',cursive;font-size:34px;color:#fff8df;text-shadow:0 4px 20px rgba(0,0,0,.28);margin-top:10px}.ornament{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--gold);margin:16px auto;width:min(330px,86%)}.ornament::before,.ornament::after{content:"";height:1px;flex:1;background:rgba(255,255,255,.72)}.hero .date{font-family:'Cormorant Garamond',serif;font-size:24px;color:#fff;text-transform:uppercase;letter-spacing:2px;text-shadow:0 4px 18px rgba(0,0,0,.30)}.hero .place{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.94);margin-top:8px;font-weight:700}
+    .content{position:relative;z-index:2;padding:0 20px 34px;margin-top:-4px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.quick{min-height:104px;border:1px solid rgba(183,138,70,.28);border-radius:22px;background:var(--card);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;color:var(--green)}.quick span{font-size:30px;color:var(--gold);margin-bottom:7px}.quick strong{font-family:'Montserrat';font-size:12px;letter-spacing:1px;text-transform:uppercase}.quick small{font-size:10px;color:var(--muted);margin-top:4px}.section-hero{min-height:235px;padding:28px 22px 52px;text-align:center;color:white;position:relative;background:linear-gradient(180deg,rgba(25,31,23,.22),rgba(25,31,23,.32),rgba(251,242,226,.96)),var(--hero) center/cover no-repeat}.section-hero.venue{background-image:linear-gradient(180deg,rgba(25,31,23,.22),rgba(25,31,23,.32),rgba(251,242,226,.96)),var(--venue)}.section-hero.flowers{background-image:linear-gradient(180deg,rgba(25,31,23,.18),rgba(25,31,23,.25),rgba(251,242,226,.96)),var(--flowers)}.section-hero h2{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:600;text-transform:uppercase;letter-spacing:1px;text-shadow:0 5px 22px rgba(0,0,0,.28);margin-top:42px}.section-hero p{font-family:'Great Vibes',cursive;font-size:29px;color:#fff4d2;text-shadow:0 4px 18px rgba(0,0,0,.26);margin-top:6px}.section-content{padding:0 20px 36px;margin-top:-35px;position:relative;z-index:3}.glass{background:rgba(255,250,240,.82);border:1px solid rgba(183,138,70,.22);border-radius:26px;box-shadow:var(--shadow);backdrop-filter:blur(8px);padding:20px;margin-bottom:16px}.title-line{text-align:center;margin-bottom:16px}.title-line h3{font-family:'Cormorant Garamond',serif;color:var(--green);font-size:26px;text-transform:uppercase;letter-spacing:1px}.title-line .script{font-family:'Great Vibes',cursive;color:var(--gold);font-size:26px;margin-top:2px}.muted{color:var(--muted);font-size:14px;line-height:1.58}.btn-main{width:100%;min-height:54px;border:1px solid rgba(183,138,70,.55);border-radius:16px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;font-weight:800;text-transform:uppercase;letter-spacing:1px;box-shadow:0 12px 26px rgba(49,70,47,.22)}.btn-light{min-height:44px;border-radius:999px;border:1px solid rgba(183,138,70,.42);background:rgba(255,255,255,.64);color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:0 14px;font-size:12px}
+    .story-quote{font-family:'Great Vibes',cursive;font-size:31px;line-height:1.35;text-align:center;color:#2b3428;margin:6px 0 18px}.timeline{display:grid;gap:16px}.time-item{display:grid;grid-template-columns:58px 1fr;gap:14px;position:relative}.time-item:not(:last-child)::after{content:"";position:absolute;left:29px;top:58px;width:1px;height:calc(100% - 20px);background:rgba(183,138,70,.26)}.time-icon{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid var(--line);box-shadow:var(--soft);color:var(--gold);font-size:25px;z-index:2}.time-body h4{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--green);margin-bottom:3px}.time-body p{font-size:13px;color:var(--muted);line-height:1.45}
+    .program-grid{display:grid;gap:12px}.program-row{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;background:rgba(255,255,255,.58);border:1px solid rgba(183,138,70,.18);border-radius:18px;padding:13px}.program-row b{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold)}.program-row h4{font-size:15px;color:var(--green);text-transform:uppercase;letter-spacing:.7px}.program-row p{font-size:12px;color:var(--muted)}
+    .menu-course{display:grid;grid-template-columns:54px 1fr;gap:13px;align-items:start;background:rgba(255,255,255,.58);border:1px solid rgba(183,138,70,.18);border-radius:20px;padding:15px;margin-bottom:12px}.course-ico{width:54px;height:54px;border-radius:50%;background:rgba(183,138,70,.11);border:1px solid rgba(183,138,70,.24);display:grid;place-items:center;color:var(--gold);font-size:26px}.menu-course h4{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--green);margin-bottom:6px}.menu-course p{font-size:13px;color:var(--muted);line-height:1.45}.menu-note{text-align:center;background:rgba(49,70,47,.08);border:1px solid rgba(49,70,47,.14);border-radius:18px;padding:13px;color:var(--green);font-size:13px;line-height:1.45}
+    .gift-card{text-align:center;min-height:320px;display:flex;align-items:center;justify-content:center}.gift-icon{width:118px;height:118px;border-radius:50%;background:rgba(183,138,70,.11);border:1px solid rgba(183,138,70,.20);display:grid;place-items:center;margin:0 auto 18px;font-size:52px;color:var(--gold)}.iban-box{margin-top:18px;background:rgba(255,255,255,.65);border:1px dashed rgba(183,138,70,.48);border-radius:18px;padding:16px;font-family:'Montserrat';text-align:left}.iban-box small{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-size:10px;margin-bottom:4px}.iban-box strong{display:block;color:var(--green);font-size:15px;letter-spacing:.6px;word-break:break-word}.copy-btn{margin-top:12px;width:100%}
+    .dress-grid{display:grid;gap:14px}.dress-card{background:rgba(255,255,255,.60);border:1px solid rgba(183,138,70,.20);border-radius:24px;padding:18px;text-align:center}.dress-icon{font-size:45px;color:var(--gold);margin-bottom:8px}.dress-card h4{font-family:'Cormorant Garamond',serif;font-size:25px;color:var(--green);text-transform:uppercase}.palette{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0}.color{width:55px;height:55px;border-radius:50%;border:2px solid rgba(255,255,255,.75);box-shadow:0 5px 14px rgba(0,0,0,.12)}.c1{background:#e9dfcc}.c2{background:#c7b98e}.c3{background:#7d8a68}.c4{background:#d9b16c}.c5{background:#213025}.c6{background:#f7f2ea}.dont{margin-top:13px;background:rgba(163,66,66,.08);border:1px solid rgba(163,66,66,.15);border-radius:18px;padding:12px;color:#7c3930;font-size:13px;line-height:1.45}
+    .rsvp-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{min-height:52px;border:1px solid rgba(183,138,70,.32);border-radius:16px;background:rgba(255,255,255,.60);color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:.8px}.choice.active{background:linear-gradient(135deg,var(--green),var(--green2));color:white}.field{width:100%;min-height:48px;border:1px solid rgba(183,138,70,.28);border-radius:15px;background:rgba(255,255,255,.62);padding:0 13px;color:var(--ink);outline:none;margin-top:8px}textarea.field{min-height:90px;padding-top:12px;resize:vertical}.label{display:block;margin-top:14px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-weight:800}.guest-list{display:grid;gap:9px;margin-top:10px}.guest-row{display:grid;grid-template-columns:1fr 90px;gap:8px}
+    .tables-wrap{background:rgba(255,250,240,.72);border:1px solid rgba(183,138,70,.22);border-radius:28px;padding:16px;box-shadow:var(--shadow);backdrop-filter:blur(7px)}.hall{min-height:620px;border-radius:26px;background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.95),transparent 30%),linear-gradient(145deg,#fbf0dc,#ead9bf);border:1px solid rgba(183,138,70,.35);box-shadow:inset 0 0 55px rgba(118,82,38,.13);position:relative;padding:24px 12px;overflow:hidden}.hall::before{content:"";position:absolute;inset:18px;border:2px solid rgba(183,138,70,.13);border-radius:24px}.dance{width:180px;height:58px;border-radius:20px;margin:0 auto 20px;background:rgba(255,255,255,.65);border:1px solid rgba(183,138,70,.34);display:grid;place-items:center;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--green);position:relative;z-index:1}.tables-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px 24px;justify-items:center;position:relative;z-index:2}.table{width:140px;height:140px;border:0;background:transparent;position:relative}.table-center{position:absolute;inset:28px;border-radius:50%;background:linear-gradient(180deg,#fffaf2,#eadbc7);border:1px solid rgba(183,138,70,.45);box-shadow:0 11px 18px rgba(82,55,27,.15);display:grid;place-items:center;text-align:center;color:var(--green);font-family:'Cormorant Garamond';font-size:16px;font-weight:700;padding:8px;z-index:2}.seat{position:absolute;width:25px;height:25px;border-radius:50%;background:#fff;border:1px solid rgba(183,138,70,.42);box-shadow:0 4px 9px rgba(0,0,0,.08)}.seat.booked{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);}.s1{left:58px;top:2px}.s2{right:24px;top:18px}.s3{right:5px;top:58px}.s4{right:24px;bottom:18px}.s5{left:58px;bottom:2px}.s6{left:24px;bottom:18px}.s7{left:5px;top:58px}.s8{left:24px;top:18px}.table.active .table-center{outline:5px solid rgba(183,138,70,.18)}.seat-panel{margin-top:16px}.seat-grid{display:grid;gap:8px}.seat-book{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:rgba(255,255,255,.60);border:1px solid rgba(183,138,70,.18);border-radius:16px;padding:10px}.seat-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(183,138,70,.12);color:var(--gold);font-weight:800}.seat-book input{width:100%;min-height:38px;border:1px solid rgba(183,138,70,.22);border-radius:12px;background:rgba(255,255,255,.72);padding:0 10px}.tiny{min-height:34px;border-radius:999px;border:1px solid rgba(183,138,70,.42);padding:0 11px;background:#fffaf0;color:var(--green);font-size:11px;font-weight:800;text-transform:uppercase}.tiny.clear{color:#8a3d2c;border-color:rgba(138,61,44,.3)}
+    .contact-list{display:grid;gap:12px}.contact-row{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;background:rgba(255,255,255,.58);border:1px solid rgba(183,138,70,.18);border-radius:18px;padding:13px}.contact-ico{width:48px;height:48px;border-radius:50%;background:rgba(183,138,70,.11);display:grid;place-items:center;color:var(--gold);font-size:23px}.contact-row h4{color:var(--green);font-size:15px;text-transform:uppercase}.contact-row p{font-size:13px;color:var(--muted);word-break:break-word}.map-box{height:230px;border-radius:24px;background:linear-gradient(135deg,rgba(49,70,47,.70),rgba(183,138,70,.30)),url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&q=80') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;color:white;box-shadow:var(--shadow);padding:20px}.map-box h3{font-family:'Cormorant Garamond';font-size:31px;margin-bottom:8px}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(18px);width:min(92%,430px);background:rgba(35,48,37,.96);color:white;padding:14px 16px;border-radius:17px;text-align:center;z-index:200;opacity:0;pointer-events:none;transition:.25s;border:1px solid rgba(214,186,124,.32);font-size:13px}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:420px){.quick-grid,.menu-grid{grid-template-columns:1fr 1fr}.quick{min-height:96px}.section-content{padding-left:16px;padding-right:16px}.tables-grid{gap:26px 14px}.table{width:130px;height:130px}.table-center{inset:27px;font-size:14px}.seat{width:23px;height:23px}.hall{padding-left:8px;padding-right:8px}.guest-row{grid-template-columns:1fr 76px}.hero{min-height:455px}h1{font-size:58px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <button class="round" type="button" onclick="toggleMenu()">☰</button>
+      <div class="brand"><strong>Sofia & Leonardo</strong><small>14 Giugno 2027</small></div>
+      <button class="round" type="button" onclick="showPage('rsvp')">♡</button>
+    </header>
+
+    <div class="menu-panel" id="menuPanel">
+      <div class="menu-card">
+        <div class="menu-head"><h3>Menù evento</h3><button class="round" type="button" onclick="toggleMenu()">×</button></div>
+        <div class="menu-grid">
+          <button class="nav-btn" onclick="showPage('home')"><span>⌂</span><div><strong>Home</strong><small>invito</small></div></button>
+          <button class="nav-btn" onclick="showPage('story')"><span>♡</span><div><strong>Storia</strong><small>racconto</small></div></button>
+          <button class="nav-btn" onclick="showPage('program')"><span>◷</span><div><strong>Programma</strong><small>orari</small></div></button>
+          <button class="nav-btn" onclick="showPage('rsvp')"><span>✓</span><div><strong>RSVP</strong><small>presenza</small></div></button>
+          <button class="nav-btn" onclick="showPage('menu')"><span>🍽</span><div><strong>Menù</strong><small>cena</small></div></button>
+          <button class="nav-btn" onclick="showPage('gift')"><span>🎁</span><div><strong>Lista regalo</strong><small>iban</small></div></button>
+          <button class="nav-btn" onclick="showPage('tables')"><span>▦</span><div><strong>Tavoli</strong><small>posti</small></div></button>
+          <button class="nav-btn" onclick="showPage('dress')"><span>✦</span><div><strong>Dress code</strong><small>lui e lei</small></div></button>
+          <button class="nav-btn" onclick="showPage('location')"><span>⌖</span><div><strong>Location</strong><small>mappa</small></div></button>
+          <button class="nav-btn" onclick="showPage('contacts')"><span>☏</span><div><strong>Contatti</strong><small>info</small></div></button>
+        </div>
+      </div>
+    </div>
+
+    <section class="page show" id="homePage">
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="monogram">S|L</div>
+          <h1>Sofia <span class="amp">&</span><br>Leonardo</h1>
+          <div class="subtitle-script">Ci sposiamo</div>
+          <div class="ornament"><span>♡</span></div>
+          <div class="date">14 Giugno 2027</div>
+          <div class="place">Villa Aurelia sul Lago · Cernobbio</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="quick-grid">
+          <button class="quick" onclick="showPage('rsvp')"><span>✓</span><strong>Conferma</strong><small>presenza</small></button>
+          <button class="quick" onclick="showPage('location')"><span>⌖</span><strong>Mappa</strong><small>come arrivare</small></button>
+          <button class="quick" onclick="showPage('menu')"><span>🍽</span><strong>Menù</strong><small>cena</small></button>
+          <button class="quick" onclick="showPage('gift')"><span>🎁</span><strong>Regalo</strong><small>lista nozze</small></button>
+          <button class="quick" onclick="showPage('tables')"><span>▦</span><strong>Tavoli</strong><small>posti</small></button>
+          <button class="quick" onclick="showPage('dress')"><span>✦</span><strong>Dress</strong><small>palette</small></button>
+        </div>
+        <div class="glass">
+          <div class="title-line"><h3>Benvenuti</h3><div class="script">nella nostra giornata</div></div>
+          <p class="muted" style="text-align:center">Abbiamo creato questa pagina per raccogliere tutte le informazioni importanti: programma, location, conferma presenza, tavoli, menù, lista regalo e contatti. Un unico link, elegante e semplice da condividere.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="storyPage">
+      <div class="section-hero flowers"><h2>La nostra storia</h2><p>un incontro diventato casa</p></div>
+      <div class="section-content">
+        <div class="glass">
+          <div class="story-quote">“Ci siamo scelti piano, giorno dopo giorno, fino a capire che l’amore era il nostro posto preferito.”</div>
+          <p class="muted">Sofia e Leonardo si sono conosciuti in una sera di fine estate, durante una cena tra amici sul lago. Lei arrivò in ritardo, con un sorriso capace di riempire la stanza; lui, senza accorgersene, smise di parlare e iniziò ad ascoltare solo la sua voce.</p>
+          <br><p class="muted">All’inizio furono messaggi semplici, passeggiate senza fretta e caffè presi anche quando il tempo era poco. Poi arrivarono i viaggi improvvisati, le domeniche lente, le prime promesse sussurrate e la certezza che ogni progetto fosse più bello se pensato insieme.</p>
+          <br><p class="muted">La proposta è arrivata in un giardino illuminato da piccole luci, con il lago davanti e le mani che tremavano dall’emozione. Da quel momento hanno iniziato a immaginare questa giornata: elegante, sincera, piena di musica, famiglia, amici e dettagli che raccontano chi sono.</p>
+        </div>
+        <div class="glass">
+          <div class="timeline">
+            <div class="time-item"><div class="time-icon">☕</div><div class="time-body"><h4>Il primo incontro</h4><p>Una cena tra amici, una risata improvvisa e la sensazione di conoscersi da sempre.</p></div></div>
+            <div class="time-item"><div class="time-icon">✈</div><div class="time-body"><h4>Il primo viaggio</h4><p>Un weekend a Firenze, senza programma, diventato il loro ricordo preferito.</p></div></div>
+            <div class="time-item"><div class="time-icon">💍</div><div class="time-body"><h4>La proposta</h4><p>Una sera sul lago, una domanda semplice e una risposta piena di lacrime felici.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="programPage">
+      <div class="section-hero venue"><h2>Programma</h2><p>i momenti della giornata</p></div>
+      <div class="section-content"><div class="glass"><div class="program-grid">
+        <div class="program-row"><b>15:30</b><div><h4>Arrivo ospiti</h4><p>Accoglienza in villa e welcome drink.</p></div></div>
+        <div class="program-row"><b>16:30</b><div><h4>Cerimonia</h4><p>Rito simbolico nel giardino vista lago.</p></div></div>
+        <div class="program-row"><b>18:00</b><div><h4>Aperitivo</h4><p>Angoli gourmet, musica live e fotografie.</p></div></div>
+        <div class="program-row"><b>20:00</b><div><h4>Cena</h4><p>Servizio al tavolo nella sala principale.</p></div></div>
+        <div class="program-row"><b>23:00</b><div><h4>Taglio torta</h4><p>Sweet table e brindisi sotto le luci.</p></div></div>
+        <div class="program-row"><b>23:30</b><div><h4>Party</h4><p>Musica, open bar e balli fino a tardi.</p></div></div>
+      </div></div></div>
+    </section>
+
+    <section class="page" id="rsvpPage">
+      <div class="section-hero flowers"><h2>Conferma presenza</h2><p>ci farà piacere averti con noi</p></div>
+      <div class="section-content">
+        <div class="glass">
+          <div class="title-line"><h3>RSVP</h3><div class="script">entro il 20 Maggio 2027</div></div>
+          <div class="rsvp-choice"><button class="choice active" id="yesBtn" onclick="setAttendance('Sì')">Ci sarò</button><button class="choice" id="noBtn" onclick="setAttendance('No')">Non potrò</button></div>
+          <label class="label">Nome e cognome</label><input class="field" id="guestName" placeholder="Es. Giulia Rossi">
+          <label class="label">Numero accompagnatori</label><select class="field" id="guestCount" onchange="renderGuests()"><option value="0">Nessuno</option><option value="1">1 accompagnatore</option><option value="2">2 accompagnatori</option><option value="3">3 accompagnatori</option><option value="4">4 accompagnatori</option></select>
+          <div class="guest-list" id="extraGuests"></div>
+          <label class="label">Intolleranze o note</label><textarea class="field" id="guestNotes" placeholder="Scrivi qui eventuali intolleranze, bambini, richieste particolari..."></textarea>
+          <button class="btn-main" style="margin-top:16px" onclick="sendRSVP()">Invia conferma</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="menuPage">
+      <div class="section-hero venue"><h2>Menù</h2><p>sapori scelti per voi</p></div>
+      <div class="section-content">
+        <div class="glass">
+          <div class="menu-course"><div class="course-ico">🥂</div><div><h4>Aperitivo in giardino</h4><p>Finger gourmet, isole del territorio, cruditè di stagione, bollicine e cocktail analcolici.</p></div></div>
+          <div class="menu-course"><div class="course-ico">🍝</div><div><h4>Primo servizio</h4><p>Risotto mantecato al Franciacorta, crema di zucchine chiare e crumble di mandorle.</p></div></div>
+          <div class="menu-course"><div class="course-ico">🍽</div><div><h4>Secondo servizio</h4><p>Filetto in crosta aromatica con patate fondenti e verdure baby glassate.</p></div></div>
+          <div class="menu-course"><div class="course-ico">🍋</div><div><h4>Sorbetto</h4><p>Sorbetto al limone e basilico servito come pausa fresca prima del dolce.</p></div></div>
+          <div class="menu-course"><div class="course-ico">🍰</div><div><h4>Dessert e torta</h4><p>Torta nuziale, buffet di piccola pasticceria, frutta fresca e caffetteria.</p></div></div>
+          <div class="menu-note">Per intolleranze o menù bambini indica tutto nella conferma presenza.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="giftPage">
+      <div class="section-hero flowers"><h2>Lista regalo</h2><p>un pensiero per il nostro futuro</p></div>
+      <div class="section-content">
+        <div class="glass gift-card"><div>
+          <div class="gift-icon">🎁</div>
+          <div class="title-line"><h3>Un regalo dal cuore</h3><div class="script">grazie per esserci</div></div>
+          <p class="muted">La vostra presenza sarà il regalo più bello. Per chi desidera contribuire al nostro viaggio di nozze e ai primi progetti insieme, abbiamo lasciato qui i riferimenti.</p>
+          <div class="iban-box"><small>Intestatari</small><strong>Sofia Bianchi e Leonardo Conti</strong><br><small>IBAN</small><strong id="ibanText">IT00 X000 0000 0000 0000 0000 000</strong><br><small>Causale</small><strong>Regalo matrimonio Sofia e Leonardo</strong></div>
+          <button class="btn-light copy-btn" onclick="copyIBAN()">Copia IBAN</button>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="page" id="tablesPage">
+      <div class="section-hero venue"><h2>Tavoli</h2><p>trova e compila il tuo posto</p></div>
+      <div class="section-content">
+        <div class="tables-wrap">
+          <div class="hall"><div class="dance">Tavolo sposi · Sofia & Leonardo</div><div class="tables-grid" id="tablesGrid"></div></div>
+        </div>
+        <div class="glass seat-panel" id="seatPanel"><div class="title-line"><h3>Seleziona un tavolo</h3><div class="script">tocca un tavolo per compilare i posti</div></div><p class="muted" style="text-align:center">I posti compilati si colorano e restano salvati sul dispositivo.</p></div>
+      </div>
+    </section>
+
+    <section class="page" id="dressPage">
+      <div class="section-hero flowers"><h2>Dress code</h2><p>eleganza naturale</p></div>
+      <div class="section-content">
+        <div class="glass">
+          <div class="title-line"><h3>Palette consigliata</h3><div class="script">verde salvia, champagne e oro tenue</div></div>
+          <div class="palette"><div class="color c1"></div><div class="color c2"></div><div class="color c3"></div><div class="color c4"></div></div>
+          <p class="muted" style="text-align:center">Toni chiari, naturali e raffinati. Evitiamo bianco totale e colori troppo accesi.</p>
+        </div>
+        <div class="dress-grid">
+          <div class="dress-card"><div class="dress-icon">👗</div><h4>Per lei</h4><p class="muted">Abiti midi o lunghi, tessuti morbidi, colori pastello, champagne, cipria, salvia o oro delicato. Accessori eleganti ma leggeri.</p></div>
+          <div class="dress-card"><div class="dress-icon">🤵</div><h4>Per lui</h4><p class="muted">Completo blu, verde scuro, beige o grigio caldo. Camicia chiara, mocassino o scarpa elegante. Cravatta facoltativa.</p></div>
+        </div>
+        <div class="dont">Nota gentile: il bianco è riservato alla sposa. Evitare look sportivi, jeans, sneakers troppo casual e colori fluo.</div>
+      </div>
+    </section>
+
+    <section class="page" id="locationPage">
+      <div class="section-hero venue"><h2>Location</h2><p>Villa Aurelia sul Lago</p></div>
+      <div class="section-content">
+        <div class="map-box"><div><h3>Villa Aurelia</h3><p>Cernobbio · Lago di Como</p></div></div>
+        <div class="glass"><div class="title-line"><h3>Come arrivare</h3><div class="script">la cerimonia e il ricevimento saranno nella stessa location</div></div><p class="muted" style="text-align:center">Indirizzo demo: Via Regina 72, Cernobbio CO. Parcheggio ospiti disponibile all’ingresso della villa.</p><button class="btn-main" style="margin-top:15px" onclick="openMap()">Apri Google Maps</button></div>
+      </div>
+    </section>
+
+    <section class="page" id="contactsPage">
+      <div class="section-hero flowers"><h2>Contatti</h2><p>per ogni informazione</p></div>
+      <div class="section-content"><div class="glass"><div class="contact-list">
+        <a class="contact-row" href="tel:+393331234567"><div class="contact-ico">☏</div><div><h4>Wedding planner</h4><p>Elena Moretti · +39 333 123 4567</p></div></a>
+        <a class="contact-row" href="mailto:eventi@pixelup.it"><div class="contact-ico">✉</div><div><h4>Email evento</h4><p>eventi@pixelup.it</p></div></a>
+        <a class="contact-row" href="https://wa.me/393331234567" target="_blank"><div class="contact-ico">☘</div><div><h4>WhatsApp</h4><p>Scrivici per domande su orari, parcheggio o conferme.</p></div></a>
+      </div></div></div>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+<script>
+  const pageIds = ['home','story','program','rsvp','menu','gift','tables','dress','location','contacts'];
+  let attendance = 'Sì';
+  const tableNames = ['Ulivo','Peonia','Lavanda','Gelsomino','Eucalipto','Camelia','Ortensia','Magnolia'];
+  const savedSeats = JSON.parse(localStorage.getItem('pixelup_demo_wow_seats') || '{}');
+  let activeTable = 0;
+
+  function toggleMenu(){ document.getElementById('menuPanel').classList.toggle('show'); }
+  function showPage(id){
+    pageIds.forEach(p => document.getElementById(p+'Page').classList.remove('show'));
+    document.getElementById(id+'Page').classList.add('show');
+    document.getElementById('menuPanel').classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(id === 'tables') setTimeout(renderTables, 50);
+  }
+  function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+  function setAttendance(value){ attendance=value; document.getElementById('yesBtn').classList.toggle('active',value==='Sì'); document.getElementById('noBtn').classList.toggle('active',value==='No'); }
+  function renderGuests(){
+    const n=Number(document.getElementById('guestCount').value||0); const box=document.getElementById('extraGuests');
+    box.innerHTML=''; for(let i=1;i<=n;i++){ box.innerHTML += `<div class="guest-row"><input class="field" placeholder="Nome accompagnatore ${i}"><input class="field" placeholder="Età"></div>`; }
+  }
+  function sendRSVP(){
+    const name=document.getElementById('guestName').value.trim(); if(!name){toast('Inserisci nome e cognome.');return;}
+    const note=document.getElementById('guestNotes').value.trim(); const count=document.getElementById('guestCount').value;
+    const subject=encodeURIComponent('Conferma presenza matrimonio Sofia e Leonardo');
+    const body=encodeURIComponent(`Ciao,\n\nConfermo la mia risposta:\nPresenza: ${attendance}\nNome: ${name}\nAccompagnatori: ${count}\nNote/intolleranze: ${note}\n\nGrazie.`);
+    window.location.href=`mailto:eventi@pixelup.it?subject=${subject}&body=${body}`;
+  }
+  function copyIBAN(){ navigator.clipboard?.writeText(document.getElementById('ibanText').textContent); toast('IBAN copiato.'); }
+  function openMap(){ window.open('https://www.google.com/maps/search/?api=1&query=Cernobbio+Lago+di+Como+Villa', '_blank'); }
+  function tableKey(i){ return 'table_'+i; }
+  function renderTables(){
+    const grid=document.getElementById('tablesGrid'); if(!grid) return;
+    grid.innerHTML = tableNames.map((name,i)=>{
+      const seats = savedSeats[tableKey(i)] || Array(8).fill('');
+      return `<button class="table ${activeTable===i?'active':''}" onclick="selectTable(${i})"><div class="table-center">${name}</div>${seats.map((s,k)=>`<span class="seat s${k+1} ${s?'booked':''}"></span>`).join('')}</button>`;
+    }).join('');
+    renderSeatPanel();
+  }
+  function selectTable(i){ activeTable=i; renderTables(); }
+  function renderSeatPanel(){
+    const panel=document.getElementById('seatPanel'); const key=tableKey(activeTable); const seats=savedSeats[key] || Array(8).fill('');
+    panel.innerHTML = `<div class="title-line"><h3>Tavolo ${tableNames[activeTable]}</h3><div class="script">compila i posti</div></div><div class="seat-grid">${seats.map((name,i)=>`<div class="seat-book"><div class="seat-num">${i+1}</div><input value="${escapeHtml(name)}" placeholder="Nome ospite" onchange="saveSeat(${activeTable},${i},this.value)"><button class="tiny clear" onclick="saveSeat(${activeTable},${i},'')">X</button></div>`).join('')}</div><button class="btn-main" style="margin-top:14px" onclick="toast('Posti del tavolo salvati')">Salva tavolo</button>`;
+  }
+  function saveSeat(t,s,value){ const key=tableKey(t); if(!savedSeats[key]) savedSeats[key]=Array(8).fill(''); savedSeats[key][s]=value.trim(); localStorage.setItem('pixelup_demo_wow_seats', JSON.stringify(savedSeats)); renderTables(); }
+  function escapeHtml(str){return String(str||'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));}
+  renderTables();
+</script>
+</body>
+</html>
