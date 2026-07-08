@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PixelUp come app installabile su telefono -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4d5a3a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PixelUp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
   <title>Wedding Board | Roberta & Alessandro</title>
 
   <style>
@@ -1023,6 +1031,14 @@
     <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
       Progetti archiviati
     </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="openGlobalContactBook()">
+      Rubrica generale
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
+      Aggiungi PixelUp alla Home
+    </button>
     <button class="project-main-btn logout" type="button" onclick="logoutPixelUp()">
   Esci
 </button>
@@ -1034,7 +1050,7 @@
       <ol>
         <li>Clicca “Nuovo progetto” per creare una dashboard.</li>
         <li>Inserisci nome evento e data.</li>
-        <li>Compila budget, scadenze, fornitori, agenda e documenti.</li>
+        <li>Compila budget, scadenze, rubrica evento, agenda e documenti.</li>
         <li>Da “I miei progetti” copia il link sposi/cliente.</li>
       </ol>
     </div>
@@ -1129,7 +1145,7 @@
 
       <button class="secondary-action" type="button" onclick="toggleSuppliers()">
         <span>☏</span>
-        <span>Fornitori</span>
+        <span>Rubrica evento</span>
       </button>
 
       <button class="secondary-action" type="button" onclick="toggleAgenda()">
@@ -1188,6 +1204,24 @@
   >
     + Aggiungi
   </button>
+
+  <button 
+    type="button" 
+    onclick="addDeadlineFromBook()" 
+    style="
+      border:1px solid rgba(177,145,85,0.45);
+      background:rgba(255,252,246,0.95);
+      color:#4d5a3a;
+      border-radius:999px;
+      padding:7px 11px;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    "
+  >
+    Rubrica
+  </button>
 </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -1197,7 +1231,7 @@
       <div class="supplier-section" id="supplierSection">
 
         <div class="section-title">
-  <h2>Fornitori</h2>
+  <h2>Rubrica evento</h2>
   <button 
     type="button" 
     onclick="addSupplier()" 
@@ -1231,7 +1265,7 @@
       letter-spacing:0.8px;
     "
   >
-    Rubrica
+    Rubrica generale
   </button>
 </div>
         <div class="list-card" id="supplierList"></div>
@@ -1284,9 +1318,34 @@
         letter-spacing:0.8px;
       "
     >
-      + Aggiungi
+      + Link
+    </button>
+
+    <button 
+      type="button" 
+      onclick="uploadDocumentFile()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(77,90,58,0.10);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      Carica PDF
     </button>
   </div>
+
+  <input
+    id="documentFileInput"
+    type="file"
+    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    style="display:none;"
+  />
 
   <div class="list-card" id="documentList"></div>
 
@@ -1479,6 +1538,14 @@
     addDoc
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+  import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
     authDomain: "backtag-16de3.firebaseapp.com",
@@ -1491,6 +1558,7 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const hasAccess = localStorage.getItem("pixelup_access") === "true";
   const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
@@ -1504,6 +1572,18 @@
 
   const urlParams = new URLSearchParams(window.location.search);
   const currentEventId = urlParams.get("event") || "";
+
+  if (currentEventId) {
+    localStorage.setItem("pixelup_last_event", currentEventId);
+  }
+
+  if (!currentEventId && urlParams.get("app") === "1") {
+    const lastEventId = localStorage.getItem("pixelup_last_event") || "";
+    if (lastEventId) {
+      window.location.href = "/dashboard/?event=" + encodeURIComponent(lastEventId);
+    }
+  }
+
   const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
   const defaultData = {
@@ -1618,6 +1698,11 @@
       url: item.url || "",
       notes: item.notes || "",
       type: item.type || "drive",
+      fileName: item.fileName || "",
+      filePath: item.filePath || "",
+      fileSize: Number(item.fileSize) || 0,
+      contentType: item.contentType || "",
+      uploadedAt: item.uploadedAt || "",
       visibleToSpouses: item.visibleToSpouses === true
     }));
 
@@ -2234,8 +2319,8 @@
           font-size:13px;
           line-height:1.4;
         ">
-          Nessun fornitore inserito.<br>
-          Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto.
+          Nessun contatto inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto dell’evento.
         </div>
       `;
       return;
@@ -2296,7 +2381,7 @@
 
           <div class="row-right">
             <strong>Contatto</strong>
-            <small>fornitore</small>
+            <small>contatto</small>
 
             <button class="edit-btn" type="button" onclick="editSupplier(${index})">
               Modifica
@@ -2353,7 +2438,7 @@
     const item = data.suppliers[index];
 
     const confirmDelete = confirm(
-      "Vuoi eliminare questo fornitore?\n\n" + 
+      "Vuoi eliminare questo contatto?\n\n" + 
       item.service + " - " + item.name
     );
 
@@ -2390,6 +2475,193 @@
     renderSuppliers();
     saveData();
     saveSupplierToBook(newSupplier);
+  }
+
+
+
+  async function openGlobalContactBook() {
+    try {
+      const contacts = await getSavedSuppliers();
+
+      const listText = contacts.length
+        ? contacts.map((item, index) => {
+            return (index + 1) + " = " +
+              (item.service || "Categoria") + " - " +
+              (item.name || "Nome non indicato") +
+              (item.phone ? " - " + item.phone : "") +
+              (item.email ? " - " + item.email : "");
+          }).join("\n")
+        : "Nessun contatto salvato.";
+
+      const choice = prompt(
+        "RUBRICA GENERALE PIXELUP\n\n" +
+        listText +
+        "\n\nScrivi + per aggiungere un nuovo contatto alla rubrica generale.\n" +
+        "Scrivi il numero per aggiungerlo alla rubrica di questo evento.\n" +
+        "Annulla per chiudere.",
+        "+"
+      );
+
+      if (choice === null) return;
+
+      if (choice.trim() === "+") {
+        await addContactToGlobalBook();
+        return;
+      }
+
+      const index = Number(choice.trim()) - 1;
+
+      if (isNaN(index) || index < 0 || index >= contacts.length) {
+        alert("Scelta non valida.");
+        return;
+      }
+
+      if (!eventRef || !currentEventId) {
+        alert("Contatto trovato. Apri un progetto per aggiungerlo alla rubrica evento.");
+        return;
+      }
+
+      const selected = contacts[index];
+
+      data.suppliers.push({
+        service: selected.service || "Contatto",
+        name: selected.name || "Nome non indicato",
+        phone: selected.phone || "",
+        email: selected.email || ""
+      });
+
+      renderSuppliers();
+      saveData();
+
+      alert("Contatto aggiunto alla rubrica evento.");
+    } catch (error) {
+      console.error("Errore rubrica generale:", error);
+      alert("Errore nel caricamento della rubrica generale.");
+    }
+  }
+
+  async function addContactToGlobalBook() {
+    const service = prompt("Categoria / ruolo:", "Fornitore");
+    if (service === null) return;
+
+    const name = prompt("Nome contatto:", "");
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", "");
+    if (phone === null) return;
+
+    const email = prompt("Email:", "");
+    if (email === null) return;
+
+    const newContact = {
+      service: service || "Contatto",
+      name: name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    };
+
+    await saveSupplierToBook(newContact);
+    alert("Contatto salvato nella rubrica generale.");
+  }
+
+  async function addDeadlineFromBook() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di aggiungere scadenze.");
+      return;
+    }
+
+    try {
+      const contacts = await getSavedSuppliers();
+
+      if (!contacts.length) {
+        alert("Non hai ancora contatti salvati in rubrica generale.");
+        return;
+      }
+
+      const listText = contacts.map((item, index) => {
+        return (index + 1) + " = " +
+          (item.service || "Categoria") + " - " +
+          (item.name || "Nome non indicato") +
+          (item.phone ? " - " + item.phone : "") +
+          (item.email ? " - " + item.email : "");
+      }).join("\n");
+
+      const choice = prompt(
+        "Scegli un contatto da collegare alla nuova scadenza:\n\n" + listText,
+        "1"
+      );
+
+      if (choice === null) return;
+
+      const index = Number(choice.trim()) - 1;
+
+      if (isNaN(index) || index < 0 || index >= contacts.length) {
+        alert("Scelta non valida.");
+        return;
+      }
+
+      const selected = contacts[index];
+      const supplierLabel = (selected.service || "Contatto") + " - " + (selected.name || "Nome non indicato");
+
+      const name = prompt("Nuova voce / servizio:", "Saldo " + (selected.service || "servizio"));
+      if (name === null) return;
+
+      const total = prompt("Importo totale:", "0");
+      if (total === null) return;
+
+      const paid = prompt("Importo già pagato / saldato:", "0");
+      if (paid === null) return;
+
+      const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+      if (date === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+
+      const cleanTotal = Number(total.replace(".", "").replace(",", "."));
+      const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+
+      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+        alert("Importi non validi.");
+        return;
+      }
+
+      const finalPaid = Math.min(cleanPaid, cleanTotal);
+      const missing = Math.max(cleanTotal - finalPaid, 0);
+
+      let automaticStatus = "Da saldare";
+
+      if (finalPaid <= 0) {
+        automaticStatus = "Da saldare";
+      } else if (missing > 0) {
+        automaticStatus = "Acconto versato";
+      } else {
+        automaticStatus = "Saldato";
+      }
+
+      data.deadlines.push({
+        name: name || "Nuova scadenza",
+        supplier: supplierLabel,
+        total: cleanTotal,
+        paid: finalPaid,
+        date: date || "2026-08-01",
+        status: automaticStatus,
+        notes: notes || "",
+        visibleToSpouses: visibleToSpouses
+      });
+
+      updateTotalsFromDeadlines();
+      renderSummary();
+      renderDeadlines();
+      saveData();
+
+      alert("Scadenza aggiunta usando la rubrica generale.");
+    } catch (error) {
+      console.error("Errore rubrica scadenze:", error);
+      alert("Errore nel caricamento della rubrica.");
+    }
   }
 
 
@@ -2582,7 +2854,7 @@
       const suppliers = await getSavedSuppliers();
 
       if (!suppliers.length) {
-        alert("Non hai ancora fornitori salvati in rubrica.\n\nAggiungi un fornitore: verrà salvato automaticamente per i prossimi progetti.");
+        alert("Non hai ancora contatti salvati in rubrica generale.\n\nAggiungi un contatto: verrà salvato automaticamente e potrai riutilizzarlo in tutti i progetti.");
         return;
       }
 
@@ -2595,7 +2867,7 @@
       }).join("\n");
 
       const choice = prompt(
-        "Scegli un fornitore dalla rubrica scrivendo il numero:\n\n" + listText,
+        "Scegli un contatto dalla rubrica generale scrivendo il numero:\n\n" + listText,
         "1"
       );
 
@@ -2620,7 +2892,7 @@
       renderSuppliers();
       saveData();
 
-      alert("Fornitore aggiunto al progetto.");
+      alert("Contatto aggiunto al progetto.");
     } catch (error) {
       console.error("Errore caricamento rubrica fornitori:", error);
       alert("Errore nel caricamento della rubrica fornitori.");
@@ -2629,6 +2901,51 @@
 
   function toggleDocuments() {
     openSingleSection("documentSection");
+  }
+
+  function formatFileSize(bytes) {
+    const size = Number(bytes) || 0;
+
+    if (size <= 0) return "";
+
+    if (size < 1024 * 1024) {
+      return Math.round(size / 1024) + " KB";
+    }
+
+    return (size / (1024 * 1024)).toFixed(1).replace(".", ",") + " MB";
+  }
+
+  function sanitizeStorageFileName(fileName) {
+    return String(fileName || "documento")
+      .trim()
+      .toLowerCase()
+      .replaceAll("à", "a")
+      .replaceAll("è", "e")
+      .replaceAll("é", "e")
+      .replaceAll("ì", "i")
+      .replaceAll("ò", "o")
+      .replaceAll("ù", "u")
+      .replace(/[^a-z0-9._-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "") || "documento";
+  }
+
+  function isAllowedDocumentFile(file) {
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
+    const allowedExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
+    const fileName = String(file.name || "").toLowerCase();
+
+    const typeOk = allowedTypes.includes(file.type);
+    const extOk = allowedExtensions.some((ext) => fileName.endsWith(ext));
+
+    return typeOk || extOk;
   }
 
   function renderDocuments() {
@@ -2645,23 +2962,30 @@
           line-height:1.4;
         ">
           Nessun documento inserito.<br>
-          Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive.
+          Clicca su <strong>+ Link</strong> per inserire Google Drive oppure su <strong>Carica PDF</strong> per caricare un file.
         </div>
       `;
       return;
     }
 
     list.innerHTML = data.documents.map((item, index) => {
+      const isUpload = item.type === "upload";
+      const labelTop = isUpload ? "FILE" : "DRIVE";
+      const labelBottom = isUpload ? (item.fileName ? item.fileName.split(".").pop().toUpperCase().slice(0, 4) : "PDF") : "LINK";
+      const openLabel = isUpload ? "Apri file caricato" : "Apri link documento";
+      const sizeText = item.fileSize ? " · " + formatFileSize(item.fileSize) : "";
+
       return `
         <div class="deadline-row">
           <div class="date-box drive-box">
-            <strong>DRIVE</strong>
-            <small>LINK</small>
+            <strong>${labelTop}</strong>
+            <small>${labelBottom}</small>
           </div>
 
           <div class="row-info">
             <h3>${item.name}</h3>
-            <p>Categoria: ${item.category || "Non indicata"}</p>
+            <p>Categoria: ${item.category || "Non indicata"}${sizeText}</p>
+            ${item.fileName ? `<p>File: ${item.fileName}</p>` : ""}
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
             <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
 
@@ -2672,13 +2996,13 @@
                 rel="noopener noreferrer"
                 style="color:#4d5a3a; font-weight:bold;"
               >
-                Apri Google Drive
+                ${openLabel}
               </a>
             </p>
           </div>
 
           <div class="row-right">
-            <strong>File</strong>
+            <strong>${isUpload ? "Upload" : "Link"}</strong>
             <small>documento</small>
 
             <button class="edit-btn" type="button" onclick="editDocument(${index})">
@@ -2702,103 +3026,216 @@
       `;
     }).join("");
   }
-function addDocument() {
-  const name = prompt("Nome documento:", "Nuovo documento");
-  if (name === null) return;
 
-  const category = prompt("Categoria:", "Google Drive");
-  if (category === null) return;
+  function addDocument() {
+    const name = prompt("Nome documento:", "Nuovo documento");
+    if (name === null) return;
 
-  const url = prompt("Link Google Drive:", "");
-  if (url === null) return;
+    const category = prompt("Categoria:", "Google Drive");
+    if (category === null) return;
 
-  const notes = prompt("Note:", "");
-  if (notes === null) return;
+    const url = prompt("Link documento / Google Drive:", "");
+    if (url === null) return;
 
-  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
 
-  const cleanUrl = url.trim();
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
 
-  if (!cleanUrl) {
-    alert("Inserisci un link Google Drive valido.");
-    return;
+    const cleanUrl = url.trim();
+
+    if (!cleanUrl) {
+      alert("Inserisci un link valido.");
+      return;
+    }
+
+    data.documents.push({
+      name: name || "Nuovo documento",
+      category: category || "Documento",
+      url: cleanUrl,
+      notes: notes || "",
+      type: "drive",
+      fileName: "",
+      filePath: "",
+      fileSize: 0,
+      contentType: "",
+      uploadedAt: "",
+      visibleToSpouses: visibleToSpouses
+    });
+
+    renderDocuments();
+    saveData();
   }
 
-  if (!cleanUrl.includes("drive.google.com")) {
-    const confirmOtherLink = confirm(
-      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
-    );
+  function uploadDocumentFile() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di caricare documenti.");
+      return;
+    }
 
-    if (!confirmOtherLink) return;
+    const name = prompt("Nome documento:", "Documento caricato");
+    if (name === null) return;
+
+    const category = prompt("Categoria:", "PDF / Documento");
+    if (category === null) return;
+
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
+    window.pendingDocumentUpload = {
+      name: name || "Documento caricato",
+      category: category || "PDF / Documento",
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    };
+
+    const input = document.getElementById("documentFileInput");
+    if (!input) {
+      alert("Input file non trovato.");
+      return;
+    }
+
+    input.value = "";
+    input.click();
   }
 
-  data.documents.push({
-    name: name || "Nuovo documento",
-    category: category || "Google Drive",
-    url: cleanUrl,
-    notes: notes || "",
-    type: "drive",
-    visibleToSpouses: visibleToSpouses
-  });
+  async function handleDocumentFileSelected(event) {
+    const file = event.target.files && event.target.files[0];
 
-  renderDocuments();
-  saveData();
-}
+    if (!file) return;
 
- function editDocument(index) {
-  const item = data.documents[index];
+    const pending = window.pendingDocumentUpload;
 
-  const name = prompt("Nome documento:", item.name);
-  if (name === null) return;
+    if (!pending) {
+      alert("Dati documento mancanti. Riprova.");
+      return;
+    }
 
-  const category = prompt("Categoria:", item.category || "Google Drive");
-  if (category === null) return;
+    const maxSize = 10 * 1024 * 1024;
 
-  const url = prompt("Link Google Drive:", item.url);
-  if (url === null) return;
+    if (file.size > maxSize) {
+      alert("File troppo grande. Carica documenti massimo 10 MB.");
+      event.target.value = "";
+      return;
+    }
 
-  const notes = prompt("Note:", item.notes);
-  if (notes === null) return;
+    if (!isAllowedDocumentFile(file)) {
+      alert("Formato non consentito. Puoi caricare PDF, JPG, PNG, DOC o DOCX.");
+      event.target.value = "";
+      return;
+    }
 
-  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+    try {
+      alert("Caricamento in corso. Attendi il messaggio di conferma.");
 
-  const cleanUrl = url.trim();
+      const cleanFileName = sanitizeStorageFileName(file.name);
+      const storagePath =
+        "pixelup-documents/" +
+        encodeURIComponent(loggedEmail) + "/" +
+        encodeURIComponent(currentEventId) + "/" +
+        Date.now() + "-" + cleanFileName;
 
-  if (!cleanUrl) {
-    alert("Inserisci un link Google Drive valido.");
-    return;
+      const fileRef = storageRef(storage, storagePath);
+
+      await uploadBytes(fileRef, file, {
+        contentType: file.type || "application/octet-stream",
+        customMetadata: {
+          ownerEmail: loggedEmail,
+          eventId: currentEventId
+        }
+      });
+
+      const downloadUrl = await getDownloadURL(fileRef);
+
+      data.documents.push({
+        name: pending.name,
+        category: pending.category,
+        url: downloadUrl,
+        notes: pending.notes,
+        type: "upload",
+        fileName: file.name,
+        filePath: storagePath,
+        fileSize: file.size,
+        contentType: file.type || "",
+        uploadedAt: new Date().toISOString(),
+        visibleToSpouses: pending.visibleToSpouses === true
+      });
+
+      window.pendingDocumentUpload = null;
+      event.target.value = "";
+
+      renderDocuments();
+      await saveData();
+
+      alert("Documento caricato correttamente.");
+    } catch (error) {
+      console.error("Errore caricamento documento:", error);
+      alert("Errore nel caricamento del documento. Controlla Firebase Storage e le regole.");
+    }
   }
 
-  if (!cleanUrl.includes("drive.google.com")) {
-    const confirmOtherLink = confirm(
-      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
-    );
+  function editDocument(index) {
+    const item = data.documents[index];
+    const isUpload = item.type === "upload";
 
-    if (!confirmOtherLink) return;
+    const name = prompt("Nome documento:", item.name);
+    if (name === null) return;
+
+    const category = prompt("Categoria:", item.category || "Documento");
+    if (category === null) return;
+
+    let cleanUrl = item.url || "";
+
+    if (!isUpload) {
+      const url = prompt("Link documento / Google Drive:", item.url);
+      if (url === null) return;
+
+      cleanUrl = url.trim();
+
+      if (!cleanUrl) {
+        alert("Inserisci un link valido.");
+        return;
+      }
+    }
+
+    const notes = prompt("Note:", item.notes);
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
+    data.documents[index] = {
+      ...item,
+      name: name || item.name,
+      category: category || item.category || "Documento",
+      url: cleanUrl,
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    };
+
+    renderDocuments();
+    saveData();
   }
 
-  data.documents[index] = {
-    name: name || item.name,
-    category: category || "Google Drive",
-    url: cleanUrl,
-    notes: notes || "",
-    type: "drive",
-    visibleToSpouses: visibleToSpouses
-  };
-
-  renderDocuments();
-  saveData();
-}
-
-  function deleteDocument(index) {
+  async function deleteDocument(index) {
     const item = data.documents[index];
 
     const confirmDelete = confirm(
       "Vuoi eliminare questo documento?\n\n" +
-      item.name
+      item.name +
+      (item.type === "upload" ? "\n\nSe è un file caricato, verrà eliminato anche da Firebase Storage." : "")
     );
 
     if (!confirmDelete) return;
+
+    if (item.type === "upload" && item.filePath) {
+      try {
+        await deleteObject(storageRef(storage, item.filePath));
+      } catch (error) {
+        console.warn("File Storage non eliminato o già assente:", error);
+      }
+    }
 
     data.documents.splice(index, 1);
 
@@ -3017,7 +3454,7 @@ function addDocument() {
 
                 <div class="project-card-pro-badges">
                   <span class="project-badge">${deadlinesCount} scadenze</span>
-                  <span class="project-badge">${suppliersCount} fornitori</span>
+                  <span class="project-badge">${suppliersCount} contatti</span>
                   <span class="project-badge">${agendaCount} agenda</span>
                   <span class="project-badge">${documentsCount} documenti</span>
                   <span class="project-badge">${checklistCount} checklist</span>
@@ -3667,14 +4104,14 @@ function addDocument() {
     }
     lines.push("");
 
-    lines.push("FORNITORI");
+    lines.push("RUBRICA EVENTO");
     if (data.suppliers && data.suppliers.length) {
       data.suppliers.forEach((item, index) => {
         lines.push((index + 1) + ". " + item.service + " - " + item.name);
         lines.push("   Tel: " + item.phone + " | Email: " + item.email);
       });
     } else {
-      lines.push("Nessun fornitore inserito.");
+      lines.push("Nessun contatto inserito.");
     }
     lines.push("");
 
@@ -3954,7 +4391,7 @@ function addDocument() {
 
       if (item.url) {
         doc.setTextColor(gold[0], gold[1], gold[2]);
-        doc.textWithLink("Apri documento Drive", margin + 5, y + 20, { url: item.url });
+        doc.textWithLink("Apri documento", margin + 5, y + 20, { url: item.url });
       }
 
       y += height + 5;
@@ -4086,8 +4523,8 @@ function addDocument() {
     }
 
     if (!isSpouses) {
-      newPage("Fornitori");
-      sectionTitle("Fornitori", "Contatti utili collegati al progetto.");
+      newPage("Rubrica evento");
+      sectionTitle("Rubrica evento", "Contatti utili collegati al progetto.");
 
       if (suppliers.length) {
         suppliers.forEach((item) => {
@@ -4102,7 +4539,7 @@ function addDocument() {
           );
         });
       } else {
-        emptyText("Nessun fornitore inserito.");
+        emptyText("Nessun contatto inserito.");
       }
     }
 
@@ -4131,7 +4568,7 @@ function addDocument() {
 
     /* Documenti */
     newPage("Documenti");
-    sectionTitle("Documenti Drive", isSpouses ? "Documenti condivisi con gli sposi." : "Documenti e link utili al progetto.");
+    sectionTitle("Documenti", isSpouses ? "Documenti condivisi con gli sposi." : "Documenti e link utili al progetto.");
 
     if (documents.length) {
       documents.forEach((item) => documentCard(item));
@@ -4494,6 +4931,34 @@ function addDocument() {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+
+  const documentFileInput = document.getElementById("documentFileInput");
+  if (documentFileInput) {
+    documentFileInput.addEventListener("change", handleDocumentFileSelected);
+  }
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch((error) => {
+        console.warn("Service worker non registrato:", error);
+      });
+    });
+  }
+
+  function showInstallGuide() {
+    alert(
+      "Aggiungi PixelUp alla schermata Home:\\n\\n" +
+      "Su iPhone:\\n" +
+      "1. Apri PixelUp con Safari\\n" +
+      "2. Tocca il pulsante Condividi\\n" +
+      "3. Tocca “Aggiungi a Home”\\n" +
+      "4. Conferma su “Aggiungi”\\n\\n" +
+      "Su Android:\\n" +
+      "Apri il menu del browser e scegli “Installa app” oppure “Aggiungi a schermata Home”.\\n\\n" +
+      "Quando rientri dall’icona, PixelUp apre l’ultima dashboard usata se l’accesso è ancora salvato."
+    );
+  }
+
   window.editSummary = editSummary;
   window.toggleDeadlines = toggleDeadlines;
   window.toggleSuppliers = toggleSuppliers;
@@ -4540,6 +5005,11 @@ function addDocument() {
   window.archiveCurrentProject = archiveCurrentProject;
   window.showArchivedProjects = showArchivedProjects;
   window.restoreProject = restoreProject;
+  window.uploadDocumentFile = uploadDocumentFile;
+  window.handleDocumentFileSelected = handleDocumentFileSelected;
+  window.addDeadlineFromBook = addDeadlineFromBook;
+  window.openGlobalContactBook = openGlobalContactBook;
+  window.showInstallGuide = showInstallGuide;
   window.logoutPixelUp = function () {
   const confirmLogout = confirm("Vuoi uscire dalla dashboard PixelUp?");
 
@@ -4550,6 +5020,7 @@ function addDocument() {
   localStorage.removeItem("pixelup_role");
   localStorage.removeItem("pixelup_code");
   localStorage.removeItem("pixelup_maxProjects");
+  localStorage.removeItem("pixelup_last_event");
 
   window.location.href = "/dasgboardemo/accedi.html";
 };
