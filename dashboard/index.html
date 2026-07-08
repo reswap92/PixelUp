@@ -382,7 +382,8 @@
 .timeline-section,
 .notes-section,
 .backup-section,
-.spouse-contact-section {
+.spouse-contact-section,
+.visibility-section {
   display: none;
   animation: fade 0.22s ease;
 }
@@ -395,7 +396,8 @@
 .timeline-section.show,
 .notes-section.show,
 .backup-section.show,
-.spouse-contact-section.show {
+.spouse-contact-section.show,
+.visibility-section.show {
   display: block;
 }
 
@@ -944,6 +946,57 @@
   border-color:rgba(138,61,44,0.35);
 }
 
+
+.visibility-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.visibility-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+  border-radius: 18px;
+  border: 1px solid rgba(177,145,85,0.24);
+  background: rgba(255,252,246,0.94);
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.06);
+}
+
+.visibility-card h3 {
+  font-size: 15px;
+  color: var(--green-dark);
+  margin-bottom: 4px;
+}
+
+.visibility-card p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.visibility-switch {
+  min-width: 86px;
+  min-height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: #8a3d2c;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.visibility-switch.on {
+  background: rgba(77,90,58,0.12);
+  color: var(--green);
+  border-color: rgba(77,90,58,0.35);
+}
+
 @media (max-width: 390px) {
   .project-card-pro-top {
     grid-template-columns: 1fr;
@@ -1034,6 +1087,10 @@
 
     <button class="project-main-btn secondary" type="button" onclick="openGlobalContactBook()">
       Rubrica generale
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="toggleVisibilitySettings()">
+      Visibilità area sposi
     </button>
 
     <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
@@ -1471,6 +1528,25 @@
 
 </div>
 
+
+<div class="visibility-section" id="visibilitySection">
+
+  <div class="section-title">
+    <h2>Visibilità area sposi</h2>
+    <span>Mostra / nascondi</span>
+  </div>
+
+  <div class="list-card">
+    <div class="report-info-card">
+      <strong>Controllo link sposi</strong>
+      Da qui scegli quali sezioni devono comparire nel link sposi. I dati interni restano sempre visibili solo alla wedding planner.
+    </div>
+
+    <div class="visibility-grid" id="visibilitySettingsList"></div>
+  </div>
+
+</div>
+
 <div class="backup-section" id="backupSection">
 
   <div class="section-title">
@@ -1598,6 +1674,19 @@
     projectStatus: "In lavorazione",
     archived: false,
     projectNotes: "",
+    visibility: {
+      overview: true,
+      budget: false,
+      deadlines: true,
+      suppliers: true,
+      agenda: true,
+      documents: true,
+      checklist: false,
+      timeline: true,
+      contacts: true,
+      report: false,
+      notes: false
+    },
 
     deadlines: [],
 
@@ -1664,6 +1753,10 @@
     merged.projectStatus = merged.projectStatus || "In lavorazione";
     merged.archived = merged.archived === true;
     merged.projectNotes = String(merged.projectNotes || "");
+    merged.visibility = {
+      ...defaultData.visibility,
+      ...(safeRemoteData.visibility || {})
+    };
 
     merged.deadlines = merged.deadlines.map((item) => ({
       name: item.name || "",
@@ -1892,6 +1985,7 @@
       "timelineSection",
       "notesSection",
       "spouseContactSection",
+      "visibilitySection",
       "backupSection"
     ];
 
@@ -2758,6 +2852,7 @@
 
     renderSummary();
     renderSpouseContacts();
+    renderVisibilitySettings();
     updateCountdown();
     saveData();
 
@@ -3367,6 +3462,7 @@
       projectStatus: "In lavorazione",
       archived: false,
       projectNotes: "",
+      visibility: structuredClone(defaultData.visibility),
       checklist: [],
       timeline: [],
       spouseContacts: spouseContacts,
@@ -4068,6 +4164,64 @@
     saveData();
   }
 
+
+
+  function toggleVisibilitySettings() {
+    openSingleSection("visibilitySection");
+    renderVisibilitySettings();
+  }
+
+  function getVisibilityLabels() {
+    return [
+      ["overview", "Info matrimonio", "Nome evento, data e informazioni principali."],
+      ["budget", "Budget e pagamenti", "Mostra agli sposi il riepilogo economico. Consigliato spento."],
+      ["deadlines", "Scadenze", "Mostra solo le scadenze segnate come visibili agli sposi."],
+      ["suppliers", "Rubrica evento", "Mostra la rubrica evento agli sposi."],
+      ["agenda", "Agenda", "Mostra solo gli appuntamenti segnati come visibili agli sposi."],
+      ["documents", "Documenti", "Mostra solo documenti e PDF segnati come visibili agli sposi."],
+      ["checklist", "Checklist", "Mostra solo attività segnate come visibili agli sposi."],
+      ["timeline", "Timeline evento", "Mostra solo i momenti segnati come visibili agli sposi."],
+      ["contacts", "Contatta sposi", "Mostra i recapiti salvati degli sposi nel link sposi."],
+      ["report", "Report sposi", "Permette di mostrare/scaricare un riepilogo per gli sposi."],
+      ["notes", "Note progetto", "Sconsigliato: le note interne dovrebbero restare nascoste."]
+    ];
+  }
+
+  function renderVisibilitySettings() {
+    const list = document.getElementById("visibilitySettingsList");
+    if (!list) return;
+
+    data.visibility = {
+      ...defaultData.visibility,
+      ...(data.visibility || {})
+    };
+
+    list.innerHTML = getVisibilityLabels().map(([key, title, text]) => {
+      const isOn = data.visibility[key] === true;
+      return `
+        <div class="visibility-card">
+          <div>
+            <h3>${title}</h3>
+            <p>${text}</p>
+          </div>
+          <button class="visibility-switch ${isOn ? "on" : ""}" type="button" onclick="toggleVisibilityKey('${key}')">
+            ${isOn ? "Visibile" : "Nascosto"}
+          </button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function toggleVisibilityKey(key) {
+    data.visibility = {
+      ...defaultData.visibility,
+      ...(data.visibility || {})
+    };
+
+    data.visibility[key] = !data.visibility[key];
+    renderVisibilitySettings();
+    saveData();
+  }
 
   function toggleBackup() {
     openSingleSection("backupSection");
@@ -4895,6 +5049,7 @@
           !Array.isArray(remoteData.timeline) ||
           !Array.isArray(remoteData.spouseContacts) ||
           remoteData.projectNotes === undefined ||
+          remoteData.visibility === undefined ||
           remoteData.archived === undefined ||
           remoteData.projectStatus === undefined;
 
@@ -5015,6 +5170,8 @@
   window.handleDocumentFileSelected = handleDocumentFileSelected;
   window.addDeadlineFromBook = addDeadlineFromBook;
   window.openGlobalContactBook = openGlobalContactBook;
+  window.toggleVisibilitySettings = toggleVisibilitySettings;
+  window.toggleVisibilityKey = toggleVisibilityKey;
   window.showInstallGuide = showInstallGuide;
   window.logoutPixelUp = function () {
   const confirmLogout = confirm("Vuoi uscire dalla dashboard PixelUp?");
