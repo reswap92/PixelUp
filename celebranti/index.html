@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PixelUp Celebranti | Dashboard</title>
+
+  <link rel="manifest" href="/celebranti/manifest.json">
+  <meta name="theme-color" content="#6f4a8e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PixelUp Celebranti">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="/celebranti/icons/icon-192.png">
+
+  <style>
+    :root {
+      --cream: #fff8f0;
+      --cream-2: #fbefe5;
+      --panel: rgba(255, 252, 248, 0.96);
+      --card: rgba(255, 255, 255, 0.92);
+      --text: #231728;
+      --muted: #7b6b76;
+      --purple: #6f4a8e;
+      --purple-dark: #24152e;
+      --purple-2: #8d5fad;
+      --gold: #c69a48;
+      --rose: #f4d8dd;
+      --line: rgba(111, 74, 142, 0.16);
+      --shadow: 0 18px 40px rgba(43, 25, 51, 0.12);
+      --soft-shadow: 0 8px 22px rgba(43, 25, 51, 0.08);
+      --radius: 22px;
+      --hero-image: url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(198, 154, 72, 0.18), transparent 30%),
+        radial-gradient(circle at 92% 2%, rgba(111, 74, 142, 0.16), transparent 28%),
+        linear-gradient(135deg, #fffaf4 0%, #fbefe5 52%, #fff7fb 100%);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .desktop-shell {
+      width: min(1420px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    .sidebar {
+      background:
+        radial-gradient(circle at 80% 90%, rgba(198,154,72,.16), transparent 26%),
+        linear-gradient(180deg, #2b1736 0%, #1a1024 100%);
+      color: white;
+      padding: 26px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 20px 0 40px rgba(42, 25, 49, 0.10);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 26px;
+      padding: 0 6px;
+    }
+
+    .brand-mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(198,154,72,.75);
+      color: #f0c97b;
+      font-size: 30px;
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+
+    .brand-name {
+      line-height: 1.05;
+    }
+
+    .brand-name strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .brand-name strong span {
+      color: #d3a957;
+    }
+
+    .brand-name small {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255,255,255,.72);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 10px;
+    }
+
+    .side-nav {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      min-height: 49px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: transparent;
+      color: rgba(255,255,255,.88);
+      border-radius: 14px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .nav-btn .ico {
+      width: 24px;
+      text-align: center;
+      color: #f0c97b;
+      font-size: 19px;
+    }
+
+    .nav-btn.active,
+    .nav-btn:hover {
+      background: linear-gradient(135deg, rgba(198,154,72,.22), rgba(141,95,173,.42));
+      border-color: rgba(198,154,72,.45);
+      color: white;
+    }
+
+    .sidebar-card {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .sidebar-card h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 7px;
+    }
+
+    .sidebar-card p {
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .main {
+      padding: 28px 28px 48px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .page-title h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 400;
+      color: var(--purple-dark);
+      letter-spacing: -1.4px;
+      line-height: 1.05;
+    }
+
+    .page-title p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--purple-dark);
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(43, 25, 51, 0.05);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--purple), #4e2e64);
+      color: white;
+      border-color: rgba(111,74,142,.45);
+    }
+
+    .btn.gold {
+      background: linear-gradient(135deg, var(--gold), #e0bf75);
+      color: #241a14;
+      border-color: rgba(198,154,72,.5);
+    }
+
+    .btn.danger {
+      color: #8a3540;
+      border-color: rgba(138,53,64,.28);
+      background: rgba(138,53,64,.07);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--purple);
+      font-size: 22px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .overview-card {
+      background:
+        radial-gradient(circle at 82% 16%, rgba(244,216,221,.78), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,249,242,.88));
+      border: 1px solid rgba(111,74,142,.12);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overview-card::after {
+      content: "❦";
+      position: absolute;
+      right: 20px;
+      bottom: -20px;
+      color: rgba(111,74,142,.08);
+      font-size: 180px;
+      line-height: 1;
+    }
+
+    .project-name {
+      position: relative;
+      z-index: 2;
+    }
+
+    .project-name small {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 900;
+      font-size: 11px;
+    }
+
+    .project-name h2 {
+      margin-top: 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--purple-dark);
+      font-size: clamp(32px, 4vw, 50px);
+      font-weight: 400;
+      line-height: 1.05;
+    }
+
+    .project-name p {
+      margin-top: 8px;
+      color: var(--muted);
+      max-width: 580px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .stats-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(111,74,142,.12);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 110px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .stat .stat-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(111,74,142,.10);
+      display: grid;
+      place-items: center;
+      color: var(--purple);
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      color: var(--purple-dark);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .couple-access {
+      background:
+        linear-gradient(135deg, rgba(111,74,142,.92), rgba(54,30,69,.94)),
+        var(--hero-image) center/cover;
+      color: white;
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+    }
+
+    .couple-access h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .couple-access p {
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 15px;
+    }
+
+    .link-box {
+      border-radius: 14px;
+      background: rgba(255,255,255,.92);
+      color: var(--purple-dark);
+      padding: 12px;
+      font-size: 12px;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      display: none;
+      animation: fade .18s ease;
+    }
+
+    .section.show {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 18px 0 14px;
+    }
+
+    .section-head h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      color: var(--purple-dark);
+      font-weight: 400;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--soft-shadow);
+      overflow: hidden;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-title h3 {
+      font-size: 18px;
+      color: var(--purple-dark);
+      line-height: 1.2;
+    }
+
+    .card-title small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(111,74,142,.10);
+      color: var(--purple);
+      font-weight: 900;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .pill.ok {
+      background: rgba(66, 141, 94, .12);
+      color: #287143;
+    }
+
+    .pill.warn {
+      background: rgba(198,154,72,.16);
+      color: #8a6428;
+    }
+
+    .pill.danger {
+      background: rgba(138,53,64,.10);
+      color: #8a3540;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(111,74,142,.10);
+      background: rgba(255,255,255,.66);
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .row-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(111,74,142,.10);
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .row-info h3 {
+      font-size: 15px;
+      color: var(--purple-dark);
+      margin-bottom: 4px;
+    }
+
+    .row-info p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .row-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      min-width: 120px;
+    }
+
+    .small-btn {
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(111,74,142,.18);
+      background: white;
+      color: var(--purple-dark);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .small-btn.danger {
+      color: #8a3540;
+      border-color: rgba(138,53,64,.24);
+      background: rgba(138,53,64,.05);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 22px 10px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field,
+    .textarea,
+    .select {
+      width: 100%;
+      border: 1px solid rgba(111,74,142,.18);
+      background: rgba(255,255,255,.82);
+      color: var(--text);
+      border-radius: 14px;
+      min-height: 44px;
+      padding: 0 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .textarea {
+      min-height: 160px;
+      resize: vertical;
+      padding-top: 12px;
+      line-height: 1.5;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .question-editor {
+      display: grid;
+      gap: 10px;
+    }
+
+    .question-card {
+      border: 1px solid rgba(111,74,142,.12);
+      background: rgba(255,255,255,.68);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .question-card h4 {
+      color: var(--purple-dark);
+      margin-bottom: 6px;
+    }
+
+    .question-card textarea {
+      min-height: 90px;
+    }
+
+    .progress-line {
+      height: 10px;
+      background: rgba(111,74,142,.10);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, var(--purple), var(--gold));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .hidden-input {
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      background: #231728;
+      color: white;
+      border-radius: 999px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      z-index: 200;
+      display: none;
+      max-width: min(520px, 90vw);
+      text-align: center;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .mobile-preview {
+      border-radius: 34px;
+      border: 8px solid #1b1022;
+      background: #1b1022;
+      box-shadow: 0 20px 45px rgba(0,0,0,.22);
+      overflow: hidden;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .mobile-screen {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,248,240,.92)),
+        var(--hero-image) center/cover;
+      min-height: 590px;
+      border-radius: 25px;
+      padding: 22px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mobile-logo {
+      color: var(--purple-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+    }
+
+    .mobile-claim {
+      margin-top: 80px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 24px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .mobile-claim h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--purple-dark);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .mobile-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .mobile-tile {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(111,74,142,.12);
+      border-radius: 18px;
+      min-height: 78px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--purple-dark);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 8px;
+    }
+
+    .mobile-tile span {
+      display: block;
+      color: var(--purple);
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+      background: rgba(35,23,40,.52);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: block;
+    }
+
+    .modal-card {
+      width: min(720px, 100%);
+      margin: 40px auto;
+      background: #fffaf5;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-head h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      color: var(--purple-dark);
+      font-weight: 400;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--purple-dark);
+      font-size: 24px;
+    }
+
+    .mobile-only {
+      display: none;
+    }
+
+    @media (max-width: 1080px) {
+      .desktop-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .mobile-only {
+        display: block;
+      }
+
+      .mobile-menu-btn {
+        display: grid;
+        place-items: center;
+      }
+
+      .main {
+        padding: 18px 16px 88px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 70;
+        background: rgba(255,248,240,.92);
+        backdrop-filter: blur(10px);
+        margin: -18px -16px 18px;
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .top-actions {
+        display: none;
+      }
+
+      .page-title h1 {
+        font-size: 26px;
+      }
+
+      .page-title p {
+        font-size: 12px;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .row {
+        grid-template-columns: 48px 1fr;
+      }
+
+      .row-right {
+        grid-column: 2;
+        justify-content: flex-start;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .overview-card,
+      .couple-access,
+      .card {
+        border-radius: 20px;
+        padding: 16px;
+      }
+
+      .stats-grid {
+        gap: 9px;
+      }
+
+      .stat {
+        min-height: 100px;
+        padding: 13px;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="desktop-shell">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">✒</div>
+        <div class="brand-name">
+          <strong>Pixel<span>Up</span></strong>
+          <small>Celebranti</small>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-btn active" type="button" onclick="openSection('overviewSection', this)"><span class="ico">⌂</span> Panoramica</button>
+        <button class="nav-btn" type="button" onclick="openSection('ceremoniesSection', this)"><span class="ico">♡</span> Le mie cerimonie</button>
+        <button class="nav-btn" type="button" onclick="openSection('questionsSection', this)"><span class="ico">☷</span> Questionari</button>
+        <button class="nav-btn" type="button" onclick="openSection('workModelsSection', this)"><span class="ico">▧</span> Modelli di lavoro</button>
+        <button class="nav-btn" type="button" onclick="openSection('appointmentsSection', this)"><span class="ico">▦</span> Appuntamenti</button>
+        <button class="nav-btn" type="button" onclick="openSection('riteSection', this)"><span class="ico">✒</span> Rito e testi</button>
+        <button class="nav-btn" type="button" onclick="openSection('documentsSection', this)"><span class="ico">▤</span> Documenti</button>
+        <button class="nav-btn" type="button" onclick="openSection('contactsSection', this)"><span class="ico">☏</span> Contatti</button>
+        <button class="nav-btn" type="button" onclick="openSection('tasksSection', this)"><span class="ico">✓</span> Attività</button>
+        <button class="nav-btn" type="button" onclick="openSection('notesSection', this)"><span class="ico">❦</span> Note e idee</button>
+        <button class="nav-btn" type="button" onclick="openSection('reportSection', this)"><span class="ico">PDF</span> Report</button>
+        <button class="nav-btn" type="button" onclick="openSection('settingsSection', this)"><span class="ico">⚙</span> Impostazioni</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <h3>Area coppia</h3>
+        <p>Gli sposi accedono al questionario, caricano documenti e visualizzano solo le sezioni rese disponibili.</p>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Consiglio PixelUp</h3>
+        <p>Importa il tuo modello questionario e trasformalo in domande compilabili dalla coppia.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu-btn" type="button" onclick="openMobileMenu()">☰</button>
+
+        <div class="page-title">
+          <h1 id="welcomeTitle">Dashboard Celebrante</h1>
+          <p id="welcomeSubtitle">Gestisci cerimonie, coppie, questionari e testi in un unico spazio.</p>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn" type="button" onclick="showInstallGuide()">＋ Home</button>
+          <button class="btn" type="button" onclick="copyCoupleLink()">Link coppia</button>
+          <button class="btn primary" type="button" onclick="createNewCeremony()">+ Nuova cerimonia</button>
+          <button class="btn danger" type="button" onclick="logoutPixelUp()">Esci</button>
+        </div>
+      </header>
+
+      <section class="section show" id="overviewSection">
+        <div class="hero-grid">
+          <div class="overview-card">
+            <div class="project-name">
+              <small>PixelUp Celebranti</small>
+              <h2 id="projectTitle">Seleziona o crea una cerimonia</h2>
+              <p id="projectDescription">Una dashboard elegante per raccogliere storie, documenti, questionari, appuntamenti, testi del rito e report finali.</p>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat"><div class="stat-ico">♡</div><strong id="statCeremonies">0</strong><span>Cerimonie attive</span></div>
+              <div class="stat"><div class="stat-ico">☷</div><strong id="statQuestions">0%</strong><span>Questionario</span></div>
+              <div class="stat"><div class="stat-ico">▤</div><strong id="statDocuments">0</strong><span>Documenti</span></div>
+              <div class="stat"><div class="stat-ico">▦</div><strong id="statNextDate">--</strong><span>Prossimo appuntamento</span></div>
+            </div>
+          </div>
+
+          <div class="couple-access">
+            <div>
+              <h3>Il vostro percorso, la vostra storia, la mia parola.</h3>
+              <p>Condividi il link con la coppia: potranno compilare il questionario e caricare documenti, senza modificare la dashboard della celebrante.</p>
+            </div>
+            <div>
+              <div class="link-box" id="coupleLinkBox">Crea o apri una cerimonia per generare il link coppia.</div>
+              <button class="btn gold" style="width:100%;" type="button" onclick="copyCoupleLink()">Copia link coppia</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-title"><div><h3>Questionari personalizzati</h3><small>Crea, importa o gestisci le domande.</small></div><span class="pill">Top</span></div>
+            <p class="empty" style="padding:0;text-align:left;">La celebrante può creare domande a mano oppure importare un modello di lavoro in PDF/DOC/TXT.</p>
+            <button class="btn" style="margin-top:14px;" type="button" onclick="openSectionById('questionsSection')">Vai</button>
+          </article>
+
+          <article class="card">
+            <div class="card-title"><div><h3>Area coppia dedicata</h3><small>Compilazione semplice per gli sposi.</small></div><span class="pill ok">Privata</span></div>
+            <p class="empty" style="padding:0;text-align:left;">La coppia vede solo questionario, documenti richiesti, programma e messaggi condivisi.</p>
+            <button class="btn" style="margin-top:14px;" type="button" onclick="copyCoupleLink()">Copia link</button>
+          </article>
+
+          <article class="card">
+            <div class="card-title"><div><h3>Rito e testi finali</h3><small>Bozze, promesse, letture e PDF finale.</small></div><span class="pill warn">Cerimonia</span></div>
+            <p class="empty" style="padding:0;text-align:left;">Organizza i testi del rito e prepara il documento finale da condividere o stampare.</p>
+            <button class="btn" style="margin-top:14px;" type="button" onclick="openSectionById('riteSection')">Vai</button>
+          </article>
+        </div>
+
+        <div class="section-head">
+          <h2>Attività recenti</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="renderAll()">Aggiorna</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="list" id="recentActivityList"></div>
+        </div>
+      </section>
+
+      <section class="section" id="ceremoniesSection">
+        <div class="section-head">
+          <h2>Le mie cerimonie</h2>
+          <div class="section-actions">
+            <button class="btn primary" type="button" onclick="createNewCeremony()">+ Nuova cerimonia</button>
+            <button class="btn" type="button" onclick="showCeremoniesList()">Aggiorna lista</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="list" id="ceremonyList"></div>
+        </div>
+      </section>
+
+      <section class="section" id="questionsSection">
+        <div class="section-head">
+          <h2>Questionario coppia</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addQuestion()">+ Domanda</button>
+            <button class="btn gold" type="button" onclick="triggerImportQuestionnaire()">Importa modello</button>
+            <button class="btn primary" type="button" onclick="copyCoupleLink()">Invita coppia</button>
+          </div>
+        </div>
+
+        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.doc,.docx,.png,.jpg,.jpeg" onchange="importQuestionnaireFile(event)" />
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h3>Domande compilabili</h3>
+                <small>Gli sposi possono rispondere dall'area coppia.</small>
+              </div>
+              <span class="pill" id="questionsCountPill">0 domande</span>
+            </div>
+            <div class="question-editor" id="questionsList"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h3>Modello importato</h3>
+                <small>Carica il questionario già usato dalla celebrante.</small>
+              </div>
+              <span class="pill warn">PDF/DOC/TXT</span>
+            </div>
+            <div id="importedModelBox" class="empty">
+              Nessun modello importato. Puoi caricare un file e salvarlo nella cerimonia.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="workModelsSection">
+        <div class="section-head">
+          <h2>Modelli di lavoro</h2>
+          <div class="section-actions">
+            <button class="btn gold" type="button" onclick="triggerWorkModelUpload()">Carica modello</button>
+          </div>
+        </div>
+
+        <input class="hidden-input" id="workModelFileInput" type="file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" onchange="uploadWorkModel(event)" />
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><div><h3>Archivio modelli</h3><small>Modelli riutilizzabili dalla celebrante.</small></div></div>
+            <div class="list" id="workModelsList"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><div><h3>Come usarli</h3><small>Workflow consigliato.</small></div></div>
+            <p class="empty" style="padding:0;text-align:left;">
+              Carica i tuoi modelli di questionario, contratto o rito. Quando crei una nuova cerimonia puoi importarli e adattarli alla coppia.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="appointmentsSection">
+        <div class="section-head">
+          <h2>Appuntamenti</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addAppointment()">+ Aggiungi</button>
+          </div>
+        </div>
+        <div class="card"><div class="list" id="appointmentsList"></div></div>
+      </section>
+
+      <section class="section" id="riteSection">
+        <div class="section-head">
+          <h2>Rito e testi</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addRiteBlock()">+ Blocco testo</button>
+            <button class="btn gold" type="button" onclick="downloadRitePDF()">Scarica PDF rito</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><div><h3>Bozza cerimonia</h3><small>Scrivi e organizza il testo finale.</small></div></div>
+            <textarea class="textarea" id="riteDraftInput" placeholder="Scrivi qui la bozza generale del rito, introduzione, storia della coppia, promesse, letture, momenti simbolici..." oninput="saveRiteDraftLocal()"></textarea>
+            <button class="btn primary" style="margin-top:12px;" type="button" onclick="saveRiteDraft()">Salva bozza rito</button>
+          </div>
+          <div class="card">
+            <div class="card-title"><div><h3>Blocchi del rito</h3><small>Introduzione, storia, promesse, letture, finale.</small></div></div>
+            <div class="list" id="riteBlocksList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="documentsSection">
+        <div class="section-head">
+          <h2>Documenti e file</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addDocumentLink()">+ Link</button>
+            <button class="btn gold" type="button" onclick="triggerDocumentUpload()">Carica file</button>
+          </div>
+        </div>
+
+        <input class="hidden-input" id="documentFileInput" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" onchange="uploadDocumentFile(event)" />
+
+        <div class="card">
+          <div class="list" id="documentsList"></div>
+          <p style="margin-top:12px;color:var(--muted);font-size:12px;">Consigliato: PDF massimo 5 MB. Per file molto pesanti usa un link Drive.</p>
+          <div class="progress-line" id="uploadProgressWrap" style="display:none;"><div class="progress-fill" id="uploadProgress"></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="contactsSection">
+        <div class="section-head">
+          <h2>Clienti, fornitori e contatti</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addContact()">+ Aggiungi</button>
+          </div>
+        </div>
+        <div class="card"><div class="list" id="contactsList"></div></div>
+      </section>
+
+      <section class="section" id="tasksSection">
+        <div class="section-head">
+          <h2>Attività</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="addTask()">+ Aggiungi</button>
+          </div>
+        </div>
+        <div class="card"><div class="list" id="tasksList"></div></div>
+      </section>
+
+      <section class="section" id="notesSection">
+        <div class="section-head">
+          <h2>Note e idee</h2>
+          <div class="section-actions">
+            <button class="btn primary" type="button" onclick="saveNotes()">Salva</button>
+          </div>
+        </div>
+        <div class="card">
+          <textarea class="textarea" id="notesInput" placeholder="Appunti, idee per il rito, frasi degli sposi, dettagli emotivi, promemoria interni..."></textarea>
+          <p style="margin-top:10px;color:var(--muted);font-size:12px;">Le note sono interne alla celebrante e non vengono mostrate alla coppia.</p>
+        </div>
+      </section>
+
+      <section class="section" id="reportSection">
+        <div class="section-head">
+          <h2>Report e backup</h2>
+          <div class="section-actions">
+            <button class="btn gold" type="button" onclick="downloadFullReportPDF()">Scarica PDF completo</button>
+            <button class="btn" type="button" onclick="copySummary()">Copia riepilogo</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><div><h3>Report celebrante</h3><small>Contiene questionario, appuntamenti, documenti, rito e note.</small></div></div>
+            <p class="empty" style="padding:0;text-align:left;">Usalo come archivio interno o come base per consegnare il materiale finale.</p>
+          </div>
+          <div class="card">
+            <div class="card-title"><div><h3>Anteprima mobile coppia</h3><small>Layout diverso dalla dashboard wedding.</small></div></div>
+            <div class="mobile-preview">
+              <div class="mobile-screen">
+                <div class="mobile-logo"><span>PixelUp</span><span>☰</span></div>
+                <div class="mobile-claim">
+                  <h3>Il vostro percorso, la vostra storia.</h3>
+                  <div class="mobile-buttons">
+                    <div class="mobile-tile"><span>☷</span>Questionario</div>
+                    <div class="mobile-tile"><span>▤</span>Documenti</div>
+                    <div class="mobile-tile"><span>▦</span>Programma</div>
+                    <div class="mobile-tile"><span>✒</span>Rito</div>
+                    <div class="mobile-tile"><span>☏</span>Contatti</div>
+                    <div class="mobile-tile"><span>♡</span>Messaggi</div>
+                  </div>
+                </div>
+                <div class="mobile-tile" style="min-height:58px;">Area privata coppia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="settingsSection">
+        <div class="section-head">
+          <h2>Impostazioni</h2>
+          <div class="section-actions">
+            <button class="btn" type="button" onclick="editCeremonyInfo()">Modifica cerimonia</button>
+            <button class="btn danger" type="button" onclick="logoutPixelUp()">Esci</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><div><h3>Informazioni cerimonia</h3><small>Nome coppia, data, location e stile.</small></div></div>
+            <div id="settingsInfo" class="empty"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><div><h3>Aggiungi alla Home</h3><small>Usa PixelUp come una app.</small></div></div>
+            <p class="empty" style="padding:0;text-align:left;">La celebrante può aggiungere l’icona PixelUp al telefono. Se non preme “Esci”, l’accesso resta salvato.</p>
+            <button class="btn primary" style="margin-top:14px;" type="button" onclick="showInstallGuide()">Mostra istruzioni</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="mobileMenuModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Menu PixelUp</h3>
+        <button class="close-btn" type="button" onclick="closeMobileMenu()">×</button>
+      </div>
+      <div class="side-nav" style="margin:0;">
+        <button class="nav-btn active" type="button" onclick="openSectionById('overviewSection'); closeMobileMenu();"><span class="ico">⌂</span> Panoramica</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('ceremoniesSection'); closeMobileMenu();"><span class="ico">♡</span> Le mie cerimonie</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('questionsSection'); closeMobileMenu();"><span class="ico">☷</span> Questionari</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('workModelsSection'); closeMobileMenu();"><span class="ico">▧</span> Modelli di lavoro</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('appointmentsSection'); closeMobileMenu();"><span class="ico">▦</span> Appuntamenti</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('riteSection'); closeMobileMenu();"><span class="ico">✒</span> Rito e testi</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('documentsSection'); closeMobileMenu();"><span class="ico">▤</span> Documenti</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('contactsSection'); closeMobileMenu();"><span class="ico">☏</span> Contatti</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('tasksSection'); closeMobileMenu();"><span class="ico">✓</span> Attività</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('reportSection'); closeMobileMenu();"><span class="ico">PDF</span> Report</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      onSnapshot,
+      collection,
+      getDocs,
+      deleteDoc,
+      query,
+      where,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    import {
+      getStorage,
+      ref,
+      uploadBytesResumable,
+      getDownloadURL,
+      deleteObject
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const hasAccess = localStorage.getItem("pixelup_access") === "true";
+    const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
+    const loggedRole = String(localStorage.getItem("pixelup_role") || "celebrante").trim().toLowerCase();
+    const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
+    const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 5);
+
+    if (!hasAccess || !loggedEmail) {
+      window.location.href = "/dasgboardemo/accedi.html";
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentEventId = urlParams.get("event") || localStorage.getItem("pixelup_last_celebrant_event") || "";
+    const eventRef = currentEventId ? doc(db, "celebrantEvents", currentEventId) : null;
+
+    if (!urlParams.get("event") && currentEventId) {
+      window.history.replaceState(null, "", "/celebranti/?event=" + currentEventId);
+    }
+
+    const defaultData = {
+      projectName: "Seleziona o crea una cerimonia",
+      ceremonyDate: "2027-06-14T16:00:00",
+      location: "",
+      ceremonyType: "Rito simbolico",
+      style: "Romantico ed elegante",
+      ownerEmail: loggedEmail,
+      ownerRole: loggedRole,
+      accessCode: loggedCode,
+      archived: false,
+      status: "In preparazione",
+      coupleMessage: "",
+      importedQuestionnaire: null,
+      questions: [],
+      appointments: [],
+      documents: [],
+      workModels: [],
+      contacts: [],
+      tasks: [],
+      riteDraft: "",
+      riteBlocks: [],
+      notes: "",
+      createdAt: "",
+      updatedAt: ""
+    };
+
+    let data = structuredClone(defaultData);
+    let firebaseReady = false;
+    let unsubscribeEvent = null;
+
+    function cleanText(value) {
+      return String(value || "").trim();
+    }
+
+    function makeId(value) {
+      return String(value || "")
+        .toLowerCase()
+        .trim()
+        .replaceAll("à", "a")
+        .replaceAll("è", "e")
+        .replaceAll("é", "e")
+        .replaceAll("ì", "i")
+        .replaceAll("ò", "o")
+        .replaceAll("ù", "u")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatDate(value) {
+      const d = new Date(value);
+      if (isNaN(d)) return "Data non indicata";
+      return d.toLocaleDateString("it-IT", { day: "2-digit", month: "long", year: "numeric" });
+    }
+
+    function formatShortDate(value) {
+      const d = new Date(value);
+      if (isNaN(d)) return "--";
+      return d.toLocaleDateString("it-IT", { day: "2-digit", month: "short" });
+    }
+
+    function formatTime(value) {
+      const d = new Date(value);
+      if (isNaN(d)) return "";
+      return d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function toast(message) {
+      const box = document.getElementById("toast");
+      if (!box) return;
+      box.textContent = message;
+      box.classList.add("show");
+      setTimeout(() => box.classList.remove("show"), 3000);
+    }
+
+    function normalizeData(remote) {
+      const safe = remote || {};
+      const merged = { ...defaultData, ...safe };
+
+      merged.ownerEmail = String(merged.ownerEmail || loggedEmail).trim().toLowerCase();
+      merged.ownerRole = merged.ownerRole || loggedRole;
+      merged.accessCode = merged.accessCode || loggedCode;
+      merged.projectName = merged.projectName || "Cerimonia";
+      merged.ceremonyDate = merged.ceremonyDate || "2027-06-14T16:00:00";
+      merged.location = merged.location || "";
+      merged.ceremonyType = merged.ceremonyType || "Rito simbolico";
+      merged.style = merged.style || "";
+      merged.status = merged.status || "In preparazione";
+      merged.archived = merged.archived === true;
+      merged.coupleMessage = merged.coupleMessage || "";
+      merged.riteDraft = merged.riteDraft || "";
+      merged.notes = merged.notes || "";
+
+      merged.questions = Array.isArray(safe.questions) ? safe.questions.map((item) => ({
+        question: item.question || "",
+        answer1: item.answer1 || "",
+        answer2: item.answer2 || "",
+        type: item.type || "testo",
+        visibleToCouple: item.visibleToCouple !== false
+      })) : [];
+
+      merged.appointments = Array.isArray(safe.appointments) ? safe.appointments.map((item) => ({
+        title: item.title || "",
+        date: item.date || "",
+        place: item.place || "",
+        notes: item.notes || "",
+        visibleToCouple: item.visibleToCouple === true
+      })) : [];
+
+      merged.documents = Array.isArray(safe.documents) ? safe.documents.map((item) => ({
+        name: item.name || "",
+        category: item.category || "",
+        url: item.url || "",
+        storagePath: item.storagePath || "",
+        notes: item.notes || "",
+        type: item.type || "link",
+        visibleToCouple: item.visibleToCouple === true
+      })) : [];
+
+      merged.workModels = Array.isArray(safe.workModels) ? safe.workModels.map((item) => ({
+        name: item.name || "",
+        category: item.category || "",
+        url: item.url || "",
+        storagePath: item.storagePath || "",
+        notes: item.notes || "",
+        createdAt: item.createdAt || ""
+      })) : [];
+
+      merged.contacts = Array.isArray(safe.contacts) ? safe.contacts.map((item) => ({
+        role: item.role || "",
+        name: item.name || "",
+        phone: item.phone || "",
+        email: item.email || "",
+        notes: item.notes || ""
+      })) : [];
+
+      merged.tasks = Array.isArray(safe.tasks) ? safe.tasks.map((item) => ({
+        title: item.title || "",
+        done: item.done === true,
+        dueDate: item.dueDate || "",
+        notes: item.notes || ""
+      })) : [];
+
+      merged.riteBlocks = Array.isArray(safe.riteBlocks) ? safe.riteBlocks.map((item) => ({
+        title: item.title || "",
+        text: item.text || "",
+        order: Number(item.order) || 0
+      })) : [];
+
+      merged.importedQuestionnaire = safe.importedQuestionnaire || null;
+
+      return merged;
+    }
+
+    async function saveData() {
+      if (!eventRef) {
+        toast("Apri o crea una cerimonia prima di salvare.");
+        return;
+      }
+      if (!firebaseReady) return;
+
+      try {
+        data.ownerEmail = loggedEmail;
+        data.ownerRole = loggedRole;
+        data.accessCode = loggedCode;
+        data.updatedAt = new Date().toISOString();
+        await setDoc(eventRef, data, { merge: true });
+      } catch (error) {
+        console.error("Errore salvataggio:", error);
+        alert("Errore nel salvataggio. Controlla Firebase.");
+      }
+    }
+
+    async function countUserCeremonies() {
+      const q = query(collection(db, "celebrantEvents"), where("ownerEmail", "==", loggedEmail));
+      const snap = await getDocs(q);
+      return snap.size;
+    }
+
+    async function createNewCeremony() {
+      const count = await countUserCeremonies();
+      if (count >= maxProjects) {
+        alert("Hai raggiunto il limite massimo di " + maxProjects + " cerimonie/progetti per questo account.");
+        return;
+      }
+
+      const projectName = prompt("Nome coppia / cerimonia:", "Marco & Giulia");
+      if (projectName === null) return;
+      const cleanName = projectName.trim();
+      if (!cleanName) return alert("Inserisci un nome valido.");
+
+      const ceremonyDate = prompt("Data e ora cerimonia formato AAAA-MM-GGTHH:MM:SS:", "2027-06-14T16:00:00");
+      if (ceremonyDate === null) return;
+
+      const location = prompt("Location / luogo:", "Villa dei Glicini");
+      if (location === null) return;
+
+      const ceremonyType = prompt("Tipo cerimonia:", "Rito simbolico");
+      if (ceremonyType === null) return;
+
+      const style = prompt("Stile desiderato:", "Romantico, emozionale, elegante");
+      if (style === null) return;
+
+      const id = makeId(cleanName) + "-" + Date.now().toString(36);
+
+      const newData = {
+        ...structuredClone(defaultData),
+        projectName: cleanName,
+        ceremonyDate: ceremonyDate || "2027-06-14T16:00:00",
+        location: location || "",
+        ceremonyType: ceremonyType || "Rito simbolico",
+        style: style || "",
+        ownerEmail: loggedEmail,
+        ownerRole: loggedRole,
+        accessCode: loggedCode,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        questions: [
+          { question: "Raccontate la vostra storia: come vi siete conosciuti?", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
+          { question: "Qual è il momento più importante che avete vissuto insieme?", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
+          { question: "Che tono desiderate per la cerimonia?", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
+          { question: "Ci sono persone, ricordi o frasi che volete inserire nel rito?", answer1: "", answer2: "", type: "testo", visibleToCouple: true }
+        ],
+        tasks: [
+          { title: "Inviare questionario alla coppia", done: false, dueDate: "", notes: "" },
+          { title: "Confermare primo appuntamento", done: false, dueDate: "", notes: "" },
+          { title: "Preparare bozza rito", done: false, dueDate: "", notes: "" }
+        ]
+      };
+
+      await setDoc(doc(db, "celebrantEvents", id), newData, { merge: true });
+      localStorage.setItem("pixelup_last_celebrant_event", id);
+      window.location.href = "/celebranti/?event=" + id;
+    }
+
+    async function showCeremoniesList() {
+      const list = document.getElementById("ceremonyList");
+      if (!list) return;
+      list.innerHTML = `<div class="empty">Caricamento cerimonie...</div>`;
+
+      try {
+        const q = query(collection(db, "celebrantEvents"), where("ownerEmail", "==", loggedEmail));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          list.innerHTML = `<div class="empty">Nessuna cerimonia trovata.<br>Clicca su <strong>Nuova cerimonia</strong> per iniziare.</div>`;
+          return;
+        }
+
+        let html = "";
+        snap.forEach((docSnap) => {
+          const item = docSnap.data();
+          if (item.archived === true) return;
+          const id = docSnap.id;
+          const qCount = Array.isArray(item.questions) ? item.questions.length : 0;
+          const docsCount = Array.isArray(item.documents) ? item.documents.length : 0;
+
+          html += `
+            <div class="row">
+              <div class="row-icon">♡</div>
+              <div class="row-info">
+                <h3>${escapeHtml(item.projectName || id)}</h3>
+                <p>${formatDate(item.ceremonyDate)} · ${escapeHtml(item.location || "Luogo non indicato")}</p>
+                <p>${qCount} domande · ${docsCount} documenti · ${escapeHtml(item.status || "In preparazione")}</p>
+              </div>
+              <div class="row-right">
+                <a class="small-btn" href="/celebranti/?event=${id}">Apri</a>
+                <button class="small-btn" type="button" onclick="copyCoupleLinkById('${id}')">Link</button>
+                <button class="small-btn danger" type="button" onclick="deleteCeremony('${id}', '${escapeHtml(String(item.projectName || id)).replaceAll("'", "\\'")}')">Elimina</button>
+              </div>
+            </div>
+          `;
+        });
+
+        list.innerHTML = html || `<div class="empty">Nessuna cerimonia attiva.</div>`;
+      } catch (error) {
+        console.error(error);
+        list.innerHTML = `<div class="empty">Errore caricamento cerimonie.</div>`;
+      }
+    }
+
+    async function deleteCeremony(id, name) {
+      if (id === currentEventId) {
+        alert("Non puoi eliminare la cerimonia che stai visualizzando ora.");
+        return;
+      }
+      if (!confirm("Vuoi eliminare questa cerimonia?\n\n" + name)) return;
+      await deleteDoc(doc(db, "celebrantEvents", id));
+      showCeremoniesList();
+    }
+
+    function currentCoupleLink() {
+      if (!currentEventId) return "";
+      return window.location.origin + "/coppia/?event=" + currentEventId;
+    }
+
+    function copyCoupleLinkById(id) {
+      const link = window.location.origin + "/coppia/?event=" + id;
+      copyText(link, "Link coppia copiato.");
+    }
+
+    function copyCoupleLink() {
+      const link = currentCoupleLink();
+      if (!link) return alert("Apri o crea una cerimonia prima di copiare il link.");
+      copyText(link, "Link coppia copiato.");
+    }
+
+    function copyText(text, okMessage) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => toast(okMessage)).catch(() => prompt("Copia questo testo:", text));
+      } else {
+        prompt("Copia questo testo:", text);
+      }
+    }
+
+    function openSection(sectionId, btn) {
+      document.querySelectorAll(".section").forEach((section) => section.classList.remove("show"));
+      const section = document.getElementById(sectionId);
+      if (section) section.classList.add("show");
+
+      document.querySelectorAll(".nav-btn").forEach((item) => item.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      if (sectionId === "ceremoniesSection") showCeremoniesList();
+
+      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
+    }
+
+    function openSectionById(sectionId) {
+      openSection(sectionId);
+    }
+
+    function openMobileMenu() {
+      document.getElementById("mobileMenuModal")?.classList.add("show");
+    }
+
+    function closeMobileMenu() {
+      document.getElementById("mobileMenuModal")?.classList.remove("show");
+    }
+
+    function renderSummary() {
+      const title = document.getElementById("projectTitle");
+      const welcomeTitle = document.getElementById("welcomeTitle");
+      const subtitle = document.getElementById("welcomeSubtitle");
+      const description = document.getElementById("projectDescription");
+      const coupleLinkBox = document.getElementById("coupleLinkBox");
+      const settingsInfo = document.getElementById("settingsInfo");
+
+      if (title) title.textContent = data.projectName || "Cerimonia";
+      if (welcomeTitle) welcomeTitle.textContent = data.projectName && currentEventId ? data.projectName : "Dashboard Celebrante";
+      if (subtitle) subtitle.textContent = data.ceremonyType + " · " + formatDate(data.ceremonyDate);
+      if (description) description.textContent = (data.location ? data.location + " · " : "") + (data.style || "Stile non indicato");
+
+      if (coupleLinkBox) coupleLinkBox.textContent = currentCoupleLink() || "Crea o apri una cerimonia per generare il link coppia.";
+
+      const qCount = (data.questions || []).length;
+      const answered = (data.questions || []).filter((q) => q.answer1 || q.answer2).length;
+      const percent = qCount > 0 ? Math.round((answered / qCount) * 100) : 0;
+
+      document.getElementById("statQuestions").textContent = percent + "%";
+      document.getElementById("statDocuments").textContent = (data.documents || []).length;
+      document.getElementById("statNextDate").textContent = nextAppointmentLabel();
+
+      if (settingsInfo) {
+        settingsInfo.innerHTML = `
+          <div style="text-align:left;line-height:1.7;">
+            <strong>${escapeHtml(data.projectName)}</strong><br>
+            Data: ${formatDate(data.ceremonyDate)} ${formatTime(data.ceremonyDate)}<br>
+            Luogo: ${escapeHtml(data.location || "Non indicato")}<br>
+            Tipo: ${escapeHtml(data.ceremonyType || "Non indicato")}<br>
+            Stile: ${escapeHtml(data.style || "Non indicato")}<br>
+            Stato: ${escapeHtml(data.status || "In preparazione")}
+          </div>
+        `;
+      }
+
+      countUserCeremonies().then((count) => {
+        const el = document.getElementById("statCeremonies");
+        if (el) el.textContent = count;
+      }).catch(() => {});
+    }
+
+    function nextAppointmentLabel() {
+      const future = (data.appointments || [])
+        .filter((item) => item.date && new Date(item.date) >= new Date())
+        .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+      return future ? formatShortDate(future.date) : "--";
+    }
+
+    function renderRecentActivity() {
+      const list = document.getElementById("recentActivityList");
+      if (!list) return;
+
+      const activities = [];
+
+      if (data.importedQuestionnaire) activities.push({ icon: "☷", title: "Modello questionario importato", text: data.importedQuestionnaire.name || "Questionario", tag: "Questionario" });
+      (data.documents || []).slice(-2).forEach((d) => activities.push({ icon: "▤", title: "Documento caricato", text: d.name, tag: d.visibleToCouple ? "Coppia" : "Interno" }));
+      (data.appointments || []).slice(-2).forEach((a) => activities.push({ icon: "▦", title: "Appuntamento", text: a.title + " · " + formatDate(a.date), tag: "Agenda" }));
+      (data.tasks || []).slice(-2).forEach((t) => activities.push({ icon: "✓", title: "Attività", text: t.title, tag: t.done ? "Fatto" : "Da fare" }));
+
+      if (!activities.length) {
+        list.innerHTML = `<div class="empty">Nessuna attività recente.</div>`;
+        return;
+      }
+
+      list.innerHTML = activities.slice(-5).reverse().map((item) => `
+        <div class="row">
+          <div class="row-icon">${item.icon}</div>
+          <div class="row-info"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+          <div class="row-right"><span class="pill">${escapeHtml(item.tag)}</span></div>
+        </div>
+      `).join("");
+    }
+
+    function renderQuestions() {
+      const list = document.getElementById("questionsList");
+      const countPill = document.getElementById("questionsCountPill");
+      if (!list) return;
+      if (countPill) countPill.textContent = (data.questions || []).length + " domande";
+
+      if (!data.questions || !data.questions.length) {
+        list.innerHTML = `<div class="empty">Nessuna domanda. Aggiungi domande o importa un modello.</div>`;
+      } else {
+        list.innerHTML = data.questions.map((item, index) => `
+          <div class="question-card">
+            <div class="card-title" style="margin-bottom:8px;">
+              <div><h4>${index + 1}. ${escapeHtml(item.question)}</h4><small>${item.visibleToCouple ? "Visibile alla coppia" : "Interna"}</small></div>
+              <div class="row-right">
+                <button class="small-btn" type="button" onclick="editQuestion(${index})">Modifica</button>
+                <button class="small-btn danger" type="button" onclick="deleteQuestion(${index})">Elimina</button>
+              </div>
+            </div>
+            <p style="color:var(--muted);font-size:12px;margin-bottom:8px;"><strong>Risposta 1:</strong> ${escapeHtml(item.answer1 || "Non compilata")}</p>
+            <p style="color:var(--muted);font-size:12px;"><strong>Risposta 2:</strong> ${escapeHtml(item.answer2 || "Non compilata")}</p>
+          </div>
+        `).join("");
+      }
+
+      const box = document.getElementById("importedModelBox");
+      if (box) {
+        if (data.importedQuestionnaire) {
+          box.innerHTML = `
+            <div class="row">
+              <div class="row-icon">▧</div>
+              <div class="row-info">
+                <h3>${escapeHtml(data.importedQuestionnaire.name || "Modello importato")}</h3>
+                <p>${escapeHtml(data.importedQuestionnaire.notes || "File importato nella cerimonia.")}</p>
+                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello</a></p>` : ""}
+              </div>
+              <div class="row-right"><span class="pill warn">Importato</span></div>
+            </div>
+          `;
+        } else {
+          box.innerHTML = "Nessun modello importato. Puoi caricare un file e salvarlo nella cerimonia.";
+        }
+      }
+    }
+
+    function addQuestion() {
+      const question = prompt("Scrivi la domanda per la coppia:", "Raccontate un momento speciale della vostra storia.");
+      if (question === null) return;
+      const visibleToCouple = confirm("Vuoi renderla compilabile dalla coppia?");
+      data.questions.push({ question: question || "Nuova domanda", answer1: "", answer2: "", type: "testo", visibleToCouple });
+      renderQuestions();
+      saveData();
+    }
+
+    function editQuestion(index) {
+      const item = data.questions[index];
+      const question = prompt("Domanda:", item.question);
+      if (question === null) return;
+      const answer1 = prompt("Risposta primo partner:", item.answer1 || "");
+      if (answer1 === null) return;
+      const answer2 = prompt("Risposta secondo partner:", item.answer2 || "");
+      if (answer2 === null) return;
+      const visibleToCouple = confirm("Vuoi renderla visibile/compilabile dalla coppia?");
+      data.questions[index] = { ...item, question: question || item.question, answer1, answer2, visibleToCouple };
+      renderQuestions();
+      saveData();
+    }
+
+    function deleteQuestion(index) {
+      if (!confirm("Eliminare questa domanda?")) return;
+      data.questions.splice(index, 1);
+      renderQuestions();
+      saveData();
+    }
+
+    function triggerImportQuestionnaire() {
+      document.getElementById("questionnaireFileInput")?.click();
+    }
+
+    async function importQuestionnaireFile(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+
+      if (!currentEventId) return alert("Apri o crea una cerimonia prima di importare un modello.");
+
+      const name = prompt("Nome modello questionario:", file.name);
+      if (name === null) return;
+
+      const notes = prompt("Note modello:", "Questionario importato dalla celebrante.");
+      if (notes === null) return;
+
+      try {
+        const url = await uploadFileToStorage(file, "questionnaires");
+        data.importedQuestionnaire = {
+          name: name || file.name,
+          notes: notes || "",
+          url,
+          fileName: file.name,
+          uploadedAt: new Date().toISOString()
+        };
+
+        if (file.type === "text/plain") {
+          const text = await file.text();
+          const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+          const confirmQuestions = confirm("Ho trovato " + lines.length + " righe nel TXT. Vuoi trasformarle in domande?");
+          if (confirmQuestions) {
+            lines.slice(0, 60).forEach((line) => {
+              data.questions.push({ question: line, answer1: "", answer2: "", type: "testo", visibleToCouple: true });
+            });
+          }
+        } else {
+          const addBasic = confirm("Vuoi aggiungere alcune domande base insieme al modello importato?");
+          if (addBasic && (!data.questions || data.questions.length === 0)) {
+            data.questions = [
+              { question: "Raccontate la vostra storia d'amore.", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
+              { question: "Quali valori volete trasmettere durante la cerimonia?", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
+              { question: "Ci sono persone o ricordi che desiderate citare?", answer1: "", answer2: "", type: "testo", visibleToCouple: true }
+            ];
+          }
+        }
+
+        renderQuestions();
+        saveData();
+        toast("Modello questionario importato.");
+      } catch (error) {
+        console.error(error);
+        alert("Errore importazione modello.");
+      }
+    }
+
+    function renderAppointments() {
+      const list = document.getElementById("appointmentsList");
+      if (!list) return;
+      if (!data.appointments || !data.appointments.length) {
+        list.innerHTML = `<div class="empty">Nessun appuntamento inserito.</div>`;
+        return;
+      }
+      list.innerHTML = [...data.appointments].sort((a,b)=> new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31")).map((item) => {
+        const index = data.appointments.indexOf(item);
+        return `
+          <div class="row">
+            <div class="row-icon">▦</div>
+            <div class="row-info">
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${formatDate(item.date)} ${formatTime(item.date)} · ${escapeHtml(item.place || "Luogo non indicato")}</p>
+              ${item.notes ? `<p>${escapeHtml(item.notes)}</p>` : ""}
+            </div>
+            <div class="row-right">
+              <span class="pill ${item.visibleToCouple ? "ok" : ""}">${item.visibleToCouple ? "Coppia" : "Interno"}</span>
+              <button class="small-btn" type="button" onclick="editAppointment(${index})">Modifica</button>
+              <button class="small-btn danger" type="button" onclick="deleteAppointment(${index})">Elimina</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function addAppointment() {
+      const title = prompt("Titolo appuntamento:", "Incontro con la coppia");
+      if (title === null) return;
+      const date = prompt("Data e ora formato AAAA-MM-GGTHH:MM:SS:", "2027-05-20T18:00:00");
+      if (date === null) return;
+      const place = prompt("Luogo / modalità:", "Videochiamata");
+      if (place === null) return;
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      const visibleToCouple = confirm("Vuoi renderlo visibile alla coppia?");
+      data.appointments.push({ title, date, place, notes, visibleToCouple });
+      renderAppointments(); renderSummary(); saveData();
+    }
+
+    function editAppointment(index) {
+      const item = data.appointments[index];
+      const title = prompt("Titolo:", item.title);
+      if (title === null) return;
+      const date = prompt("Data e ora:", item.date);
+      if (date === null) return;
+      const place = prompt("Luogo:", item.place);
+      if (place === null) return;
+      const notes = prompt("Note:", item.notes);
+      if (notes === null) return;
+      const visibleToCouple = confirm("Visibile alla coppia?");
+      data.appointments[index] = { title, date, place, notes, visibleToCouple };
+      renderAppointments(); renderSummary(); saveData();
+    }
+
+    function deleteAppointment(index) {
+      if (!confirm("Eliminare appuntamento?")) return;
+      data.appointments.splice(index, 1);
+      renderAppointments(); renderSummary(); saveData();
+    }
+
+    function renderDocuments() {
+      const list = document.getElementById("documentsList");
+      if (!list) return;
+      if (!data.documents || !data.documents.length) {
+        list.innerHTML = `<div class="empty">Nessun documento caricato. Puoi aggiungere link o caricare PDF/file.</div>`;
+        return;
+      }
+      list.innerHTML = data.documents.map((item, index) => `
+        <div class="row">
+          <div class="row-icon">${item.type === "file" ? "PDF" : "🔗"}</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.category || "Documento")} · ${item.visibleToCouple ? "Visibile alla coppia" : "Interno celebrante"}</p>
+            ${item.notes ? `<p>${escapeHtml(item.notes)}</p>` : ""}
+            ${item.url ? `<p><a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri documento</a></p>` : ""}
+          </div>
+          <div class="row-right">
+            <button class="small-btn" type="button" onclick="editDocument(${index})">Modifica</button>
+            <button class="small-btn danger" type="button" onclick="deleteDocument(${index})">Elimina</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function addDocumentLink() {
+      const name = prompt("Nome documento:", "Link documento");
+      if (name === null) return;
+      const category = prompt("Categoria:", "Documento");
+      if (category === null) return;
+      const url = prompt("Link Google Drive o altro:", "");
+      if (url === null) return;
+      if (!url.trim()) return alert("Inserisci un link valido.");
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      const visibleToCouple = confirm("Vuoi renderlo visibile alla coppia?");
+      data.documents.push({ name, category, url: url.trim(), notes, type: "link", visibleToCouple });
+      renderDocuments(); saveData();
+    }
+
+    function triggerDocumentUpload() {
+      document.getElementById("documentFileInput")?.click();
+    }
+
+    async function uploadDocumentFile(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+      if (!currentEventId) return alert("Apri o crea una cerimonia prima di caricare documenti.");
+      if (file.size > 10 * 1024 * 1024) return alert("File troppo pesante. Massimo 10 MB.");
+
+      const name = prompt("Nome documento:", file.name);
+      if (name === null) return;
+      const category = prompt("Categoria:", "Documento");
+      if (category === null) return;
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      const visibleToCouple = confirm("Vuoi renderlo visibile alla coppia?");
+
+      try {
+        const url = await uploadFileToStorage(file, "documents");
+        data.documents.push({
+          name: name || file.name,
+          category: category || "Documento",
+          url,
+          notes: notes || "",
+          type: "file",
+          visibleToCouple,
+          fileName: file.name,
+          uploadedAt: new Date().toISOString()
+        });
+        renderDocuments(); renderSummary(); saveData();
+        toast("Documento caricato correttamente.");
+      } catch (error) {
+        console.error(error);
+        alert("Errore caricamento documento.");
+      }
+    }
+
+    async function uploadFileToStorage(file, folder) {
+      const safeEmail = makeId(loggedEmail);
+      const safeName = makeId(file.name.replace(/\.[^/.]+$/, "")) || "file";
+      const ext = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "file";
+      const path = `celebrant-documents/${safeEmail}/${currentEventId}/${folder}/${Date.now()}-${safeName}.${ext}`;
+      const fileRef = ref(storage, path);
+
+      const progressWrap = document.getElementById("uploadProgressWrap");
+      const progressBar = document.getElementById("uploadProgress");
+      if (progressWrap && progressBar) {
+        progressWrap.style.display = "block";
+        progressBar.style.width = "0%";
+      }
+
+      return await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(fileRef, file);
+
+        task.on("state_changed",
+          (snapshot) => {
+            const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            if (progressBar) progressBar.style.width = percent + "%";
+          },
+          (error) => {
+            if (progressWrap) progressWrap.style.display = "none";
+            reject(error);
+          },
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            if (progressBar) progressBar.style.width = "100%";
+            setTimeout(() => {
+              if (progressWrap) progressWrap.style.display = "none";
+              if (progressBar) progressBar.style.width = "0%";
+            }, 800);
+            resolve(url);
+          }
+        );
+      });
+    }
+
+    function editDocument(index) {
+      const item = data.documents[index];
+      const name = prompt("Nome documento:", item.name);
+      if (name === null) return;
+      const category = prompt("Categoria:", item.category);
+      if (category === null) return;
+      const notes = prompt("Note:", item.notes || "");
+      if (notes === null) return;
+      const visibleToCouple = confirm("Visibile alla coppia?");
+      data.documents[index] = { ...item, name, category, notes, visibleToCouple };
+      renderDocuments(); saveData();
+    }
+
+    function deleteDocument(index) {
+      if (!confirm("Eliminare documento dalla dashboard?")) return;
+      data.documents.splice(index, 1);
+      renderDocuments(); renderSummary(); saveData();
+    }
+
+    function triggerWorkModelUpload() {
+      document.getElementById("workModelFileInput")?.click();
+    }
+
+    async function uploadWorkModel(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+      if (!currentEventId) return alert("Apri o crea una cerimonia prima di caricare modelli.");
+      const name = prompt("Nome modello:", file.name);
+      if (name === null) return;
+      const category = prompt("Categoria modello:", "Questionario / Rito");
+      if (category === null) return;
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      try {
+        const url = await uploadFileToStorage(file, "work-models");
+        data.workModels.push({ name: name || file.name, category, notes, url, fileName: file.name, createdAt: new Date().toISOString() });
+        renderWorkModels(); saveData();
+        toast("Modello caricato.");
+      } catch (error) {
+        console.error(error);
+        alert("Errore caricamento modello.");
+      }
+    }
+
+    function renderWorkModels() {
+      const list = document.getElementById("workModelsList");
+      if (!list) return;
+      if (!data.workModels || !data.workModels.length) {
+        list.innerHTML = `<div class="empty">Nessun modello caricato.</div>`;
+        return;
+      }
+      list.innerHTML = data.workModels.map((item, index) => `
+        <div class="row">
+          <div class="row-icon">▧</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.category || "Modello")} · ${escapeHtml(item.notes || "")}</p>
+            <p><a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello</a></p>
+          </div>
+          <div class="row-right">
+            <button class="small-btn" type="button" onclick="useWorkModelAsQuestionnaire(${index})">Usa</button>
+            <button class="small-btn danger" type="button" onclick="deleteWorkModel(${index})">Elimina</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function useWorkModelAsQuestionnaire(index) {
+      const item = data.workModels[index];
+      data.importedQuestionnaire = { name: item.name, notes: item.notes, url: item.url, fileName: item.fileName, uploadedAt: new Date().toISOString() };
+      renderQuestions();
+      saveData();
+      toast("Modello collegato al questionario.");
+      openSectionById("questionsSection");
+    }
+
+    function deleteWorkModel(index) {
+      if (!confirm("Eliminare modello?")) return;
+      data.workModels.splice(index, 1);
+      renderWorkModels(); saveData();
+    }
+
+    function renderContacts() {
+      const list = document.getElementById("contactsList");
+      if (!list) return;
+      if (!data.contacts || !data.contacts.length) {
+        list.innerHTML = `<div class="empty">Nessun contatto inserito.</div>`;
+        return;
+      }
+      list.innerHTML = data.contacts.map((item, index) => {
+        const phone = String(item.phone || "").replace(/\D/g, "");
+        const whatsapp = phone ? "https://wa.me/" + (phone.startsWith("39") ? phone : "39" + phone) : "#";
+        return `
+          <div class="row">
+            <div class="row-icon">☏</div>
+            <div class="row-info">
+              <h3>${escapeHtml(item.name)}</h3>
+              <p>${escapeHtml(item.role || "Contatto")} · Tel: ${escapeHtml(item.phone || "Non indicato")} · Email: ${escapeHtml(item.email || "Non indicata")}</p>
+              ${item.notes ? `<p>${escapeHtml(item.notes)}</p>` : ""}
+              <p>
+                ${phone ? `<a href="tel:${phone}" style="color:var(--purple);font-weight:900;">Chiama</a> · <a href="${whatsapp}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">WhatsApp</a>` : ""}
+                ${item.email ? ` · <a href="mailto:${item.email}" style="color:var(--purple);font-weight:900;">Email</a>` : ""}
+              </p>
+            </div>
+            <div class="row-right">
+              <button class="small-btn" type="button" onclick="editContact(${index})">Modifica</button>
+              <button class="small-btn danger" type="button" onclick="deleteContact(${index})">Elimina</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function addContact() {
+      const role = prompt("Ruolo:", "Sposa / Sposo / Fornitore");
+      if (role === null) return;
+      const name = prompt("Nome:", "");
+      if (name === null) return;
+      const phone = prompt("Telefono:", "");
+      if (phone === null) return;
+      const email = prompt("Email:", "");
+      if (email === null) return;
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      data.contacts.push({ role, name: name || "Nome non indicato", phone, email, notes });
+      renderContacts(); saveData();
+    }
+
+    function editContact(index) {
+      const item = data.contacts[index];
+      const role = prompt("Ruolo:", item.role);
+      if (role === null) return;
+      const name = prompt("Nome:", item.name);
+      if (name === null) return;
+      const phone = prompt("Telefono:", item.phone);
+      if (phone === null) return;
+      const email = prompt("Email:", item.email);
+      if (email === null) return;
+      const notes = prompt("Note:", item.notes);
+      if (notes === null) return;
+      data.contacts[index] = { role, name, phone, email, notes };
+      renderContacts(); saveData();
+    }
+
+    function deleteContact(index) {
+      if (!confirm("Eliminare contatto?")) return;
+      data.contacts.splice(index, 1);
+      renderContacts(); saveData();
+    }
+
+    function renderTasks() {
+      const list = document.getElementById("tasksList");
+      if (!list) return;
+      if (!data.tasks || !data.tasks.length) {
+        list.innerHTML = `<div class="empty">Nessuna attività inserita.</div>`;
+        return;
+      }
+      list.innerHTML = data.tasks.map((item, index) => `
+        <div class="row">
+          <div class="row-icon">${item.done ? "✓" : "○"}</div>
+          <div class="row-info">
+            <h3 style="${item.done ? "text-decoration:line-through;opacity:.65;" : ""}">${escapeHtml(item.title)}</h3>
+            <p>${item.dueDate ? "Scadenza: " + formatDate(item.dueDate) : "Nessuna scadenza"} ${item.notes ? " · " + escapeHtml(item.notes) : ""}</p>
+          </div>
+          <div class="row-right">
+            <button class="small-btn" type="button" onclick="toggleTask(${index})">${item.done ? "Riapri" : "Fatto"}</button>
+            <button class="small-btn" type="button" onclick="editTask(${index})">Modifica</button>
+            <button class="small-btn danger" type="button" onclick="deleteTask(${index})">Elimina</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function addTask() {
+      const title = prompt("Attività:", "Nuova attività");
+      if (title === null) return;
+      const dueDate = prompt("Scadenza formato AAAA-MM-GG:", "");
+      if (dueDate === null) return;
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+      data.tasks.push({ title, dueDate, notes, done: false });
+      renderTasks(); saveData();
+    }
+
+    function editTask(index) {
+      const item = data.tasks[index];
+      const title = prompt("Attività:", item.title);
+      if (title === null) return;
+      const dueDate = prompt("Scadenza:", item.dueDate);
+      if (dueDate === null) return;
+      const notes = prompt("Note:", item.notes);
+      if (notes === null) return;
+      data.tasks[index] = { ...item, title, dueDate, notes };
+      renderTasks(); saveData();
+    }
+
+    function toggleTask(index) {
+      data.tasks[index].done = !data.tasks[index].done;
+      renderTasks(); saveData();
+    }
+
+    function deleteTask(index) {
+      if (!confirm("Eliminare attività?")) return;
+      data.tasks.splice(index, 1);
+      renderTasks(); saveData();
+    }
+
+    function renderRite() {
+      const input = document.getElementById("riteDraftInput");
+      if (input && input.value !== data.riteDraft) input.value = data.riteDraft || "";
+
+      const list = document.getElementById("riteBlocksList");
+      if (!list) return;
+      if (!data.riteBlocks || !data.riteBlocks.length) {
+        list.innerHTML = `<div class="empty">Nessun blocco rito inserito.</div>`;
+        return;
+      }
+      list.innerHTML = [...data.riteBlocks].sort((a,b)=>(a.order||0)-(b.order||0)).map((item) => {
+        const index = data.riteBlocks.indexOf(item);
+        return `
+          <div class="row">
+            <div class="row-icon">✒</div>
+            <div class="row-info">
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml((item.text || "").slice(0, 180))}${(item.text || "").length > 180 ? "..." : ""}</p>
+            </div>
+            <div class="row-right">
+              <button class="small-btn" type="button" onclick="editRiteBlock(${index})">Modifica</button>
+              <button class="small-btn danger" type="button" onclick="deleteRiteBlock(${index})">Elimina</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function saveRiteDraftLocal() {
+      const input = document.getElementById("riteDraftInput");
+      data.riteDraft = input ? input.value : "";
+    }
+
+    function saveRiteDraft() {
+      saveRiteDraftLocal();
+      saveData();
+      toast("Bozza rito salvata.");
+    }
+
+    function addRiteBlock() {
+      const title = prompt("Titolo blocco:", "Introduzione");
+      if (title === null) return;
+      const text = prompt("Testo:", "");
+      if (text === null) return;
+      data.riteBlocks.push({ title, text, order: data.riteBlocks.length + 1 });
+      renderRite(); saveData();
+    }
+
+    function editRiteBlock(index) {
+      const item = data.riteBlocks[index];
+      const title = prompt("Titolo:", item.title);
+      if (title === null) return;
+      const text = prompt("Testo:", item.text);
+      if (text === null) return;
+      data.riteBlocks[index] = { ...item, title, text };
+      renderRite(); saveData();
+    }
+
+    function deleteRiteBlock(index) {
+      if (!confirm("Eliminare blocco rito?")) return;
+      data.riteBlocks.splice(index, 1);
+      renderRite(); saveData();
+    }
+
+    function renderNotes() {
+      const input = document.getElementById("notesInput");
+      if (input && input.value !== data.notes) input.value = data.notes || "";
+    }
+
+    function saveNotes() {
+      const input = document.getElementById("notesInput");
+      data.notes = input ? input.value : "";
+      saveData();
+      toast("Note salvate.");
+    }
+
+    function buildSummary() {
+      const lines = [];
+      lines.push("PIXELUP CELEBRANTI - RIEPILOGO");
+      lines.push("");
+      lines.push("Cerimonia: " + data.projectName);
+      lines.push("Data: " + formatDate(data.ceremonyDate) + " " + formatTime(data.ceremonyDate));
+      lines.push("Luogo: " + data.location);
+      lines.push("Tipo: " + data.ceremonyType);
+      lines.push("Stile: " + data.style);
+      lines.push("");
+      lines.push("QUESTIONARIO");
+      (data.questions || []).forEach((q, i) => {
+        lines.push((i+1) + ". " + q.question);
+        lines.push("   Risposta 1: " + (q.answer1 || ""));
+        lines.push("   Risposta 2: " + (q.answer2 || ""));
+      });
+      lines.push("");
+      lines.push("APPUNTAMENTI");
+      (data.appointments || []).forEach((a, i) => lines.push((i+1) + ". " + a.title + " - " + a.date + " - " + a.place));
+      lines.push("");
+      lines.push("DOCUMENTI");
+      (data.documents || []).forEach((d, i) => lines.push((i+1) + ". " + d.name + " - " + d.url));
+      lines.push("");
+      lines.push("RITO");
+      lines.push(data.riteDraft || "");
+      (data.riteBlocks || []).forEach((b, i) => lines.push((i+1) + ". " + b.title + "\n" + b.text));
+      lines.push("");
+      lines.push("NOTE");
+      lines.push(data.notes || "");
+      return lines.join("\n");
+    }
+
+    function copySummary() {
+      copyText(buildSummary(), "Riepilogo copiato.");
+    }
+
+    function downloadFullReportPDF() {
+      const jsPDFConstructor = window.jspdf && window.jspdf.jsPDF;
+      if (!jsPDFConstructor) return alert("Generatore PDF non caricato.");
+
+      const doc = new jsPDFConstructor({ orientation: "portrait", unit: "mm", format: "a4" });
+      const margin = 16;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      let y = 18;
+
+      function addTitle(text) {
+        if (y > pageHeight - 30) { doc.addPage(); y = 18; }
+        doc.setFont("times", "normal");
+        doc.setFontSize(18);
+        doc.setTextColor(55, 30, 70);
+        doc.text(text, margin, y);
+        y += 10;
+      }
+
+      function addText(text, size = 10) {
+        const lines = doc.splitTextToSize(String(text || ""), pageWidth - margin * 2);
+        if (y + lines.length * 5 > pageHeight - 18) { doc.addPage(); y = 18; }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(size);
+        doc.setTextColor(40, 35, 40);
+        doc.text(lines, margin, y);
+        y += lines.length * 5 + 4;
+      }
+
+      addTitle("PixelUp Celebranti");
+      addText(data.projectName + "\n" + formatDate(data.ceremonyDate) + " " + formatTime(data.ceremonyDate) + "\n" + data.location);
+      addTitle("Questionario");
+      (data.questions || []).forEach((q, i) => addText((i+1) + ". " + q.question + "\nRisposta 1: " + (q.answer1 || "") + "\nRisposta 2: " + (q.answer2 || "")));
+      addTitle("Rito e testi");
+      addText(data.riteDraft || "Nessuna bozza inserita.");
+      (data.riteBlocks || []).forEach((b) => addText(b.title + "\n" + b.text));
+      addTitle("Documenti");
+      (data.documents || []).forEach((d) => addText(d.name + "\n" + d.url));
+      addTitle("Note interne");
+      addText(data.notes || "Nessuna nota.");
+
+      doc.save("report-celebrante-" + makeId(data.projectName || "cerimonia") + ".pdf");
+    }
+
+    function downloadRitePDF() {
+      downloadFullReportPDF();
+    }
+
+    function editCeremonyInfo() {
+      if (!currentEventId) return alert("Apri una cerimonia prima di modificarla.");
+
+      const projectName = prompt("Nome coppia / cerimonia:", data.projectName);
+      if (projectName === null) return;
+      const ceremonyDate = prompt("Data e ora:", data.ceremonyDate);
+      if (ceremonyDate === null) return;
+      const location = prompt("Location:", data.location);
+      if (location === null) return;
+      const ceremonyType = prompt("Tipo cerimonia:", data.ceremonyType);
+      if (ceremonyType === null) return;
+      const style = prompt("Stile:", data.style);
+      if (style === null) return;
+      const status = prompt("Stato:", data.status);
+      if (status === null) return;
+
+      data.projectName = projectName || data.projectName;
+      data.ceremonyDate = ceremonyDate || data.ceremonyDate;
+      data.location = location || "";
+      data.ceremonyType = ceremonyType || "";
+      data.style = style || "";
+      data.status = status || "In preparazione";
+
+      renderAll();
+      saveData();
+    }
+
+    function showInstallGuide() {
+      alert(
+        "Per aggiungere PixelUp alla schermata Home:\n\n" +
+        "Su iPhone:\n" +
+        "1. Apri PixelUp da Safari\n" +
+        "2. Tocca Condividi\n" +
+        "3. Tocca “Aggiungi a Home”\n" +
+        "4. Conferma “Aggiungi”\n\n" +
+        "Su Android:\n" +
+        "Apri il menu del browser e scegli “Installa app” o “Aggiungi a schermata Home”.\n\n" +
+        "Se non premi Esci, l’accesso resta salvato."
+      );
+    }
+
+    function logoutPixelUp() {
+      if (!confirm("Vuoi uscire dalla dashboard PixelUp?")) return;
+      localStorage.removeItem("pixelup_access");
+      localStorage.removeItem("pixelup_email");
+      localStorage.removeItem("pixelup_role");
+      localStorage.removeItem("pixelup_code");
+      localStorage.removeItem("pixelup_maxProjects");
+      localStorage.removeItem("pixelup_last_celebrant_event");
+      window.location.href = "/dasgboardemo/accedi.html";
+    }
+
+    function renderAll() {
+      renderSummary();
+      renderRecentActivity();
+      renderQuestions();
+      renderAppointments();
+      renderDocuments();
+      renderWorkModels();
+      renderContacts();
+      renderTasks();
+      renderRite();
+      renderNotes();
+    }
+
+    if (eventRef) {
+      unsubscribeEvent = onSnapshot(eventRef, async (snap) => {
+        if (!snap.exists()) {
+          alert("Questa cerimonia non esiste o è stata eliminata.");
+          window.location.href = "/celebranti/";
+          return;
+        }
+
+        const remote = snap.data();
+        const projectOwner = String(remote.ownerEmail || "").trim().toLowerCase();
+
+        if (projectOwner && projectOwner !== loggedEmail && loggedRole !== "admin") {
+          alert("Questa cerimonia non appartiene al tuo account.");
+          window.location.href = "/celebranti/";
+          return;
+        }
+
+        data = normalizeData({ ...remote, ownerEmail: projectOwner || loggedEmail });
+        localStorage.setItem("pixelup_last_celebrant_event", currentEventId);
+
+        firebaseReady = true;
+        renderAll();
+
+        const needsInit =
+          !Array.isArray(remote.questions) ||
+          !Array.isArray(remote.appointments) ||
+          !Array.isArray(remote.documents) ||
+          !Array.isArray(remote.workModels) ||
+          !Array.isArray(remote.contacts) ||
+          !Array.isArray(remote.tasks) ||
+          !Array.isArray(remote.riteBlocks);
+
+        if (needsInit) await setDoc(eventRef, data, { merge: true });
+      });
+    } else {
+      firebaseReady = false;
+      data = structuredClone(defaultData);
+      renderAll();
+      setTimeout(() => {
+        openSectionById("ceremoniesSection");
+        showCeremoniesList();
+      }, 300);
+    }
+
+    window.openSection = openSection;
+    window.openSectionById = openSectionById;
+    window.openMobileMenu = openMobileMenu;
+    window.closeMobileMenu = closeMobileMenu;
+    window.createNewCeremony = createNewCeremony;
+    window.showCeremoniesList = showCeremoniesList;
+    window.deleteCeremony = deleteCeremony;
+    window.copyCoupleLink = copyCoupleLink;
+    window.copyCoupleLinkById = copyCoupleLinkById;
+    window.addQuestion = addQuestion;
+    window.editQuestion = editQuestion;
+    window.deleteQuestion = deleteQuestion;
+    window.triggerImportQuestionnaire = triggerImportQuestionnaire;
+    window.importQuestionnaireFile = importQuestionnaireFile;
+    window.addAppointment = addAppointment;
+    window.editAppointment = editAppointment;
+    window.deleteAppointment = deleteAppointment;
+    window.addDocumentLink = addDocumentLink;
+    window.triggerDocumentUpload = triggerDocumentUpload;
+    window.uploadDocumentFile = uploadDocumentFile;
+    window.editDocument = editDocument;
+    window.deleteDocument = deleteDocument;
+    window.triggerWorkModelUpload = triggerWorkModelUpload;
+    window.uploadWorkModel = uploadWorkModel;
+    window.useWorkModelAsQuestionnaire = useWorkModelAsQuestionnaire;
+    window.deleteWorkModel = deleteWorkModel;
+    window.addContact = addContact;
+    window.editContact = editContact;
+    window.deleteContact = deleteContact;
+    window.addTask = addTask;
+    window.editTask = editTask;
+    window.toggleTask = toggleTask;
+    window.deleteTask = deleteTask;
+    window.saveRiteDraftLocal = saveRiteDraftLocal;
+    window.saveRiteDraft = saveRiteDraft;
+    window.addRiteBlock = addRiteBlock;
+    window.editRiteBlock = editRiteBlock;
+    window.deleteRiteBlock = deleteRiteBlock;
+    window.saveNotes = saveNotes;
+    window.downloadFullReportPDF = downloadFullReportPDF;
+    window.downloadRitePDF = downloadRitePDF;
+    window.copySummary = copySummary;
+    window.editCeremonyInfo = editCeremonyInfo;
+    window.showInstallGuide = showInstallGuide;
+    window.logoutPixelUp = logoutPixelUp;
+    window.renderAll = renderAll;
+  </script>
+</body>
+</html>
