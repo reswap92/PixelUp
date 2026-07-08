@@ -3073,30 +3073,18 @@
       return;
     }
 
-    const name = prompt("Nome documento:", "Documento caricato");
-    if (name === null) return;
-
-    const category = prompt("Categoria:", "PDF / Documento");
-    if (category === null) return;
-
-    const notes = prompt("Note:", "");
-    if (notes === null) return;
-
-    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
-
-    window.pendingDocumentUpload = {
-      name: name || "Documento caricato",
-      category: category || "PDF / Documento",
-      notes: notes || "",
-      visibleToSpouses: visibleToSpouses
-    };
-
     const input = document.getElementById("documentFileInput");
     if (!input) {
       alert("Input file non trovato.");
       return;
     }
 
+    /*
+      IMPORTANTE:
+      Su iPhone/Safari il selettore file può bloccarsi se prima apriamo prompt/confirm.
+      Per questo ora facciamo scegliere prima il file e poi chiediamo nome, categoria e visibilità.
+    */
+    window.pendingDocumentUpload = null;
     input.value = "";
     input.click();
   }
@@ -3105,13 +3093,6 @@
     const file = event.target.files && event.target.files[0];
 
     if (!file) return;
-
-    const pending = window.pendingDocumentUpload;
-
-    if (!pending) {
-      alert("Dati documento mancanti. Riprova.");
-      return;
-    }
 
     const maxSize = 10 * 1024 * 1024;
 
@@ -3126,6 +3107,28 @@
       event.target.value = "";
       return;
     }
+
+    const suggestedName = file.name.replace(/\.[^/.]+$/, "");
+
+    const name = prompt("Nome documento:", suggestedName || "Documento caricato");
+    if (name === null) {
+      event.target.value = "";
+      return;
+    }
+
+    const category = prompt("Categoria:", "PDF / Documento");
+    if (category === null) {
+      event.target.value = "";
+      return;
+    }
+
+    const notes = prompt("Note:", "");
+    if (notes === null) {
+      event.target.value = "";
+      return;
+    }
+
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
 
     try {
       alert("Caricamento in corso. Attendi il messaggio di conferma.");
@@ -3150,20 +3153,19 @@
       const downloadUrl = await getDownloadURL(fileRef);
 
       data.documents.push({
-        name: pending.name,
-        category: pending.category,
+        name: name.trim() || suggestedName || "Documento caricato",
+        category: category.trim() || "PDF / Documento",
         url: downloadUrl,
-        notes: pending.notes,
+        notes: notes || "",
         type: "upload",
         fileName: file.name,
         filePath: storagePath,
         fileSize: file.size,
         contentType: file.type || "",
         uploadedAt: new Date().toISOString(),
-        visibleToSpouses: pending.visibleToSpouses === true
+        visibleToSpouses: visibleToSpouses === true
       });
 
-      window.pendingDocumentUpload = null;
       event.target.value = "";
 
       renderDocuments();
@@ -3172,7 +3174,11 @@
       alert("Documento caricato correttamente.");
     } catch (error) {
       console.error("Errore caricamento documento:", error);
-      alert("Errore nel caricamento del documento. Controlla Firebase Storage e le regole.");
+      alert(
+        "Errore nel caricamento del documento.\n\n" +
+        "Controlla che Firebase Storage sia attivo e che le regole usino la cartella pixelup-documents."
+      );
+      event.target.value = "";
     }
   }
 
