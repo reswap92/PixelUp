@@ -378,9 +378,25 @@
 
         const firebaseEmail = String(accessData.email || "").trim().toLowerCase();
         const active = accessData.active === true;
-        const role = accessData.role || "cliente";
+        const role = String(accessData.role || "cliente").trim().toLowerCase();
+        const dashboardType = String(accessData.dashboardType || role || "wedding").trim().toLowerCase();
         const maxProjects = Number(accessData.maxProjects || 0);
-        const redirect = accessData.redirect || "/dashboard/";
+
+        /*
+          Compatibilità:
+          - Se nel documento Firebase usi "redirect", funziona.
+          - Se usi "redirectUrl", funziona.
+          - Se non metti nessuno dei due, PixelUp decide in base a dashboardType/role.
+        */
+        let redirect = accessData.redirect || accessData.redirectUrl || "";
+
+        if (!redirect) {
+          if (dashboardType === "celebrante" || role === "celebrante") {
+            redirect = "/celebranti/";
+          } else {
+            redirect = "/dashboard/";
+          }
+        }
 
         if (!active) {
           showMessage("Questo codice non è attivo. Contatta PixelUp.", "error");
@@ -394,10 +410,17 @@
           return;
         }
 
+        if (maxProjects <= 0) {
+          showMessage("Questo accesso non ha dashboard/progetti disponibili. Contatta PixelUp.", "error");
+          resetButton();
+          return;
+        }
+
         localStorage.setItem("pixelup_access", "true");
         localStorage.setItem("pixelup_email", email);
         localStorage.setItem("pixelup_code", code);
         localStorage.setItem("pixelup_role", role);
+        localStorage.setItem("pixelup_dashboardType", dashboardType);
         localStorage.setItem("pixelup_maxProjects", String(maxProjects));
         localStorage.setItem("pixelup_login_time", new Date().toISOString());
 
