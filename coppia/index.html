@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Area Coppia | PixelUp</title>
+
+  <style>
+    :root {
+      --cream:#fff8f0;
+      --cream2:#fbefe5;
+      --card:rgba(255,255,255,.92);
+      --text:#231728;
+      --muted:#7b6b76;
+      --purple:#6f4a8e;
+      --purple-dark:#24152e;
+      --gold:#c69a48;
+      --rose:#f4d8dd;
+      --line:rgba(111,74,142,.16);
+      --shadow:0 18px 40px rgba(43,25,51,.13);
+      --soft:0 8px 22px rgba(43,25,51,.08);
+      --hero:url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      font-family:Inter,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 8%,rgba(198,154,72,.18),transparent 30%),
+        radial-gradient(circle at 92% 2%,rgba(111,74,142,.16),transparent 28%),
+        linear-gradient(135deg,#fffaf4 0%,#fbefe5 52%,#fff7fb 100%);
+    }
+    a{text-decoration:none;color:inherit}
+    button{font-family:inherit;cursor:pointer}
+
+    .page{width:min(1120px,92%);margin:0 auto;padding:28px 0 60px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:18px;
+      padding:14px 0 22px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{
+      width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+      border:1px solid rgba(198,154,72,.75);color:#f0c97b;font-size:25px;
+      background:linear-gradient(135deg,#2b1736,#1a1024);box-shadow:var(--soft)
+    }
+    .brand-name{line-height:1.05}
+    .brand-name strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:29px;font-weight:400;color:var(--purple-dark)}
+    .brand-name strong span{color:var(--gold)}
+    .brand-name small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.7px;margin-top:3px;font-weight:800}
+    .status-pill{
+      border:1px solid var(--line);background:rgba(255,255,255,.72);border-radius:999px;
+      padding:9px 13px;color:var(--purple);font-size:12px;font-weight:900;display:flex;align-items:center;gap:8px
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:#2f9b5f;box-shadow:0 0 0 4px rgba(47,155,95,.12)}
+
+    .hero{
+      border-radius:34px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.7);
+      background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(35,23,40,.55)),var(--hero) center/cover;
+      min-height:410px;display:flex;align-items:flex-end;position:relative;margin-bottom:22px
+    }
+    .hero::before{
+      content:"";position:absolute;inset:0;
+      background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.34),transparent 34%);
+      pointer-events:none
+    }
+    .hero-content{
+      position:relative;z-index:2;width:100%;padding:32px;
+      color:white;
+    }
+    .label{
+      display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.36);
+      background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
+      border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;color:#ffe7b0;margin-bottom:14px
+    }
+    .hero h1{
+      font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,8vw,82px);
+      line-height:.96;font-weight:400;letter-spacing:-2px;max-width:760px;text-shadow:0 10px 28px rgba(0,0,0,.20)
+    }
+    .hero p{margin-top:14px;max-width:650px;color:rgba(255,255,255,.88);font-size:17px;line-height:1.55}
+
+    .quick{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:-48px 24px 28px;position:relative;z-index:5
+    }
+    .quick-card{
+      min-height:112px;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.75);
+      box-shadow:var(--soft);border-radius:22px;padding:17px;display:flex;flex-direction:column;justify-content:space-between
+    }
+    .quick-card span{color:var(--purple);font-size:24px}
+    .quick-card strong{display:block;font-size:14px;color:var(--purple-dark);line-height:1.25;margin-top:8px}
+    .quick-card small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.35}
+
+    .nav-tabs{
+      display:flex;gap:10px;overflow-x:auto;padding:4px 0 16px;margin-bottom:10px;
+      scrollbar-width:none
+    }
+    .nav-tabs::-webkit-scrollbar{display:none}
+    .tab{
+      min-height:42px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.76);
+      color:var(--purple-dark);padding:0 15px;font-size:13px;font-weight:900;white-space:nowrap
+    }
+    .tab.active{background:linear-gradient(135deg,var(--purple),#4e2e64);color:white;border-color:rgba(111,74,142,.5)}
+
+    .section{display:none}
+    .section.show{display:block}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:20px 0 14px}
+    .section-head h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(29px,4vw,42px);font-weight:400;color:var(--purple-dark);line-height:1.05}
+    .section-head p{color:var(--muted);font-size:14px;max-width:640px;margin-top:7px;line-height:1.5}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;
+      box-shadow:var(--soft);overflow:hidden
+    }
+    .card-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .card-title h3{font-size:18px;color:var(--purple-dark);line-height:1.2}
+    .card-title small{color:var(--muted);font-size:12px;display:block;margin-top:3px;line-height:1.35}
+    .pill{
+      display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:7px 10px;
+      background:rgba(111,74,142,.10);color:var(--purple);font-weight:900;font-size:11px;white-space:nowrap
+    }
+    .pill.gold{background:rgba(198,154,72,.16);color:#8a6428}
+    .pill.ok{background:rgba(66,141,94,.12);color:#287143}
+
+    .list{display:grid;gap:11px}
+    .row{
+      display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;
+      border:1px solid rgba(111,74,142,.10);background:rgba(255,255,255,.66);
+      border-radius:18px;padding:13px
+    }
+    .row-icon{
+      width:48px;height:48px;border-radius:16px;background:rgba(111,74,142,.10);color:var(--purple);
+      display:grid;place-items:center;font-size:22px;font-weight:900
+    }
+    .row-info h3{font-size:15px;color:var(--purple-dark);margin-bottom:4px}
+    .row-info p{color:var(--muted);font-size:12px;line-height:1.4;margin-top:2px}
+    .row-info a{color:var(--purple);font-weight:900;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+    .row-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;min-width:110px}
+    .empty{text-align:center;color:var(--muted);padding:28px 12px;font-size:14px;line-height:1.5}
+    .btn{
+      min-height:42px;border:1px solid var(--line);background:white;color:var(--purple-dark);
+      border-radius:13px;padding:0 14px;font-size:13px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px
+    }
+    .btn.primary{background:linear-gradient(135deg,var(--purple),#4e2e64);color:white;border-color:rgba(111,74,142,.45)}
+    .readonly{
+      margin:18px 0 0;border:1px dashed rgba(111,74,142,.22);background:rgba(255,255,255,.58);
+      color:var(--muted);border-radius:18px;padding:13px 15px;font-size:12px;line-height:1.45
+    }
+
+    .footer-note{
+      margin-top:26px;text-align:center;color:var(--muted);font-size:12px;line-height:1.45
+    }
+
+    .loading{
+      min-height:80vh;display:grid;place-items:center;text-align:center;color:var(--purple-dark);
+    }
+    .loading-box{
+      background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:24px;padding:28px;
+      box-shadow:var(--soft);max-width:520px
+    }
+    .loading-box h1{font-family:Georgia,serif;font-size:36px;font-weight:400;margin-bottom:8px}
+    .loading-box p{color:var(--muted);font-size:14px;line-height:1.5}
+    .error-box{border-color:rgba(138,53,64,.24);color:#8a3540}
+
+    @media(max-width:900px){
+      .page{width:min(94%,1120px);padding-top:16px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .hero{min-height:380px;border-radius:28px}
+      .hero-content{padding:24px}
+      .quick{grid-template-columns:1fr 1fr;margin:-44px 12px 24px}
+      .grid-2,.grid-3{grid-template-columns:1fr}
+      .row{grid-template-columns:48px 1fr}
+      .row-right{grid-column:2;justify-content:flex-start}
+    }
+    @media(max-width:520px){
+      .hero h1{font-size:44px}
+      .hero p{font-size:15px}
+      .quick{gap:10px}
+      .quick-card{border-radius:18px;padding:14px;min-height:102px}
+      .card{border-radius:20px;padding:16px}
+      .section-head{align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading" class="loading">
+    <div class="loading-box">
+      <h1>PixelUp</h1>
+      <p>Caricamento area coppia...</p>
+    </div>
+  </div>
+
+  <main class="page" id="app" style="display:none;">
+    <header class="topbar">
+      <a href="/" class="brand">
+        <div class="brand-mark">✒</div>
+        <div class="brand-name">
+          <strong>Pixel<span>Up</span></strong>
+          <small>Area coppia</small>
+        </div>
+      </a>
+      <div class="status-pill"><span class="dot"></span><span>Aggiornamento in tempo reale</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="label">♡ Area privata cerimonia</div>
+        <h1 id="heroTitle">La vostra cerimonia</h1>
+        <p id="heroSubtitle">Qui trovate le informazioni condivise dalla celebrante. Questa pagina è in sola lettura: ogni aggiornamento apparirà automaticamente.</p>
+      </div>
+    </section>
+
+    <div class="quick" id="quickCards">
+      <div class="quick-card"><span>▦</span><strong id="quickDate">--</strong><small>Data cerimonia</small></div>
+      <div class="quick-card"><span>⌖</span><strong id="quickLocation">--</strong><small>Luogo</small></div>
+      <div class="quick-card"><span>☷</span><strong id="quickQuestions">0</strong><small>Domande condivise</small></div>
+      <div class="quick-card"><span>▤</span><strong id="quickDocuments">0</strong><small>Documenti visibili</small></div>
+    </div>
+
+    <nav class="nav-tabs" id="tabs">
+      <button class="tab active" type="button" data-section="infoSection" onclick="openSection('infoSection', this)">Info</button>
+      <button class="tab" type="button" data-section="questionsSection" onclick="openSection('questionsSection', this)">Questionario</button>
+      <button class="tab" type="button" data-section="appointmentsSection" onclick="openSection('appointmentsSection', this)">Appuntamenti</button>
+      <button class="tab" type="button" data-section="documentsSection" onclick="openSection('documentsSection', this)">Documenti</button>
+      <button class="tab" type="button" data-section="riteSection" onclick="openSection('riteSection', this)">Rito</button>
+      <button class="tab" type="button" data-section="contactsSection" onclick="openSection('contactsSection', this)">Contatti</button>
+    </nav>
+
+    <section class="section show" id="infoSection">
+      <div class="section-head">
+        <div>
+          <h2>Informazioni cerimonia</h2>
+          <p>Riepilogo della cerimonia condiviso dalla celebrante.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div><h3>Dettagli principali</h3><small>Nome coppia, data, luogo e stile.</small></div><span class="pill gold">Cerimonia</span></div>
+          <div class="list" id="infoList"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><div><h3>Messaggio della celebrante</h3><small>Indicazioni e comunicazioni importanti.</small></div><span class="pill">Live</span></div>
+          <div id="coupleMessage" class="empty">Nessun messaggio condiviso al momento.</div>
+        </div>
+      </div>
+      <div class="readonly">Questa area è in sola lettura. Per modifiche, documenti o risposte da inviare, contattate la celebrante.</div>
+    </section>
+
+    <section class="section" id="questionsSection">
+      <div class="section-head">
+        <div>
+          <h2>Questionario</h2>
+          <p>Qui vedete le domande e le risposte già condivise dalla celebrante. La compilazione diretta può essere attivata in una versione successiva.</p>
+        </div>
+      </div>
+      <div class="card"><div class="list" id="questionsList"></div></div>
+      <div class="readonly">Gli sposi non possono modificare questa pagina. Le risposte vengono mostrate solo se la celebrante le ha rese disponibili.</div>
+    </section>
+
+    <section class="section" id="appointmentsSection">
+      <div class="section-head">
+        <div>
+          <h2>Appuntamenti</h2>
+          <p>Incontri e scadenze resi visibili dalla celebrante.</p>
+        </div>
+      </div>
+      <div class="card"><div class="list" id="appointmentsList"></div></div>
+    </section>
+
+    <section class="section" id="documentsSection">
+      <div class="section-head">
+        <div>
+          <h2>Documenti</h2>
+          <p>Documenti e file condivisi dalla celebrante.</p>
+        </div>
+      </div>
+      <div class="card"><div class="list" id="documentsList"></div></div>
+    </section>
+
+    <section class="section" id="riteSection">
+      <div class="section-head">
+        <div>
+          <h2>Rito e programma</h2>
+          <p>Testi, scaletta o parti della cerimonia rese visibili.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div><h3>Bozza rito</h3><small>Testo condiviso dalla celebrante.</small></div></div>
+          <div id="riteDraft" class="empty">Nessuna bozza rito condivisa.</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><div><h3>Blocchi cerimonia</h3><small>Programma, letture, promesse o momenti simbolici.</small></div></div>
+          <div class="list" id="riteBlocksList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contactsSection">
+      <div class="section-head">
+        <div>
+          <h2>Contatti utili</h2>
+          <p>Contatti condivisi dalla celebrante per la cerimonia.</p>
+        </div>
+      </div>
+      <div class="card"><div class="list" id="contactsList"></div></div>
+    </section>
+
+    <p class="footer-note">PixelUp · Area privata coppia · I contenuti vengono aggiornati in tempo reale dalla dashboard della celebrante.</p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+    import {
+      getFirestore,
+      doc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const eventId = params.get("event");
+
+    const loading = document.getElementById("loading");
+    const appBox = document.getElementById("app");
+
+    let data = null;
+
+    if (!eventId) {
+      showError("Link non valido", "Manca il codice evento. Chiedete alla celebrante di inviarvi il link corretto.");
+    } else {
+      const ref = doc(db, "celebrantEvents", eventId);
+
+      onSnapshot(ref, (snap) => {
+        if (!snap.exists()) {
+          showError("Cerimonia non trovata", "Il link non è corretto oppure la cerimonia non è più disponibile.");
+          return;
+        }
+
+        data = normalizeData(snap.data());
+        renderAll();
+        loading.style.display = "none";
+        appBox.style.display = "block";
+      }, (error) => {
+        console.error(error);
+        showError("Errore caricamento", "Non è stato possibile caricare la pagina. Riprova più tardi.");
+      });
+    }
+
+    function normalizeData(raw) {
+      const safe = raw || {};
+      return {
+        projectName: safe.projectName || "La vostra cerimonia",
+        ceremonyDate: safe.ceremonyDate || "",
+        location: safe.location || "",
+        ceremonyType: safe.ceremonyType || "Cerimonia",
+        style: safe.style || "",
+        status: safe.status || "",
+        coupleMessage: safe.coupleMessage || "",
+        visibility: {
+          info: safe.visibility?.info !== false,
+          questions: safe.visibility?.questions !== false,
+          appointments: safe.visibility?.appointments !== false,
+          documents: safe.visibility?.documents !== false,
+          rite: safe.visibility?.rite !== false,
+          contacts: safe.visibility?.contacts !== false
+        },
+        questions: Array.isArray(safe.questions) ? safe.questions : [],
+        appointments: Array.isArray(safe.appointments) ? safe.appointments : [],
+        documents: Array.isArray(safe.documents) ? safe.documents : [],
+        contacts: Array.isArray(safe.contacts) ? safe.contacts : [],
+        riteDraft: safe.visibleRiteDraft === true ? (safe.riteDraft || "") : "",
+        riteBlocks: Array.isArray(safe.riteBlocks) ? safe.riteBlocks.filter(item => item.visibleToCouple === true) : []
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function formatDate(value) {
+      const d = new Date(value);
+      if (isNaN(d)) return "Data non indicata";
+      return d.toLocaleDateString("it-IT", { day:"2-digit", month:"long", year:"numeric" });
+    }
+
+    function formatTime(value) {
+      const d = new Date(value);
+      if (isNaN(d)) return "";
+      return d.toLocaleTimeString("it-IT", { hour:"2-digit", minute:"2-digit" });
+    }
+
+    function renderAll() {
+      renderHero();
+      renderTabs();
+      renderInfo();
+      renderQuestions();
+      renderAppointments();
+      renderDocuments();
+      renderRite();
+      renderContacts();
+    }
+
+    function renderHero() {
+      document.getElementById("heroTitle").textContent = data.projectName;
+      document.getElementById("heroSubtitle").textContent =
+        `${data.ceremonyType || "Cerimonia"} · ${formatDate(data.ceremonyDate)} ${formatTime(data.ceremonyDate)}${data.location ? " · " + data.location : ""}`;
+
+      document.getElementById("quickDate").textContent = formatDate(data.ceremonyDate).replace(" ", " ");
+      document.getElementById("quickLocation").textContent = data.location || "Da confermare";
+      document.getElementById("quickQuestions").textContent = visibleQuestions().length;
+      document.getElementById("quickDocuments").textContent = visibleDocuments().length;
+    }
+
+    function renderTabs() {
+      const map = [
+        ["info", "infoSection"],
+        ["questions", "questionsSection"],
+        ["appointments", "appointmentsSection"],
+        ["documents", "documentsSection"],
+        ["rite", "riteSection"],
+        ["contacts", "contactsSection"]
+      ];
+
+      map.forEach(([key, sectionId]) => {
+        const tab = document.querySelector(`[data-section="${sectionId}"]`);
+        const section = document.getElementById(sectionId);
+        const visible = data.visibility[key] !== false;
+
+        if (tab) tab.style.display = visible ? "inline-flex" : "none";
+        if (section) {
+          if (!visible) section.classList.remove("show");
+          section.style.display = visible ? "" : "none";
+        }
+      });
+
+      const active = document.querySelector(".tab.active");
+      if (active && active.style.display === "none") {
+        const first = [...document.querySelectorAll(".tab")].find(t => t.style.display !== "none");
+        if (first) openSection(first.dataset.section, first);
+      }
+    }
+
+    function renderInfo() {
+      const list = document.getElementById("infoList");
+      list.innerHTML = `
+        <div class="row"><div class="row-icon">♡</div><div class="row-info"><h3>${escapeHtml(data.projectName)}</h3><p>Nome coppia / cerimonia</p></div><div class="row-right"><span class="pill gold">Coppia</span></div></div>
+        <div class="row"><div class="row-icon">▦</div><div class="row-info"><h3>${formatDate(data.ceremonyDate)} ${formatTime(data.ceremonyDate)}</h3><p>Data e ora della cerimonia</p></div><div class="row-right"><span class="pill">Data</span></div></div>
+        <div class="row"><div class="row-icon">⌖</div><div class="row-info"><h3>${escapeHtml(data.location || "Luogo da confermare")}</h3><p>Location / luogo cerimonia</p></div><div class="row-right">${data.location ? `<a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.location)}">Mappa</a>` : ""}</div></div>
+        <div class="row"><div class="row-icon">✒</div><div class="row-info"><h3>${escapeHtml(data.ceremonyType || "Cerimonia")}</h3><p>${escapeHtml(data.style || "Stile non indicato")}</p></div><div class="row-right"><span class="pill ok">${escapeHtml(data.status || "In preparazione")}</span></div></div>
+      `;
+
+      const msg = document.getElementById("coupleMessage");
+      msg.innerHTML = data.coupleMessage
+        ? `<div style="text-align:left;color:var(--text);line-height:1.6;white-space:pre-wrap;">${escapeHtml(data.coupleMessage)}</div>`
+        : "Nessun messaggio condiviso al momento.";
+    }
+
+    function visibleQuestions() {
+      return (data.questions || []).filter(item => item.visibleToCouple !== false);
+    }
+
+    function renderQuestions() {
+      const list = document.getElementById("questionsList");
+      const questions = visibleQuestions();
+
+      if (!questions.length) {
+        list.innerHTML = `<div class="empty">Nessuna domanda condivisa al momento.</div>`;
+        return;
+      }
+
+      list.innerHTML = questions.map((item, index) => `
+        <div class="row">
+          <div class="row-icon">${index + 1}</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.question || "Domanda")}</h3>
+            ${item.answer1 || item.answer2 ? `
+              <p><strong>Risposta 1:</strong> ${escapeHtml(item.answer1 || "Non compilata")}</p>
+              <p><strong>Risposta 2:</strong> ${escapeHtml(item.answer2 || "Non compilata")}</p>
+            ` : `<p>Risposta non ancora condivisa.</p>`}
+          </div>
+          <div class="row-right"><span class="pill">${item.answer1 || item.answer2 ? "Compilata" : "Da fare"}</span></div>
+        </div>
+      `).join("");
+    }
+
+    function visibleAppointments() {
+      return (data.appointments || []).filter(item => item.visibleToCouple === true);
+    }
+
+    function renderAppointments() {
+      const list = document.getElementById("appointmentsList");
+      const items = visibleAppointments().sort((a,b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"));
+
+      if (!items.length) {
+        list.innerHTML = `<div class="empty">Nessun appuntamento condiviso al momento.</div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item) => `
+        <div class="row">
+          <div class="row-icon">▦</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.title || "Appuntamento")}</h3>
+            <p>${formatDate(item.date)} ${formatTime(item.date)} · ${escapeHtml(item.place || "Luogo non indicato")}</p>
+            ${item.notes ? `<p>${escapeHtml(item.notes)}</p>` : ""}
+          </div>
+          <div class="row-right"><span class="pill ok">Condiviso</span></div>
+        </div>
+      `).join("");
+    }
+
+    function visibleDocuments() {
+      return (data.documents || []).filter(item => item.visibleToCouple === true);
+    }
+
+    function renderDocuments() {
+      const list = document.getElementById("documentsList");
+      const docs = visibleDocuments();
+
+      if (!docs.length) {
+        list.innerHTML = `<div class="empty">Nessun documento condiviso al momento.</div>`;
+        return;
+      }
+
+      list.innerHTML = docs.map((item) => `
+        <div class="row">
+          <div class="row-icon">${item.type === "file" ? "PDF" : "🔗"}</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.name || "Documento")}</h3>
+            <p>${escapeHtml(item.category || "Documento")} ${item.notes ? "· " + escapeHtml(item.notes) : ""}</p>
+            ${item.url ? `<p><a href="${item.url}" target="_blank" rel="noopener noreferrer">Apri documento</a></p>` : ""}
+          </div>
+          <div class="row-right"><span class="pill ok">Visibile</span></div>
+        </div>
+      `).join("");
+    }
+
+    function renderRite() {
+      const draft = document.getElementById("riteDraft");
+      draft.innerHTML = data.riteDraft
+        ? `<div style="text-align:left;color:var(--text);line-height:1.65;white-space:pre-wrap;">${escapeHtml(data.riteDraft)}</div>`
+        : "Nessuna bozza rito condivisa.";
+
+      const list = document.getElementById("riteBlocksList");
+      if (!data.riteBlocks.length) {
+        list.innerHTML = `<div class="empty">Nessun blocco rito condiviso al momento.</div>`;
+        return;
+      }
+
+      list.innerHTML = data.riteBlocks.sort((a,b)=>(a.order||0)-(b.order||0)).map((item) => `
+        <div class="row">
+          <div class="row-icon">✒</div>
+          <div class="row-info">
+            <h3>${escapeHtml(item.title || "Blocco rito")}</h3>
+            <p>${escapeHtml(item.text || "")}</p>
+          </div>
+          <div class="row-right"><span class="pill gold">Rito</span></div>
+        </div>
+      `).join("");
+    }
+
+    function visibleContacts() {
+      return (data.contacts || []).filter(item => item.visibleToCouple === true);
+    }
+
+    function renderContacts() {
+      const list = document.getElementById("contactsList");
+      const contacts = visibleContacts();
+
+      if (!contacts.length) {
+        list.innerHTML = `<div class="empty">Nessun contatto condiviso al momento.</div>`;
+        return;
+      }
+
+      list.innerHTML = contacts.map((item) => {
+        const phone = String(item.phone || "").replace(/\D/g, "");
+        const tel = phone ? `<a class="btn" href="tel:${phone}">Chiama</a>` : "";
+        const mail = item.email ? `<a class="btn" href="mailto:${item.email}">Email</a>` : "";
+        return `
+          <div class="row">
+            <div class="row-icon">☏</div>
+            <div class="row-info">
+              <h3>${escapeHtml(item.name || "Contatto")}</h3>
+              <p>${escapeHtml(item.role || "Contatto utile")} ${item.notes ? "· " + escapeHtml(item.notes) : ""}</p>
+            </div>
+            <div class="row-right">${tel}${mail}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function showError(title, text) {
+      loading.innerHTML = `
+        <div class="loading-box error-box">
+          <h1>${escapeHtml(title)}</h1>
+          <p>${escapeHtml(text)}</p>
+        </div>
+      `;
+      loading.style.display = "grid";
+      appBox.style.display = "none";
+    }
+
+    window.openSection = function(sectionId, btn) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("show"));
+      const section = document.getElementById(sectionId);
+      if (section) section.classList.add("show");
+
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 40);
+    }
+  </script>
+</body>
+</html>
