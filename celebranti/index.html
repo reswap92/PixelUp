@@ -816,6 +816,54 @@
       display: none;
     }
 
+    .visibility-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .visibility-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      border-radius: 18px;
+      border: 1px solid rgba(111,74,142,.12);
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .visibility-card h3 {
+      color: var(--purple-dark);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .visibility-card p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.42;
+    }
+
+    .visibility-switch {
+      min-width: 88px;
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(111,74,142,.22);
+      background: white;
+      color: #8a3540;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .visibility-switch.on {
+      background: rgba(66,141,94,.12);
+      color: #287143;
+      border-color: rgba(66,141,94,.28);
+    }
+
     @media (max-width: 1080px) {
       .desktop-shell {
         grid-template-columns: 1fr;
@@ -938,6 +986,7 @@
         <button class="nav-btn" type="button" onclick="openSection('tasksSection', this)"><span class="ico">✓</span> Attività</button>
         <button class="nav-btn" type="button" onclick="openSection('notesSection', this)"><span class="ico">❦</span> Note e idee</button>
         <button class="nav-btn" type="button" onclick="openSection('reportSection', this)"><span class="ico">PDF</span> Report</button>
+        <button class="nav-btn" type="button" onclick="openSection('visibilitySection', this)"><span class="ico">◉</span> Visibilità coppia</button>
         <button class="nav-btn" type="button" onclick="openSection('settingsSection', this)"><span class="ico">⚙</span> Impostazioni</button>
       </nav>
 
@@ -1223,6 +1272,41 @@
         </div>
       </section>
 
+
+      <section class="section" id="visibilitySection">
+        <div class="section-head">
+          <h2>Visibilità area coppia</h2>
+          <div class="section-actions">
+            <button class="btn primary" type="button" onclick="saveCoupleMessage()">Salva messaggio</button>
+            <button class="btn" type="button" onclick="copyCoupleLink()">Copia link coppia</button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h3>Sezioni visibili nel link coppia</h3>
+                <small>Scegli cosa devono vedere gli sposi/clienti.</small>
+              </div>
+              <span class="pill">Controllo</span>
+            </div>
+            <div class="visibility-grid" id="visibilitySettingsList"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h3>Messaggio per la coppia</h3>
+                <small>Appare nella pagina /coppia/ in tempo reale.</small>
+              </div>
+            </div>
+            <textarea class="textarea" id="coupleMessageInput" placeholder="Scrivi un messaggio o indicazioni per la coppia..."></textarea>
+            <button class="btn primary" style="margin-top:12px;" type="button" onclick="saveCoupleMessage()">Salva messaggio</button>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="settingsSection">
         <div class="section-head">
           <h2>Impostazioni</h2>
@@ -1263,6 +1347,7 @@
         <button class="nav-btn" type="button" onclick="openSectionById('contactsSection'); closeMobileMenu();"><span class="ico">☏</span> Contatti</button>
         <button class="nav-btn" type="button" onclick="openSectionById('tasksSection'); closeMobileMenu();"><span class="ico">✓</span> Attività</button>
         <button class="nav-btn" type="button" onclick="openSectionById('reportSection'); closeMobileMenu();"><span class="ico">PDF</span> Report</button>
+        <button class="nav-btn" type="button" onclick="openSectionById('visibilitySection'); closeMobileMenu();"><span class="ico">◉</span> Visibilità coppia</button>
       </div>
     </div>
   </div>
@@ -1339,6 +1424,16 @@
       archived: false,
       status: "In preparazione",
       coupleMessage: "",
+      visibleRiteDraft: false,
+      visibility: {
+        info: true,
+        questions: true,
+        appointments: true,
+        documents: true,
+        rite: false,
+        contacts: true,
+        message: true
+      },
       importedQuestionnaire: null,
       questions: [],
       appointments: [],
@@ -1425,6 +1520,11 @@
       merged.status = merged.status || "In preparazione";
       merged.archived = merged.archived === true;
       merged.coupleMessage = merged.coupleMessage || "";
+      merged.visibleRiteDraft = merged.visibleRiteDraft === true;
+      merged.visibility = {
+        ...defaultData.visibility,
+        ...(safe.visibility || {})
+      };
       merged.riteDraft = merged.riteDraft || "";
       merged.notes = merged.notes || "";
 
@@ -1468,7 +1568,8 @@
         name: item.name || "",
         phone: item.phone || "",
         email: item.email || "",
-        notes: item.notes || ""
+        notes: item.notes || "",
+        visibleToCouple: item.visibleToCouple === true
       })) : [];
 
       merged.tasks = Array.isArray(safe.tasks) ? safe.tasks.map((item) => ({
@@ -1481,7 +1582,8 @@
       merged.riteBlocks = Array.isArray(safe.riteBlocks) ? safe.riteBlocks.map((item) => ({
         title: item.title || "",
         text: item.text || "",
-        order: Number(item.order) || 0
+        order: Number(item.order) || 0,
+        visibleToCouple: item.visibleToCouple === true
       })) : [];
 
       merged.importedQuestionnaire = safe.importedQuestionnaire || null;
@@ -2158,6 +2260,7 @@
               <h3>${escapeHtml(item.name)}</h3>
               <p>${escapeHtml(item.role || "Contatto")} · Tel: ${escapeHtml(item.phone || "Non indicato")} · Email: ${escapeHtml(item.email || "Non indicata")}</p>
               ${item.notes ? `<p>${escapeHtml(item.notes)}</p>` : ""}
+              <p>${item.visibleToCouple ? "Visibile alla coppia" : "Interno celebrante"}</p>
               <p>
                 ${phone ? `<a href="tel:${phone}" style="color:var(--purple);font-weight:900;">Chiama</a> · <a href="${whatsapp}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">WhatsApp</a>` : ""}
                 ${item.email ? ` · <a href="mailto:${item.email}" style="color:var(--purple);font-weight:900;">Email</a>` : ""}
@@ -2183,7 +2286,8 @@
       if (email === null) return;
       const notes = prompt("Note:", "");
       if (notes === null) return;
-      data.contacts.push({ role, name: name || "Nome non indicato", phone, email, notes });
+      const visibleToCouple = confirm("Vuoi rendere questo contatto visibile alla coppia?");
+      data.contacts.push({ role, name: name || "Nome non indicato", phone, email, notes, visibleToCouple });
       renderContacts(); saveData();
     }
 
@@ -2199,7 +2303,8 @@
       if (email === null) return;
       const notes = prompt("Note:", item.notes);
       if (notes === null) return;
-      data.contacts[index] = { role, name, phone, email, notes };
+      const visibleToCouple = confirm("Vuoi rendere questo contatto visibile alla coppia?");
+      data.contacts[index] = { role, name, phone, email, notes, visibleToCouple };
       renderContacts(); saveData();
     }
 
@@ -2284,6 +2389,7 @@
             <div class="row-info">
               <h3>${escapeHtml(item.title)}</h3>
               <p>${escapeHtml((item.text || "").slice(0, 180))}${(item.text || "").length > 180 ? "..." : ""}</p>
+              <p>${item.visibleToCouple ? "Visibile alla coppia" : "Interno celebrante"}</p>
             </div>
             <div class="row-right">
               <button class="small-btn" type="button" onclick="editRiteBlock(${index})">Modifica</button>
@@ -2310,7 +2416,8 @@
       if (title === null) return;
       const text = prompt("Testo:", "");
       if (text === null) return;
-      data.riteBlocks.push({ title, text, order: data.riteBlocks.length + 1 });
+      const visibleToCouple = confirm("Vuoi rendere questo blocco rito visibile alla coppia?");
+      data.riteBlocks.push({ title, text, order: data.riteBlocks.length + 1, visibleToCouple });
       renderRite(); saveData();
     }
 
@@ -2320,7 +2427,8 @@
       if (title === null) return;
       const text = prompt("Testo:", item.text);
       if (text === null) return;
-      data.riteBlocks[index] = { ...item, title, text };
+      const visibleToCouple = confirm("Vuoi rendere questo blocco rito visibile alla coppia?");
+      data.riteBlocks[index] = { ...item, title, text, visibleToCouple };
       renderRite(); saveData();
     }
 
@@ -2453,6 +2561,84 @@
       saveData();
     }
 
+
+    function getVisibilityLabels() {
+      return [
+        ["info", "Info cerimonia", "Nome coppia, data, luogo, tipo rito e stile."],
+        ["questions", "Questionario", "Mostra le domande visibili alla coppia."],
+        ["appointments", "Appuntamenti", "Mostra solo appuntamenti segnati come visibili."],
+        ["documents", "Documenti", "Mostra solo documenti segnati come visibili."],
+        ["rite", "Rito e testi", "Mostra blocchi rito e bozza solo quando sono pronti."],
+        ["contacts", "Contatti utili", "Mostra solo contatti segnati come visibili."],
+        ["message", "Messaggio celebrante", "Mostra il messaggio nella pagina coppia."]
+      ];
+    }
+
+    function renderVisibilitySettings() {
+      data.visibility = {
+        ...defaultData.visibility,
+        ...(data.visibility || {})
+      };
+
+      const list = document.getElementById("visibilitySettingsList");
+      if (list) {
+        list.innerHTML = getVisibilityLabels().map(([key, title, text]) => {
+          const isOn = data.visibility[key] === true;
+          return `
+            <div class="visibility-card">
+              <div>
+                <h3>${escapeHtml(title)}</h3>
+                <p>${escapeHtml(text)}</p>
+              </div>
+              <button class="visibility-switch ${isOn ? "on" : ""}" type="button" onclick="toggleVisibilityKey('${key}')">
+                ${isOn ? "Visibile" : "Nascosto"}
+              </button>
+            </div>
+          `;
+        }).join("") + `
+          <div class="visibility-card">
+            <div>
+              <h3>Bozza rito completa</h3>
+              <p>Mostra o nasconde il testo grande della bozza rito. Consigliato attivarla solo alla fine.</p>
+            </div>
+            <button class="visibility-switch ${data.visibleRiteDraft ? "on" : ""}" type="button" onclick="toggleVisibleRiteDraft()">
+              ${data.visibleRiteDraft ? "Visibile" : "Nascosta"}
+            </button>
+          </div>
+        `;
+      }
+
+      const msgInput = document.getElementById("coupleMessageInput");
+      if (msgInput && msgInput.value !== data.coupleMessage) {
+        msgInput.value = data.coupleMessage || "";
+      }
+    }
+
+    function toggleVisibilityKey(key) {
+      data.visibility = {
+        ...defaultData.visibility,
+        ...(data.visibility || {})
+      };
+      data.visibility[key] = !data.visibility[key];
+      renderVisibilitySettings();
+      saveData();
+      toast("Visibilità aggiornata.");
+    }
+
+    function toggleVisibleRiteDraft() {
+      data.visibleRiteDraft = !data.visibleRiteDraft;
+      renderVisibilitySettings();
+      saveData();
+      toast("Visibilità bozza rito aggiornata.");
+    }
+
+    function saveCoupleMessage() {
+      const input = document.getElementById("coupleMessageInput");
+      data.coupleMessage = input ? input.value : "";
+      saveData();
+      toast("Messaggio coppia salvato.");
+    }
+
     function showInstallGuide() {
       alert(
         "Per aggiungere PixelUp alla schermata Home:\n\n" +
@@ -2489,6 +2675,7 @@
       renderTasks();
       renderRite();
       renderNotes();
+      renderVisibilitySettings();
     }
 
     if (eventRef) {
@@ -2579,6 +2766,9 @@
     window.copySummary = copySummary;
     window.editCeremonyInfo = editCeremonyInfo;
     window.showInstallGuide = showInstallGuide;
+    window.toggleVisibilityKey = toggleVisibilityKey;
+    window.toggleVisibleRiteDraft = toggleVisibleRiteDraft;
+    window.saveCoupleMessage = saveCoupleMessage;
     window.logoutPixelUp = logoutPixelUp;
     window.renderAll = renderAll;
   </script>
