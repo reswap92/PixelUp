@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Demo Celebranti | PixelUp</title>
+
+  <style>
+    :root {
+      --cream:#fff8f0;
+      --cream2:#fbefe5;
+      --card:rgba(255,255,255,.92);
+      --text:#231728;
+      --muted:#7b6b76;
+      --purple:#6f4a8e;
+      --purple-dark:#24152e;
+      --gold:#c69a48;
+      --rose:#f4d8dd;
+      --line:rgba(111,74,142,.16);
+      --shadow:0 18px 40px rgba(43,25,51,.12);
+      --soft:0 8px 22px rgba(43,25,51,.08);
+      --hero:url("https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:Inter,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 8%,rgba(198,154,72,.18),transparent 30%),
+        radial-gradient(circle at 92% 2%,rgba(111,74,142,.16),transparent 28%),
+        linear-gradient(135deg,#fffaf4 0%,#fbefe5 52%,#fff7fb 100%);
+    }
+    button,input,textarea{font-family:inherit}
+    button{cursor:pointer}
+    a{text-decoration:none;color:inherit}
+
+    .shell{width:min(1420px,100%);min-height:100vh;margin:0 auto;display:grid;grid-template-columns:280px 1fr}
+    .sidebar{
+      background:linear-gradient(180deg,#2b1736 0%,#1a1024 100%);
+      color:white;padding:26px 18px;position:sticky;top:0;height:100vh;overflow:auto;
+      box-shadow:20px 0 40px rgba(42,25,49,.10)
+    }
+    .brand{display:flex;align-items:center;gap:13px;margin-bottom:26px;padding:0 6px}
+    .brand-mark{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(198,154,72,.75);color:#f0c97b;font-size:30px;background:rgba(255,255,255,.06)}
+    .brand strong{font-family:Georgia,serif;font-size:30px;font-weight:400;display:block}
+    .brand strong span{color:#d3a957}
+    .brand small{display:block;margin-top:5px;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:2px;font-size:10px}
+    .nav{display:grid;gap:8px}
+    .nav button{
+      min-height:49px;border:1px solid rgba(255,255,255,.08);background:transparent;color:rgba(255,255,255,.88);
+      border-radius:14px;padding:0 14px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:800;text-align:left
+    }
+    .nav button span{width:24px;text-align:center;color:#f0c97b;font-size:19px}
+    .nav button.active,.nav button:hover{background:linear-gradient(135deg,rgba(198,154,72,.22),rgba(141,95,173,.42));border-color:rgba(198,154,72,.45);color:white}
+    .side-card{margin-top:22px;padding:16px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+    .side-card h3{font-family:Georgia,serif;font-size:18px;font-weight:400;margin-bottom:7px}
+    .side-card p{color:rgba(255,255,255,.72);font-size:12px;line-height:1.45}
+
+    .main{padding:28px 28px 48px;min-width:0}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:26px}
+    h1{font-family:Georgia,serif;font-size:clamp(34px,4vw,52px);font-weight:400;color:var(--purple-dark);letter-spacing:-1.4px;line-height:1.05}
+    .sub{margin-top:8px;color:var(--muted);font-size:15px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{min-height:44px;border:1px solid var(--line);background:white;color:var(--purple-dark);border-radius:12px;padding:0 16px;font-size:13px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(43,25,51,.05)}
+    .btn.primary{background:linear-gradient(135deg,var(--purple),#4e2e64);color:white;border-color:rgba(111,74,142,.45)}
+    .btn.gold{background:linear-gradient(135deg,var(--gold),#e0bf75);color:#241a14;border-color:rgba(198,154,72,.5)}
+    .demo-banner{border:1px solid rgba(198,154,72,.35);background:rgba(255,255,255,.72);color:#7d5b21;border-radius:18px;padding:12px 16px;margin-bottom:18px;font-size:13px;font-weight:800}
+
+    .hero-grid{display:grid;grid-template-columns:1fr 360px;gap:24px;margin-bottom:24px}
+    .overview{
+      background:radial-gradient(circle at 82% 16%,rgba(244,216,221,.78),transparent 28%),linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,249,242,.88));
+      border:1px solid rgba(111,74,142,.12);border-radius:28px;box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden
+    }
+    .overview small{color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;font-weight:900;font-size:11px}
+    .overview h2{margin-top:8px;font-family:Georgia,serif;color:var(--purple-dark);font-size:clamp(32px,4vw,50px);font-weight:400;line-height:1.05}
+    .overview p{margin-top:8px;color:var(--muted);max-width:600px;font-size:15px;line-height:1.5}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+    .stat{background:rgba(255,255,255,.82);border:1px solid rgba(111,74,142,.12);border-radius:18px;padding:16px;min-height:110px;box-shadow:var(--soft)}
+    .stat .ico{width:42px;height:42px;border-radius:14px;background:rgba(111,74,142,.10);display:grid;place-items:center;color:var(--purple);font-size:22px;margin-bottom:10px}
+    .stat strong{display:block;font-size:26px;color:var(--purple-dark);line-height:1;margin-bottom:5px}
+    .stat span{color:var(--muted);font-size:12px;font-weight:800;line-height:1.3}
+
+    .couple{
+      background:linear-gradient(135deg,rgba(111,74,142,.92),rgba(54,30,69,.94)),var(--hero) center/cover;
+      color:white;border-radius:28px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;min-height:260px
+    }
+    .couple h3{font-family:Georgia,serif;font-size:28px;font-weight:400;line-height:1.1;margin-bottom:10px}
+    .couple p{color:rgba(255,255,255,.82);font-size:13px;line-height:1.45;margin-bottom:15px}
+    .linkbox{border-radius:14px;background:rgba(255,255,255,.92);color:var(--purple-dark);padding:12px;font-size:12px;word-break:break-all;margin-bottom:10px}
+
+    .section{display:none}
+    .section.show{display:block}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:18px 0 14px}
+    .section-head h2{font-family:Georgia,serif;font-size:28px;color:var(--purple-dark);font-weight:400}
+    .section-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--soft);overflow:hidden}
+    .card-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .card-title h3{font-size:18px;color:var(--purple-dark);line-height:1.2}
+    .card-title small{color:var(--muted);font-size:12px}
+    .pill{display:inline-flex;border-radius:999px;padding:6px 10px;background:rgba(111,74,142,.10);color:var(--purple);font-weight:900;font-size:11px;white-space:nowrap}
+    .pill.ok{background:rgba(66,141,94,.12);color:#287143}
+    .pill.warn{background:rgba(198,154,72,.16);color:#8a6428}
+    .list{display:grid;gap:10px}
+    .row{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;border:1px solid rgba(111,74,142,.10);background:rgba(255,255,255,.66);border-radius:18px;padding:12px}
+    .row-icon{width:48px;height:48px;border-radius:16px;background:rgba(111,74,142,.10);color:var(--purple);display:grid;place-items:center;font-size:22px}
+    .row-info h3{font-size:15px;color:var(--purple-dark);margin-bottom:4px}
+    .row-info p{color:var(--muted);font-size:12px;line-height:1.35;margin-top:2px}
+    .row-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;min-width:120px}
+    .small-btn{min-height:32px;padding:0 10px;border-radius:999px;border:1px solid rgba(111,74,142,.18);background:white;color:var(--purple-dark);font-size:11px;font-weight:900}
+    .empty{text-align:center;color:var(--muted);padding:22px 10px;font-size:13px;line-height:1.45}
+    .textarea{width:100%;border:1px solid rgba(111,74,142,.18);background:rgba(255,255,255,.82);color:var(--text);border-radius:14px;min-height:160px;padding:12px;outline:none;font-size:14px;line-height:1.5;resize:vertical}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#231728;color:white;border-radius:999px;padding:12px 18px;box-shadow:var(--shadow);font-size:13px;z-index:200;display:none;max-width:min(520px,90vw);text-align:center}
+    .toast.show{display:block}
+
+    @media(max-width:1080px){
+      .shell{grid-template-columns:1fr}.sidebar{display:none}.main{padding:18px 16px 88px}.topbar{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.row{grid-template-columns:48px 1fr}.row-right{grid-column:2;justify-content:flex-start}
+    }
+    @media(max-width:520px){.overview,.couple,.card{border-radius:20px;padding:16px}.section-head{align-items:flex-start;flex-direction:column}.stats{gap:9px}.stat{min-height:100px;padding:13px}}
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">✒</div>
+        <div><strong>Pixel<span>Up</span></strong><small>Demo Celebranti</small></div>
+      </div>
+      <nav class="nav">
+        <button class="active" onclick="openSection('overview',this)"><span>⌂</span> Panoramica</button>
+        <button onclick="openSection('cerimonie',this)"><span>♡</span> Le mie cerimonie</button>
+        <button onclick="openSection('questionari',this)"><span>☷</span> Questionari</button>
+        <button onclick="openSection('modelli',this)"><span>▧</span> Modelli di lavoro</button>
+        <button onclick="openSection('appuntamenti',this)"><span>▦</span> Appuntamenti</button>
+        <button onclick="openSection('rito',this)"><span>✒</span> Rito e testi</button>
+        <button onclick="openSection('documenti',this)"><span>▤</span> Documenti</button>
+        <button onclick="openSection('contatti',this)"><span>☏</span> Contatti</button>
+        <button onclick="openSection('attivita',this)"><span>✓</span> Attività</button>
+        <button onclick="openSection('report',this)"><span>PDF</span> Report</button>
+      </nav>
+      <div class="side-card">
+        <h3>Demo pubblica</h3>
+        <p>Questa pagina è una prova dimostrativa. Non richiede accesso e non salva dati su Firebase.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Demo Dashboard Celebranti</h1>
+          <p class="sub">Prova grafica e funzionale per celebranti, riti simbolici e cerimonie personalizzate.</p>
+        </div>
+        <div class="actions">
+          <a class="btn" href="/">← Home PixelUp</a>
+          <a class="btn primary" href="/dasgboardemo/accedi.html">Accedi area clienti</a>
+        </div>
+      </div>
+
+      <div class="demo-banner">
+        Questa è una DEMO: i tasti sono dimostrativi e simulano il funzionamento della dashboard vera.
+      </div>
+
+      <section class="section show" id="overview">
+        <div class="hero-grid">
+          <div class="overview">
+            <small>PixelUp Celebranti</small>
+            <h2>Marco & Giulia</h2>
+            <p>Rito simbolico · 14 Giugno 2027 · Villa dei Glicini. Una dashboard elegante per raccogliere storie, documenti, questionari, appuntamenti e testi del rito.</p>
+            <div class="stats">
+              <div class="stat"><div class="ico">♡</div><strong>4</strong><span>Cerimonie demo</span></div>
+              <div class="stat"><div class="ico">☷</div><strong>80%</strong><span>Questionario</span></div>
+              <div class="stat"><div class="ico">▤</div><strong>6</strong><span>Documenti</span></div>
+              <div class="stat"><div class="ico">▦</div><strong>20 Mag</strong><span>Prossimo incontro</span></div>
+            </div>
+          </div>
+
+          <div class="couple">
+            <div>
+              <h3>Il vostro percorso, la vostra storia, la mia parola.</h3>
+              <p>La celebrante invia un link privato alla coppia: gli sposi compilano questionario e documenti senza entrare nella dashboard.</p>
+            </div>
+            <div>
+              <div class="linkbox">https://pixelup.it/coppia/?event=demo-marco-giulia</div>
+              <button class="btn gold" style="width:100%" onclick="demoToast('Link coppia copiato nella demo')">Copia link coppia</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card"><div class="card-title"><div><h3>Questionari personalizzati</h3><small>Crea o importa il modello.</small></div><span class="pill">Top</span></div><p class="empty" style="padding:0;text-align:left">La celebrante può aggiungere domande oppure importare il suo questionario di lavoro.</p></div>
+          <div class="card"><div class="card-title"><div><h3>Area coppia</h3><small>Compilazione semplice.</small></div><span class="pill ok">Privata</span></div><p class="empty" style="padding:0;text-align:left">Gli sposi vedono solo questionario, documenti condivisi, programma e contatti utili.</p></div>
+          <div class="card"><div class="card-title"><div><h3>Rito e testi finali</h3><small>Bozze e PDF.</small></div><span class="pill warn">Cerimonia</span></div><p class="empty" style="padding:0;text-align:left">Organizza introduzione, storia, promesse, letture, riti simbolici e finale.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="cerimonie">
+        <div class="section-head"><h2>Le mie cerimonie</h2><div class="section-actions"><button class="btn primary" onclick="demoToast('Nella versione completa crea una nuova cerimonia')">+ Nuova cerimonia</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">♡</div><div class="row-info"><h3>Marco & Giulia</h3><p>14 Giugno 2027 · Villa dei Glicini · Questionario 80%</p></div><div class="row-right"><span class="pill ok">Attiva</span></div></div>
+          <div class="row"><div class="row-icon">♡</div><div class="row-info"><h3>Luca & Sara</h3><p>28 Giugno 2027 · Tenuta San Felice · Documenti ok</p></div><div class="row-right"><span class="pill warn">In preparazione</span></div></div>
+          <div class="row"><div class="row-icon">♡</div><div class="row-info"><h3>Alessandro & Martina</h3><p>12 Luglio 2027 · Castello sul Lago · Bozza rito</p></div><div class="row-right"><span class="pill">Bozza</span></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="questionari">
+        <div class="section-head"><h2>Questionario coppia</h2><div class="section-actions"><button class="btn" onclick="addDemoQuestion()">+ Domanda</button><button class="btn gold" onclick="demoToast('Nella versione completa si importa PDF/DOC/TXT')">Importa modello</button></div></div>
+        <div class="grid-2">
+          <div class="card"><div class="card-title"><div><h3>Domande compilabili</h3><small>Gli sposi rispondono dall'area coppia.</small></div></div><div class="list" id="questions">
+            <div class="row"><div class="row-icon">1</div><div class="row-info"><h3>Come vi siete conosciuti?</h3><p>Risposta coppia: “Durante un viaggio con amici comuni...”</p></div><div class="row-right"><span class="pill ok">Compilata</span></div></div>
+            <div class="row"><div class="row-icon">2</div><div class="row-info"><h3>Che tono desiderate per la cerimonia?</h3><p>Emozionale, elegante, non troppo formale.</p></div><div class="row-right"><span class="pill ok">Compilata</span></div></div>
+            <div class="row"><div class="row-icon">3</div><div class="row-info"><h3>Ci sono persone da citare?</h3><p>Da completare.</p></div><div class="row-right"><span class="pill warn">Da fare</span></div></div>
+          </div></div>
+          <div class="card"><div class="card-title"><div><h3>Modello importato</h3><small>Questionario della celebrante.</small></div><span class="pill warn">PDF/DOC/TXT</span></div>
+            <div class="row"><div class="row-icon">▧</div><div class="row-info"><h3>Questionario_Rito_Simbolico.pdf</h3><p>Modello importato e collegato alla cerimonia.</p></div><div class="row-right"><span class="pill">Demo</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="modelli">
+        <div class="section-head"><h2>Modelli di lavoro</h2><div class="section-actions"><button class="btn gold" onclick="demoToast('Nella versione completa carichi il file')">Carica modello</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">▧</div><div class="row-info"><h3>Questionario base celebrante</h3><p>Modello riutilizzabile per ogni coppia.</p></div><div class="row-right"><button class="small-btn" onclick="demoToast('Modello collegato al questionario')">Usa</button></div></div>
+          <div class="row"><div class="row-icon">✒</div><div class="row-info"><h3>Schema rito simbolico</h3><p>Introduzione, storia, rito, promesse, finale.</p></div><div class="row-right"><button class="small-btn" onclick="demoToast('Modello collegato al rito')">Usa</button></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="appuntamenti">
+        <div class="section-head"><h2>Appuntamenti</h2><div class="section-actions"><button class="btn" onclick="demoToast('Aggiunta appuntamento demo')">+ Aggiungi</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">▦</div><div class="row-info"><h3>Videochiamata con la coppia</h3><p>20 Maggio 2027 ore 18:00 · Visibile alla coppia</p></div><div class="row-right"><span class="pill ok">Coppia</span></div></div>
+          <div class="row"><div class="row-icon">▦</div><div class="row-info"><h3>Consegna bozza rito</h3><p>10 Giugno 2027 · Interno celebrante</p></div><div class="row-right"><span class="pill">Interno</span></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="rito">
+        <div class="section-head"><h2>Rito e testi</h2><div class="section-actions"><button class="btn" onclick="demoToast('Blocco testo aggiunto in demo')">+ Blocco testo</button><button class="btn gold" onclick="demoToast('PDF rito generato nella versione completa')">Scarica PDF rito</button></div></div>
+        <div class="grid-2">
+          <div class="card"><div class="card-title"><div><h3>Bozza cerimonia</h3><small>Scrivi il testo finale.</small></div></div><textarea class="textarea">Benvenuti a tutti. Oggi siamo qui per celebrare il percorso di Marco e Giulia, una storia fatta di incontri, scelte, sorrisi e promesse...</textarea></div>
+          <div class="card"><div class="card-title"><div><h3>Blocchi rito</h3><small>Organizza il discorso.</small></div></div><div class="list">
+            <div class="row"><div class="row-icon">✒</div><div class="row-info"><h3>Introduzione</h3><p>Saluto agli invitati e apertura cerimonia.</p></div><div class="row-right"><span class="pill">Testo</span></div></div>
+            <div class="row"><div class="row-icon">♡</div><div class="row-info"><h3>Storia della coppia</h3><p>Racconto personalizzato dalle risposte.</p></div><div class="row-right"><span class="pill warn">Bozza</span></div></div>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="section" id="documenti">
+        <div class="section-head"><h2>Documenti e file</h2><div class="section-actions"><button class="btn" onclick="demoToast('Link aggiunto nella versione completa')">+ Link</button><button class="btn gold" onclick="demoToast('Upload PDF nella versione completa')">Carica file</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">PDF</div><div class="row-info"><h3>Contratto firmato.pdf</h3><p>Visibile solo alla celebrante.</p></div><div class="row-right"><span class="pill">Interno</span></div></div>
+          <div class="row"><div class="row-icon">PDF</div><div class="row-info"><h3>Scaletta cerimonia.pdf</h3><p>Visibile alla coppia.</p></div><div class="row-right"><span class="pill ok">Coppia</span></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="contatti">
+        <div class="section-head"><h2>Clienti, fornitori e contatti</h2><div class="section-actions"><button class="btn" onclick="demoToast('Contatto aggiunto nella versione completa')">+ Aggiungi</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">☏</div><div class="row-info"><h3>Giulia Bianchi</h3><p>Sposa · WhatsApp · Email</p></div><div class="row-right"><button class="small-btn">Chiama</button></div></div>
+          <div class="row"><div class="row-icon">☏</div><div class="row-info"><h3>Referente location</h3><p>Villa dei Glicini · Note logistiche.</p></div><div class="row-right"><button class="small-btn">WhatsApp</button></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="attivita">
+        <div class="section-head"><h2>Attività</h2><div class="section-actions"><button class="btn" onclick="demoToast('Attività aggiunta')">+ Aggiungi</button></div></div>
+        <div class="card"><div class="list">
+          <div class="row"><div class="row-icon">✓</div><div class="row-info"><h3>Inviare questionario alla coppia</h3><p>Completato.</p></div><div class="row-right"><span class="pill ok">Fatto</span></div></div>
+          <div class="row"><div class="row-icon">○</div><div class="row-info"><h3>Preparare bozza rito</h3><p>Scadenza 10 Giugno.</p></div><div class="row-right"><span class="pill warn">Da fare</span></div></div>
+        </div></div>
+      </section>
+
+      <section class="section" id="report">
+        <div class="section-head"><h2>Report e backup</h2><div class="section-actions"><button class="btn gold" onclick="demoToast('PDF completo generato nella versione completa')">Scarica PDF completo</button></div></div>
+        <div class="grid-2">
+          <div class="card"><div class="card-title"><div><h3>Report celebrante</h3><small>Questionario, documenti, rito e note.</small></div></div><p class="empty" style="padding:0;text-align:left">Il PDF finale diventa un archivio ordinato per la celebrante o una base da consegnare alla coppia.</p></div>
+          <div class="card"><div class="card-title"><div><h3>Versione completa</h3><small>Accesso clienti PixelUp.</small></div></div><p class="empty" style="padding:0;text-align:left">Per creare cerimonie reali serve acquistare/attivare un codice di accesso PixelUp.</p><a class="btn primary" style="margin-top:14px" href="/dasgboardemo/accedi.html">Accedi area clienti</a></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function openSection(id, btn){
+      document.querySelectorAll(".section").forEach(s=>s.classList.remove("show"));
+      document.getElementById(id)?.classList.add("show");
+      document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+      if(btn) btn.classList.add("active");
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function demoToast(text){
+      const t=document.getElementById("toast");
+      t.textContent=text;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"),2600);
+    }
+
+    function addDemoQuestion(){
+      const q=prompt("Domanda demo:", "Qual è il ricordo più bello della vostra storia?");
+      if(!q) return;
+      const box=document.getElementById("questions");
+      const n=box.children.length+1;
+      box.insertAdjacentHTML("beforeend", `
+        <div class="row">
+          <div class="row-icon">${n}</div>
+          <div class="row-info"><h3>${q.replaceAll("<","&lt;")}</h3><p>Domanda aggiunta solo in questa demo.</p></div>
+          <div class="row-right"><span class="pill warn">Demo</span></div>
+        </div>
+      `);
+      demoToast("Domanda demo aggiunta");
+    }
+  </script>
+</body>
+</html>
