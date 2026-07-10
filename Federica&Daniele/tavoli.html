@@ -675,6 +675,48 @@
       gap: 12px;
     }
 
+    .guests-pagination {
+      display: none;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .guests-pagination.show {
+      display: grid;
+    }
+
+    .guests-page-btn {
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(177, 145, 85, 0.45);
+      background: rgba(255, 252, 246, 0.94);
+      color: var(--green-dark);
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .guests-page-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .guests-page-info {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.35;
+      min-width: 82px;
+    }
+
     .guest-item {
       border-radius: 18px;
       border: 1px solid rgba(218, 205, 184, 0.72);
@@ -829,6 +871,12 @@
         </div>
 
         <div class="guests-list" id="guestsList"></div>
+
+        <div class="guests-pagination" id="guestsPagination">
+          <button class="guests-page-btn" id="prevGuestsBtn" type="button">← Prima</button>
+          <div class="guests-page-info" id="guestsPageInfo">Pagina 1</div>
+          <button class="guests-page-btn" id="nextGuestsBtn" type="button">Dopo →</button>
+        </div>
 
       </div>
 
@@ -1034,6 +1082,14 @@
     const loadGuestsBtn = document.getElementById("loadGuestsBtn");
     const guestsStatus = document.getElementById("guestsStatus");
     const guestsList = document.getElementById("guestsList");
+    const guestsPagination = document.getElementById("guestsPagination");
+    const prevGuestsBtn = document.getElementById("prevGuestsBtn");
+    const nextGuestsBtn = document.getElementById("nextGuestsBtn");
+    const guestsPageInfo = document.getElementById("guestsPageInfo");
+
+    const guestsPerPage = 10;
+    let confirmedGuests = [];
+    let currentGuestsPage = 1;
 
     function saveTables() {
       localStorage.setItem(storageKey, JSON.stringify(tablesData));
@@ -1098,6 +1154,88 @@
       updateTableVisualNames();
     }
 
+    function renderGuestsPage() {
+      guestsList.innerHTML = "";
+
+      if (!confirmedGuests.length) {
+        if (guestsPagination) guestsPagination.classList.remove("show");
+        return;
+      }
+
+      const totalPages = Math.ceil(confirmedGuests.length / guestsPerPage);
+      currentGuestsPage = Math.min(Math.max(currentGuestsPage, 1), totalPages);
+
+      const startIndex = (currentGuestsPage - 1) * guestsPerPage;
+      const pageGuests = confirmedGuests.slice(startIndex, startIndex + guestsPerPage);
+
+      pageGuests.forEach((guest) => {
+        const item = document.createElement("div");
+        item.className = "guest-item";
+
+        const accompagnatori = Array.isArray(guest.accompagnatori) ? guest.accompagnatori : [];
+
+        let companionsHtml = "";
+
+        if (accompagnatori.length > 0) {
+          companionsHtml = `
+            <div class="guest-companions">
+              <strong>Accompagnatori:</strong>
+              <ul>
+                ${accompagnatori.map((acc) => `
+                  <li>${acc.nome || "Nome non indicato"}${acc.eta ? " - Età: " + acc.eta : ""}</li>
+                `).join("")}
+              </ul>
+            </div>
+          `;
+        } else {
+          companionsHtml = `
+            <div class="guest-companions">
+              <strong>Accompagnatori:</strong> nessuno indicato
+            </div>
+          `;
+        }
+
+        item.innerHTML = `
+          <div class="guest-name">${guest.nome || "Nome non indicato"}</div>
+
+          <div class="guest-meta">
+            <div><strong>Numero accompagnatori:</strong> ${guest.numeroAccompagnatori || "0"}</div>
+            ${companionsHtml}
+            <div><strong>Allergie/intolleranze:</strong> ${guest.allergie || "Nessuna indicata"}</div>
+            <div><strong>Esigenze particolari:</strong> ${
+              Array.isArray(guest.esigenzeParticolari)
+                ? (guest.esigenzeParticolari.length ? guest.esigenzeParticolari.join(", ") : "Nessuna indicata")
+                : (guest.esigenzeParticolari || "Nessuna indicata")
+            }</div>
+            <div><strong>Dettagli esigenze:</strong> ${guest.dettagliEsigenze || "Nessun dettaglio"}</div>
+            <div><strong>Note:</strong> ${guest.note || "Nessuna nota"}</div>
+          </div>
+        `;
+
+        guestsList.appendChild(item);
+      });
+
+      if (guestsPagination) {
+        guestsPagination.classList.toggle("show", totalPages > 1);
+      }
+
+      if (guestsPageInfo) {
+        guestsPageInfo.textContent = "Pagina " + currentGuestsPage + " di " + totalPages;
+      }
+
+      if (prevGuestsBtn) {
+        prevGuestsBtn.disabled = currentGuestsPage <= 1;
+      }
+
+      if (nextGuestsBtn) {
+        nextGuestsBtn.disabled = currentGuestsPage >= totalPages;
+      }
+
+      guestsStatus.textContent =
+        "Invitati confermati: " + confirmedGuests.length +
+        " · Visualizzati " + (startIndex + 1) + "-" + Math.min(startIndex + guestsPerPage, confirmedGuests.length);
+    }
+
     async function loadConfirmedGuests() {
       guestsStatus.textContent = "Caricamento invitati in corso...";
       guestsList.innerHTML = "";
@@ -1107,78 +1245,34 @@
         const guestsRef = collection(db, "eventGuests", eventId, "guests");
         const snapshot = await getDocs(guestsRef);
 
-        const guests = [];
+        confirmedGuests = [];
 
         snapshot.forEach((docSnap) => {
           const data = docSnap.data();
 
           if (data.presenza === "si") {
-            guests.push({
+            confirmedGuests.push({
               id: docSnap.id,
               ...data
             });
           }
         });
 
-        guests.sort((a, b) => {
+        confirmedGuests.sort((a, b) => {
           const aTime = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
           const bTime = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
           return bTime - aTime;
         });
 
-        if (guests.length === 0) {
+        currentGuestsPage = 1;
+
+        if (confirmedGuests.length === 0) {
           guestsStatus.textContent = "Nessun invitato confermato trovato.";
+          if (guestsPagination) guestsPagination.classList.remove("show");
           return;
         }
 
-        guestsStatus.textContent = "Invitati confermati trovati: " + guests.length;
-
-        guests.forEach((guest) => {
-          const item = document.createElement("div");
-          item.className = "guest-item";
-
-          const accompagnatori = Array.isArray(guest.accompagnatori) ? guest.accompagnatori : [];
-
-          let companionsHtml = "";
-
-          if (accompagnatori.length > 0) {
-            companionsHtml = `
-              <div class="guest-companions">
-                <strong>Accompagnatori:</strong>
-                <ul>
-                  ${accompagnatori.map((acc) => `
-                    <li>${acc.nome || "Nome non indicato"}${acc.eta ? " - Età: " + acc.eta : ""}</li>
-                  `).join("")}
-                </ul>
-              </div>
-            `;
-          } else {
-            companionsHtml = `
-              <div class="guest-companions">
-                <strong>Accompagnatori:</strong> nessuno indicato
-              </div>
-            `;
-          }
-
-          item.innerHTML = `
-            <div class="guest-name">${guest.nome || "Nome non indicato"}</div>
-
-            <div class="guest-meta">
-              <div><strong>Numero accompagnatori:</strong> ${guest.numeroAccompagnatori || "0"}</div>
-              ${companionsHtml}
-              <div><strong>Allergie/intolleranze:</strong> ${guest.allergie || "Nessuna indicata"}</div>
-              <div><strong>Esigenze particolari:</strong> ${
-                Array.isArray(guest.esigenzeParticolari)
-                  ? (guest.esigenzeParticolari.length ? guest.esigenzeParticolari.join(", ") : "Nessuna indicata")
-                  : (guest.esigenzeParticolari || "Nessuna indicata")
-              }</div>
-              <div><strong>Dettagli esigenze:</strong> ${guest.dettagliEsigenze || "Nessun dettaglio"}</div>
-              <div><strong>Note:</strong> ${guest.note || "Nessuna nota"}</div>
-            </div>
-          `;
-
-          guestsList.appendChild(item);
-        });
+        renderGuestsPage();
 
       } catch (error) {
         console.error("Errore caricamento invitati:", error);
@@ -1230,6 +1324,20 @@
     });
 
     loadGuestsBtn.addEventListener("click", loadConfirmedGuests);
+
+    if (prevGuestsBtn) {
+      prevGuestsBtn.addEventListener("click", () => {
+        currentGuestsPage--;
+        renderGuestsPage();
+      });
+    }
+
+    if (nextGuestsBtn) {
+      nextGuestsBtn.addEventListener("click", () => {
+        currentGuestsPage++;
+        renderGuestsPage();
+      });
+    }
 
     updateTableVisualNames();
     renderSelectedTable();
