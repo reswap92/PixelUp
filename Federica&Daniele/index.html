@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Federica & Daniele | PixelUp Events</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-light: #fffaf1;
+      --card: rgba(255, 252, 246, 0.94);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --gold-soft: #d8c498;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --line: rgba(177, 145, 85, 0.45);
+      --shadow: 0 14px 35px rgba(60, 45, 28, 0.13);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+
+      /*
+        Puoi cambiare immagine di sfondo sostituendo questo link.
+        Consiglio: usa una foto larga, elegante, orizzontale.
+      */
+      --hero-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 385px;
+      padding: 18px 22px 30px;
+      position: relative;
+      color: var(--text);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 248, 235, 0.18) 0%,
+          rgba(255, 246, 230, 0.45) 58%,
+          rgba(255, 246, 230, 0.94) 100%
+        ),
+        var(--hero-image) center top / cover no-repeat;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -8%;
+      bottom: -1px;
+      width: 116%;
+      height: 64px;
+      background: var(--cream);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      z-index: 1;
+      box-shadow: 0 -8px 26px rgba(255, 246, 230, 0.65);
+    }
+
+    .topbar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 3;
+      font-family: Arial, sans-serif;
+    }
+
+    .menu-icon,
+    .heart-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .heart-icon {
+      border: 1px solid rgba(104, 85, 49, 0.38);
+      background: rgba(255, 255, 255, 0.35);
+      font-size: 22px;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 5px;
+      color: var(--green);
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-left: 5px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding-top: 18px;
+    }
+
+    .monogram {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 23px;
+      letter-spacing: 2px;
+      position: relative;
+      background: rgba(255, 250, 241, 0.20);
+    }
+
+    .monogram::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 50%;
+      border: 1px solid rgba(177, 145, 85, 0.55);
+    }
+
+    h1 {
+      font-size: clamp(50px, 12vw, 70px);
+      font-weight: 400;
+      line-height: 0.95;
+      color: var(--green-dark);
+      text-shadow: 0 3px 20px rgba(255, 255, 255, 0.70);
+      margin-bottom: 10px;
+    }
+
+    .amp {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .ornament {
+      width: 190px;
+      height: 18px;
+      margin: 4px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      opacity: 0.95;
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: "";
+      height: 1px;
+      background: var(--line);
+      flex: 1;
+    }
+
+    .ornament span {
+      padding: 0 12px;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .date {
+      font-size: 25px;
+      color: var(--text);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-style: italic;
+      color: #4f4a3c;
+      margin-top: -2px;
+    }
+
+    .hero-buttons {
+      position: relative;
+      z-index: 4;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 24px;
+      padding: 0 4px;
+    }
+
+    .btn {
+      min-height: 54px;
+      border-radius: 15px;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      box-shadow: var(--soft-shadow);
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:active,
+    .small-card:active,
+    .map-card:active,
+    .heart-icon:active,
+    .menu-icon:active {
+      transform: scale(0.985);
+      opacity: 0.92;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: white;
+      border-color: rgba(214, 193, 145, 0.95);
+      box-shadow: 0 10px 24px rgba(54, 64, 42, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 252, 246, 0.88);
+      color: var(--text);
+    }
+
+    .btn .ico {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    /* CONTENT */
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 0 22px 34px;
+      margin-top: -1px;
+    }
+
+    .countdown {
+      background: rgba(255, 252, 246, 0.88);
+      border-radius: 21px;
+      padding: 17px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      margin-bottom: 26px;
+    }
+
+    .count-box {
+      min-height: 76px;
+      border-radius: 13px;
+      background: rgba(255, 252, 246, 0.94);
+      box-shadow: 0 8px 18px rgba(61, 45, 28, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(230, 218, 198, 0.8);
+    }
+
+    .count-box strong {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 400;
+      color: var(--green-dark);
+      letter-spacing: 1px;
+    }
+
+    .count-box small {
+      margin-top: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 2.2px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 18px;
+      margin: 6px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      height: 1px;
+      width: 44%;
+      background: rgba(177, 145, 85, 0.34);
+    }
+
+    .section-divider span {
+      padding: 0 10px;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.18fr 0.92fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: 19px;
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      box-shadow: var(--soft-shadow);
+      padding: 18px 14px;
+      min-height: 250px;
+    }
+
+    .panel-title {
+      text-align: center;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 7px;
+    }
+
+    .mini-ornament {
+      width: 56px;
+      height: 12px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .mini-ornament::before,
+    .mini-ornament::after {
+      content: "";
+      height: 1px;
+      background: rgba(177, 145, 85, 0.55);
+      flex: 1;
+    }
+
+    .mini-ornament span {
+      padding: 0 5px;
+    }
+
+    .program-list {
+      display: grid;
+      gap: 15px;
+      position: relative;
+      padding-left: 47px;
+    }
+
+    .program-list::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 9px;
+      bottom: 9px;
+      width: 1px;
+      background: rgba(177, 145, 85, 0.34);
+    }
+
+    .program-item {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      align-items: center;
+      min-height: 34px;
+      font-size: 16px;
+      position: relative;
+    }
+
+    .program-item .round {
+      position: absolute;
+      left: -47px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 252, 246, 0.96);
+      border: 1px solid rgba(225, 211, 184, 0.9);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      box-shadow: 0 5px 14px rgba(60, 45, 28, 0.1);
+      font-size: 18px;
+    }
+
+    .program-item .hour {
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .program-item .label {
+      color: var(--text);
+    }
+
+    .map-panel {
+      padding: 18px 12px 13px;
+    }
+
+    .location-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 4px 0 14px;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .fake-map {
+      height: 136px;
+      border-radius: 13px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 50%, rgba(74, 95, 66, 0.25), transparent 12%),
+        linear-gradient(145deg, #d7e2ce 0%, #e5e8d8 45%, #c9d9e2 46%, #a7c7d6 100%);
+      position: relative;
+      border: 1px solid rgba(230, 218, 198, 0.9);
+    }
+
+    .fake-map::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(20deg, transparent 48%, rgba(255, 255, 255, 0.7) 49%, transparent 51%),
+        linear-gradient(80deg, transparent 57%, rgba(255, 255, 255, 0.65) 58%, transparent 60%),
+        linear-gradient(145deg, transparent 47%, rgba(255, 255, 255, 0.55) 48%, transparent 50%);
+      opacity: 0.72;
+    }
+
+    .pin {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 252, 246, 0.96);
+      border: 1px solid rgba(97, 80, 47, 0.48);
+      position: absolute;
+      left: 50%;
+      top: 51%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 16px rgba(60, 45, 28, 0.2);
+      font-size: 25px;
+    }
+
+    .map-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      background: rgba(255, 252, 246, 0.94);
+      border-radius: 0 0 13px 13px;
+      border: 1px solid rgba(230, 218, 198, 0.9);
+      border-top: 0;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .small-card {
+      min-height: 99px;
+      border-radius: 15px;
+      background: var(--card);
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      box-shadow: var(--soft-shadow);
+      padding: 13px 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .small-card .icon {
+      color: var(--gold);
+      font-size: 30px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .small-card h3 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .small-card p {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.15;
+      color: var(--muted);
+    }
+
+    .small-card .arrow {
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      color: var(--gold);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .logo-card {
+      justify-content: center;
+      gap: 4px;
+      background:
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.92), rgba(255, 250, 241, 0.92)),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(251, 244, 232, 0.92));
+    }
+
+    .logo-card .floral {
+      color: var(--gold);
+      font-size: 40px;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .quote {
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid rgba(230, 218, 198, 0.82);
+      border-radius: 15px;
+      box-shadow: var(--soft-shadow);
+      padding: 18px 20px 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
+    .quote-mark {
+      color: var(--gold);
+      font-size: 30px;
+      line-height: 0;
+      vertical-align: -9px;
+      margin-right: 4px;
+    }
+
+    .quote-heart {
+      display: block;
+      color: var(--gold);
+      font-style: normal;
+      margin-top: 7px;
+      font-size: 19px;
+    }
+
+    @media (max-width: 390px) {
+      .app {
+        max-width: 100%;
+      }
+
+      .hero {
+        min-height: 362px;
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .content {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      .hero-buttons {
+        gap: 9px;
+      }
+
+      .btn {
+        min-height: 50px;
+        font-size: 13px;
+        letter-spacing: 0.7px;
+      }
+
+      .countdown {
+        gap: 7px;
+        padding: 14px;
+      }
+
+      .count-box strong {
+        font-size: 33px;
+      }
+
+      .main-grid {
+        gap: 11px;
+      }
+
+      .program-item {
+        grid-template-columns: 50px 1fr;
+        font-size: 14px;
+      }
+
+      .cards {
+        gap: 9px;
+      }
+
+      .small-card {
+        min-height: 94px;
+        padding: 12px 6px;
+      }
+
+      .small-card h3 {
+        font-size: 12px;
+      }
+
+      .small-card p {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="topbar">
+        <a class="menu-icon" href="menu-navigazione.html" aria-label="Apri menu">☰</a>
+        <div class="brand">PixelUp Events</div>
+        <a class="heart-icon" href="lista-regalo.html" aria-label="Lista regalo">♡</a>
+      </div>
+
+      <div class="hero-content">
+
+        <div class="monogram">F|D</div>
+
+        <h1>Federica <span class="amp">&amp;</span> Daniele</h1>
+
+        <div class="ornament">
+          <span>♡</span>
+        </div>
+
+      <div class="date" style="margin-bottom: 12px;">12 Giugno 2027</div>
+<div class="subtitle">Benvenuti al nostro matrimonio</div>
+        <div class="hero-buttons">
+
+          <!-- PULSANTE CONFERMA PRESENZA -->
+          <a class="btn btn-primary" href="/events/marco-giulia/conferma-presenza.html">
+            <span class="ico">✓</span>
+            <span>Conferma presenza</span>
+          </a>
+
+          <!-- PULSANTE MAPPA -->
+          <a class="btn btn-secondary" href="rito.html">
+            <span class="ico">⌖</span>
+            <span>Rito</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONTENUTO -->
+    <section class="content">
+
+    <!-- COUNTDOWN ATTIVO -->
+<div class="countdown" aria-label="Countdown evento">
+  <div class="count-box">
+    <strong id="days">000</strong>
+    <small>Giorni</small>
+  </div>
+
+  <div class="count-box">
+    <strong id="hours">00</strong>
+    <small>Ore</small>
+  </div>
+
+  <div class="count-box">
+    <strong id="minutes">00</strong>
+    <small>Minuti</small>
+  </div>
+
+  <div class="count-box">
+    <strong id="seconds">00</strong>
+    <small>Secondi</small>
+  </div>
+</div>
+
+      <div class="section-divider">
+        <span>♡</span>
+      </div>
+
+      <!-- PROGRAMMA + LOCATION -->
+      <div class="main-grid">
+
+        <section class="panel">
+          <h2 class="panel-title">Programma</h2>
+          <div class="mini-ornament">
+            <span>♡</span>
+          </div>
+
+          <div class="program-list">
+
+            <div class="program-item">
+              <span class="round">♾</span>
+              <span class="hour">15:00</span>
+              <span class="label"> —  Rito religioso</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">♧</span>
+              <span class="hour">17:00</span>
+              <span class="label">—  Aperitivo</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">⌂</span>
+              <span class="hour">19:00</span>
+              <span class="label">—  Cena </span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">♕</span>
+              <span class="hour">21:30</span>
+              <span class="label">—  Taglio torta</span>
+            </div>
+
+            <div class="program-item">
+              <span class="round">♫</span>
+              <span class="hour">22:30</span>
+              <span class="label">—  Party</span>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="panel map-panel">
+          <h2 class="panel-title">Location</h2>
+          <div class="mini-ornament">
+            <span>♡</span>
+          </div>
+
+          <div class="location-line" style="flex-direction:column; gap:3px; line-height:1.25;">
+            <div><span>⌖</span> <span>Castelletto Eventi</span></div>
+            <div style="font-family:Arial,sans-serif;font-size:12px;color:var(--muted);">
+              Via Carrettuzza<br>
+              31012 Cappella Maggiore (Treviso)
+            </div>
+          </div>
+
+          <!-- ANCHE LA MAPPA È CLICCABILE -->
+          <a href="mappa.html" aria-label="Apri mappa">
+            <div class="fake-map">
+              <div class="pin">🏛</div>
+            </div>
+
+            <div class="map-card">
+              <span>Apri mappa</span>
+              <span>→</span>
+            </div>
+          </a>
+        </section>
+
+      </div>
+
+      <!-- SEI PULSANTI IN BASSO -->
+      <div class="cards">
+
+        <!-- DRESS CODE -->
+        <a class="small-card" href="dress-code.html">
+          <span class="icon">⧓</span>
+          <h3>Dress Code</h3>
+          
+          <span class="arrow">→</span>
+        </a>
+
+        <!-- MENU -->
+        <a class="small-card" href="menu.html" onclick="return protectSection('menu.html')">
+          <span class="icon">⌂</span>
+          <h3>Menu</h3>
+          <p>Scopri il menu</p>
+          <span class="arrow">→</span>
+        </a>
+
+        <!-- LISTA REGALO -->
+        <a class="small-card" href="lista-regalo.html">
+          <span class="icon">🎁︎</span>
+          <h3>Lista Regalo</h3>
+          <p>Il vostro contributo<br>è il nostro regalo più bello</p>
+          <span class="arrow">→</span>
+        </a>
+
+        <!-- TAVOLI -->
+<a class="small-card" href="tavoli.html" onclick="return protectSection('tavoli.html')">
+  <span class="icon">▦</span>
+  <h3>Tavoli</h3>
+  <p>Scopri la composizione</p>
+  <span class="arrow">→</span>
+</a>
+
+        <!-- CONTATTI -->
+        <a class="small-card" href="contatti.html">
+          <span class="icon">♡</span>
+          <h3>Contatti</h3>
+          <p>Wedding planner</p>
+          <span class="arrow">→</span>
+        </a>
+
+        <!-- LOGO / DETTAGLIO EVENTO -->
+        <a class="small-card logo-card" href="storia.html">
+          <span class="floral">F|D</span>
+          <p>❦</p>
+        </a>
+
+      </div>
+
+      <!-- FRASE FINALE -->
+      <div class="quote">
+        <span class="quote-mark">“</span>
+        La cosa migliore da fare, la più bella da vedere,<br>
+        è quella di condividere il nostro giorno con voi.
+        <span class="quote-heart">♡</span>
+      </div>
+
+    </section>
+
+  </main>
+<script>
+  /*
+    PROTEZIONE MENU E TAVOLI
+    Codice richiesto: CELEB2026
+  */
+  const protectedCode = "CELEB2026";
+
+  function protectSection(page) {
+    const savedAccess = sessionStorage.getItem("pixelup_event_protected_access");
+
+    if (savedAccess === protectedCode) {
+      window.location.href = page;
+      return false;
+    }
+
+    const code = prompt("Inserisci il codice per accedere a questa sezione:");
+
+    if (code === null) {
+      return false;
+    }
+
+    const cleanCode = String(code).trim().toUpperCase();
+
+    if (cleanCode === protectedCode) {
+      sessionStorage.setItem("pixelup_event_protected_access", protectedCode);
+      window.location.href = page;
+      return false;
+    }
+
+    alert("Codice non corretto. Accesso non consentito.");
+    return false;
+  }
+
+  /*
+    TIMER MATRIMONIO
+    Data evento: 12 Giugno 2027
+    Ora evento: 15:00
+    Puoi cambiare l'orario modificando "15:00:00"
+  */
+
+  const weddingDate = new Date("2027-06-12T15:00:00").getTime();
+
+  const daysElement = document.getElementById("days");
+  const hoursElement = document.getElementById("hours");
+  const minutesElement = document.getElementById("minutes");
+  const secondsElement = document.getElementById("seconds");
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if (distance <= 0) {
+      daysElement.textContent = "000";
+      hoursElement.textContent = "00";
+      minutesElement.textContent = "00";
+      secondsElement.textContent = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    daysElement.textContent = String(days).padStart(3, "0");
+    hoursElement.textContent = String(hours).padStart(2, "0");
+    minutesElement.textContent = String(minutes).padStart(2, "0");
+    secondsElement.textContent = String(seconds).padStart(2, "0");
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
