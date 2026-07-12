@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PixelUp come app installabile su telefono -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4d5a3a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PixelUp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
   <title>Wedding Board | Roberta & Alessandro</title>
 
   <style>
@@ -373,7 +381,9 @@
 .checklist-section,
 .timeline-section,
 .notes-section,
-.backup-section {
+.backup-section,
+.spouse-contact-section,
+.visibility-section {
   display: none;
   animation: fade 0.22s ease;
 }
@@ -385,7 +395,9 @@
 .checklist-section.show,
 .timeline-section.show,
 .notes-section.show,
-.backup-section.show {
+.backup-section.show,
+.spouse-contact-section.show,
+.visibility-section.show {
   display: block;
 }
 
@@ -595,12 +607,15 @@
 .project-menu-card {
   width: 100%;
   max-width: 500px;
+  max-height: calc(100vh - 105px);
   margin: 0 auto;
   background: rgba(255, 252, 246, 0.98);
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow);
   padding: 18px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .project-menu-title {
@@ -644,9 +659,32 @@
   background: rgba(255, 252, 246, 0.92);
   color: var(--green-dark);
 }
+    .project-main-btn.logout {
+  background: rgba(138, 61, 44, 0.10);
+  color: #8a3d2c;
+  border-color: rgba(138, 61, 44, 0.35);
+}
 
 .projects-list {
   margin-top: 14px;
+  max-height: 48vh;
+  overflow-y: auto;
+  padding-right: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.projects-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.projects-list::-webkit-scrollbar-track {
+  background: rgba(177, 145, 85, 0.10);
+  border-radius: 999px;
+}
+
+.projects-list::-webkit-scrollbar-thumb {
+  background: rgba(77, 90, 58, 0.45);
+  border-radius: 999px;
 }
 
 .project-item {
@@ -712,6 +750,261 @@
 
 .quick-guide li {
   margin-bottom: 5px;
+}
+
+
+.spouse-contact-section {
+  display: none;
+  animation: fade 0.22s ease;
+}
+
+.spouse-contact-section.show {
+  display: block;
+}
+
+.spouse-contact-card {
+  background: rgba(255, 252, 246, 0.94);
+  border: 1px solid rgba(223, 212, 193, 0.92);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 11px;
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.07);
+}
+
+.spouse-contact-top {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 11px;
+}
+
+.spouse-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(177,145,85,0.11);
+  border: 1px solid rgba(177,145,85,0.28);
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.spouse-contact-card h3 {
+  color: var(--green-dark);
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.spouse-contact-card p {
+  font-family: Arial, sans-serif;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.spouse-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.spouse-action-btn {
+  min-height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(177,145,85,0.38);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spouse-action-btn.whatsapp {
+  background: rgba(77,90,58,0.10);
+}
+
+.spouse-action-btn.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.spouse-note {
+  background: rgba(77, 90, 58, 0.08);
+  border: 1px solid rgba(77, 90, 58, 0.16);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 12px;
+  color: var(--green-dark);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.report-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.report-info-card {
+  background: rgba(77, 90, 58, 0.08);
+  border: 1px solid rgba(77, 90, 58, 0.16);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 12px;
+  color: var(--green-dark);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.report-info-card strong {
+  display: block;
+  color: var(--green-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.project-card-pro {
+  background: rgba(255, 252, 246, 0.94);
+  border: 1px solid rgba(223, 212, 193, 0.92);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 11px;
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.07);
+}
+
+.project-card-pro-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.project-card-pro h4 {
+  font-size: 17px;
+  color: var(--green-dark);
+  margin-bottom: 5px;
+}
+
+.project-card-pro p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.project-card-pro-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.project-badge {
+  border: 1px solid rgba(177,145,85,0.24);
+  background: rgba(177,145,85,0.08);
+  color: #8a6729;
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.project-card-pro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: flex-end;
+}
+
+.project-pill-btn {
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: var(--green-dark);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.project-pill-btn.danger {
+  color:#8a3d2c;
+  border-color:rgba(138,61,44,0.35);
+}
+
+
+.visibility-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.visibility-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+  border-radius: 18px;
+  border: 1px solid rgba(177,145,85,0.24);
+  background: rgba(255,252,246,0.94);
+  box-shadow: 0 8px 20px rgba(60, 45, 28, 0.06);
+}
+
+.visibility-card h3 {
+  font-size: 15px;
+  color: var(--green-dark);
+  margin-bottom: 4px;
+}
+
+.visibility-card p {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.visibility-switch {
+  min-width: 86px;
+  min-height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(177,145,85,0.45);
+  background: rgba(255,252,246,0.95);
+  color: #8a3d2c;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.visibility-switch.on {
+  background: rgba(77,90,58,0.12);
+  color: var(--green);
+  border-color: rgba(77,90,58,0.35);
+}
+
+@media (max-width: 390px) {
+  .project-card-pro-top {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-pro-actions {
+    justify-content: flex-start;
+  }
 }
 
     @media (max-width: 390px) {
@@ -792,6 +1085,21 @@
       Progetti archiviati
     </button>
 
+    <button class="project-main-btn secondary" type="button" onclick="openGlobalContactBook()">
+      Rubrica generale
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="toggleVisibilitySettings()">
+      Visibilità area sposi
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
+      Aggiungi PixelUp alla Home
+    </button>
+    <button class="project-main-btn logout" type="button" onclick="logoutPixelUp()">
+  Esci
+</button>
+
     <div class="projects-list" id="projectsList"></div>
 
     <div class="quick-guide">
@@ -799,8 +1107,8 @@
       <ol>
         <li>Clicca “Nuovo progetto” per creare una dashboard.</li>
         <li>Inserisci nome evento e data.</li>
-        <li>Compila budget, scadenze, fornitori, agenda e documenti.</li>
-        <li>Da “I miei progetti” copia il link sposi/cliente.</li>
+        <li>Compila budget, scadenze, rubrica evento, agenda e documenti.</li>
+        <li>Da “I miei progetti” copia il link sposi/cliente o collega la pagina evento.</li>
       </ol>
     </div>
 
@@ -894,7 +1202,7 @@
 
       <button class="secondary-action" type="button" onclick="toggleSuppliers()">
         <span>☏</span>
-        <span>Fornitori</span>
+        <span>Rubrica evento</span>
       </button>
 
       <button class="secondary-action" type="button" onclick="toggleAgenda()">
@@ -922,9 +1230,14 @@
   <span>Note progetto</span>
 </button>
 
+      <button class="secondary-action" type="button" onclick="toggleSpouseContacts()">
+  <span>♡</span>
+  <span>Contatta sposi</span>
+</button>
+
       <button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
-  <span>Riepilogo / Backup</span>
+  <span>Report progetto</span>
 </button>
 
       <div class="deadline-section" id="deadlineSection">
@@ -948,6 +1261,24 @@
   >
     + Aggiungi
   </button>
+
+  <button 
+    type="button" 
+    onclick="addDeadlineFromBook()" 
+    style="
+      border:1px solid rgba(177,145,85,0.45);
+      background:rgba(255,252,246,0.95);
+      color:#4d5a3a;
+      border-radius:999px;
+      padding:7px 11px;
+      font-family:Arial,sans-serif;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    "
+  >
+    Rubrica
+  </button>
 </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -957,7 +1288,7 @@
       <div class="supplier-section" id="supplierSection">
 
         <div class="section-title">
-  <h2>Fornitori</h2>
+  <h2>Rubrica evento</h2>
   <button 
     type="button" 
     onclick="addSupplier()" 
@@ -991,7 +1322,7 @@
       letter-spacing:0.8px;
     "
   >
-    Rubrica
+    Rubrica generale
   </button>
 </div>
         <div class="list-card" id="supplierList"></div>
@@ -1044,9 +1375,34 @@
         letter-spacing:0.8px;
       "
     >
-      + Aggiungi
+      + Link
+    </button>
+
+    <button 
+      type="button" 
+      onclick="uploadDocumentFile()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(77,90,58,0.10);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      Carica PDF
     </button>
   </div>
+
+  <input
+    id="documentFileInput"
+    type="file"
+    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,application/pdf,image/jpeg,image/png,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    style="display:none;"
+  />
 
   <div class="list-card" id="documentList"></div>
 
@@ -1138,27 +1494,94 @@
 
 </div>
 
-<div class="backup-section" id="backupSection">
+
+<div class="spouse-contact-section" id="spouseContactSection">
 
   <div class="section-title">
-    <h2>Riepilogo / Backup</h2>
-    <span>Esporta dati</span>
+    <h2>Contatta sposi</h2>
+    <button 
+      type="button" 
+      onclick="addSpouseContact()" 
+      style="
+        border:1px solid rgba(177,145,85,0.45);
+        background:rgba(255,252,246,0.95);
+        color:#4d5a3a;
+        border-radius:999px;
+        padding:7px 11px;
+        font-family:Arial,sans-serif;
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:0.8px;
+      "
+    >
+      + Aggiungi
+    </button>
   </div>
 
   <div class="list-card">
-    <p style="color:#7b6f62; font-family:Arial,sans-serif; font-size:13px; line-height:1.45; margin-bottom:12px;">
-      Copia o scarica un riepilogo del progetto. Utile come backup manuale o per inviare un riassunto ordinato.
-    </p>
+    <div class="spouse-note">
+      Salva qui i recapiti degli sposi. Da telefono puoi chiamare, aprire WhatsApp o inviare una email direttamente dalla dashboard.
+    </div>
 
-    <button class="main-action" type="button" onclick="copyProjectSummary()">
-      <span>▤</span>
-      <span>Copia riepilogo progetto</span>
-    </button>
+    <div id="spouseContactList"></div>
+  </div>
 
-    <button class="secondary-action" type="button" onclick="downloadProjectBackup()">
-      <span>⇩</span>
-      <span>Scarica backup TXT</span>
-    </button>
+</div>
+
+
+<div class="visibility-section" id="visibilitySection">
+
+  <div class="section-title">
+    <h2>Visibilità area sposi</h2>
+    <span>Mostra / nascondi</span>
+  </div>
+
+  <div class="list-card">
+    <div class="report-info-card">
+      <strong>Controllo link sposi</strong>
+      Da qui scegli quali sezioni devono comparire nel link sposi. I dati interni restano sempre visibili solo alla wedding planner.
+    </div>
+
+    <div class="visibility-grid" id="visibilitySettingsList"></div>
+  </div>
+
+</div>
+
+<div class="backup-section" id="backupSection">
+
+  <div class="section-title">
+    <h2>Report progetto</h2>
+    <span>PDF e riepilogo</span>
+  </div>
+
+  <div class="list-card">
+    <div class="report-info-card">
+      <strong>Riepilogo professionale</strong>
+      Genera un PDF ordinato del progetto, più leggibile del vecchio backup tecnico.
+      Il PDF interno contiene tutto; il PDF sposi contiene solo le voci rese visibili agli sposi.
+    </div>
+
+    <div class="report-actions">
+      <button class="main-action" type="button" onclick="downloadInternalReportPDF()">
+        <span>⇩</span>
+        <span>Scarica PDF interno</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="downloadSpousesReportPDF()">
+        <span>♡</span>
+        <span>Scarica PDF sposi</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="copyProjectSummary()">
+        <span>▤</span>
+        <span>Copia riepilogo testuale</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="downloadProjectBackup()">
+        <span>TXT</span>
+        <span>Scarica copia TXT</span>
+      </button>
+    </div>
   </div>
 
 </div>
@@ -1173,6 +1596,8 @@
 
   </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
@@ -1183,11 +1608,20 @@
     onSnapshot,
     collection,
     getDocs,
+    getDoc,
     deleteDoc,
     query,
     where,
     addDoc
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
@@ -1201,12 +1635,13 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const hasAccess = localStorage.getItem("pixelup_access") === "true";
   const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
   const loggedRole = String(localStorage.getItem("pixelup_role") || "cliente").trim().toLowerCase();
   const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
-  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 1);
+  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 0);
 
   if (!hasAccess || !loggedEmail) {
     window.location.href = "/dasgboardemo/accedi.html";
@@ -1214,6 +1649,18 @@
 
   const urlParams = new URLSearchParams(window.location.search);
   const currentEventId = urlParams.get("event") || "";
+
+  if (currentEventId) {
+    localStorage.setItem("pixelup_last_event", currentEventId);
+  }
+
+  if (!currentEventId && urlParams.get("app") === "1") {
+    const lastEventId = localStorage.getItem("pixelup_last_event") || "";
+    if (lastEventId) {
+      window.location.href = "/dashboard/?event=" + encodeURIComponent(lastEventId);
+    }
+  }
+
   const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
   const defaultData = {
@@ -1228,6 +1675,20 @@
     projectStatus: "In lavorazione",
     archived: false,
     projectNotes: "",
+    eventPageUrl: "",
+    visibility: {
+      overview: true,
+      budget: false,
+      deadlines: true,
+      suppliers: true,
+      agenda: true,
+      documents: true,
+      checklist: false,
+      timeline: true,
+      contacts: true,
+      report: false,
+      notes: false
+    },
 
     deadlines: [],
 
@@ -1239,7 +1700,9 @@
 
     checklist: [],
 
-    timeline: []
+    timeline: [],
+
+    spouseContacts: []
   };
 
   let data = structuredClone(defaultData);
@@ -1277,6 +1740,10 @@
       merged.timeline = defaultData.timeline || [];
     }
 
+    if (!Array.isArray(safeRemoteData.spouseContacts)) {
+      merged.spouseContacts = defaultData.spouseContacts || [];
+    }
+
     merged.projectName = merged.projectName || "Wedding Board";
     merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
     merged.budget = Number(merged.budget) || 0;
@@ -1288,6 +1755,11 @@
     merged.projectStatus = merged.projectStatus || "In lavorazione";
     merged.archived = merged.archived === true;
     merged.projectNotes = String(merged.projectNotes || "");
+    merged.eventPageUrl = String(merged.eventPageUrl || "").trim();
+    merged.visibility = {
+      ...defaultData.visibility,
+      ...(safeRemoteData.visibility || {})
+    };
 
     merged.deadlines = merged.deadlines.map((item) => ({
       name: item.name || "",
@@ -1322,6 +1794,11 @@
       url: item.url || "",
       notes: item.notes || "",
       type: item.type || "drive",
+      fileName: item.fileName || "",
+      filePath: item.filePath || "",
+      fileSize: Number(item.fileSize) || 0,
+      contentType: item.contentType || "",
+      uploadedAt: item.uploadedAt || "",
       visibleToSpouses: item.visibleToSpouses === true
     }));
 
@@ -1338,6 +1815,13 @@
       place: item.place || "",
       notes: item.notes || "",
       visibleToSpouses: item.visibleToSpouses === true
+    }));
+
+    merged.spouseContacts = merged.spouseContacts.map((item) => ({
+      role: item.role || "",
+      name: item.name || "",
+      phone: item.phone || "",
+      email: item.email || ""
     }));
 
     return merged;
@@ -1369,6 +1853,22 @@
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
+  }
+
+  function normalizeEventPageUrl(value) {
+    const cleanValue = String(value || "").trim();
+
+    if (!cleanValue) return "";
+
+    if (
+      cleanValue.startsWith("http://") ||
+      cleanValue.startsWith("https://") ||
+      cleanValue.startsWith("/")
+    ) {
+      return cleanValue;
+    }
+
+    return "https://" + cleanValue;
   }
 
   function formatDate(dateString) {
@@ -1503,6 +2003,8 @@
       "checklistSection",
       "timelineSection",
       "notesSection",
+      "spouseContactSection",
+      "visibilitySection",
       "backupSection"
     ];
 
@@ -1665,6 +2167,8 @@
     const notes = prompt("Note:", item.notes || "");
     if (notes === null) return;
 
+    const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
 
@@ -1717,7 +2221,7 @@
     const paid = prompt("Importo già pagato / saldato:", "0");
     if (paid === null) return;
 
-    const date = prompt("Data scadenza formato GG-MM-AAAA:", "01-08-2026");
+    const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
     if (date === null) return;
 
     const notes = prompt("Note:", "");
@@ -1751,7 +2255,7 @@
       supplier: supplier || "Fornitore non indicato",
       total: cleanTotal,
       paid: finalPaid,
-      date: date || "01-08-2026",
+      date: date || "2026-08-01",
       status: automaticStatus,
       notes: notes || "",
       visibleToSpouses: visibleToSpouses
@@ -1928,8 +2432,8 @@
           font-size:13px;
           line-height:1.4;
         ">
-          Nessun fornitore inserito.<br>
-          Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto.
+          Nessun contatto inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per creare il primo contatto dell’evento.
         </div>
       `;
       return;
@@ -1990,7 +2494,7 @@
 
           <div class="row-right">
             <strong>Contatto</strong>
-            <small>fornitore</small>
+            <small>contatto</small>
 
             <button class="edit-btn" type="button" onclick="editSupplier(${index})">
               Modifica
@@ -2047,7 +2551,7 @@
     const item = data.suppliers[index];
 
     const confirmDelete = confirm(
-      "Vuoi eliminare questo fornitore?\n\n" + 
+      "Vuoi eliminare questo contatto?\n\n" + 
       item.service + " - " + item.name
     );
 
@@ -2084,6 +2588,193 @@
     renderSuppliers();
     saveData();
     saveSupplierToBook(newSupplier);
+  }
+
+
+
+  async function openGlobalContactBook() {
+    try {
+      const contacts = await getSavedSuppliers();
+
+      const listText = contacts.length
+        ? contacts.map((item, index) => {
+            return (index + 1) + " = " +
+              (item.service || "Categoria") + " - " +
+              (item.name || "Nome non indicato") +
+              (item.phone ? " - " + item.phone : "") +
+              (item.email ? " - " + item.email : "");
+          }).join("\n")
+        : "Nessun contatto salvato.";
+
+      const choice = prompt(
+        "RUBRICA GENERALE PIXELUP\n\n" +
+        listText +
+        "\n\nScrivi + per aggiungere un nuovo contatto alla rubrica generale.\n" +
+        "Scrivi il numero per aggiungerlo alla rubrica di questo evento.\n" +
+        "Annulla per chiudere.",
+        "+"
+      );
+
+      if (choice === null) return;
+
+      if (choice.trim() === "+") {
+        await addContactToGlobalBook();
+        return;
+      }
+
+      const index = Number(choice.trim()) - 1;
+
+      if (isNaN(index) || index < 0 || index >= contacts.length) {
+        alert("Scelta non valida.");
+        return;
+      }
+
+      if (!eventRef || !currentEventId) {
+        alert("Contatto trovato. Apri un progetto per aggiungerlo alla rubrica evento.");
+        return;
+      }
+
+      const selected = contacts[index];
+
+      data.suppliers.push({
+        service: selected.service || "Contatto",
+        name: selected.name || "Nome non indicato",
+        phone: selected.phone || "",
+        email: selected.email || ""
+      });
+
+      renderSuppliers();
+      saveData();
+
+      alert("Contatto aggiunto alla rubrica evento.");
+    } catch (error) {
+      console.error("Errore rubrica generale:", error);
+      alert("Errore nel caricamento della rubrica generale.");
+    }
+  }
+
+  async function addContactToGlobalBook() {
+    const service = prompt("Categoria / ruolo:", "Fornitore");
+    if (service === null) return;
+
+    const name = prompt("Nome contatto:", "");
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", "");
+    if (phone === null) return;
+
+    const email = prompt("Email:", "");
+    if (email === null) return;
+
+    const newContact = {
+      service: service || "Contatto",
+      name: name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    };
+
+    await saveSupplierToBook(newContact);
+    alert("Contatto salvato nella rubrica generale.");
+  }
+
+  async function addDeadlineFromBook() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di aggiungere scadenze.");
+      return;
+    }
+
+    try {
+      const contacts = await getSavedSuppliers();
+
+      if (!contacts.length) {
+        alert("Non hai ancora contatti salvati in rubrica generale.");
+        return;
+      }
+
+      const listText = contacts.map((item, index) => {
+        return (index + 1) + " = " +
+          (item.service || "Categoria") + " - " +
+          (item.name || "Nome non indicato") +
+          (item.phone ? " - " + item.phone : "") +
+          (item.email ? " - " + item.email : "");
+      }).join("\n");
+
+      const choice = prompt(
+        "Scegli un contatto da collegare alla nuova scadenza:\n\n" + listText,
+        "1"
+      );
+
+      if (choice === null) return;
+
+      const index = Number(choice.trim()) - 1;
+
+      if (isNaN(index) || index < 0 || index >= contacts.length) {
+        alert("Scelta non valida.");
+        return;
+      }
+
+      const selected = contacts[index];
+      const supplierLabel = (selected.service || "Contatto") + " - " + (selected.name || "Nome non indicato");
+
+      const name = prompt("Nuova voce / servizio:", "Saldo " + (selected.service || "servizio"));
+      if (name === null) return;
+
+      const total = prompt("Importo totale:", "0");
+      if (total === null) return;
+
+      const paid = prompt("Importo già pagato / saldato:", "0");
+      if (paid === null) return;
+
+      const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+      if (date === null) return;
+
+      const notes = prompt("Note:", "");
+      if (notes === null) return;
+
+      const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+
+      const cleanTotal = Number(total.replace(".", "").replace(",", "."));
+      const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
+
+      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
+        alert("Importi non validi.");
+        return;
+      }
+
+      const finalPaid = Math.min(cleanPaid, cleanTotal);
+      const missing = Math.max(cleanTotal - finalPaid, 0);
+
+      let automaticStatus = "Da saldare";
+
+      if (finalPaid <= 0) {
+        automaticStatus = "Da saldare";
+      } else if (missing > 0) {
+        automaticStatus = "Acconto versato";
+      } else {
+        automaticStatus = "Saldato";
+      }
+
+      data.deadlines.push({
+        name: name || "Nuova scadenza",
+        supplier: supplierLabel,
+        total: cleanTotal,
+        paid: finalPaid,
+        date: date || "2026-08-01",
+        status: automaticStatus,
+        notes: notes || "",
+        visibleToSpouses: visibleToSpouses
+      });
+
+      updateTotalsFromDeadlines();
+      renderSummary();
+      renderDeadlines();
+      saveData();
+
+      alert("Scadenza aggiunta usando la rubrica generale.");
+    } catch (error) {
+      console.error("Errore rubrica scadenze:", error);
+      alert("Errore nel caricamento della rubrica.");
+    }
   }
 
 
@@ -2132,7 +2823,64 @@
     data.projectName = cleanProjectName;
     data.weddingDate = cleanWeddingDate;
 
+    const eventPageUrl = prompt(
+      "Link pagina evento pubblica (opzionale):\n\nEsempio: /events/federica-daniele/index.html oppure https://pixelup.it/events/federica-daniele/",
+      data.eventPageUrl || ""
+    );
+
+    if (eventPageUrl !== null) {
+      data.eventPageUrl = normalizeEventPageUrl(eventPageUrl);
+    }
+
+    const editContacts = confirm("Vuoi aggiornare anche i recapiti sposi?");
+    if (editContacts) {
+      const existingBride = (data.spouseContacts || [])[0] || {};
+      const existingGroom = (data.spouseContacts || [])[1] || {};
+
+      const brideName = prompt("Nome sposa / primo contatto:", existingBride.name || "");
+      if (brideName === null) return;
+
+      const bridePhone = prompt("Telefono sposa / primo contatto:", existingBride.phone || "");
+      if (bridePhone === null) return;
+
+      const brideEmail = prompt("Email sposa / primo contatto:", existingBride.email || "");
+      if (brideEmail === null) return;
+
+      const groomName = prompt("Nome sposo / secondo contatto:", existingGroom.name || "");
+      if (groomName === null) return;
+
+      const groomPhone = prompt("Telefono sposo / secondo contatto:", existingGroom.phone || "");
+      if (groomPhone === null) return;
+
+      const groomEmail = prompt("Email sposo / secondo contatto:", existingGroom.email || "");
+      if (groomEmail === null) return;
+
+      const updatedContacts = [];
+
+      if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
+        updatedContacts.push({
+          role: existingBride.role || "Sposa",
+          name: brideName.trim(),
+          phone: bridePhone.trim(),
+          email: brideEmail.trim()
+        });
+      }
+
+      if (groomName.trim() || groomPhone.trim() || groomEmail.trim()) {
+        updatedContacts.push({
+          role: existingGroom.role || "Sposo",
+          name: groomName.trim(),
+          phone: groomPhone.trim(),
+          email: groomEmail.trim()
+        });
+      }
+
+      data.spouseContacts = updatedContacts;
+    }
+
     renderSummary();
+    renderSpouseContacts();
+    renderVisibilitySettings();
     updateCountdown();
     saveData();
 
@@ -2229,7 +2977,7 @@
       const suppliers = await getSavedSuppliers();
 
       if (!suppliers.length) {
-        alert("Non hai ancora fornitori salvati in rubrica.\n\nAggiungi un fornitore: verrà salvato automaticamente per i prossimi progetti.");
+        alert("Non hai ancora contatti salvati in rubrica generale.\n\nAggiungi un contatto: verrà salvato automaticamente e potrai riutilizzarlo in tutti i progetti.");
         return;
       }
 
@@ -2242,7 +2990,7 @@
       }).join("\n");
 
       const choice = prompt(
-        "Scegli un fornitore dalla rubrica scrivendo il numero:\n\n" + listText,
+        "Scegli un contatto dalla rubrica generale scrivendo il numero:\n\n" + listText,
         "1"
       );
 
@@ -2267,7 +3015,7 @@
       renderSuppliers();
       saveData();
 
-      alert("Fornitore aggiunto al progetto.");
+      alert("Contatto aggiunto al progetto.");
     } catch (error) {
       console.error("Errore caricamento rubrica fornitori:", error);
       alert("Errore nel caricamento della rubrica fornitori.");
@@ -2276,6 +3024,51 @@
 
   function toggleDocuments() {
     openSingleSection("documentSection");
+  }
+
+  function formatFileSize(bytes) {
+    const size = Number(bytes) || 0;
+
+    if (size <= 0) return "";
+
+    if (size < 1024 * 1024) {
+      return Math.round(size / 1024) + " KB";
+    }
+
+    return (size / (1024 * 1024)).toFixed(1).replace(".", ",") + " MB";
+  }
+
+  function sanitizeStorageFileName(fileName) {
+    return String(fileName || "documento")
+      .trim()
+      .toLowerCase()
+      .replaceAll("à", "a")
+      .replaceAll("è", "e")
+      .replaceAll("é", "e")
+      .replaceAll("ì", "i")
+      .replaceAll("ò", "o")
+      .replaceAll("ù", "u")
+      .replace(/[^a-z0-9._-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "") || "documento";
+  }
+
+  function isAllowedDocumentFile(file) {
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
+    const allowedExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
+    const fileName = String(file.name || "").toLowerCase();
+
+    const typeOk = allowedTypes.includes(file.type);
+    const extOk = allowedExtensions.some((ext) => fileName.endsWith(ext));
+
+    return typeOk || extOk;
   }
 
   function renderDocuments() {
@@ -2292,23 +3085,30 @@
           line-height:1.4;
         ">
           Nessun documento inserito.<br>
-          Clicca su <strong>+ Aggiungi</strong> per inserire un link Google Drive.
+          Clicca su <strong>+ Link</strong> per inserire Google Drive oppure su <strong>Carica PDF</strong> per caricare un file.
         </div>
       `;
       return;
     }
 
     list.innerHTML = data.documents.map((item, index) => {
+      const isUpload = item.type === "upload";
+      const labelTop = isUpload ? "FILE" : "DRIVE";
+      const labelBottom = isUpload ? (item.fileName ? item.fileName.split(".").pop().toUpperCase().slice(0, 4) : "PDF") : "LINK";
+      const openLabel = isUpload ? "Apri file caricato" : "Apri link documento";
+      const sizeText = item.fileSize ? " · " + formatFileSize(item.fileSize) : "";
+
       return `
         <div class="deadline-row">
           <div class="date-box drive-box">
-            <strong>DRIVE</strong>
-            <small>LINK</small>
+            <strong>${labelTop}</strong>
+            <small>${labelBottom}</small>
           </div>
 
           <div class="row-info">
             <h3>${item.name}</h3>
-            <p>Categoria: ${item.category || "Non indicata"}</p>
+            <p>Categoria: ${item.category || "Non indicata"}${sizeText}</p>
+            ${item.fileName ? `<p>File: ${item.fileName}</p>` : ""}
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
             <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
 
@@ -2319,13 +3119,13 @@
                 rel="noopener noreferrer"
                 style="color:#4d5a3a; font-weight:bold;"
               >
-                Apri Google Drive
+                ${openLabel}
               </a>
             </p>
           </div>
 
           <div class="row-right">
-            <strong>File</strong>
+            <strong>${isUpload ? "Upload" : "Link"}</strong>
             <small>documento</small>
 
             <button class="edit-btn" type="button" onclick="editDocument(${index})">
@@ -2349,103 +3149,222 @@
       `;
     }).join("");
   }
-function addDocument() {
-  const name = prompt("Nome documento:", "Nuovo documento");
-  if (name === null) return;
 
-  const category = prompt("Categoria:", "Google Drive");
-  if (category === null) return;
+  function addDocument() {
+    const name = prompt("Nome documento:", "Nuovo documento");
+    if (name === null) return;
 
-  const url = prompt("Link Google Drive:", "");
-  if (url === null) return;
+    const category = prompt("Categoria:", "Google Drive");
+    if (category === null) return;
 
-  const notes = prompt("Note:", "");
-  if (notes === null) return;
+    const url = prompt("Link documento / Google Drive:", "");
+    if (url === null) return;
 
-  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+    const notes = prompt("Note:", "");
+    if (notes === null) return;
 
-  const cleanUrl = url.trim();
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
 
-  if (!cleanUrl) {
-    alert("Inserisci un link Google Drive valido.");
-    return;
+    const cleanUrl = url.trim();
+
+    if (!cleanUrl) {
+      alert("Inserisci un link valido.");
+      return;
+    }
+
+    data.documents.push({
+      name: name || "Nuovo documento",
+      category: category || "Documento",
+      url: cleanUrl,
+      notes: notes || "",
+      type: "drive",
+      fileName: "",
+      filePath: "",
+      fileSize: 0,
+      contentType: "",
+      uploadedAt: "",
+      visibleToSpouses: visibleToSpouses
+    });
+
+    renderDocuments();
+    saveData();
   }
 
-  if (!cleanUrl.includes("drive.google.com")) {
-    const confirmOtherLink = confirm(
-      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
-    );
+  function uploadDocumentFile() {
+    if (!eventRef || !currentEventId) {
+      alert("Apri o crea un progetto prima di caricare documenti.");
+      return;
+    }
 
-    if (!confirmOtherLink) return;
+    const input = document.getElementById("documentFileInput");
+    if (!input) {
+      alert("Input file non trovato.");
+      return;
+    }
+
+    /*
+      IMPORTANTE:
+      Su iPhone/Safari il selettore file può bloccarsi se prima apriamo prompt/confirm.
+      Per questo ora facciamo scegliere prima il file e poi chiediamo nome, categoria e visibilità.
+    */
+    window.pendingDocumentUpload = null;
+    input.value = "";
+    input.click();
   }
 
-  data.documents.push({
-    name: name || "Nuovo documento",
-    category: category || "Google Drive",
-    url: cleanUrl,
-    notes: notes || "",
-    type: "drive",
-    visibleToSpouses: visibleToSpouses
-  });
+  async function handleDocumentFileSelected(event) {
+    const file = event.target.files && event.target.files[0];
 
-  renderDocuments();
-  saveData();
-}
+    if (!file) return;
 
- function editDocument(index) {
-  const item = data.documents[index];
+    const maxSize = 10 * 1024 * 1024;
 
-  const name = prompt("Nome documento:", item.name);
-  if (name === null) return;
+    if (file.size > maxSize) {
+      alert("File troppo grande. Carica documenti massimo 10 MB.");
+      event.target.value = "";
+      return;
+    }
 
-  const category = prompt("Categoria:", item.category || "Google Drive");
-  if (category === null) return;
+    if (!isAllowedDocumentFile(file)) {
+      alert("Formato non consentito. Puoi caricare PDF, JPG, PNG, DOC o DOCX.");
+      event.target.value = "";
+      return;
+    }
 
-  const url = prompt("Link Google Drive:", item.url);
-  if (url === null) return;
+    const suggestedName = file.name.replace(/\.[^/.]+$/, "");
 
-  const notes = prompt("Note:", item.notes);
-  if (notes === null) return;
+    const name = prompt("Nome documento:", suggestedName || "Documento caricato");
+    if (name === null) {
+      event.target.value = "";
+      return;
+    }
 
-  const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+    const category = prompt("Categoria:", "PDF / Documento");
+    if (category === null) {
+      event.target.value = "";
+      return;
+    }
 
-  const cleanUrl = url.trim();
+    const notes = prompt("Note:", "");
+    if (notes === null) {
+      event.target.value = "";
+      return;
+    }
 
-  if (!cleanUrl) {
-    alert("Inserisci un link Google Drive valido.");
-    return;
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
+    try {
+      alert("Caricamento in corso. Attendi il messaggio di conferma.");
+
+      const cleanFileName = sanitizeStorageFileName(file.name);
+      const storagePath =
+        "pixelup-documents/" +
+        encodeURIComponent(loggedEmail) + "/" +
+        encodeURIComponent(currentEventId) + "/" +
+        Date.now() + "-" + cleanFileName;
+
+      const fileRef = storageRef(storage, storagePath);
+
+      await uploadBytes(fileRef, file, {
+        contentType: file.type || "application/octet-stream",
+        customMetadata: {
+          ownerEmail: loggedEmail,
+          eventId: currentEventId
+        }
+      });
+
+      const downloadUrl = await getDownloadURL(fileRef);
+
+      data.documents.push({
+        name: name.trim() || suggestedName || "Documento caricato",
+        category: category.trim() || "PDF / Documento",
+        url: downloadUrl,
+        notes: notes || "",
+        type: "upload",
+        fileName: file.name,
+        filePath: storagePath,
+        fileSize: file.size,
+        contentType: file.type || "",
+        uploadedAt: new Date().toISOString(),
+        visibleToSpouses: visibleToSpouses === true
+      });
+
+      event.target.value = "";
+
+      renderDocuments();
+      await saveData();
+
+      alert("Documento caricato correttamente.");
+    } catch (error) {
+      console.error("Errore caricamento documento:", error);
+      alert(
+        "Errore nel caricamento del documento.\n\n" +
+        "Controlla che Firebase Storage sia attivo e che le regole usino la cartella pixelup-documents."
+      );
+      event.target.value = "";
+    }
   }
 
-  if (!cleanUrl.includes("drive.google.com")) {
-    const confirmOtherLink = confirm(
-      "Il link inserito non sembra un link Google Drive.\n\nVuoi salvarlo comunque?"
-    );
+  function editDocument(index) {
+    const item = data.documents[index];
+    const isUpload = item.type === "upload";
 
-    if (!confirmOtherLink) return;
+    const name = prompt("Nome documento:", item.name);
+    if (name === null) return;
+
+    const category = prompt("Categoria:", item.category || "Documento");
+    if (category === null) return;
+
+    let cleanUrl = item.url || "";
+
+    if (!isUpload) {
+      const url = prompt("Link documento / Google Drive:", item.url);
+      if (url === null) return;
+
+      cleanUrl = url.trim();
+
+      if (!cleanUrl) {
+        alert("Inserisci un link valido.");
+        return;
+      }
+    }
+
+    const notes = prompt("Note:", item.notes);
+    if (notes === null) return;
+
+    const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
+
+    data.documents[index] = {
+      ...item,
+      name: name || item.name,
+      category: category || item.category || "Documento",
+      url: cleanUrl,
+      notes: notes || "",
+      visibleToSpouses: visibleToSpouses
+    };
+
+    renderDocuments();
+    saveData();
   }
 
-  data.documents[index] = {
-    name: name || item.name,
-    category: category || "Google Drive",
-    url: cleanUrl,
-    notes: notes || "",
-    type: "drive",
-    visibleToSpouses: visibleToSpouses
-  };
-
-  renderDocuments();
-  saveData();
-}
-
-  function deleteDocument(index) {
+  async function deleteDocument(index) {
     const item = data.documents[index];
 
     const confirmDelete = confirm(
       "Vuoi eliminare questo documento?\n\n" +
-      item.name
+      item.name +
+      (item.type === "upload" ? "\n\nSe è un file caricato, verrà eliminato anche da Firebase Storage." : "")
     );
 
     if (!confirmDelete) return;
+
+    if (item.type === "upload" && item.filePath) {
+      try {
+        await deleteObject(storageRef(storage, item.filePath));
+      } catch (error) {
+        console.warn("File Storage non eliminato o già assente:", error);
+      }
+    }
 
     data.documents.splice(index, 1);
 
@@ -2517,6 +3436,51 @@ function addDocument() {
 
     if (weddingDate === null) return;
 
+    const brideName = prompt("Nome sposa / primo contatto:", "");
+    if (brideName === null) return;
+
+    const bridePhone = prompt("Telefono sposa / primo contatto:", "");
+    if (bridePhone === null) return;
+
+    const brideEmail = prompt("Email sposa / primo contatto:", "");
+    if (brideEmail === null) return;
+
+    const groomName = prompt("Nome sposo / secondo contatto:", "");
+    if (groomName === null) return;
+
+    const groomPhone = prompt("Telefono sposo / secondo contatto:", "");
+    if (groomPhone === null) return;
+
+    const groomEmail = prompt("Email sposo / secondo contatto:", "");
+    if (groomEmail === null) return;
+
+    const eventPageUrl = prompt(
+      "Link pagina evento pubblica (opzionale):\n\nPuoi lasciarlo vuoto e collegarlo dopo da I miei progetti.",
+      ""
+    );
+
+    if (eventPageUrl === null) return;
+
+    const spouseContacts = [];
+
+    if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
+      spouseContacts.push({
+        role: "Sposa",
+        name: brideName.trim(),
+        phone: bridePhone.trim(),
+        email: brideEmail.trim()
+      });
+    }
+
+    if (groomName.trim() || groomPhone.trim() || groomEmail.trim()) {
+      spouseContacts.push({
+        role: "Sposo",
+        name: groomName.trim(),
+        phone: groomPhone.trim(),
+        email: groomEmail.trim()
+      });
+    }
+
     const emptyProject = {
       projectName: cleanName,
       weddingDate: weddingDate || "2026-08-27T15:00:00",
@@ -2533,8 +3497,11 @@ function addDocument() {
       projectStatus: "In lavorazione",
       archived: false,
       projectNotes: "",
+      eventPageUrl: normalizeEventPageUrl(eventPageUrl),
+      visibility: structuredClone(defaultData.visibility),
       checklist: [],
       timeline: [],
+      spouseContacts: spouseContacts,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -2590,6 +3557,8 @@ function addDocument() {
 
       list.innerHTML = "";
 
+      let activeCount = 0;
+
       snapshot.forEach((docSnap) => {
         const project = docSnap.data();
 
@@ -2597,63 +3566,78 @@ function addDocument() {
           return;
         }
 
-        const id = docSnap.id;
+        activeCount++;
 
+        const id = docSnap.id;
         const name = project.projectName || id;
-        const budget = Number(project.budget) || 0;
         const paid = Number(project.paid) || 0;
         const due = Number(project.due) || 0;
         const total = paid + due;
+        const deadlinesCount = Array.isArray(project.deadlines) ? project.deadlines.length : 0;
+        const suppliersCount = Array.isArray(project.suppliers) ? project.suppliers.length : 0;
+        const agendaCount = Array.isArray(project.agenda) ? project.agenda.length : 0;
+        const documentsCount = Array.isArray(project.documents) ? project.documents.length : 0;
+        const checklistCount = Array.isArray(project.checklist) ? project.checklist.length : 0;
+        const timelineCount = Array.isArray(project.timeline) ? project.timeline.length : 0;
+        const dateText = project.weddingDate ? new Date(project.weddingDate).toLocaleDateString("it-IT") : "Data non indicata";
+        const eventPageUrl = String(project.eventPageUrl || "").trim();
+        const percent = total > 0 ? Math.round((paid / total) * 100) : 0;
 
         list.innerHTML += `
-          <div class="project-item">
-            <div>
-              <h4>${name}</h4>
-              <p>Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)}</p>
-            </div>
+          <div class="project-card-pro">
+            <div class="project-card-pro-top">
+              <div>
+                <h4>${name}</h4>
+                <p>Data evento: ${dateText}</p>
+                <p>Totale: ${euro(total)} · Saldato: ${euro(paid)} · Da saldare: ${euro(due)} · Pagamenti: ${percent}%</p>
 
-            <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end; flex-wrap:wrap;">
-              <a href="/dashboard/?event=${id}">
-                Apri
-              </a>
+                <div class="project-card-pro-badges">
+                  <span class="project-badge">${deadlinesCount} scadenze</span>
+                  <span class="project-badge">${suppliersCount} contatti</span>
+                  <span class="project-badge">${agendaCount} agenda</span>
+                  <span class="project-badge">${documentsCount} documenti</span>
+                  <span class="project-badge">${checklistCount} checklist</span>
+                  <span class="project-badge">${timelineCount} timeline</span>
+                  <span class="project-badge">${eventPageUrl ? "pagina evento collegata" : "pagina evento non collegata"}</span>
+                </div>
+              </div>
 
-              <button 
-                type="button" 
-                onclick="copySpousesLink('${id}')"
-                style="
-                  border:1px solid rgba(177,145,85,0.45);
-                  background:rgba(255,252,246,0.95);
-                  color:#4d5a3a;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-family:Arial,sans-serif;
-                  font-size:12px;
-                  text-transform:uppercase;
-                "
-              >
-                Copia
-              </button>
+              <div class="project-card-pro-actions">
+                <a class="project-pill-btn" href="/dashboard/?event=${id}">
+                  Apri
+                </a>
 
-              <button 
-                type="button" 
-                onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')"
-                style="
-                  border:1px solid rgba(138,61,44,0.35);
-                  background:rgba(255,252,246,0.95);
-                  color:#8a3d2c;
-                  border-radius:999px;
-                  padding:7px 11px;
-                  font-family:Arial,sans-serif;
-                  font-size:12px;
-                  text-transform:uppercase;
-                "
-              >
-                Elimina
-              </button>
+                <button class="project-pill-btn" type="button" onclick="copySpousesLink('${id}')">
+                  Link sposi
+                </button>
+
+                <button class="project-pill-btn" type="button" onclick="openEventPage('${id}', '${name.replaceAll("'", "\\'")}')">
+                  Apri pagina evento
+                </button>
+
+                <button class="project-pill-btn danger" type="button" onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')">
+                  Elimina
+                </button>
+              </div>
             </div>
           </div>
         `;
       });
+
+      if (activeCount === 0) {
+        list.innerHTML = `
+          <div style="
+            padding:16px 0;
+            text-align:center;
+            color:#7b6f62;
+            font-family:Arial,sans-serif;
+            font-size:13px;
+          ">
+            Nessun progetto attivo trovato.<br>
+            Apri i progetti archiviati o crea un nuovo progetto.
+          </div>
+        `;
+      }
 
     } catch (error) {
       console.error("Errore caricamento progetti:", error);
@@ -2670,6 +3654,194 @@ function addDocument() {
         </div>
       `;
     }
+  }
+
+  async function openEventPage(projectId, projectName) {
+    if (!projectId) {
+      alert("Progetto non valido.");
+      return;
+    }
+
+    /*
+      Su iPhone Safari la nuova scheda deve essere aperta immediatamente
+      dal tocco dell'utente. Se viene aperta dopo un "await", Safari può
+      considerarla un popup e bloccarla.
+    */
+    const eventWindow = window.open("", "_blank");
+
+    if (eventWindow) {
+      eventWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="it">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Apertura pagina evento...</title>
+          </head>
+          <body style="font-family:Arial,sans-serif;text-align:center;padding:40px 20px;color:#344028;">
+            <p>Stai aprendo la pagina evento...</p>
+          </body>
+        </html>
+      `);
+      eventWindow.document.close();
+    }
+
+    try {
+      const projectRef = doc(db, "weddingEvents", projectId);
+      const projectSnap = await getDoc(projectRef);
+
+      if (!projectSnap.exists()) {
+        if (eventWindow) eventWindow.close();
+        alert("Progetto non trovato.");
+        return;
+      }
+
+      const projectData = projectSnap.data();
+      const currentLink = String(projectData.eventPageUrl || "").trim();
+
+      if (currentLink) {
+        if (eventWindow) {
+          eventWindow.location.href = currentLink;
+        } else {
+          window.location.href = currentLink;
+        }
+        return;
+      }
+
+      const newLink = prompt(
+        "A questo progetto non è ancora collegata una pagina evento.\n\nIncolla qui il link della pagina evento pubblica:",
+        ""
+      );
+
+      if (newLink === null) {
+        if (eventWindow) eventWindow.close();
+        return;
+      }
+
+      const cleanLink = normalizeEventPageUrl(newLink);
+
+      if (!cleanLink) {
+        if (eventWindow) eventWindow.close();
+        alert("Nessun link inserito.");
+        return;
+      }
+
+      await setDoc(projectRef, {
+        eventPageUrl: cleanLink,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      if (projectId === currentEventId) {
+        data.eventPageUrl = cleanLink;
+      }
+
+      if (eventWindow) {
+        eventWindow.location.href = cleanLink;
+      } else {
+        window.location.href = cleanLink;
+      }
+
+      await showProjectsList();
+
+    } catch (error) {
+      if (eventWindow) eventWindow.close();
+      console.error("Errore apertura pagina evento:", error);
+      alert("Errore durante l'apertura della pagina evento.");
+    }
+  }
+
+  async function manageEventPageLink(projectId, projectName) {
+    if (!projectId) {
+      alert("Progetto non valido.");
+      return;
+    }
+
+    try {
+      const projectRef = doc(db, "weddingEvents", projectId);
+      const projectSnap = await getDoc(projectRef);
+
+      if (!projectSnap.exists()) {
+        alert("Progetto non trovato.");
+        return;
+      }
+
+      const projectData = projectSnap.data();
+      const currentLink = String(projectData.eventPageUrl || "").trim();
+
+      if (currentLink) {
+        const openNow = confirm(
+          "Link evento già collegato per:\n" +
+          (projectName || projectId) +
+          "\n\n" +
+          currentLink +
+          "\n\nPremi OK per aprirlo.\nPremi Annulla per modificarlo."
+        );
+
+        if (openNow) {
+          window.open(currentLink, "_blank");
+          return;
+        }
+      }
+
+      const newLink = prompt(
+        "Incolla qui il link della pagina evento pubblica:\n\n" +
+        "Esempio: /events/federica-daniele/index.html\n" +
+        "oppure: https://pixelup.it/events/federica-daniele/",
+        currentLink
+      );
+
+      if (newLink === null) return;
+
+      const cleanLink = normalizeEventPageUrl(newLink);
+
+      if (!cleanLink) {
+        if (currentLink) {
+          const removeLink = confirm("Hai lasciato il campo vuoto. Vuoi rimuovere il link evento da questo progetto?");
+          if (!removeLink) return;
+
+          await setDoc(projectRef, {
+            eventPageUrl: "",
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+
+          if (projectId === currentEventId) {
+            data.eventPageUrl = "";
+          }
+
+          alert("Link evento rimosso.");
+          await showProjectsList();
+        } else {
+          alert("Nessun link inserito.");
+        }
+
+        return;
+      }
+
+      await setDoc(projectRef, {
+        eventPageUrl: cleanLink,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      if (projectId === currentEventId) {
+        data.eventPageUrl = cleanLink;
+      }
+
+      alert("Link evento salvato:\n\n" + cleanLink);
+      await showProjectsList();
+
+    } catch (error) {
+      console.error("Errore gestione link evento:", error);
+      alert("Errore durante il salvataggio del link evento.");
+    }
+  }
+
+  function manageCurrentEventPageLink() {
+    if (!currentEventId) {
+      alert("Apri o crea un progetto prima di collegare il link evento.");
+      return;
+    }
+
+    manageEventPageLink(currentEventId, data.projectName || currentEventId);
   }
 
   function copySpousesLink(projectId) {
@@ -3039,6 +4211,248 @@ function addDocument() {
     alert("Note progetto salvate.");
   }
 
+
+  function toggleSpouseContacts() {
+    openSingleSection("spouseContactSection");
+    renderSpouseContacts();
+  }
+
+  function cleanPhoneNumber(phone) {
+    return String(phone || "").replace(/\D/g, "");
+  }
+
+  function makeWhatsAppNumber(phone) {
+    const clean = cleanPhoneNumber(phone);
+
+    if (!clean) return "";
+
+    if (clean.startsWith("39")) {
+      return clean;
+    }
+
+    return "39" + clean;
+  }
+
+  function makeSpouseWhatsAppMessage(contact) {
+    return encodeURIComponent(
+      "Ciao " + (contact.name || "") + ", sono la vostra wedding planner.\n\n" +
+      "Ti scrivo per un aggiornamento sul matrimonio " + (data.projectName || "") + "."
+    );
+  }
+
+  function renderSpouseContacts() {
+    const list = document.getElementById("spouseContactList");
+    if (!list) return;
+
+    if (!data.spouseContacts || data.spouseContacts.length === 0) {
+      list.innerHTML = `
+        <div style="
+          padding:18px 0;
+          text-align:center;
+          color:#7b6f62;
+          font-family:Arial,sans-serif;
+          font-size:13px;
+          line-height:1.4;
+        ">
+          Nessun recapito sposi inserito.<br>
+          Clicca su <strong>+ Aggiungi</strong> per salvare telefono, WhatsApp o email.
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = data.spouseContacts.map((contact, index) => {
+      const cleanPhone = cleanPhoneNumber(contact.phone);
+      const phoneLink = cleanPhone ? "tel:" + cleanPhone : "#";
+      const whatsappNumber = makeWhatsAppNumber(contact.phone);
+      const whatsappLink = whatsappNumber
+        ? "https://wa.me/" + whatsappNumber + "?text=" + makeSpouseWhatsAppMessage(contact)
+        : "#";
+
+      const subject = encodeURIComponent("Aggiornamento matrimonio - " + (data.projectName || "Wedding"));
+      const body = encodeURIComponent(
+        "Ciao " + (contact.name || "") + ",\n\n" +
+        "ti scrivo per un aggiornamento relativo al matrimonio " + (data.projectName || "") + ".\n\n" +
+        "Grazie."
+      );
+
+      const emailLink = contact.email
+        ? "mailto:" + contact.email + "?subject=" + subject + "&body=" + body
+        : "#";
+
+      return `
+        <div class="spouse-contact-card">
+          <div class="spouse-contact-top">
+            <div class="spouse-avatar">♡</div>
+
+            <div>
+              <h3>${contact.name || "Nome non indicato"}</h3>
+              <p>${contact.role || "Sposo/Sposa"}</p>
+              <p>Tel: ${contact.phone || "Non inserito"}</p>
+              <p>Email: ${contact.email || "Non inserita"}</p>
+            </div>
+          </div>
+
+          <div class="spouse-actions">
+            <a class="spouse-action-btn ${cleanPhone ? "" : "disabled"}" href="${phoneLink}">
+              Chiama
+            </a>
+
+            <a class="spouse-action-btn whatsapp ${whatsappNumber ? "" : "disabled"}" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>
+
+            <a class="spouse-action-btn ${contact.email ? "" : "disabled"}" href="${emailLink}">
+              Email
+            </a>
+          </div>
+
+          <div style="margin-top:8px; display:flex; gap:7px; flex-wrap:wrap;">
+            <button class="edit-btn" type="button" onclick="editSpouseContact(${index})">Modifica</button>
+            <button 
+              class="edit-btn" 
+              type="button" 
+              onclick="deleteSpouseContact(${index})"
+              style="color:#8a3d2c;border-color:rgba(138,61,44,0.35);"
+            >
+              Elimina
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addSpouseContact(defaultRole = "Sposa", defaultName = "", defaultPhone = "", defaultEmail = "") {
+    const role = prompt("Ruolo contatto:", defaultRole);
+    if (role === null) return;
+
+    const name = prompt("Nome:", defaultName);
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", defaultPhone);
+    if (phone === null) return;
+
+    const email = prompt("Email:", defaultEmail);
+    if (email === null) return;
+
+    if (!name.trim() && !phone.trim() && !email.trim()) {
+      alert("Inserisci almeno nome, telefono o email.");
+      return;
+    }
+
+    data.spouseContacts.push({
+      role: role || "Sposo/Sposa",
+      name: name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    });
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+  function editSpouseContact(index) {
+    const contact = data.spouseContacts[index];
+
+    const role = prompt("Ruolo contatto:", contact.role || "");
+    if (role === null) return;
+
+    const name = prompt("Nome:", contact.name || "");
+    if (name === null) return;
+
+    const phone = prompt("Numero di telefono:", contact.phone || "");
+    if (phone === null) return;
+
+    const email = prompt("Email:", contact.email || "");
+    if (email === null) return;
+
+    data.spouseContacts[index] = {
+      role: role || contact.role || "Sposo/Sposa",
+      name: name || contact.name || "Nome non indicato",
+      phone: phone || "",
+      email: email || ""
+    };
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+  function deleteSpouseContact(index) {
+    const contact = data.spouseContacts[index];
+
+    const confirmDelete = confirm(
+      "Vuoi eliminare questo recapito?\n\n" +
+      (contact.name || "Contatto")
+    );
+
+    if (!confirmDelete) return;
+
+    data.spouseContacts.splice(index, 1);
+
+    renderSpouseContacts();
+    saveData();
+  }
+
+
+
+  function toggleVisibilitySettings() {
+    openSingleSection("visibilitySection");
+    renderVisibilitySettings();
+  }
+
+  function getVisibilityLabels() {
+    return [
+      ["overview", "Info matrimonio", "Nome evento, data e informazioni principali."],
+      ["budget", "Budget e pagamenti", "Mostra agli sposi il riepilogo economico. Consigliato spento."],
+      ["deadlines", "Scadenze", "Mostra solo le scadenze segnate come visibili agli sposi."],
+      ["suppliers", "Rubrica evento", "Mostra la rubrica evento agli sposi."],
+      ["agenda", "Agenda", "Mostra solo gli appuntamenti segnati come visibili agli sposi."],
+      ["documents", "Documenti", "Mostra solo documenti e PDF segnati come visibili agli sposi."],
+      ["checklist", "Checklist", "Mostra solo attività segnate come visibili agli sposi."],
+      ["timeline", "Timeline evento", "Mostra solo i momenti segnati come visibili agli sposi."],
+      ["contacts", "Contatta sposi", "Mostra i recapiti salvati degli sposi nel link sposi."],
+      ["report", "Report sposi", "Permette di mostrare/scaricare un riepilogo per gli sposi."],
+      ["notes", "Note progetto", "Sconsigliato: le note interne dovrebbero restare nascoste."]
+    ];
+  }
+
+  function renderVisibilitySettings() {
+    const list = document.getElementById("visibilitySettingsList");
+    if (!list) return;
+
+    data.visibility = {
+      ...defaultData.visibility,
+      ...(data.visibility || {})
+    };
+
+    list.innerHTML = getVisibilityLabels().map(([key, title, text]) => {
+      const isOn = data.visibility[key] === true;
+      return `
+        <div class="visibility-card">
+          <div>
+            <h3>${title}</h3>
+            <p>${text}</p>
+          </div>
+          <button class="visibility-switch ${isOn ? "on" : ""}" type="button" onclick="toggleVisibilityKey('${key}')">
+            ${isOn ? "Visibile" : "Nascosto"}
+          </button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function toggleVisibilityKey(key) {
+    data.visibility = {
+      ...defaultData.visibility,
+      ...(data.visibility || {})
+    };
+
+    data.visibility[key] = !data.visibility[key];
+    renderVisibilitySettings();
+    saveData();
+  }
+
   function toggleBackup() {
     openSingleSection("backupSection");
   }
@@ -3056,6 +4470,17 @@ function addDocument() {
     lines.push("Da saldare: " + euro(data.due));
     lines.push("");
 
+    lines.push("RECAPITI SPOSI");
+    if (data.spouseContacts && data.spouseContacts.length) {
+      data.spouseContacts.forEach((item, index) => {
+        lines.push((index + 1) + ". " + (item.role || "Contatto") + " - " + (item.name || ""));
+        lines.push("   Tel: " + (item.phone || "Non inserito") + " | Email: " + (item.email || "Non inserita"));
+      });
+    } else {
+      lines.push("Nessun recapito sposi inserito.");
+    }
+    lines.push("");
+
     lines.push("SCADENZE");
     if (data.deadlines && data.deadlines.length) {
       data.deadlines.forEach((item, index) => {
@@ -3069,14 +4494,14 @@ function addDocument() {
     }
     lines.push("");
 
-    lines.push("FORNITORI");
+    lines.push("RUBRICA EVENTO");
     if (data.suppliers && data.suppliers.length) {
       data.suppliers.forEach((item, index) => {
         lines.push((index + 1) + ". " + item.service + " - " + item.name);
         lines.push("   Tel: " + item.phone + " | Email: " + item.email);
       });
     } else {
-      lines.push("Nessun fornitore inserito.");
+      lines.push("Nessun contatto inserito.");
     }
     lines.push("");
 
@@ -3136,6 +4561,472 @@ function addDocument() {
 
     return lines.join("\\n");
   }
+
+
+  function getReportDateLabel(value) {
+    const date = new Date(value);
+
+    if (isNaN(date)) {
+      return value || "Data non indicata";
+    }
+
+    return date.toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+  function sanitizeReportText(value) {
+    return String(value || "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function reportFileName(type) {
+    return type + "-" + makeProjectId(data.projectName || "progetto") + "-" + new Date().toISOString().slice(0, 10) + ".pdf";
+  }
+
+  function createWeddingReportPDF(mode) {
+    const jsPDFConstructor = window.jspdf && window.jspdf.jsPDF;
+
+    if (!jsPDFConstructor) {
+      alert("Generatore PDF non caricato. Controlla la connessione e riprova.");
+      return;
+    }
+
+    const isSpouses = mode === "spouses";
+    const doc = new jsPDFConstructor({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4"
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 16;
+    const contentWidth = pageWidth - margin * 2;
+
+    const green = [77, 90, 58];
+    const greenDark = [52, 64, 40];
+    const gold = [177, 145, 85];
+    const textColor = [38, 49, 34];
+    const muted = [123, 111, 98];
+    const cream = [251, 244, 232];
+
+    let y = 20;
+
+    function addFooter() {
+      const page = doc.internal.getNumberOfPages();
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(150, 140, 125);
+      doc.text("PixelUp Dashboard Wedding", margin, pageHeight - 10);
+      doc.text("Pagina " + page, pageWidth - margin, pageHeight - 10, { align: "right" });
+    }
+
+    function addHeader(title) {
+      doc.setFillColor(cream[0], cream[1], cream[2]);
+      doc.rect(0, 0, pageWidth, 18, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(title, margin, 11);
+    }
+
+    function newPage(title) {
+      addFooter();
+      doc.addPage();
+      addHeader(title || "Report progetto");
+      y = 28;
+    }
+
+    function ensureSpace(needed, title) {
+      if (y + needed > pageHeight - 22) {
+        newPage(title || "Report progetto");
+      }
+    }
+
+    function sectionTitle(title, subtitle) {
+      ensureSpace(18);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(title, margin, y);
+      y += 5;
+
+      if (subtitle) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(muted[0], muted[1], muted[2]);
+        const lines = doc.splitTextToSize(sanitizeReportText(subtitle), contentWidth);
+        doc.text(lines, margin, y);
+        y += lines.length * 4 + 4;
+      } else {
+        y += 4;
+      }
+
+      doc.setDrawColor(gold[0], gold[1], gold[2]);
+      doc.setLineWidth(0.2);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 8;
+    }
+
+    function textBlock(text, size = 10) {
+      const clean = sanitizeReportText(text);
+      if (!clean) return;
+
+      const lines = doc.splitTextToSize(clean, contentWidth);
+      ensureSpace(lines.length * 5 + 4);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(size);
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      doc.text(lines, margin, y);
+      y += lines.length * 5 + 4;
+    }
+
+    function emptyText(label) {
+      textBlock(label, 10);
+    }
+
+    function smallLabel(text, x, yPos) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text(text, x, yPos);
+    }
+
+    function statBox(x, title, value, note) {
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(x, y, 54, 30, 4, 4, "FD");
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text(title, x + 5, y + 8);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(value, x + 5, y + 18);
+
+      if (note) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.text(note, x + 5, y + 25);
+      }
+    }
+
+    function rowCard(title, lines, rightText) {
+      const cleanLines = (lines || [])
+        .map(sanitizeReportText)
+        .filter(Boolean);
+
+      const allText = [sanitizeReportText(title), ...cleanLines].join(" ");
+      const estimatedLines = Math.max(2, doc.splitTextToSize(allText, contentWidth - 16).length);
+      const height = Math.max(20, 12 + estimatedLines * 4);
+
+      ensureSpace(height + 4);
+
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(margin, y, contentWidth, height, 4, 4, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(sanitizeReportText(title) || "Voce", margin + 5, y + 8);
+
+      let lineY = y + 14;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+
+      cleanLines.forEach((line) => {
+        const split = doc.splitTextToSize(line, rightText ? contentWidth - 42 : contentWidth - 12);
+        doc.text(split, margin + 5, lineY);
+        lineY += split.length * 4;
+      });
+
+      if (rightText) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.text(String(rightText), pageWidth - margin - 5, y + 8, { align: "right" });
+      }
+
+      y += height + 5;
+    }
+
+    function documentCard(item) {
+      const height = 24;
+      ensureSpace(height + 5);
+
+      doc.setFillColor(255, 252, 246);
+      doc.setDrawColor(223, 212, 193);
+      doc.roundedRect(margin, y, contentWidth, height, 4, 4, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+      doc.text(sanitizeReportText(item.name) || "Documento", margin + 5, y + 8);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(muted[0], muted[1], muted[2]);
+      doc.text("Categoria: " + (sanitizeReportText(item.category) || "Non indicata"), margin + 5, y + 14);
+
+      if (item.url) {
+        doc.setTextColor(gold[0], gold[1], gold[2]);
+        doc.textWithLink("Apri documento", margin + 5, y + 20, { url: item.url });
+      }
+
+      y += height + 5;
+    }
+
+    const projectName = sanitizeReportText(data.projectName || "Wedding Board");
+    const monogram = getProjectMonogram(projectName);
+    const weddingDate = getReportDateLabel(data.weddingDate);
+    const totalReal = Number(data.paid) + Number(data.due);
+    const percent = totalReal > 0 ? Math.round((Number(data.paid) / totalReal) * 100) : 0;
+    const generated = new Date().toLocaleDateString("it-IT") + " " + new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+
+    const deadlines = isSpouses ? (data.deadlines || []).filter((item) => item.visibleToSpouses === true) : (data.deadlines || []);
+    const agenda = isSpouses ? (data.agenda || []).filter((item) => item.visibleToSpouses === true) : (data.agenda || []);
+    const documents = isSpouses ? (data.documents || []).filter((item) => item.visibleToSpouses === true) : (data.documents || []);
+    const checklist = isSpouses ? (data.checklist || []).filter((item) => item.visibleToSpouses === true) : (data.checklist || []);
+    const timeline = isSpouses ? (data.timeline || []).filter((item) => item.visibleToSpouses === true) : (data.timeline || []);
+    const suppliers = data.suppliers || [];
+
+    /* Copertina */
+    doc.setFillColor(251, 244, 232);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    doc.setDrawColor(gold[0], gold[1], gold[2]);
+    doc.setLineWidth(0.4);
+    doc.roundedRect(18, 20, pageWidth - 36, pageHeight - 40, 7, 7);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(gold[0], gold[1], gold[2]);
+    doc.text("PIXELUP WEDDING BOARD", pageWidth / 2, 42, { align: "center" });
+
+    doc.setFont("times", "italic");
+    doc.setFontSize(24);
+    doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+    doc.text(monogram, pageWidth / 2, 74, { align: "center" });
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(28);
+    const titleLines = doc.splitTextToSize(projectName, pageWidth - 52);
+    doc.text(titleLines, pageWidth / 2, 100, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor(muted[0], muted[1], muted[2]);
+    doc.text(weddingDate, pageWidth / 2, 126, { align: "center" });
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
+    doc.text(isSpouses ? "Report per sposi" : "Report interno wedding", pageWidth / 2, 152, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(muted[0], muted[1], muted[2]);
+    doc.text("Generato il " + generated, pageWidth / 2, 164, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(150, 140, 125);
+    doc.text(
+      isSpouses
+        ? "Contiene solo le informazioni rese visibili agli sposi."
+        : "Contiene dati interni del progetto. Non condividere senza controllo.",
+      pageWidth / 2,
+      pageHeight - 34,
+      { align: "center" }
+    );
+
+    /* Panoramica */
+    doc.addPage();
+    addHeader("Panoramica progetto");
+    y = 30;
+
+    sectionTitle("Panoramica", "Riepilogo economico e stato del progetto.");
+
+    statBox(margin, "Totale", euro(totalReal), "spesa prevista");
+    statBox(margin + 62, "Saldato", euro(data.paid), "già pagato");
+    statBox(margin + 124, "Da saldare", euro(data.due), "residuo");
+    y += 38;
+
+    textBlock("Avanzamento pagamenti: " + percent + "%", 11);
+    textBlock("Stato progetto: " + (data.projectStatus || "In lavorazione"), 10);
+
+    if (!isSpouses) {
+      newPage("Recapiti sposi");
+      sectionTitle("Recapiti sposi", "Contatti rapidi inseriti nella dashboard.");
+
+      if (data.spouseContacts && data.spouseContacts.length) {
+        data.spouseContacts.forEach((item) => {
+          rowCard(
+            item.role || "Contatto",
+            [
+              "Nome: " + (item.name || "Non indicato"),
+              "Telefono: " + (item.phone || "Non inserito"),
+              "Email: " + (item.email || "Non inserita")
+            ],
+            "Sposi"
+          );
+        });
+      } else {
+        emptyText("Nessun recapito sposi inserito.");
+      }
+    }
+
+    /* Scadenze */
+    newPage("Scadenze");
+    sectionTitle("Scadenze e pagamenti", isSpouses ? "Solo scadenze condivise con gli sposi." : "Elenco completo delle scadenze interne.");
+
+    if (deadlines.length) {
+      deadlines
+        .slice()
+        .sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"))
+        .forEach((item) => {
+          const missing = Math.max(Number(item.total) - Number(item.paid), 0);
+          rowCard(
+            item.name || "Scadenza",
+            [
+              "Fornitore: " + (item.supplier || "Non indicato"),
+              "Data: " + getReportDateLabel(item.date),
+              "Totale: " + euro(item.total) + " · Pagato: " + euro(item.paid) + " · Residuo: " + euro(missing),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            missing <= 0 ? "Saldato" : euro(missing)
+          );
+        });
+    } else {
+      emptyText("Nessuna scadenza presente in questo report.");
+    }
+
+    if (!isSpouses) {
+      newPage("Rubrica evento");
+      sectionTitle("Rubrica evento", "Contatti utili collegati al progetto.");
+
+      if (suppliers.length) {
+        suppliers.forEach((item) => {
+          rowCard(
+            item.service || "Fornitore",
+            [
+              "Nome: " + (item.name || "Non indicato"),
+              "Telefono: " + (item.phone || "Non indicato"),
+              "Email: " + (item.email || "Non indicata")
+            ],
+            "Contatto"
+          );
+        });
+      } else {
+        emptyText("Nessun contatto inserito.");
+      }
+    }
+
+    /* Agenda */
+    newPage("Agenda");
+    sectionTitle("Agenda", isSpouses ? "Appuntamenti condivisi con gli sposi." : "Appuntamenti e promemoria del progetto.");
+
+    if (agenda.length) {
+      agenda
+        .slice()
+        .sort((a, b) => new Date((a.date || "") + "T" + (a.time || "00:00")) - new Date((b.date || "") + "T" + (b.time || "00:00")))
+        .forEach((item) => {
+          rowCard(
+            item.title || "Appuntamento",
+            [
+              "Data: " + getReportDateLabel(item.date) + " · Ore: " + (item.time || "--:--"),
+              "Luogo: " + (item.place || "Non indicato"),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            item.time || "--:--"
+          );
+        });
+    } else {
+      emptyText("Nessun appuntamento presente in questo report.");
+    }
+
+    /* Documenti */
+    newPage("Documenti");
+    sectionTitle("Documenti", isSpouses ? "Documenti condivisi con gli sposi." : "Documenti e link utili al progetto.");
+
+    if (documents.length) {
+      documents.forEach((item) => documentCard(item));
+    } else {
+      emptyText("Nessun documento presente in questo report.");
+    }
+
+    /* Checklist */
+    newPage("Checklist");
+    sectionTitle("Checklist", isSpouses ? "Attività condivise con gli sposi." : "Attività operative del progetto.");
+
+    if (checklist.length) {
+      checklist.forEach((item) => {
+        rowCard(
+          (item.done ? "✓ " : "○ ") + (item.title || "Voce checklist"),
+          [
+            "Stato: " + (item.done ? "Completata" : "Da fare"),
+            item.notes ? "Note: " + item.notes : ""
+          ],
+          item.done ? "Fatto" : "Da fare"
+        );
+      });
+    } else {
+      emptyText("Nessuna voce checklist presente in questo report.");
+    }
+
+    /* Timeline */
+    newPage("Timeline evento");
+    sectionTitle("Timeline evento", "Momenti principali del giorno evento.");
+
+    if (timeline.length) {
+      timeline
+        .slice()
+        .sort((a, b) => String(a.time || "99:99").localeCompare(String(b.time || "99:99")))
+        .forEach((item) => {
+          rowCard(
+            item.title || "Momento evento",
+            [
+              "Ora: " + (item.time || "--:--"),
+              "Luogo: " + (item.place || "Non indicato"),
+              item.notes ? "Note: " + item.notes : ""
+            ],
+            item.time || "--:--"
+          );
+        });
+    } else {
+      emptyText("Nessun momento timeline presente in questo report.");
+    }
+
+    if (!isSpouses) {
+      newPage("Note interne");
+      sectionTitle("Note interne", "Questa pagina è solo per la wedding planner.");
+      textBlock(data.projectNotes || "Nessuna nota interna inserita.", 10);
+    }
+
+    addFooter();
+
+    doc.save(reportFileName(isSpouses ? "report-sposi" : "report-interno"));
+  }
+
+  function downloadInternalReportPDF() {
+    createWeddingReportPDF("internal");
+  }
+
+  function downloadSpousesReportPDF() {
+    createWeddingReportPDF("spouses");
+  }
+
 
   function copyProjectSummary() {
     const summary = buildProjectSummary();
@@ -3345,6 +5236,7 @@ function addDocument() {
     renderChecklist();
     renderTimeline();
     renderProjectNotes();
+    renderSpouseContacts();
     updateCountdown();
   }
 
@@ -3385,7 +5277,9 @@ function addDocument() {
           !Array.isArray(remoteData.documents) ||
           !Array.isArray(remoteData.checklist) ||
           !Array.isArray(remoteData.timeline) ||
+          !Array.isArray(remoteData.spouseContacts) ||
           remoteData.projectNotes === undefined ||
+          remoteData.visibility === undefined ||
           remoteData.archived === undefined ||
           remoteData.projectStatus === undefined;
 
@@ -3428,6 +5322,34 @@ function addDocument() {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+
+  const documentFileInput = document.getElementById("documentFileInput");
+  if (documentFileInput) {
+    documentFileInput.addEventListener("change", handleDocumentFileSelected);
+  }
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch((error) => {
+        console.warn("Service worker non registrato:", error);
+      });
+    });
+  }
+
+  function showInstallGuide() {
+    alert(
+      "Aggiungi PixelUp alla schermata Home:\\n\\n" +
+      "Su iPhone:\\n" +
+      "1. Apri PixelUp con Safari\\n" +
+      "2. Tocca il pulsante Condividi\\n" +
+      "3. Tocca “Aggiungi a Home”\\n" +
+      "4. Conferma su “Aggiungi”\\n\\n" +
+      "Su Android:\\n" +
+      "Apri il menu del browser e scegli “Installa app” oppure “Aggiungi a schermata Home”.\\n\\n" +
+      "Quando rientri dall’icona, PixelUp apre l’ultima dashboard usata se l’accesso è ancora salvato."
+    );
+  }
+
   window.editSummary = editSummary;
   window.toggleDeadlines = toggleDeadlines;
   window.toggleSuppliers = toggleSuppliers;
@@ -3449,6 +5371,9 @@ function addDocument() {
   window.editDocument = editDocument;
   window.deleteDocument = deleteDocument;
   window.copySpousesLink = copySpousesLink;
+  window.openEventPage = openEventPage;
+  window.manageEventPageLink = manageEventPageLink;
+  window.manageCurrentEventPageLink = manageCurrentEventPageLink;
   window.editEventInfo = editEventInfo;
   window.useSavedSupplier = useSavedSupplier;
   window.toggleChecklist = toggleChecklist;
@@ -3462,10 +5387,37 @@ function addDocument() {
   window.deleteTimelineItem = deleteTimelineItem;
   window.toggleProjectNotes = toggleProjectNotes;
   window.saveProjectNotes = saveProjectNotes;
+  window.toggleSpouseContacts = toggleSpouseContacts;
+  window.addSpouseContact = addSpouseContact;
+  window.editSpouseContact = editSpouseContact;
+  window.deleteSpouseContact = deleteSpouseContact;
   window.toggleBackup = toggleBackup;
   window.copyProjectSummary = copyProjectSummary;
+  window.downloadInternalReportPDF = downloadInternalReportPDF;
+  window.downloadSpousesReportPDF = downloadSpousesReportPDF;
   window.downloadProjectBackup = downloadProjectBackup;
   window.archiveCurrentProject = archiveCurrentProject;
   window.showArchivedProjects = showArchivedProjects;
   window.restoreProject = restoreProject;
+  window.uploadDocumentFile = uploadDocumentFile;
+  window.handleDocumentFileSelected = handleDocumentFileSelected;
+  window.addDeadlineFromBook = addDeadlineFromBook;
+  window.openGlobalContactBook = openGlobalContactBook;
+  window.toggleVisibilitySettings = toggleVisibilitySettings;
+  window.toggleVisibilityKey = toggleVisibilityKey;
+  window.showInstallGuide = showInstallGuide;
+  window.logoutPixelUp = function () {
+  const confirmLogout = confirm("Vuoi uscire dalla dashboard PixelUp?");
+
+  if (!confirmLogout) return;
+
+  localStorage.removeItem("pixelup_access");
+  localStorage.removeItem("pixelup_email");
+  localStorage.removeItem("pixelup_role");
+  localStorage.removeItem("pixelup_code");
+  localStorage.removeItem("pixelup_maxProjects");
+  localStorage.removeItem("pixelup_last_event");
+
+  window.location.href = "/dasgboardemo/accedi.html";
+};
 </script>
