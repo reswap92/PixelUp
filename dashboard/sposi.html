@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Wedding Board | Roberta & Alessandro</title>
+  <title>Area Sposi | PixelUp Wedding</title>
 
   <style>
     :root {
@@ -36,14 +36,14 @@
       font-family: Georgia, "Times New Roman", serif;
     }
 
-    button,
-    input,
-    select {
+    button {
       font-family: inherit;
+      cursor: pointer;
     }
 
-    button {
-      cursor: pointer;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
     .app {
@@ -55,7 +55,7 @@
       box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
       overflow: hidden;
       position: relative;
-      padding-bottom: 86px;
+      padding-bottom: 30px;
     }
 
     .topbar {
@@ -72,8 +72,7 @@
       backdrop-filter: blur(8px);
     }
 
-    .menu-btn,
-    .heart-btn {
+    .circle-btn {
       width: 38px;
       height: 38px;
       border-radius: 50%;
@@ -103,26 +102,8 @@
       margin-top: 3px;
     }
 
-    .page {
-      display: none;
-      animation: fade 0.25s ease;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .content {
-      padding: 18px 20px 24px;
-    }
-
-    .home-hero {
-      min-height: 245px;
+    .hero {
+      min-height: 260px;
       background:
         linear-gradient(180deg, rgba(35, 38, 28, 0.18), rgba(35, 38, 28, 0.38)),
         var(--hero-image) center / cover no-repeat;
@@ -135,7 +116,7 @@
       position: relative;
     }
 
-    .home-hero::after {
+    .hero::after {
       content: "";
       position: absolute;
       left: -8%;
@@ -147,27 +128,44 @@
       z-index: 1;
     }
 
-    .home-hero-content {
+    .hero-content {
       position: relative;
       z-index: 2;
     }
 
-    .home-hero h2 {
-      font-size: 26px;
+    .monogram {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 22px;
+      letter-spacing: 2px;
+      background: rgba(255, 250, 241, 0.28);
+      border: 1px solid rgba(177, 145, 85, 0.75);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero h2 {
+      font-size: 34px;
       font-weight: 400;
       margin-bottom: 8px;
       text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
     }
 
-    .home-hero p {
+    .hero p {
       font-family: Arial, sans-serif;
       font-size: 14px;
       line-height: 1.45;
       opacity: 0.95;
+      max-width: 390px;
+      margin: 0 auto;
     }
 
     .countdown-card {
-      width: 86%;
+      width: 88%;
       margin: 24px auto 0;
       background: rgba(255, 252, 246, 0.92);
       border: 1px solid rgba(223, 212, 193, 0.85);
@@ -212,6 +210,10 @@
       letter-spacing: 1.2px;
     }
 
+    .content {
+      padding: 18px 20px 24px;
+    }
+
     .section-title {
       display: flex;
       align-items: center;
@@ -226,13 +228,10 @@
       color: var(--green-dark);
     }
 
-    .section-title button,
     .section-title span {
-      color: var(--gold);
-      font-size: 14px;
       font-family: Arial, sans-serif;
-      background: transparent;
-      border: 0;
+      color: var(--gold);
+      font-size: 13px;
     }
 
     .summary-grid {
@@ -269,7 +268,7 @@
     }
 
     .summary-card strong {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 400;
       color: var(--green-dark);
     }
@@ -282,8 +281,7 @@
     }
 
     .progress-card,
-    .list-card,
-    .donut-wrap {
+    .list-card {
       background: var(--card);
       border: 1px solid var(--border);
       box-shadow: var(--soft-shadow);
@@ -316,20 +314,83 @@
       transition: width 0.3s ease;
     }
 
-    .row {
+    .main-action {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 17px;
+      border: 1.5px solid rgba(214, 193, 145, 0.95);
+      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
+      color: white;
+      box-shadow: 0 12px 25px rgba(54, 64, 42, 0.22);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-size: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+    }
+
+    .secondary-action {
+      width: 100%;
+      min-height: 58px;
+      border-radius: 17px;
+      border: 1.5px solid var(--gold);
+      background: rgba(255, 252, 246, 0.92);
+      color: var(--text);
+      box-shadow: var(--soft-shadow);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+    }
+
+    .deadline-section,
+    .supplier-section,
+    .agenda-section,
+    .document-section,
+    .checklist-section,
+    .timeline-section {
+      display: none;
+      animation: fade 0.22s ease;
+    }
+
+    .deadline-section.show,
+    .supplier-section.show,
+    .agenda-section.show,
+    .document-section.show,
+    .checklist-section.show,
+    .timeline-section.show {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .deadline-row,
+    .supplier-row {
       display: grid;
       grid-template-columns: 48px 1fr auto;
       gap: 12px;
       align-items: center;
-      padding: 13px 0;
+      padding: 14px 0;
       border-bottom: 1px solid rgba(177, 145, 85, 0.18);
     }
 
-    .row:last-child {
+    .deadline-row:last-child,
+    .supplier-row:last-child {
       border-bottom: 0;
     }
 
-    .date-box {
+    .date-box,
+    .supplier-icon {
       width: 46px;
       height: 52px;
       border-radius: 12px;
@@ -343,8 +404,13 @@
       color: var(--green-dark);
     }
 
+    .supplier-icon {
+      font-size: 22px;
+      color: var(--gold);
+    }
+
     .date-box strong {
-      font-size: 20px;
+      font-size: 19px;
       line-height: 1;
       font-weight: 400;
     }
@@ -367,11 +433,24 @@
       font-family: Arial, sans-serif;
       font-size: 13px;
       color: var(--muted);
+      line-height: 1.35;
     }
 
     .row-right {
       text-align: right;
       font-family: Arial, sans-serif;
+      min-width: 90px;
+    }
+
+    .row-right strong {
+      display: block;
+      font-size: 14px;
+      color: var(--green-dark);
+      margin-bottom: 4px;
+    }
+
+    .row-right small {
+      display: block;
       font-size: 12px;
       color: var(--muted);
     }
@@ -381,12 +460,12 @@
       padding: 6px 10px;
       border-radius: 999px;
       font-family: Arial, sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       border: 1px solid rgba(177, 145, 85, 0.28);
       background: rgba(177, 145, 85, 0.12);
       color: #8a6729;
       white-space: nowrap;
-      margin-top: 5px;
+      margin-top: 6px;
     }
 
     .status.paid {
@@ -395,345 +474,13 @@
       border-color: rgba(77, 90, 58, 0.28);
     }
 
-    .status.due {
-      background: rgba(177, 145, 85, 0.12);
-      color: #8a6729;
-    }
-
-    .small-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .mini-btn {
-      border: 1px solid rgba(177, 145, 85, 0.35);
-      background: rgba(255, 252, 246, 0.85);
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-family: Arial, sans-serif;
-      font-size: 11px;
-      color: var(--green-dark);
-    }
-
-    .mini-btn.green {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    .mini-btn.danger {
-      color: #8a3d2c;
-    }
-
-    .donut-wrap {
-      border-radius: 22px;
-      padding: 22px 18px;
+    .bottom-note {
+      margin-top: 18px;
       text-align: center;
-    }
-
-    .donut {
-      width: 190px;
-      height: 190px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background: conic-gradient(var(--green) 0deg, var(--green) 175deg, #e1c890 175deg, #e1c890 307deg, #efe2c8 307deg);
-      display: grid;
-      place-items: center;
-      position: relative;
-    }
-
-    .donut::after {
-      content: "";
-      width: 118px;
-      height: 118px;
-      background: var(--cream-light);
-      border-radius: 50%;
-      position: absolute;
-    }
-
-    .donut-center {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-    }
-
-    .donut-center strong {
-      display: block;
-      font-size: 26px;
-      font-weight: 400;
-      color: var(--green-dark);
-    }
-
-    .donut-center small {
-      display: block;
-      margin-top: 6px;
-      font-family: Arial, sans-serif;
       color: var(--muted);
-      font-size: 12px;
-    }
-
-    .legend {
-      display: grid;
-      gap: 10px;
-      text-align: left;
-      margin-top: 4px;
-    }
-
-    .legend-item {
-      display: grid;
-      grid-template-columns: 18px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    .legend-dot {
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-
-    .legend-dot.gold {
-      background: #e1c890;
-    }
-
-    .legend-dot.light {
-      background: #efe2c8;
-    }
-
-    .main-btn {
-      width: 100%;
-      min-height: 52px;
-      border-radius: 15px;
-      border: 1.5px solid rgba(214, 193, 145, 0.95);
-      background: linear-gradient(135deg, var(--green) 0%, #3c472d 100%);
-      color: white;
-      box-shadow: 0 12px 25px rgba(54, 64, 42, 0.20);
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 16px;
-    }
-
-    .budget-row {
-      display: grid;
-      grid-template-columns: 42px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 13px 0;
-      border-bottom: 1px solid rgba(177, 145, 85, 0.18);
-    }
-
-    .budget-row:last-child {
-      border-bottom: 0;
-    }
-
-    .budget-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 252, 246, 0.90);
-      border: 1px solid rgba(223, 212, 193, 0.85);
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 20px;
-    }
-
-    .budget-row h3 {
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-
-    .budget-row p {
-      font-family: Arial, sans-serif;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .budget-money {
-      text-align: right;
       font-family: Arial, sans-serif;
       font-size: 13px;
-      color: var(--text);
-    }
-
-    .mini-progress {
-      width: 90px;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(177, 145, 85, 0.16);
-      margin-top: 6px;
-      margin-left: auto;
-      overflow: hidden;
-    }
-
-    .mini-progress span {
-      display: block;
-      height: 100%;
-      background: var(--green);
-      border-radius: 999px;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: rgba(255, 252, 246, 0.92);
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 5px;
-      margin-bottom: 16px;
-      box-shadow: var(--soft-shadow);
-    }
-
-    .tab-btn {
-      min-height: 42px;
-      border: 0;
-      border-radius: 13px;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    .tab-btn.active {
-      background: var(--green);
-      color: white;
-    }
-
-    .deadline-group {
-      display: none;
-    }
-
-    .deadline-group.active {
-      display: block;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 540px;
-      height: 76px;
-      background: rgba(255, 252, 246, 0.97);
-      border-top: 1px solid rgba(223, 212, 193, 0.85);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      z-index: 30;
-      backdrop-filter: blur(8px);
-    }
-
-    .nav-btn {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      gap: 5px;
-    }
-
-    .nav-btn span {
-      font-size: 24px;
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1;
-    }
-
-    .nav-btn.active {
-      color: var(--green-dark);
-      font-weight: 600;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(38, 49, 34, 0.45);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-card {
-      width: 100%;
-      max-width: 500px;
-      background: var(--cream-light);
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      max-height: 90vh;
-      overflow: auto;
-    }
-
-    .modal-card h2 {
-      font-size: 26px;
-      font-weight: 400;
-      color: var(--green-dark);
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .form-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--green-dark);
-      margin-bottom: 6px;
-    }
-
-    .field input,
-    .field select {
-      width: 100%;
-      min-height: 46px;
-      border-radius: 13px;
-      border: 1px solid rgba(190, 178, 158, 0.75);
-      background: rgba(255, 252, 246, 0.85);
-      padding: 0 13px;
-      color: var(--text);
-      font-size: 15px;
-      outline: none;
-    }
-
-    .modal-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .modal-btn {
-      min-height: 50px;
-      border-radius: 14px;
-      border: 1px solid var(--gold);
-      background: rgba(255, 252, 246, 0.92);
-      color: var(--text);
-      font-size: 15px;
-    }
-
-    .modal-btn.primary {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
+      line-height: 1.4;
     }
 
     @media (max-width: 390px) {
@@ -742,38 +489,30 @@
         padding-right: 16px;
       }
 
+      .hero h2 {
+        font-size: 30px;
+      }
+
       .summary-grid {
         gap: 8px;
       }
 
       .summary-card strong {
-        font-size: 19px;
+        font-size: 18px;
       }
 
       .summary-card p {
         font-size: 11px;
       }
 
-      .row {
+      .deadline-row,
+      .supplier-row {
         grid-template-columns: 44px 1fr;
       }
 
       .row-right {
         grid-column: 2;
         text-align: left;
-      }
-
-      .budget-row {
-        grid-template-columns: 42px 1fr;
-      }
-
-      .budget-money {
-        grid-column: 2;
-        text-align: left;
-      }
-
-      .mini-progress {
-        margin-left: 0;
       }
     }
   </style>
@@ -784,355 +523,330 @@
   <main class="app">
 
     <header class="topbar">
-      <button class="menu-btn" type="button">☰</button>
+      <a class="circle-btn" href="/" aria-label="Torna alla home">‹</a>
 
       <div class="top-title">
-        <h1>Roberta & Alessandro</h1>
-        <p>Wedding Board</p>
+        <h1 id="projectTitle">Roberta & Alessandro</h1>
+        <p>Area privata sposi</p>
       </div>
 
-      <button class="heart-btn" type="button">♡</button>
+      <button class="circle-btn" type="button">♡</button>
     </header>
 
-    <!-- DASHBOARD -->
-    <section class="page active" id="page-dashboard">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="monogram" id="projectMonogram">R|A</div>
+        <h2>Area privata sposi</h2>
+        <p>
+          Qui potete seguire budget, pagamenti, scadenze, fornitori, agenda e documenti aggiornati dalla wedding planner.
+        </p>
 
-      <div class="home-hero">
-        <div class="home-hero-content">
-          <h2>Benvenuti nella vostra area privata</h2>
-          <p>Qui potete controllare budget, pagamenti, saldi e scadenze del matrimonio.</p>
+        <div class="countdown-card">
+          <div class="countdown-label">Mancano</div>
 
-          <div class="countdown-card">
-            <div class="countdown-label">Mancano</div>
+          <div class="countdown-grid">
+            <div class="count-box">
+              <strong id="days">000</strong>
+              <small>Giorni</small>
+            </div>
 
-            <div class="countdown-grid">
-              <div class="count-box">
-                <strong id="days">000</strong>
-                <small>Giorni</small>
-              </div>
+            <div class="count-box">
+              <strong id="hours">00</strong>
+              <small>Ore</small>
+            </div>
 
-              <div class="count-box">
-                <strong id="hours">00</strong>
-                <small>Ore</small>
-              </div>
+            <div class="count-box">
+              <strong id="minutes">00</strong>
+              <small>Minuti</small>
+            </div>
 
-              <div class="count-box">
-                <strong id="minutes">00</strong>
-                <small>Minuti</small>
-              </div>
-
-              <div class="count-box">
-                <strong id="seconds">00</strong>
-                <small>Secondi</small>
-              </div>
+            <div class="count-box">
+              <strong id="seconds">00</strong>
+              <small>Secondi</small>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="content">
+    <section class="content">
 
-        <div class="section-title">
-          <h2>Panoramica generale</h2>
+      <div class="section-title">
+        <h2>Panoramica</h2>
+        <span>Aggiornata in tempo reale</span>
+      </div>
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <div class="icon">▣</div>
+          <p>Totale</p>
+          <strong id="budgetValue">€ 0</strong>
+          <small>spesa prevista</small>
         </div>
 
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="icon">▣</div>
-            <p>Budget totale</p>
-            <strong id="homeBudgetTotal">€ 0</strong>
-            <small>100%</small>
-          </div>
-
-          <div class="summary-card">
-            <div class="icon">✓</div>
-            <p>Pagato</p>
-            <strong id="homePaid">€ 0</strong>
-            <small id="homePaidPerc">0%</small>
-          </div>
-
-          <div class="summary-card">
-            <div class="icon">€</div>
-            <p>Da saldare</p>
-            <strong id="homeDue">€ 0</strong>
-            <small id="homeDuePerc">0%</small>
-          </div>
+        <div class="summary-card">
+          <div class="icon">€</div>
+          <p>Da saldare</p>
+          <strong id="dueValue">€ 0</strong>
+          <small>saldo residuo</small>
         </div>
 
-        <div class="progress-card">
-          <div class="progress-head">
-            <span>Budget utilizzato</span>
-            <strong id="planningPerc">0%</strong>
-          </div>
-
-          <div class="bar">
-            <div class="bar-fill" id="planningBar"></div>
-          </div>
+        <div class="summary-card">
+          <div class="icon">✓</div>
+          <p>Saldato</p>
+          <strong id="paidValue">€ 0</strong>
+          <small>già pagato</small>
         </div>
+
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-head">
+          <span>Avanzamento pagamenti</span>
+          <strong id="paidPercent">0%</strong>
+        </div>
+
+        <div class="bar">
+          <div class="bar-fill" id="paidBar"></div>
+        </div>
+      </div>
+
+      <button class="main-action" type="button" onclick="toggleDeadlines()">
+        <span>▤</span>
+        <span>Scadenze prossime</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleSuppliers()">
+        <span>☏</span>
+        <span>Fornitori</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleAgenda()">
+        <span>◇</span>
+        <span>Agenda</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleDocuments()">
+        <span>▧</span>
+        <span>Documenti</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleTimeline()">
+        <span>☷</span>
+        <span>Timeline evento</span>
+      </button>
+
+      <button class="secondary-action" type="button" onclick="toggleChecklist()">
+        <span>✓</span>
+        <span>Checklist condivisa</span>
+      </button>
+
+      <div class="deadline-section" id="deadlineSection">
 
         <div class="section-title">
           <h2>Scadenze prossime</h2>
-          <button type="button" onclick="showPage('scadenze')">Vedi tutte →</button>
+          <span>Sola lettura</span>
         </div>
 
-        <div class="list-card" id="homeDeadlines"></div>
-
-        <div class="section-title">
-          <h2>Pagamenti recenti</h2>
-        </div>
-
-        <div class="list-card" id="homeRecentPayments"></div>
+        <div class="list-card" id="deadlineList"></div>
 
       </div>
-    </section>
 
-    <!-- BUDGET -->
-    <section class="page" id="page-budget">
-      <div class="content">
+      <div class="supplier-section" id="supplierSection">
 
         <div class="section-title">
-          <h2>Il nostro budget</h2>
-          <button type="button" onclick="openItemModal()">+ Aggiungi</button>
+          <h2>Fornitori</h2>
+          <span>Contatti utili</span>
         </div>
 
-        <div class="donut-wrap">
-          <div class="donut" id="budgetDonut">
-            <div class="donut-center">
-              <strong id="donutPaid">€ 0</strong>
-              <small>pagati su <span id="donutTotal">€ 0</span></small>
-            </div>
-          </div>
-
-          <div class="legend">
-            <div class="legend-item">
-              <span class="legend-dot"></span>
-              <span>Già pagato</span>
-              <strong id="legendPaid">€ 0</strong>
-            </div>
-
-            <div class="legend-item">
-              <span class="legend-dot gold"></span>
-              <span>Da saldare</span>
-              <strong id="legendDue">€ 0</strong>
-            </div>
-
-            <div class="legend-item">
-              <span class="legend-dot light"></span>
-              <span>Residuo non usato</span>
-              <strong id="legendFree">€ 0</strong>
-            </div>
-          </div>
-
-          <button class="main-btn" type="button" onclick="editBudgetTotal()">
-            Modifica budget totale
-          </button>
-        </div>
-
-        <div class="section-title">
-          <h2>Dettaglio voci di spesa</h2>
-        </div>
-
-        <div class="list-card" id="budgetList"></div>
+        <div class="list-card" id="supplierList"></div>
 
       </div>
-    </section>
 
-    <!-- SCADENZE -->
-    <section class="page" id="page-scadenze">
-      <div class="content">
+      <div class="agenda-section" id="agendaSection">
 
         <div class="section-title">
-          <h2>Scadenze e pagamenti</h2>
+          <h2>Agenda</h2>
+          <span>Sola lettura</span>
         </div>
 
-        <div class="tabs">
-          <button class="tab-btn active" type="button" data-tab="all">Tutte</button>
-          <button class="tab-btn" type="button" data-tab="due">Da saldare</button>
-          <button class="tab-btn" type="button" data-tab="paid">Saldate</button>
-        </div>
-
-        <div class="deadline-group active" id="tab-all">
-          <div class="section-title">
-            <h2>Tutte le voci</h2>
-          </div>
-          <div class="list-card" id="allPayments"></div>
-        </div>
-
-        <div class="deadline-group" id="tab-due">
-          <div class="section-title">
-            <h2>Da saldare</h2>
-          </div>
-          <div class="list-card" id="duePayments"></div>
-        </div>
-
-        <div class="deadline-group" id="tab-paid">
-          <div class="section-title">
-            <h2>Già pagato</h2>
-          </div>
-          <div class="list-card" id="paidPayments"></div>
-        </div>
+        <div class="list-card" id="agendaList"></div>
 
       </div>
+
+      <div class="document-section" id="documentSection">
+
+        <div class="section-title">
+          <h2>Documenti</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="documentList"></div>
+
+      </div>
+
+      <div class="timeline-section" id="timelineSection">
+
+        <div class="section-title">
+          <h2>Timeline evento</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="timelineList"></div>
+
+      </div>
+
+      <div class="checklist-section" id="checklistSection">
+
+        <div class="section-title">
+          <h2>Checklist condivisa</h2>
+          <span>Sola lettura</span>
+        </div>
+
+        <div class="list-card" id="checklistList"></div>
+
+      </div>
+
+      <div class="bottom-note">
+        Questa pagina è in sola lettura. Le modifiche vengono aggiornate dalla wedding planner.
+      </div>
+
     </section>
-
-    <nav class="bottom-nav">
-      <button class="nav-btn active" type="button" data-page="dashboard">
-        <span>⌂</span>
-        Dashboard
-      </button>
-
-      <button class="nav-btn" type="button" data-page="budget">
-        <span>▣</span>
-        Budget
-      </button>
-
-      <button class="nav-btn" type="button" data-page="scadenze">
-        <span>▤</span>
-        Scadenze
-      </button>
-    </nav>
 
   </main>
 
-  <!-- MODAL AGGIUNGI / MODIFICA VOCE -->
-  <div class="modal" id="itemModal">
-    <div class="modal-card">
-      <h2 id="modalTitle">Aggiungi voce</h2>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-      <div class="form-grid">
-        <div class="field">
-          <label>Categoria</label>
-          <input id="itemName" type="text" placeholder="Es. Location" />
-        </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
 
-        <div class="field">
-          <label>Fornitore</label>
-          <input id="itemSupplier" type="text" placeholder="Es. Villa Mattioli" />
-        </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-        <div class="field">
-          <label>Importo totale</label>
-          <input id="itemTotal" type="number" placeholder="Es. 8000" />
-        </div>
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentEventId = urlParams.get("event") || "";
 
-        <div class="field">
-          <label>Già pagato</label>
-          <input id="itemPaid" type="number" placeholder="Es. 2000" />
-        </div>
+    const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
-        <div class="field">
-          <label>Scadenza saldo</label>
-          <input id="itemDate" type="date" />
-        </div>
+    const defaultData = {
+      projectName: "Roberta & Alessandro",
+      weddingDate: "2026-08-27T15:00:00",
+      budget: 0,
+      due: 0,
+      paid: 0,
+      deadlines: [],
+      suppliers: [],
+      agenda: [],
+      documents: [],
+      checklist: [],
+      timeline: []
+    };
 
-        <div class="field">
-          <label>Icona</label>
-          <select id="itemIcon">
-            <option value="⌂">Location</option>
-            <option value="♨">Catering</option>
-            <option value="☷">Foto/Video</option>
-            <option value="❦">Fiori</option>
-            <option value="♫">Musica</option>
-            <option value="♕">Abito</option>
-            <option value="▣">Altro</option>
-          </select>
-        </div>
-      </div>
+    let data = structuredClone(defaultData);
 
-      <div class="modal-actions">
-        <button class="modal-btn" type="button" onclick="closeItemModal()">Annulla</button>
-        <button class="modal-btn primary" type="button" onclick="saveItem()">Salva voce</button>
-      </div>
-    </div>
-  </div>
+    function normalizeData(remoteData) {
+      const merged = {
+        ...defaultData,
+        ...(remoteData || {})
+      };
 
-  <script>
-    const storageKey = "pixelup_wedding_board_demo_v1";
-    const budgetStorageKey = "pixelup_wedding_budget_total_v1";
-
-    let budgetTotal = Number(localStorage.getItem(budgetStorageKey)) || 38000;
-    let editingId = null;
-
-    const defaultItems = [
-      {
-        id: 1,
-        icon: "⌂",
-        name: "Location",
-        supplier: "Villa Mattioli",
-        total: 8000,
-        paid: 2000,
-        dueDate: "2026-06-15"
-      },
-      {
-        id: 2,
-        icon: "♨",
-        name: "Catering",
-        supplier: "Bon Appétit",
-        total: 10000,
-        paid: 2000,
-        dueDate: "2026-07-10"
-      },
-      {
-        id: 3,
-        icon: "☷",
-        name: "Fotografo & Video",
-        supplier: "Luca Bianchi Studio",
-        total: 3500,
-        paid: 1500,
-        dueDate: "2026-06-30"
-      },
-      {
-        id: 4,
-        icon: "♕",
-        name: "Abito sposa",
-        supplier: "Atelier",
-        total: 2500,
-        paid: 2500,
-        dueDate: "2026-04-05"
-      },
-      {
-        id: 5,
-        icon: "♕",
-        name: "Abito sposo",
-        supplier: "Sartoria",
-        total: 1000,
-        paid: 1000,
-        dueDate: "2026-03-28"
-      },
-      {
-        id: 6,
-        icon: "❦",
-        name: "Fiori e allestimenti",
-        supplier: "Floral Design",
-        total: 2000,
-        paid: 800,
-        dueDate: "2026-07-20"
-      },
-      {
-        id: 7,
-        icon: "♫",
-        name: "Musica e intrattenimento",
-        supplier: "DJ Set",
-        total: 1500,
-        paid: 350,
-        dueDate: "2026-07-20"
-      },
-      {
-        id: 8,
-        icon: "▣",
-        name: "Bomboniere",
-        supplier: "Fornitore bomboniere",
-        total: 900,
-        paid: 0,
-        dueDate: "2026-08-01"
+      if (!Array.isArray(merged.deadlines)) {
+        merged.deadlines = [];
       }
-    ];
 
-    let budgetItems = JSON.parse(localStorage.getItem(storageKey)) || defaultItems;
+      if (!Array.isArray(merged.suppliers)) {
+        merged.suppliers = [];
+      }
 
-    function saveData() {
-      localStorage.setItem(storageKey, JSON.stringify(budgetItems));
-      localStorage.setItem(budgetStorageKey, budgetTotal);
+      if (!Array.isArray(merged.agenda)) {
+        merged.agenda = [];
+      }
+
+      if (!Array.isArray(merged.documents)) {
+        merged.documents = [];
+      }
+
+      if (!Array.isArray(merged.checklist)) {
+        merged.checklist = [];
+      }
+
+      if (!Array.isArray(merged.timeline)) {
+        merged.timeline = [];
+      }
+
+      merged.projectName = merged.projectName || "Wedding Board";
+      merged.weddingDate = merged.weddingDate || "2026-08-27T15:00:00";
+      merged.budget = Number(merged.budget) || 0;
+      merged.due = Number(merged.due) || 0;
+      merged.paid = Number(merged.paid) || 0;
+
+      merged.deadlines = merged.deadlines.map((item) => ({
+        name: item.name || "",
+        supplier: item.supplier || "",
+        total: Number(item.total) || 0,
+        paid: Number(item.paid) || 0,
+        date: item.date || "",
+        status: item.status || "Da saldare",
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.suppliers = merged.suppliers.map((item) => ({
+        service: item.service || "",
+        name: item.name || "",
+        phone: item.phone || "",
+        email: item.email || "",
+        notes: item.notes || ""
+      }));
+
+      merged.agenda = merged.agenda.map((item) => ({
+        title: item.title || "",
+        place: item.place || "",
+        date: item.date || "",
+        time: item.time || "",
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.documents = merged.documents.map((item) => ({
+        name: item.name || "",
+        category: item.category || "",
+        url: item.url || "",
+        notes: item.notes || "",
+        type: item.type || "drive",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.checklist = merged.checklist.map((item) => ({
+        title: item.title || "",
+        done: item.done === true,
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      merged.timeline = merged.timeline.map((item) => ({
+        time: item.time || "",
+        title: item.title || "",
+        place: item.place || "",
+        notes: item.notes || "",
+        visibleToSpouses: item.visibleToSpouses === true
+      }));
+
+      return merged;
     }
 
     function euro(value) {
@@ -1142,30 +856,28 @@
       });
     }
 
-    function totalSpent() {
-      return budgetItems.reduce((sum, item) => sum + Number(item.total), 0);
+    function dateToISO(dateString) {
+      if (!dateString) return "";
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return dateString;
+      }
+
+      if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+        const parts = dateString.split("-");
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+
+      return dateString;
     }
 
-    function totalPaid() {
-      return budgetItems.reduce((sum, item) => sum + Number(item.paid), 0);
-    }
+    function formatDate(dateString) {
+      const isoDate = dateToISO(dateString);
+      const date = new Date(isoDate + "T00:00:00");
 
-    function totalDue() {
-      return budgetItems.reduce((sum, item) => sum + Math.max(Number(item.total) - Number(item.paid), 0), 0);
-    }
-
-    function freeBudget() {
-      return Math.max(budgetTotal - totalSpent(), 0);
-    }
-
-    function percent(part, total) {
-      if (!total) return 0;
-      return Math.round((part / total) * 100);
-    }
-
-    function formatDateBox(dateString) {
-      const date = new Date(dateString);
-      if (isNaN(date)) return { day: "--", month: "---" };
+      if (isNaN(date)) {
+        return { day: "--", month: "---" };
+      }
 
       const months = ["GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"];
 
@@ -1175,17 +887,507 @@
       };
     }
 
-    function sortByDate(items) {
-      return [...items].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    function makeMonogram(projectName) {
+      if (!projectName) return "♡";
+
+      const clean = projectName
+        .replaceAll("&", " ")
+        .replaceAll("|", " ")
+        .split(" ")
+        .filter(Boolean);
+
+      if (clean.length >= 2) {
+        return clean[0][0].toUpperCase() + "|" + clean[1][0].toUpperCase();
+      }
+
+      return projectName.substring(0, 2).toUpperCase();
     }
 
-    function renderDashboard() {
-      const paid = totalPaid();
-      const due = totalDue();
-      const spent = totalSpent();
+    function renderSummary() {
+      const projectTitle = document.getElementById("projectTitle");
+      const projectMonogram = document.getElementById("projectMonogram");
 
-      document.getElementById("homeBudgetTotal").textContent = euro(budgetTotal);
-      document.getElementById("homePaid").textContent = euro(paid);
-      document.getElementById("homeDue").textContent = euro(due);
+      if (projectTitle) {
+        projectTitle.textContent = data.projectName || "Wedding Board";
+      }
 
-      document.getElementById("home
+      if (projectMonogram) {
+        projectMonogram.textContent = makeMonogram(data.projectName || "Wedding");
+      }
+
+      const totalReal = Number(data.paid) + Number(data.due);
+
+      document.getElementById("budgetValue").textContent = euro(totalReal);
+      document.getElementById("dueValue").textContent = euro(data.due);
+      document.getElementById("paidValue").textContent = euro(data.paid);
+
+      const percent = totalReal > 0 ? Math.round((data.paid / totalReal) * 100) : 0;
+
+      document.getElementById("paidPercent").textContent = percent + "%";
+      document.getElementById("paidBar").style.width = Math.min(percent, 100) + "%";
+    }
+
+    function closeOtherSections(activeSectionId) {
+      const sectionIds = [
+        "deadlineSection",
+        "supplierSection",
+        "agendaSection",
+        "documentSection",
+        "timelineSection",
+        "checklistSection"
+      ];
+
+      sectionIds.forEach((sectionId) => {
+        if (sectionId !== activeSectionId) {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.classList.remove("show");
+          }
+        }
+      });
+    }
+
+    function openSingleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
+      const wasOpen = section.classList.contains("show");
+
+      closeOtherSections(sectionId);
+
+      if (wasOpen) {
+        section.classList.remove("show");
+        return;
+      }
+
+      section.classList.add("show");
+
+      setTimeout(() => {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 120);
+    }
+
+    function toggleDeadlines() {
+      openSingleSection("deadlineSection");
+    }
+
+    function toggleSuppliers() {
+      openSingleSection("supplierSection");
+    }
+
+    function toggleAgenda() {
+      openSingleSection("agendaSection");
+    }
+
+    function toggleDocuments() {
+      openSingleSection("documentSection");
+    }
+
+    function toggleTimeline() {
+      openSingleSection("timelineSection");
+    }
+
+    function toggleChecklist() {
+      openSingleSection("checklistSection");
+    }
+
+    function renderDeadlines() {
+      const list = document.getElementById("deadlineList");
+
+      const visibleDeadlines = data.deadlines.filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleDeadlines.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>---</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna scadenza inserita</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>€ 0</strong>
+              <small>da saldare</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleDeadlines.map((item) => {
+        const date = formatDate(item.date);
+        const missing = Math.max(Number(item.total) - Number(item.paid), 0);
+        const isPaid = missing <= 0;
+
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${date.day}</strong>
+              <small>${date.month}</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.name}</h3>
+              <p>${item.supplier}</p>
+              <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)} · Manca: ${euro(missing)}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+              <span class="status ${isPaid ? "paid" : ""}">
+                ${isPaid ? "Saldato" : item.status}
+              </span>
+            </div>
+
+            <div class="row-right">
+              <strong>${euro(missing)}</strong>
+              <small>${isPaid ? "saldato" : "da saldare"}</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderSuppliers() {
+      const list = document.getElementById("supplierList");
+
+      if (!data.suppliers.length) {
+        list.innerHTML = `
+          <div class="supplier-row">
+            <div class="supplier-icon">☏</div>
+            <div class="row-info">
+              <h3>Nessun fornitore inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>Contatti</strong>
+              <small>in arrivo</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = data.suppliers.map((item) => {
+        return `
+          <div class="supplier-row">
+            <div class="supplier-icon">☏</div>
+
+            <div class="row-info">
+              <h3>${item.service}</h3>
+              <p><strong>${item.name}</strong></p>
+              <p>Tel: ${item.phone}</p>
+              <p>Email: ${item.email}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>Contatto</strong>
+              <small>fornitore</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderAgenda() {
+      const list = document.getElementById("agendaList");
+
+      const visibleAgenda = data.agenda.filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleAgenda.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>---</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessun appuntamento inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--:--</strong>
+              <small>agenda</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const sortedAgenda = [...visibleAgenda].sort((a, b) => {
+        const dateA = new Date(dateToISO(a.date || "") + "T" + (a.time || "00:00"));
+        const dateB = new Date(dateToISO(b.date || "") + "T" + (b.time || "00:00"));
+        return dateA - dateB;
+      });
+
+      list.innerHTML = sortedAgenda.map((item) => {
+        const date = formatDate(item.date);
+
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${date.day}</strong>
+              <small>${date.month}</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.title}</h3>
+              <p>${item.place}</p>
+              <p>Ore: ${item.time || "--:--"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.time || "--:--"}</strong>
+              <small>appuntamento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderDocuments() {
+      const list = document.getElementById("documentList");
+
+      const visibleDocuments = (data.documents || []).filter((item) => item.visibleToSpouses === true);
+
+      if (!visibleDocuments.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>DOC</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessun documento inserito</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>File</strong>
+              <small>in arrivo</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleDocuments.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>DRIVE</strong>
+              <small>LINK</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.name}</h3>
+              <p>Categoria: ${item.category || "Non indicata"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+
+              <p style="margin-top:7px;">
+                <a 
+                  href="${item.url}" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style="color:#4d5a3a; font-weight:bold;"
+                >
+                  Apri Google Drive
+                </a>
+              </p>
+            </div>
+
+            <div class="row-right">
+              <strong>File</strong>
+              <small>documento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+
+    function renderTimeline() {
+      const list = document.getElementById("timelineList");
+      const visibleTimeline = (data.timeline || [])
+        .filter((item) => item.visibleToSpouses === true)
+        .sort((a, b) => String(a.time || "99:99").localeCompare(String(b.time || "99:99")));
+
+      if (!list) return;
+
+      if (!visibleTimeline.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>ORA</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna timeline condivisa</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--:--</strong>
+              <small>timeline</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleTimeline.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong style="font-size:13px;">${item.time || "--:--"}</strong>
+              <small>ORA</small>
+            </div>
+
+            <div class="row-info">
+              <h3>${item.title}</h3>
+              <p>${item.place || "Luogo non indicato"}</p>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.time || "--:--"}</strong>
+              <small>momento</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderChecklist() {
+      const list = document.getElementById("checklistList");
+      const visibleChecklist = (data.checklist || []).filter((item) => item.visibleToSpouses === true);
+
+      if (!list) return;
+
+      if (!visibleChecklist.length) {
+        list.innerHTML = `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>--</strong>
+              <small>✓</small>
+            </div>
+            <div class="row-info">
+              <h3>Nessuna checklist condivisa</h3>
+              <p>La wedding planner aggiornerà questa sezione.</p>
+            </div>
+            <div class="row-right">
+              <strong>--</strong>
+              <small>checklist</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = visibleChecklist.map((item) => {
+        return `
+          <div class="deadline-row">
+            <div class="date-box">
+              <strong>${item.done ? "✓" : "○"}</strong>
+              <small>CHECK</small>
+            </div>
+
+            <div class="row-info">
+              <h3 style="${item.done ? "text-decoration:line-through; opacity:0.72;" : ""}">${item.title}</h3>
+              ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
+            </div>
+
+            <div class="row-right">
+              <strong>${item.done ? "Fatto" : "Da fare"}</strong>
+              <small>stato</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function updateCountdown() {
+      const weddingDateString = data.weddingDate || "2026-08-27T15:00:00";
+      const weddingDate = new Date(weddingDateString).getTime();
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+      if (isNaN(weddingDate) || distance <= 0) {
+        daysEl.textContent = "000";
+        hoursEl.textContent = "00";
+        minutesEl.textContent = "00";
+        secondsEl.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      daysEl.textContent = String(days).padStart(3, "0");
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+    }
+
+    if (!eventRef) {
+      renderSummary();
+      renderDeadlines();
+      renderSuppliers();
+      renderAgenda();
+      renderDocuments();
+      renderTimeline();
+      renderChecklist();
+      updateCountdown();
+
+      alert("Link sposi non valido. Apri il link ricevuto dalla wedding planner.");
+    } else {
+      onSnapshot(eventRef, (snapshot) => {
+      if (!snapshot.exists()) {
+        renderSummary();
+        renderDeadlines();
+        renderSuppliers();
+        renderAgenda();
+        renderDocuments();
+        renderTimeline();
+        renderChecklist();
+        updateCountdown();
+        return;
+      }
+
+      data = normalizeData(snapshot.data());
+
+      renderSummary();
+      renderDeadlines();
+      renderSuppliers();
+      renderAgenda();
+      renderDocuments();
+      renderTimeline();
+      renderChecklist();
+      updateCountdown();
+    });
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    window.toggleDeadlines = toggleDeadlines;
+    window.toggleSuppliers = toggleSuppliers;
+    window.toggleAgenda = toggleAgenda;
+    window.toggleDocuments = toggleDocuments;
+    window.toggleTimeline = toggleTimeline;
+    window.toggleChecklist = toggleChecklist;
+  </script>
+
+</body>
+</html>
