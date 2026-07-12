@@ -1108,7 +1108,7 @@
         <li>Clicca “Nuovo progetto” per creare una dashboard.</li>
         <li>Inserisci nome evento e data.</li>
         <li>Compila budget, scadenze, rubrica evento, agenda e documenti.</li>
-        <li>Da “I miei progetti” copia il link sposi/cliente.</li>
+        <li>Da “I miei progetti” copia il link sposi/cliente o collega la pagina evento.</li>
       </ol>
     </div>
 
@@ -1608,6 +1608,7 @@
     onSnapshot,
     collection,
     getDocs,
+    getDoc,
     deleteDoc,
     query,
     where,
@@ -1674,6 +1675,7 @@
     projectStatus: "In lavorazione",
     archived: false,
     projectNotes: "",
+    eventPageUrl: "",
     visibility: {
       overview: true,
       budget: false,
@@ -1753,6 +1755,7 @@
     merged.projectStatus = merged.projectStatus || "In lavorazione";
     merged.archived = merged.archived === true;
     merged.projectNotes = String(merged.projectNotes || "");
+    merged.eventPageUrl = String(merged.eventPageUrl || "").trim();
     merged.visibility = {
       ...defaultData.visibility,
       ...(safeRemoteData.visibility || {})
@@ -1850,6 +1853,22 @@
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
+  }
+
+  function normalizeEventPageUrl(value) {
+    const cleanValue = String(value || "").trim();
+
+    if (!cleanValue) return "";
+
+    if (
+      cleanValue.startsWith("http://") ||
+      cleanValue.startsWith("https://") ||
+      cleanValue.startsWith("/")
+    ) {
+      return cleanValue;
+    }
+
+    return "https://" + cleanValue;
   }
 
   function formatDate(dateString) {
@@ -2804,6 +2823,15 @@
     data.projectName = cleanProjectName;
     data.weddingDate = cleanWeddingDate;
 
+    const eventPageUrl = prompt(
+      "Link pagina evento pubblica (opzionale):\n\nEsempio: /events/federica-daniele/index.html oppure https://pixelup.it/events/federica-daniele/",
+      data.eventPageUrl || ""
+    );
+
+    if (eventPageUrl !== null) {
+      data.eventPageUrl = normalizeEventPageUrl(eventPageUrl);
+    }
+
     const editContacts = confirm("Vuoi aggiornare anche i recapiti sposi?");
     if (editContacts) {
       const existingBride = (data.spouseContacts || [])[0] || {};
@@ -3426,6 +3454,13 @@
     const groomEmail = prompt("Email sposo / secondo contatto:", "");
     if (groomEmail === null) return;
 
+    const eventPageUrl = prompt(
+      "Link pagina evento pubblica (opzionale):\n\nPuoi lasciarlo vuoto e collegarlo dopo da I miei progetti.",
+      ""
+    );
+
+    if (eventPageUrl === null) return;
+
     const spouseContacts = [];
 
     if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
@@ -3462,6 +3497,7 @@
       projectStatus: "In lavorazione",
       archived: false,
       projectNotes: "",
+      eventPageUrl: normalizeEventPageUrl(eventPageUrl),
       visibility: structuredClone(defaultData.visibility),
       checklist: [],
       timeline: [],
@@ -3544,6 +3580,7 @@
         const checklistCount = Array.isArray(project.checklist) ? project.checklist.length : 0;
         const timelineCount = Array.isArray(project.timeline) ? project.timeline.length : 0;
         const dateText = project.weddingDate ? new Date(project.weddingDate).toLocaleDateString("it-IT") : "Data non indicata";
+        const eventPageUrl = String(project.eventPageUrl || "").trim();
         const percent = total > 0 ? Math.round((paid / total) * 100) : 0;
 
         list.innerHTML += `
@@ -3561,6 +3598,7 @@
                   <span class="project-badge">${documentsCount} documenti</span>
                   <span class="project-badge">${checklistCount} checklist</span>
                   <span class="project-badge">${timelineCount} timeline</span>
+                  <span class="project-badge">${eventPageUrl ? "pagina evento collegata" : "pagina evento non collegata"}</span>
                 </div>
               </div>
 
@@ -3571,6 +3609,10 @@
 
                 <button class="project-pill-btn" type="button" onclick="copySpousesLink('${id}')">
                   Link sposi
+                </button>
+
+                <button class="project-pill-btn" type="button" onclick="openEventPage('${id}', '${name.replaceAll("'", "\\'")}')">
+                  Apri pagina evento
                 </button>
 
                 <button class="project-pill-btn danger" type="button" onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')">
@@ -3612,6 +3654,156 @@
         </div>
       `;
     }
+  }
+
+  async function openEventPage(projectId, projectName) {
+    if (!projectId) {
+      alert("Progetto non valido.");
+      return;
+    }
+
+    try {
+      const projectRef = doc(db, "weddingEvents", projectId);
+      const projectSnap = await getDoc(projectRef);
+
+      if (!projectSnap.exists()) {
+        alert("Progetto non trovato.");
+        return;
+      }
+
+      const projectData = projectSnap.data();
+      const currentLink = String(projectData.eventPageUrl || "").trim();
+
+      if (currentLink) {
+        window.open(currentLink, "_blank");
+        return;
+      }
+
+      const newLink = prompt(
+        "A questo progetto non è ancora collegata una pagina evento.\n\nIncolla qui il link della pagina evento pubblica:",
+        ""
+      );
+
+      if (newLink === null) return;
+
+      const cleanLink = normalizeEventPageUrl(newLink);
+
+      if (!cleanLink) {
+        alert("Nessun link inserito.");
+        return;
+      }
+
+      await setDoc(projectRef, {
+        eventPageUrl: cleanLink,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      if (projectId === currentEventId) {
+        data.eventPageUrl = cleanLink;
+      }
+
+      alert("Pagina evento collegata correttamente.");
+      window.open(cleanLink, "_blank");
+      await showProjectsList();
+
+    } catch (error) {
+      console.error("Errore apertura pagina evento:", error);
+      alert("Errore durante l'apertura della pagina evento.");
+    }
+  }
+
+  async function manageEventPageLink(projectId, projectName) {
+    if (!projectId) {
+      alert("Progetto non valido.");
+      return;
+    }
+
+    try {
+      const projectRef = doc(db, "weddingEvents", projectId);
+      const projectSnap = await getDoc(projectRef);
+
+      if (!projectSnap.exists()) {
+        alert("Progetto non trovato.");
+        return;
+      }
+
+      const projectData = projectSnap.data();
+      const currentLink = String(projectData.eventPageUrl || "").trim();
+
+      if (currentLink) {
+        const openNow = confirm(
+          "Link evento già collegato per:\n" +
+          (projectName || projectId) +
+          "\n\n" +
+          currentLink +
+          "\n\nPremi OK per aprirlo.\nPremi Annulla per modificarlo."
+        );
+
+        if (openNow) {
+          window.open(currentLink, "_blank");
+          return;
+        }
+      }
+
+      const newLink = prompt(
+        "Incolla qui il link della pagina evento pubblica:\n\n" +
+        "Esempio: /events/federica-daniele/index.html\n" +
+        "oppure: https://pixelup.it/events/federica-daniele/",
+        currentLink
+      );
+
+      if (newLink === null) return;
+
+      const cleanLink = normalizeEventPageUrl(newLink);
+
+      if (!cleanLink) {
+        if (currentLink) {
+          const removeLink = confirm("Hai lasciato il campo vuoto. Vuoi rimuovere il link evento da questo progetto?");
+          if (!removeLink) return;
+
+          await setDoc(projectRef, {
+            eventPageUrl: "",
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+
+          if (projectId === currentEventId) {
+            data.eventPageUrl = "";
+          }
+
+          alert("Link evento rimosso.");
+          await showProjectsList();
+        } else {
+          alert("Nessun link inserito.");
+        }
+
+        return;
+      }
+
+      await setDoc(projectRef, {
+        eventPageUrl: cleanLink,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      if (projectId === currentEventId) {
+        data.eventPageUrl = cleanLink;
+      }
+
+      alert("Link evento salvato:\n\n" + cleanLink);
+      await showProjectsList();
+
+    } catch (error) {
+      console.error("Errore gestione link evento:", error);
+      alert("Errore durante il salvataggio del link evento.");
+    }
+  }
+
+  function manageCurrentEventPageLink() {
+    if (!currentEventId) {
+      alert("Apri o crea un progetto prima di collegare il link evento.");
+      return;
+    }
+
+    manageEventPageLink(currentEventId, data.projectName || currentEventId);
   }
 
   function copySpousesLink(projectId) {
@@ -5141,6 +5333,9 @@
   window.editDocument = editDocument;
   window.deleteDocument = deleteDocument;
   window.copySpousesLink = copySpousesLink;
+  window.openEventPage = openEventPage;
+  window.manageEventPageLink = manageEventPageLink;
+  window.manageCurrentEventPageLink = manageCurrentEventPageLink;
   window.editEventInfo = editEventInfo;
   window.useSavedSupplier = useSavedSupplier;
   window.toggleChecklist = toggleChecklist;
