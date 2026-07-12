@@ -533,7 +533,7 @@
       <button class="circle-btn" type="button">♡</button>
     </header>
 
-    <section class="hero">
+    <section class="hero" id="publicOverviewSection">
       <div class="hero-content">
         <div class="monogram" id="projectMonogram">R|A</div>
         <h2>Area privata sposi</h2>
@@ -571,12 +571,12 @@
 
     <section class="content">
 
-      <div class="section-title">
+      <div class="section-title" id="budgetSectionTitle">
         <h2>Panoramica</h2>
         <span>Aggiornata in tempo reale</span>
       </div>
 
-      <div class="summary-grid">
+      <div class="summary-grid" id="budgetSummaryGrid">
 
         <div class="summary-card">
           <div class="icon">▣</div>
@@ -601,7 +601,7 @@
 
       </div>
 
-      <div class="progress-card">
+      <div class="progress-card" id="budgetProgressCard">
         <div class="progress-head">
           <span>Avanzamento pagamenti</span>
           <strong id="paidPercent">0%</strong>
@@ -612,32 +612,32 @@
         </div>
       </div>
 
-      <button class="main-action" type="button" onclick="toggleDeadlines()">
+      <button class="main-action" id="deadlineButton" type="button" onclick="toggleDeadlines()">
         <span>▤</span>
         <span>Scadenze prossime</span>
       </button>
 
-      <button class="secondary-action" type="button" onclick="toggleSuppliers()">
+      <button class="secondary-action" id="supplierButton" type="button" onclick="toggleSuppliers()">
         <span>☏</span>
         <span>Fornitori</span>
       </button>
 
-      <button class="secondary-action" type="button" onclick="toggleAgenda()">
+      <button class="secondary-action" id="agendaButton" type="button" onclick="toggleAgenda()">
         <span>◇</span>
         <span>Agenda</span>
       </button>
 
-      <button class="secondary-action" type="button" onclick="toggleDocuments()">
+      <button class="secondary-action" id="documentButton" type="button" onclick="toggleDocuments()">
         <span>▧</span>
         <span>Documenti</span>
       </button>
 
-      <button class="secondary-action" type="button" onclick="toggleTimeline()">
+      <button class="secondary-action" id="timelineButton" type="button" onclick="toggleTimeline()">
         <span>☷</span>
         <span>Timeline evento</span>
       </button>
 
-      <button class="secondary-action" type="button" onclick="toggleChecklist()">
+      <button class="secondary-action" id="checklistButton" type="button" onclick="toggleChecklist()">
         <span>✓</span>
         <span>Checklist condivisa</span>
       </button>
@@ -748,6 +748,19 @@
       budget: 0,
       due: 0,
       paid: 0,
+      visibility: {
+        overview: true,
+        budget: false,
+        deadlines: true,
+        suppliers: true,
+        agenda: true,
+        documents: true,
+        checklist: false,
+        timeline: true,
+        contacts: true,
+        report: false,
+        notes: false
+      },
       deadlines: [],
       suppliers: [],
       agenda: [],
@@ -793,6 +806,10 @@
       merged.budget = Number(merged.budget) || 0;
       merged.due = Number(merged.due) || 0;
       merged.paid = Number(merged.paid) || 0;
+      merged.visibility = {
+        ...defaultData.visibility,
+        ...((remoteData && remoteData.visibility) || {})
+      };
 
       merged.deadlines = merged.deadlines.map((item) => ({
         name: item.name || "",
@@ -901,6 +918,49 @@
       }
 
       return projectName.substring(0, 2).toUpperCase();
+    }
+
+    function setPublicElementVisible(elementId, visible) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+
+      element.style.display = visible ? "" : "none";
+
+      if (!visible) {
+        element.classList.remove("show");
+      }
+    }
+
+    function applyPublicVisibility() {
+      const visibility = {
+        ...defaultData.visibility,
+        ...(data.visibility || {})
+      };
+
+      setPublicElementVisible("publicOverviewSection", visibility.overview !== false);
+
+      const showBudget = visibility.budget !== false;
+      setPublicElementVisible("budgetSectionTitle", showBudget);
+      setPublicElementVisible("budgetSummaryGrid", showBudget);
+      setPublicElementVisible("budgetProgressCard", showBudget);
+
+      setPublicElementVisible("deadlineButton", visibility.deadlines !== false);
+      setPublicElementVisible("deadlineSection", visibility.deadlines !== false);
+
+      setPublicElementVisible("supplierButton", visibility.suppliers !== false);
+      setPublicElementVisible("supplierSection", visibility.suppliers !== false);
+
+      setPublicElementVisible("agendaButton", visibility.agenda !== false);
+      setPublicElementVisible("agendaSection", visibility.agenda !== false);
+
+      setPublicElementVisible("documentButton", visibility.documents !== false);
+      setPublicElementVisible("documentSection", visibility.documents !== false);
+
+      setPublicElementVisible("timelineButton", visibility.timeline !== false);
+      setPublicElementVisible("timelineSection", visibility.timeline !== false);
+
+      setPublicElementVisible("checklistButton", visibility.checklist !== false);
+      setPublicElementVisible("checklistSection", visibility.checklist !== false);
     }
 
     function renderSummary() {
@@ -1361,6 +1421,7 @@
         renderDocuments();
         renderTimeline();
         renderChecklist();
+        applyPublicVisibility();
         updateCountdown();
         return;
       }
@@ -1374,10 +1435,12 @@
       renderDocuments();
       renderTimeline();
       renderChecklist();
+      applyPublicVisibility();
       updateCountdown();
     });
     }
 
+    applyPublicVisibility();
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
