@@ -571,7 +571,28 @@
       border-color: rgba(77, 90, 58, 0.28);
     }
 
-    .edit-btn {
+    .section-delete-btn {
+  border: 1px solid rgba(138,61,44,0.38);
+  background: rgba(138,61,44,0.08);
+  color: #8a3d2c;
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.edit-btn {
       margin-top: 8px;
       border: 1px solid rgba(177, 145, 85, 0.35);
       background: rgba(255, 252, 246, 0.85);
@@ -1612,6 +1633,10 @@
   >
     Rubrica
   </button>
+
+  <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('deadlines')">
+    Elimina voce
+  </button>
 </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -1657,6 +1682,10 @@
   >
     Rubrica generale
   </button>
+
+  <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('suppliers')">
+    Elimina voce
+  </button>
 </div>
         <div class="list-card" id="supplierList"></div>
 
@@ -1682,6 +1711,9 @@
       "
     >
       + Aggiungi
+    </button>
+    <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('agenda')">
+      Elimina voce
     </button>
   </div>
 
@@ -1728,6 +1760,10 @@
     >
       Carica PDF
     </button>
+
+    <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('documents')">
+      Elimina voce
+    </button>
   </div>
 
   <input
@@ -1762,6 +1798,9 @@
     >
       + Aggiungi
     </button>
+    <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('checklist')">
+      Elimina voce
+    </button>
   </div>
 
   <div class="list-card" id="checklistList"></div>
@@ -1789,6 +1828,9 @@
     >
       + Aggiungi
     </button>
+    <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('timeline')">
+      Elimina voce
+    </button>
   </div>
 
   <div class="list-card" id="timelineList"></div>
@@ -1815,6 +1857,9 @@
       "
     >
       Salva
+    </button>
+    <button class="section-delete-btn" type="button" onclick="clearProjectNotes()">
+      Svuota note
     </button>
   </div>
 
@@ -1848,6 +1893,9 @@
       "
     >
       + Aggiungi
+    </button>
+    <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('spouseContacts')">
+      Elimina voce
     </button>
   </div>
 
@@ -2526,10 +2574,139 @@
             <strong>${euro(missing)}</strong>
             <small>${isPaid ? "saldato" : "da saldare"}</small>
             <button class="edit-btn" type="button" onclick="editDeadline(${realIndex})">Modifica</button>
+
+            <button
+              class="edit-btn"
+              type="button"
+              onclick="deleteDeadline(${realIndex})"
+              style="color:#8a3d2c;border-color:rgba(138,61,44,0.35);margin-left:4px;"
+            >
+              Elimina
+            </button>
           </div>
         </div>
       `;
     }).join("");
+  }
+
+
+  function deleteDeadline(index) {
+    const item = data.deadlines[index];
+    if (!item) return;
+
+    const confirmed = confirm(
+      "Vuoi eliminare questa scadenza?\n\n" +
+      (item.name || item.supplier || "Scadenza")
+    );
+
+    if (!confirmed) return;
+
+    data.deadlines.splice(index, 1);
+    updateTotalsFromDeadlines();
+    renderAll();
+    saveData();
+  }
+
+  function getSectionDeleteConfig(sectionName) {
+    const config = {
+      deadlines: {
+        label: "scadenza",
+        items: data.deadlines,
+        describe: (item) => `${item.name || item.supplier || "Scadenza"} — ${euro(item.total || 0)}`,
+        remove: (index) => {
+          data.deadlines.splice(index, 1);
+          updateTotalsFromDeadlines();
+        }
+      },
+      suppliers: {
+        label: "fornitore",
+        items: data.suppliers,
+        describe: (item) => `${item.service || "Fornitore"} — ${item.name || "Nome non indicato"}`,
+        remove: (index) => data.suppliers.splice(index, 1)
+      },
+      agenda: {
+        label: "appuntamento",
+        items: data.agenda,
+        describe: (item) => `${item.title || "Appuntamento"} — ${item.date || "data non indicata"}`,
+        remove: (index) => data.agenda.splice(index, 1)
+      },
+      documents: {
+        label: "documento",
+        items: data.documents,
+        describe: (item) => item.name || "Documento",
+        remove: (index) => data.documents.splice(index, 1)
+      },
+      checklist: {
+        label: "voce checklist",
+        items: data.checklist,
+        describe: (item) => item.title || "Attività",
+        remove: (index) => data.checklist.splice(index, 1)
+      },
+      timeline: {
+        label: "momento timeline",
+        items: data.timeline,
+        describe: (item) => `${item.time || "--:--"} — ${item.title || "Momento"}`,
+        remove: (index) => data.timeline.splice(index, 1)
+      },
+      spouseContacts: {
+        label: "contatto sposi",
+        items: data.spouseContacts,
+        describe: (item) => `${item.role || "Contatto"} — ${item.name || item.phone || "Nome non indicato"}`,
+        remove: (index) => data.spouseContacts.splice(index, 1)
+      }
+    };
+
+    return config[sectionName] || null;
+  }
+
+  function deleteItemFromSection(sectionName) {
+    const config = getSectionDeleteConfig(sectionName);
+    if (!config) return;
+
+    const items = Array.isArray(config.items) ? config.items : [];
+
+    if (items.length === 0) {
+      alert(`Non ci sono elementi da eliminare in questa sezione.`);
+      return;
+    }
+
+    const options = items
+      .map((item, index) => `${index + 1}. ${config.describe(item)}`)
+      .join("\n");
+
+    const selected = prompt(
+      `Quale ${config.label} vuoi eliminare?\n\n${options}\n\nInserisci il numero:`
+    );
+
+    if (selected === null) return;
+
+    const index = Number.parseInt(selected, 10) - 1;
+
+    if (!Number.isInteger(index) || index < 0 || index >= items.length) {
+      alert("Numero non valido.");
+      return;
+    }
+
+    const description = config.describe(items[index]);
+
+    if (!confirm(`Confermi l'eliminazione?\n\n${description}`)) return;
+
+    config.remove(index);
+    renderAll();
+    saveData();
+  }
+
+  function clearProjectNotes() {
+    if (!String(data.projectNotes || "").trim()) {
+      alert("Le note sono già vuote.");
+      return;
+    }
+
+    if (!confirm("Vuoi cancellare tutte le note interne del progetto?")) return;
+
+    data.projectNotes = "";
+    renderProjectNotes();
+    saveData();
   }
 
   function editDeadline(index) {
@@ -5832,61 +6009,91 @@
   }
 
   function parseAIDeadlineAmounts(text) {
-    const total =
-      findAIAmountFlexible(text, [
-        "totale", "importo totale", "costo totale", "costo", "importo",
-        "da pagare in totale", "preventivo"
-      ]);
+    const source = normalizeAIText(String(text || "").replace(/\u00A0/g, " "));
 
-    const paid =
-      findAIAmountFlexible(text, [
-        "già pagato", "gia pagato", "pagato", "saldato", "acconto",
-        "versato", "già versato", "gia versato"
-      ]);
-
-    const due =
-      findAIAmountFlexible(text, [
-        "da saldare", "da pagare", "residuo", "restano", "rimangono",
-        "manca da pagare", "saldo residuo"
-      ]);
-
-    const numbers = extractAIMoneyNumbers(text);
-    let finalTotal = total;
-    let finalPaid = paid;
-    let finalDue = due;
-
-    // Fallback per comandi naturali senza etichette:
-    // "location Villa Gatti 9000, pagato 0" oppure "fioraio 9000 da saldare".
-    if (finalTotal === null) {
-      if (finalDue !== null && finalPaid !== null) {
-        finalTotal = finalDue + finalPaid;
-      } else if (numbers.length) {
-        const excluded = new Set(
-          [finalPaid, finalDue].filter((value) => value !== null).map(Number)
+    function amountAfter(labels) {
+      for (const label of labels) {
+        const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(
+          `(?:^|[\\s,;])${escaped}\\s*(?:di|pari a|:|=)?\\s*(?:euro|€)?\\s*([0-9][0-9.,]*)`,
+          "i"
         );
-        finalTotal = numbers.find((value) => !excluded.has(Number(value))) ?? numbers[0];
+        const match = source.match(regex);
+
+        if (match) {
+          const value = parseAIAmount(match[1]);
+          if (value !== null) return value;
+        }
+      }
+
+      return null;
+    }
+
+    let total = amountAfter([
+      "totale", "importo totale", "costo totale", "preventivo", "importo", "costo"
+    ]);
+
+    let paid = amountAfter([
+      "gia pagato", "pagato", "saldato", "acconto", "gia versato", "versato"
+    ]);
+
+    let due = amountAfter([
+      "da saldare", "da pagare", "saldo residuo", "residuo", "restano", "rimangono"
+    ]);
+
+    // Caso: "1400 saldato" oppure "3000 da saldare".
+    if (paid === null) {
+      const reversePaid = source.match(
+        /(?:^|[\s,;])(?:euro|€)?\s*([0-9][0-9.,]*)\s*(?:euro|€)?\s*(?:saldato|pagato|versato|di acconto)\b/i
+      );
+      if (reversePaid) paid = parseAIAmount(reversePaid[1]);
+    }
+
+    if (due === null) {
+      const reverseDue = source.match(
+        /(?:^|[\s,;])(?:euro|€)?\s*([0-9][0-9.,]*)\s*(?:euro|€)?\s*(?:da saldare|da pagare|residui?)\b/i
+      );
+      if (reverseDue) due = parseAIAmount(reverseDue[1]);
+    }
+
+    // Se l'utente indica saldato + da saldare, il totale è la loro somma.
+    if (total === null && paid !== null && due !== null) {
+      total = Number(paid) + Number(due);
+    }
+
+    // Se indica totale + da saldare, ricava il saldato.
+    if (paid === null && total !== null && due !== null) {
+      paid = Math.max(Number(total) - Number(due), 0);
+    }
+
+    // Se indica totale + saldato, il residuo verrà calcolato dopo.
+    if (paid === null) paid = 0;
+
+    // Ultimo fallback: cerca importi isolati, escludendo data e telefono.
+    if (total === null) {
+      const numbers = extractAIMoneyNumbers(source);
+      const known = [paid, due]
+        .filter((value) => value !== null)
+        .map((value) => Number(value));
+
+      const other = numbers.find((value) => !known.includes(Number(value)));
+
+      if (other !== undefined) {
+        total = other;
+      } else if (due !== null) {
+        total = Number(due) + Number(paid);
       }
     }
 
-    if (finalPaid === null) {
-      if (finalTotal !== null && finalDue !== null) {
-        finalPaid = Math.max(finalTotal - finalDue, 0);
-      } else {
-        finalPaid = 0;
-      }
-    }
+    total = Math.max(Number(total) || 0, 0);
+    paid = Math.max(Number(paid) || 0, 0);
 
-    if (finalTotal === null && finalDue !== null) {
-      finalTotal = finalDue + finalPaid;
-    }
-
-    finalTotal = Number(finalTotal) || 0;
-    finalPaid = Math.min(Number(finalPaid) || 0, finalTotal);
+    if (paid > total && total > 0) paid = total;
 
     return {
-      total: finalTotal,
-      paid: finalPaid,
-      due: Math.max(finalTotal - finalPaid, 0)
+      total,
+      paid,
+      due: Math.max(total - paid, 0)
     };
   }
 
@@ -5946,8 +6153,27 @@
   }
 
   function extractAIPhone(text) {
-    const match = text.match(/(?:telefono|tel|cellulare|cell)\s*(?:è|e|:)?\s*([+\d][\d\s-]{6,})/i);
-    return match ? match[1].trim() : "";
+    const source = String(text || "").replace(/\u00A0/g, " ");
+
+    const labelled = source.match(
+      /(?:numero(?:\s+di\s+telefono)?|telefono|tel|cellulare|cell|whatsapp)\s*(?:è|e|:|=)?\s*([+]?\d[\d\s.-]{6,}\d)/i
+    );
+
+    if (labelled) {
+      return labelled[1].replace(/[^\d+]/g, "");
+    }
+
+    // Fallback: riconosce un numero lungo solo se non sembra una data o un importo.
+    const candidates = source.match(/(?:^|[^\d])([+]?\d[\d\s.-]{7,}\d)(?!\d)/g) || [];
+
+    for (const candidate of candidates) {
+      const value = candidate.replace(/[^\d+]/g, "");
+      const digits = value.replace(/\D/g, "");
+
+      if (digits.length >= 9 && digits.length <= 15) return value;
+    }
+
+    return "";
   }
 
   function cleanAIEntity(text) {
@@ -5957,24 +6183,42 @@
       .trim();
   }
 
-  function findIndexByWords(items, query, fields) {
-    const cleanQuery = normalizeAIText(query);
-    const significant = cleanQuery
-      .split(" ")
-      .filter((word) => word.length >= 3 && ![
-        "modifica", "elimina", "cancella", "segna", "come", "della", "dello",
-        "degli", "nelle", "nella", "questo", "questa", "fornitore", "scadenza",
-        "appuntamento", "checklist", "timeline", "contatto", "documento"
-      ].includes(word));
+  function findIndexByWords(items, commandText, fields) {
+    const normalizedCommand = normalizeAIText(commandText);
 
-    if (!significant.length) return -1;
+    const ignored = new Set([
+      "elimina", "cancella", "rimuovi", "aggiungi", "crea", "inserisci",
+      "modifica", "segna", "imposta", "registra", "scadenza", "pagamento",
+      "fornitore", "rubrica", "contatto", "agenda", "appuntamento",
+      "checklist", "attivita", "timeline", "documento", "nota", "sposi",
+      "di", "del", "della", "il", "la", "lo", "un", "una", "dal", "dalla"
+    ]);
+
+    const commandWords = normalizedCommand
+      .split(/\s+/)
+      .filter((word) => word.length >= 2 && !ignored.has(word));
 
     let bestIndex = -1;
     let bestScore = 0;
 
-    items.forEach((item, index) => {
-      const haystack = normalizeAIText(fields.map((field) => item[field] || "").join(" "));
-      const score = significant.reduce((total, word) => total + (haystack.includes(word) ? 1 : 0), 0);
+    (items || []).forEach((item, index) => {
+      const searchable = normalizeAIText(
+        fields.map((field) => String(item?.[field] || "")).join(" ")
+      );
+
+      let score = 0;
+
+      for (const word of commandWords) {
+        if (searchable.includes(word)) {
+          score += word.length >= 5 ? 3 : 1;
+        }
+      }
+
+      // Corrispondenza diretta con l'intero nome o servizio.
+      for (const field of fields) {
+        const value = normalizeAIText(item?.[field] || "");
+        if (value && normalizedCommand.includes(value)) score += 10;
+      }
 
       if (score > bestScore) {
         bestScore = score;
@@ -6182,16 +6426,18 @@
       const supplierPhone = extractAIPhone(original);
       const supplierEmail = extractAIEmail(original);
 
-      const supplierMatch = original.match(
-        /(?:scadenza|pagamento)\s+(?:per|del|della|di)?\s*(.*?)(?=\s+(?:totale|importo|costo|preventivo|pagato|saldato|acconto|versato|da\s+saldare|da\s+pagare|residuo|entro|telefono|tel|cellulare|email|mail|€|\d[\d.,]*\s*(?:euro|€)|il\s+\d)|[,;]|$)/i
-      );
-
-      let supplierText = cleanAIEntity(supplierMatch ? supplierMatch[1] : "");
-
-      // Rimuove eventuali cifre finali finite per errore nel nome del fornitore.
-      supplierText = supplierText
-        .replace(/\s+€?\s*\d[\d.,]*\s*(?:euro|€)?\s*$/i, "")
+      let supplierText = original
+        .replace(/^[\s,;]*(?:aggiungi|crea|inserisci)\s+(?:una\s+)?(?:scadenza|pagamento)\s*(?:per|del|della|di)?\s*/i, "")
+        .split(
+          /\b(?:totale|importo totale|importo|costo totale|costo|preventivo|gia pagato|già pagato|pagato|saldato|acconto|versato|da saldare|da pagare|saldo residuo|residuo|entro|numero(?: di telefono)?|telefono|tel|cellulare|cell|whatsapp|email|mail)\b/i
+        )[0]
+        .replace(/[€]/g, " ")
+        .replace(/\b\d[\d.,]*\s*(?:euro)?\b/gi, " ")
+        .replace(/[,;]+/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
+
+      supplierText = cleanAIEntity(supplierText);
 
       const name = supplierText || "Nuova scadenza";
       const supplierService = inferSupplierService(name);
@@ -6214,9 +6460,9 @@
         summary:
           `Aggiungere una scadenza:\n` +
           `Voce/fornitore: ${name}\n` +
-          `Totale: ${euro(total ?? 0)}\n` +
-          `Pagato/Saldato: ${euro(paid ?? 0)}\n` +
-          `Da saldare: ${euro(Math.max((total ?? 0) - (paid ?? 0), 0))}\n` +
+          `Totale: ${euro(total)}\n` +
+          `Pagato/Saldato: ${euro(paid)}\n` +
+          `Da saldare: ${euro(amounts.due)}\n` +
           `Data: ${date || "non indicata"}\n` +
           `Rubrica evento: il fornitore sarà creato o aggiornato automaticamente\n` +
           `Telefono: ${supplierPhone || "non indicato"}\n` +
@@ -6226,7 +6472,10 @@
     }
 
     /* PAGAMENTO / SALDO SCADENZA */
-    if (/(segna|imposta|registra|modifica).*(pagato|saldato|acconto)|(?:ho pagato|pagato|saldato).*(fornitore|fotograf|location|fiorist|music|catering)/.test(normalized)) {
+    if (
+      /(segna|imposta|registra|modifica|aggiorna).*(pagato|saldato|acconto|saldo)/.test(normalized) ||
+      /(?:ho pagato|pagato|saldato|salda|paga).*(scadenza|fornitore|fotograf|location|fiorai|fiorist|music|catering|dj|villa)/.test(normalized)
+    ) {
       const index = findIndexByWords(data.deadlines, original, ["name", "supplier"]);
       if (index < 0) {
         return { type: "message", text: "Non riesco a individuare la scadenza da aggiornare. Scrivi anche il nome del fornitore o della voce." };
@@ -6234,7 +6483,7 @@
 
       const item = data.deadlines[index];
       const explicitAmount = findAIAmount(original, ["pagato", "acconto", "versato", "saldo"]);
-      const fullPaid = /saldato completamente|pagato tutto|completamente saldato|segna.*saldato/.test(normalized);
+      const fullPaid = /saldato completamente|pagato tutto|completamente saldato|segna.*saldato|salda.*scadenza|paga tutto|saldo completo/.test(normalized);
       const newPaid = fullPaid ? Number(item.total) : (explicitAmount ?? Number(item.paid));
 
       return {
@@ -6515,6 +6764,35 @@
       };
     }
 
+    /* ELIMINA CONTATTO SPOSI */
+    if (/(elimina|cancella|rimuovi).*(sposa|sposo|contatto sposi|recapito sposi)/.test(normalized)) {
+      const index = findIndexByWords(data.spouseContacts, original, ["role", "name", "phone", "email"]);
+      if (index < 0) {
+        return { type: "message", text: "Non trovo il contatto sposi indicato." };
+      }
+
+      return {
+        type: "action",
+        action: "delete-spouse-contact",
+        payload: { index },
+        summary: `Eliminare il contatto “${data.spouseContacts[index].name || data.spouseContacts[index].role}”.`
+      };
+    }
+
+    /* CANCELLA NOTE */
+    if (/(elimina|cancella|rimuovi|svuota).*(nota|note progetto|note)/.test(normalized)) {
+      if (!String(data.projectNotes || "").trim()) {
+        return { type: "message", text: "Le note progetto sono già vuote." };
+      }
+
+      return {
+        type: "action",
+        action: "clear-notes",
+        payload: {},
+        summary: "Cancellare tutte le note interne del progetto."
+      };
+    }
+
     /* NOTE */
     if (/(aggiungi|scrivi|salva).*(nota|note progetto)/.test(normalized)) {
       const note = original
@@ -6707,6 +6985,14 @@
 
         case "add-spouse-contact":
           data.spouseContacts.push(action.payload);
+          break;
+
+        case "delete-spouse-contact":
+          data.spouseContacts.splice(action.payload.index, 1);
+          break;
+
+        case "clear-notes":
+          data.projectNotes = "";
           break;
 
         case "append-note":
