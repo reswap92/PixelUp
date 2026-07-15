@@ -2043,7 +2043,7 @@
   if (!currentEventId && urlParams.get("app") === "1") {
     const lastEventId = localStorage.getItem("pixelup_last_event") || "";
     if (lastEventId) {
-      window.location.href = "/dashboard/?event=" + encodeURIComponent(lastEventId);
+      window.location.href = "/IADASHBOARD/?event=" + encodeURIComponent(lastEventId);
     }
   }
 
@@ -3895,7 +3895,7 @@
     try {
       await setDoc(doc(db, "weddingEvents", projectId), emptyProject, { merge: true });
 
-      window.location.href = "/dashboard/?event=" + projectId;
+     window.location.href = "/IADASHBOARD/?event=" + encodeURIComponent(projectId);
     } catch (error) {
       console.error("Errore creazione progetto:", error);
       alert("Errore nella creazione del progetto.");
@@ -3994,7 +3994,9 @@
               </div>
 
               <div class="project-card-pro-actions">
-                <a class="project-pill-btn" href="/dashboard/?event=${id}">
+               <a class="project-pill-btn" href="/IADASHBOARD/?event=${encodeURIComponent(id)}">
+  Apri
+</a>
                   Apri
                 </a>
 
