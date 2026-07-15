@@ -152,6 +152,19 @@
       color:var(--muted);border-radius:18px;padding:13px 15px;font-size:12px;line-height:1.45
     }
 
+    .question-edit-card{border:1px solid rgba(111,74,142,.12);background:rgba(255,255,255,.72);border-radius:20px;padding:16px;box-shadow:var(--soft)}
+    .question-edit-card h3{font-size:16px;color:var(--purple-dark);line-height:1.35;margin-bottom:12px}
+    .question-number{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(111,74,142,.10);color:var(--purple);font-weight:900;margin-bottom:10px}
+    .answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .answer-box label{display:block;font-size:12px;font-weight:900;color:var(--purple-dark);margin-bottom:6px}
+    .answer-box textarea{width:100%;min-height:120px;resize:vertical;border:1px solid rgba(111,74,142,.18);background:rgba(255,255,255,.90);color:var(--text);border-radius:14px;padding:12px;outline:none;font:inherit;font-size:14px;line-height:1.5}
+    .answer-box textarea:focus{border-color:rgba(111,74,142,.48);box-shadow:0 0 0 3px rgba(111,74,142,.08)}
+    .question-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .save-status{font-size:12px;font-weight:900;color:var(--muted)}
+    .save-status.saved{color:#287143}
+    .save-status.pending{color:#8a6428}
+    @media(max-width:700px){.answer-grid{grid-template-columns:1fr}}
+
     .footer-note{
       margin-top:26px;text-align:center;color:var(--muted);font-size:12px;line-height:1.45
     }
@@ -256,11 +269,16 @@
       <div class="section-head">
         <div>
           <h2>Questionario</h2>
-          <p>Qui vedete le domande e le risposte già condivise dalla celebrante. La compilazione diretta può essere attivata in una versione successiva.</p>
+          <p>Compilate direttamente le domande condivise dalla celebrante. Le risposte vengono salvate e aggiornate in tempo reale.</p>
         </div>
       </div>
-      <div class="card"><div class="list" id="questionsList"></div></div>
-      <div class="readonly">Gli sposi non possono modificare questa pagina. Le risposte vengono mostrate solo se la celebrante le ha rese disponibili.</div>
+      <div class="card">
+        <div class="list" id="questionsList"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+          <button class="btn primary" type="button" onclick="saveAllAnswers()">Salva tutte le risposte</button>
+        </div>
+      </div>
+      <div class="readonly">Le risposte possono essere modificate e salvate dalla coppia. La celebrante le vedrà aggiornarsi nella propria dashboard.</div>
     </section>
 
     <section class="section" id="appointmentsSection">
@@ -321,7 +339,8 @@
     import {
       getFirestore,
       doc,
-      onSnapshot
+      onSnapshot,
+      setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -345,12 +364,13 @@
 
     let data = null;
 
+    const eventRef = eventId ? doc(db, "celebrantEvents", eventId) : null;
+    let isSavingAnswers = false;
+
     if (!eventId) {
       showError("Link non valido", "Manca il codice evento. Chiedete alla celebrante di inviarvi il link corretto.");
     } else {
-      const ref = doc(db, "celebrantEvents", eventId);
-
-      onSnapshot(ref, (snap) => {
+      onSnapshot(eventRef, (snap) => {
         if (!snap.exists()) {
           showError("Cerimonia non trovata", "Il link non è corretto oppure la cerimonia non è più disponibile.");
           return;
@@ -384,7 +404,13 @@
           rite: safe.visibility?.rite !== false,
           contacts: safe.visibility?.contacts !== false
         },
-        questions: Array.isArray(safe.questions) ? safe.questions : [],
+        questions: Array.isArray(safe.questions) ? safe.questions.map((item) => ({
+          question: item.question || "",
+          answer1: item.answer1 || "",
+          answer2: item.answer2 || "",
+          type: item.type || "testo",
+          visibleToCouple: item.visibleToCouple !== false
+        })) : [],
         appointments: Array.isArray(safe.appointments) ? safe.appointments : [],
         documents: Array.isArray(safe.documents) ? safe.documents : [],
         contacts: Array.isArray(safe.contacts) ? safe.contacts : [],
@@ -493,19 +519,95 @@
         return;
       }
 
-      list.innerHTML = questions.map((item, index) => `
-        <div class="row">
-          <div class="row-icon">${index + 1}</div>
-          <div class="row-info">
+      list.innerHTML = questions.map((item, visibleIndex) => {
+        const realIndex = data.questions.indexOf(item);
+        const completed = Boolean((item.answer1 || "").trim() || (item.answer2 || "").trim());
+
+        return `
+          <div class="question-edit-card">
+            <div class="question-number">${visibleIndex + 1}</div>
             <h3>${escapeHtml(item.question || "Domanda")}</h3>
-            ${item.answer1 || item.answer2 ? `
-              <p><strong>Risposta 1:</strong> ${escapeHtml(item.answer1 || "Non compilata")}</p>
-              <p><strong>Risposta 2:</strong> ${escapeHtml(item.answer2 || "Non compilata")}</p>
-            ` : `<p>Risposta non ancora condivisa.</p>`}
+
+            <div class="answer-grid">
+              <div class="answer-box">
+                <label for="answer1-${realIndex}">Risposta 1</label>
+                <textarea id="answer1-${realIndex}" placeholder="Scrivete qui la prima risposta..." oninput="markAnswerPending(${realIndex})">${escapeHtml(item.answer1 || "")}</textarea>
+              </div>
+
+              <div class="answer-box">
+                <label for="answer2-${realIndex}">Risposta 2</label>
+                <textarea id="answer2-${realIndex}" placeholder="Scrivete qui la seconda risposta..." oninput="markAnswerPending(${realIndex})">${escapeHtml(item.answer2 || "")}</textarea>
+              </div>
+            </div>
+
+            <div class="question-actions">
+              <span class="save-status ${completed ? "saved" : ""}" id="saveStatus-${realIndex}">
+                ${completed ? "Risposta salvata" : "Da compilare"}
+              </span>
+              <button class="btn primary" type="button" onclick="saveSingleAnswer(${realIndex})">Salva risposta</button>
+            </div>
           </div>
-          <div class="row-right"><span class="pill">${item.answer1 || item.answer2 ? "Compilata" : "Da fare"}</span></div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
+    }
+
+    function markAnswerPending(index) {
+      const status = document.getElementById("saveStatus-" + index);
+      if (!status) return;
+      status.textContent = "Modifiche non salvate";
+      status.classList.remove("saved");
+      status.classList.add("pending");
+    }
+
+    function readAnswerValues(index) {
+      return {
+        answer1: document.getElementById("answer1-" + index)?.value.trim() || "",
+        answer2: document.getElementById("answer2-" + index)?.value.trim() || ""
+      };
+    }
+
+    async function persistAnswers(indices) {
+      if (!eventRef || !data || isSavingAnswers) return;
+      isSavingAnswers = true;
+
+      try {
+        const updatedQuestions = data.questions.map((question, index) => {
+          if (!indices.includes(index)) return question;
+          return { ...question, ...readAnswerValues(index) };
+        });
+
+        await setDoc(eventRef, {
+          questions: updatedQuestions,
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+
+        data.questions = updatedQuestions;
+
+        indices.forEach((index) => {
+          const status = document.getElementById("saveStatus-" + index);
+          if (!status) return;
+          status.textContent = "Risposta salvata";
+          status.classList.remove("pending");
+          status.classList.add("saved");
+        });
+      } catch (error) {
+        console.error("Errore salvataggio risposte:", error);
+        alert("Non è stato possibile salvare le risposte. Riprova tra poco.");
+      } finally {
+        isSavingAnswers = false;
+      }
+    }
+
+    async function saveSingleAnswer(index) {
+      await persistAnswers([index]);
+    }
+
+    async function saveAllAnswers() {
+      const indices = visibleQuestions()
+        .map((item) => data.questions.indexOf(item))
+        .filter((index) => index >= 0);
+
+      await persistAnswers(indices);
     }
 
     function visibleAppointments() {
@@ -624,6 +726,10 @@
       loading.style.display = "grid";
       appBox.style.display = "none";
     }
+
+    window.markAnswerPending = markAnswerPending;
+    window.saveSingleAnswer = saveSingleAnswer;
+    window.saveAllAnswers = saveAllAnswers;
 
     window.openSection = function(sectionId, btn) {
       document.querySelectorAll(".section").forEach(s => s.classList.remove("show"));
