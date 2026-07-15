@@ -43,8 +43,86 @@
     .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}.step{text-align:center}.step-num{width:36px;height:36px;margin:0 auto 12px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center;font-weight:900}.step-icon{width:78px;height:78px;border-radius:50%;margin:0 auto 12px;background:white;border:1px solid var(--line);display:grid;place-items:center;font-size:32px;color:var(--gold);box-shadow:var(--soft)}.step h3{color:var(--green);font-size:15px;margin-bottom:6px}.step p{color:var(--muted);font-size:13px;line-height:1.4}
     .contact-section{background:radial-gradient(circle at 0% 0%,rgba(215,181,109,.16),transparent 30%),linear-gradient(135deg,var(--green),#06271e);color:white}.contact-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:26px;backdrop-filter:blur(10px);box-shadow:0 18px 40px rgba(0,0,0,.12)}.contact-icon{width:54px;height:54px;border-radius:17px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#f2cf82;display:grid;place-items:center;font-size:28px;margin-bottom:16px}.contact-card h3{font-family:Georgia,serif;font-size:25px;font-weight:500;margin-bottom:9px;color:white}.contact-card p{color:rgba(255,255,255,.78);font-size:14px;margin-bottom:16px}.contact-btn,.contact-submit{width:100%;min-height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25);background:white;color:var(--green);font-weight:800;font-size:13px;cursor:pointer}.contact-btn.whatsapp{background:#25D366;color:#0b2b18}.contact-form{display:grid;gap:10px}.contact-form input,.contact-form select,.contact-form textarea,.field{width:100%;min-height:42px;border:1px solid rgba(232,221,202,.9);border-radius:10px;padding:0 12px;background:#fffdf8;color:#202822;outline:none}.contact-form textarea,textarea.field{min-height:82px;padding-top:10px;resize:vertical}.secure{color:rgba(255,255,255,.68);font-size:12px;margin-top:10px}
     .footer{background:linear-gradient(135deg,var(--green),#06271e);color:white;padding:28px 0;border-top:1px solid rgba(255,255,255,.10)}.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.footer .brand-name{color:white;font-size:27px}.footer .brand-name span{color:#e2bf78}.footer-links{display:flex;flex-wrap:wrap;gap:24px;font-size:14px;color:rgba(255,255,255,.86)}.copyright{color:rgba(255,255,255,.75);font-size:13px}
+
+    .social-proof-bar{
+      border-bottom:1px solid rgba(181,138,59,.22);
+      background:
+        radial-gradient(circle at 12% 50%,rgba(215,181,109,.18),transparent 26%),
+        linear-gradient(135deg,#0f3b2e,#174f3d);
+      color:white;
+    }
+    .social-proof-inner{
+      min-height:70px;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:18px;
+      padding:12px 0;
+    }
+    .social-proof-icon{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(215,181,109,.45);
+      color:#f2cf82;
+      font-size:21px;
+      font-weight:900;
+    }
+    .social-proof-copy strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:20px;
+      font-weight:500;
+      line-height:1.15;
+      color:white;
+    }
+    .social-proof-copy span{
+      display:block;
+      margin-top:4px;
+      color:rgba(255,255,255,.76);
+      font-size:13px;
+    }
+    .social-proof-badges{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .social-proof-badge{
+      min-height:32px;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:0 11px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.90);
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
     @media(max-width:1040px){.hero-grid{grid-template-columns:1fr;gap:34px}.device-stage{min-height:430px}.laptop{left:0;right:auto;width:88%}.phone{right:4%}.solutions,.benefits,.demo-grid,.pricing,.contact-grid{grid-template-columns:1fr}.solution{min-height:auto}.custom-grid{grid-template-columns:1fr}.features{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr}}
-    @media(max-width:760px){.nav{min-height:66px}.brand-name{font-size:25px}.menu,.nav-actions{display:none}.mobile-menu-btn{display:grid;place-items:center}.mobile-panel{display:none;border-top:1px solid var(--line);padding:12px 0 18px}.mobile-panel.show{display:grid;gap:10px}.mobile-panel a{min-height:42px;display:flex;align-items:center;border:1px solid var(--line);background:white;border-radius:12px;padding:0 14px;font-weight:700;color:var(--green)}.hero{padding:46px 0 42px}.hero-sub{font-size:17px}.hero-actions .btn{width:100%}.device-stage{min-height:390px}.laptop{position:relative;width:100%;right:auto;top:auto;min-height:300px;padding:13px;border-width:7px}.screen{grid-template-columns:85px 1fr;min-height:265px}.side{padding:13px 9px;font-size:10px}.side ul{gap:10px}.dash{padding:12px}.dash-stats{grid-template-columns:1fr 1fr}.dash-bottom{grid-template-columns:1fr}.phone{width:165px;right:0;bottom:-6px}.phone-screen{min-height:300px}.phone-img{height:110px}.phone-count{grid-template-columns:repeat(2,1fr)}section{padding:38px 0}.solution{grid-template-columns:1fr;text-align:left}.custom-dashboard{padding:24px 18px;border-radius:24px}.custom-list,.custom-mini-grid{grid-template-columns:1fr}.custom-price-card{width:100%}.features{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.price-note{border-radius:18px}.footer-grid{display:grid}}
+    @media(max-width:760px){
+      .social-proof-inner{
+        grid-template-columns:44px 1fr;
+        gap:12px;
+        min-height:auto;
+        padding:15px 0;
+      }
+      .social-proof-copy strong{font-size:18px}
+      .social-proof-copy span{font-size:12px}
+      .social-proof-badges{
+        grid-column:1 / -1;
+        justify-content:flex-start;
+        padding-left:56px;
+      }
+.nav{min-height:66px}.brand-name{font-size:25px}.menu,.nav-actions{display:none}.mobile-menu-btn{display:grid;place-items:center}.mobile-panel{display:none;border-top:1px solid var(--line);padding:12px 0 18px}.mobile-panel.show{display:grid;gap:10px}.mobile-panel a{min-height:42px;display:flex;align-items:center;border:1px solid var(--line);background:white;border-radius:12px;padding:0 14px;font-weight:700;color:var(--green)}.hero{padding:46px 0 42px}.hero-sub{font-size:17px}.hero-actions .btn{width:100%}.device-stage{min-height:390px}.laptop{position:relative;width:100%;right:auto;top:auto;min-height:300px;padding:13px;border-width:7px}.screen{grid-template-columns:85px 1fr;min-height:265px}.side{padding:13px 9px;font-size:10px}.side ul{gap:10px}.dash{padding:12px}.dash-stats{grid-template-columns:1fr 1fr}.dash-bottom{grid-template-columns:1fr}.phone{width:165px;right:0;bottom:-6px}.phone-screen{min-height:300px}.phone-img{height:110px}.phone-count{grid-template-columns:repeat(2,1fr)}section{padding:38px 0}.solution{grid-template-columns:1fr;text-align:left}.custom-dashboard{padding:24px 18px;border-radius:24px}.custom-list,.custom-mini-grid{grid-template-columns:1fr}.custom-price-card{width:100%}.features{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.price-note{border-radius:18px}.footer-grid{display:grid}}
     @media(max-width:420px){.wrap{width:min(94%,var(--max))}h1{font-size:43px}.feature{min-height:96px}.phone{display:none}.device-stage{min-height:auto}}
   </style>
 </head>
@@ -78,6 +156,24 @@
       </div>
     </div>
   </header>
+
+  <!-- Dato di fiducia: modifica il numero solo se verificabile -->
+  <section class="social-proof-bar" aria-label="Professionisti che hanno scelto PixelUp">
+    <div class="wrap social-proof-inner">
+      <div class="social-proof-icon">✓</div>
+
+      <div class="social-proof-copy">
+        <strong>💍 Scelto da wedding planner, celebranti e professionisti degli eventi in tutta Italia</strong>
+        <span>Wedding planner, celebranti e professionisti degli eventi che lavorano con più ordine e professionalità.</span>
+      </div>
+
+      <div class="social-proof-badges">
+        <span class="social-proof-badge">✓ Accesso semplice</span>
+        <span class="social-proof-badge">✓ Assistenza dedicata</span>
+        <span class="social-proof-badge">✓ Soluzioni personalizzabili</span>
+      </div>
+    </div>
+  </section>
 
   <main id="top">
     <section class="hero">
