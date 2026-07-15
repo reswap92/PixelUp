@@ -5780,6 +5780,116 @@
     return null;
   }
 
+  function findAIAmountFlexible(text, labels) {
+    for (const label of labels) {
+      const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+      const patterns = [
+        new RegExp(`(?:${escaped})\\s*(?:di|pari a|:|=)?\\s*€?\\s*([0-9][0-9.,]*)`, "i"),
+        new RegExp(`€?\\s*([0-9][0-9.,]*)\\s*(?:euro|€)?\\s*(?:${escaped})`, "i")
+      ];
+
+      for (const regex of patterns) {
+        const match = text.match(regex);
+        if (match) {
+          const value = parseAIAmount(match[1]);
+          if (value !== null) return value;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function extractAIMoneyNumbers(text) {
+    let clean = String(text || "");
+
+    // Elimina date, orari, telefono ed email prima di cercare importi.
+    clean = clean
+      .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, " ")
+      .replace(/\b20\d{2}-\d{1,2}-\d{1,2}\b/g, " ")
+      .replace(/\b\d{1,2}[\/.-]\d{1,2}[\/.-]20\d{2}\b/g, " ")
+      .replace(/\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(?:\s+20\d{2})?\b/gi, " ")
+      .replace(/\b(?:alle|ore)\s+\d{1,2}(?::\d{2})?\b/gi, " ")
+      .replace(/(?:telefono|tel|cellulare|cell)\s*(?:è|e|:)?\s*[+\d][\d\s-]{6,}/gi, " ");
+
+    const values = [];
+    const regex = /(?:€\s*)?\b(\d{1,3}(?:[.\s]\d{3})*(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)\b(?:\s*(?:euro|€))?/gi;
+    let match;
+
+    while ((match = regex.exec(clean)) !== null) {
+      const value = parseAIAmount(match[1]);
+      if (value === null) continue;
+
+      // Evita anni e numeri troppo simili a telefoni.
+      if (value >= 2000 && value <= 2100 && !/[€]|euro/i.test(match[0])) continue;
+      if (String(match[1]).replace(/\D/g, "").length >= 7) continue;
+
+      values.push(value);
+    }
+
+    return values;
+  }
+
+  function parseAIDeadlineAmounts(text) {
+    const total =
+      findAIAmountFlexible(text, [
+        "totale", "importo totale", "costo totale", "costo", "importo",
+        "da pagare in totale", "preventivo"
+      ]);
+
+    const paid =
+      findAIAmountFlexible(text, [
+        "già pagato", "gia pagato", "pagato", "saldato", "acconto",
+        "versato", "già versato", "gia versato"
+      ]);
+
+    const due =
+      findAIAmountFlexible(text, [
+        "da saldare", "da pagare", "residuo", "restano", "rimangono",
+        "manca da pagare", "saldo residuo"
+      ]);
+
+    const numbers = extractAIMoneyNumbers(text);
+    let finalTotal = total;
+    let finalPaid = paid;
+    let finalDue = due;
+
+    // Fallback per comandi naturali senza etichette:
+    // "location Villa Gatti 9000, pagato 0" oppure "fioraio 9000 da saldare".
+    if (finalTotal === null) {
+      if (finalDue !== null && finalPaid !== null) {
+        finalTotal = finalDue + finalPaid;
+      } else if (numbers.length) {
+        const excluded = new Set(
+          [finalPaid, finalDue].filter((value) => value !== null).map(Number)
+        );
+        finalTotal = numbers.find((value) => !excluded.has(Number(value))) ?? numbers[0];
+      }
+    }
+
+    if (finalPaid === null) {
+      if (finalTotal !== null && finalDue !== null) {
+        finalPaid = Math.max(finalTotal - finalDue, 0);
+      } else {
+        finalPaid = 0;
+      }
+    }
+
+    if (finalTotal === null && finalDue !== null) {
+      finalTotal = finalDue + finalPaid;
+    }
+
+    finalTotal = Number(finalTotal) || 0;
+    finalPaid = Math.min(Number(finalPaid) || 0, finalTotal);
+
+    return {
+      total: finalTotal,
+      paid: finalPaid,
+      due: Math.max(finalTotal - finalPaid, 0)
+    };
+  }
+
   function italianMonthNumber(monthName) {
     const months = {
       gennaio: 1, febbraio: 2, marzo: 3, aprile: 4,
@@ -5935,6 +6045,92 @@
     return "";
   }
 
+
+  function normalizeSupplierKey(value) {
+    return normalizeAIText(String(value || ""))
+      .replace(/\b(?:srl|spa|sas|snc|societa|società|studio|azienda|ditta)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function inferSupplierService(value) {
+    const normalized = normalizeAIText(value);
+
+    const categories = [
+      ["Fioraio", ["fioraio", "fiorista", "fiori", "floral"]],
+      ["Fotografo", ["fotografo", "fotografia", "foto", "videomaker", "video"]],
+      ["Location", ["location", "villa", "castello", "ristorante", "agriturismo"]],
+      ["Catering", ["catering", "banqueting", "ristorazione"]],
+      ["Musica", ["dj", "musica", "musicista", "band", "cantante"]],
+      ["Celebrante", ["celebrante", "rito", "cerimonia"]],
+      ["Make-up", ["makeup", "make-up", "trucco", "truccatrice"]],
+      ["Parrucchiere", ["parrucchiere", "parrucchiera", "acconciatura", "hair"]],
+      ["Abiti", ["abito", "atelier", "sartoria"]],
+      ["Bomboniere", ["bomboniere", "confetti"]],
+      ["Noleggio", ["noleggio", "auto", "transfer", "navetta"]],
+      ["Wedding cake", ["torta", "cake", "pasticceria"]]
+    ];
+
+    for (const [service, words] of categories) {
+      if (words.some((word) => normalized.includes(word))) return service;
+    }
+
+    return "Fornitore";
+  }
+
+  function upsertSupplierFromDeadline(deadline) {
+    const supplierName = cleanAIEntity(deadline?.supplier || deadline?.name || "");
+
+    if (!supplierName || supplierName === "Nuova scadenza") {
+      return { created: false, updated: false, name: "" };
+    }
+
+    const phone = String(deadline?.supplierPhone || "").trim();
+    const email = String(deadline?.supplierEmail || "").trim().toLowerCase();
+    const service = String(deadline?.supplierService || inferSupplierService(supplierName)).trim() || "Fornitore";
+    const targetKey = normalizeSupplierKey(supplierName);
+
+    const existingIndex = data.suppliers.findIndex((supplier) => {
+      const nameKey = normalizeSupplierKey(supplier?.name);
+      const serviceKey = normalizeSupplierKey(supplier?.service);
+      const combinedKey = normalizeSupplierKey(`${supplier?.service || ""} ${supplier?.name || ""}`);
+      const samePhone = phone && String(supplier?.phone || "").replace(/\D/g, "") === phone.replace(/\D/g, "");
+      const sameEmail = email && String(supplier?.email || "").trim().toLowerCase() === email;
+
+      return samePhone || sameEmail || nameKey === targetKey || combinedKey === targetKey ||
+        (targetKey.length >= 4 && nameKey.length >= 4 && (nameKey.includes(targetKey) || targetKey.includes(nameKey))) ||
+        (serviceKey === targetKey && !supplier?.name);
+    });
+
+    if (existingIndex >= 0) {
+      const existing = data.suppliers[existingIndex];
+      const oldPhone = existing.phone || "";
+      const oldEmail = existing.email || "";
+
+      data.suppliers[existingIndex] = {
+        service: existing.service && existing.service !== "Fornitore" ? existing.service : service,
+        name: existing.name && existing.name !== "Nome da completare" ? existing.name : supplierName,
+        phone: phone || oldPhone,
+        email: email || oldEmail
+      };
+
+      return {
+        created: false,
+        updated: Boolean((phone && phone !== oldPhone) || (email && email !== oldEmail)),
+        name: data.suppliers[existingIndex].name
+      };
+    }
+
+    data.suppliers.push({
+      service,
+      name: supplierName,
+      phone,
+      email
+    });
+
+    return { created: true, updated: false, name: supplierName };
+  }
+
   function interpretAICommand(rawText) {
     const original = String(rawText || "").trim();
     const normalized = normalizeAIText(original);
@@ -5979,13 +6175,26 @@
 
     /* SCADENZE: AGGIUNGI */
     if (/(aggiungi|crea|inserisci).*(scadenza|pagamento)|(?:scadenza).*(aggiungi|crea|inserisci)/.test(normalized)) {
-      const total = findAIAmount(original, ["totale", "importo totale", "importo", "costo"]);
-      const paid = findAIAmount(original, ["pagato", "gia pagato", "già pagato", "acconto", "versato"]) ?? 0;
+      const amounts = parseAIDeadlineAmounts(original);
+      const total = amounts.total;
+      const paid = amounts.paid;
       const date = parseAIDate(original);
+      const supplierPhone = extractAIPhone(original);
+      const supplierEmail = extractAIEmail(original);
 
-      const supplierMatch = original.match(/(?:scadenza|pagamento)\s+(?:per|del|della|di)?\s*(.*?)(?=\s+(?:totale|importo|costo|pagato|acconto|entro|il\s+\d)|[,;]|$)/i);
-      const supplierText = cleanAIEntity(supplierMatch ? supplierMatch[1] : "");
+      const supplierMatch = original.match(
+        /(?:scadenza|pagamento)\s+(?:per|del|della|di)?\s*(.*?)(?=\s+(?:totale|importo|costo|preventivo|pagato|saldato|acconto|versato|da\s+saldare|da\s+pagare|residuo|entro|telefono|tel|cellulare|email|mail|€|\d[\d.,]*\s*(?:euro|€)|il\s+\d)|[,;]|$)/i
+      );
+
+      let supplierText = cleanAIEntity(supplierMatch ? supplierMatch[1] : "");
+
+      // Rimuove eventuali cifre finali finite per errore nel nome del fornitore.
+      supplierText = supplierText
+        .replace(/\s+€?\s*\d[\d.,]*\s*(?:euro|€)?\s*$/i, "")
+        .trim();
+
       const name = supplierText || "Nuova scadenza";
+      const supplierService = inferSupplierService(name);
 
       return {
         type: "action",
@@ -5993,6 +6202,9 @@
         payload: {
           name,
           supplier: name,
+          supplierService,
+          supplierPhone,
+          supplierEmail,
           total: total ?? 0,
           paid: paid ?? 0,
           date,
@@ -6003,8 +6215,12 @@
           `Aggiungere una scadenza:\n` +
           `Voce/fornitore: ${name}\n` +
           `Totale: ${euro(total ?? 0)}\n` +
-          `Pagato: ${euro(paid ?? 0)}\n` +
+          `Pagato/Saldato: ${euro(paid ?? 0)}\n` +
+          `Da saldare: ${euro(Math.max((total ?? 0) - (paid ?? 0), 0))}\n` +
           `Data: ${date || "non indicata"}\n` +
+          `Rubrica evento: il fornitore sarà creato o aggiornato automaticamente\n` +
+          `Telefono: ${supplierPhone || "non indicato"}\n` +
+          `Email: ${supplierEmail || "non indicata"}\n` +
           `Visibile agli sposi: ${/visibile.*sposi|mostra.*sposi/.test(normalized) ? "Sì" : "No"}`
       };
     }
@@ -6413,12 +6629,17 @@
           const missing = Math.max((Number(item.total) || 0) - finalPaid, 0);
 
           data.deadlines.push({
-            ...item,
+            name: item.name || "Nuova scadenza",
+            supplier: item.supplier || item.name || "Fornitore non indicato",
             total: Number(item.total) || 0,
             paid: finalPaid,
+            date: item.date || "",
+            notes: item.notes || "",
+            visibleToSpouses: item.visibleToSpouses === true,
             status: finalPaid <= 0 ? "Da saldare" : (missing > 0 ? "Acconto versato" : "Saldato")
           });
 
+          action.supplierResult = upsertSupplierFromDeadline(item);
           updateTotalsFromDeadlines();
           break;
         }
@@ -6511,12 +6732,22 @@
       renderVisibilitySettings();
       await saveData();
 
-      addAIMessage(
-        action.action === "open-section"
-          ? "Sezione aperta correttamente."
-          : "Operazione confermata e salvata nel progetto “" + (data.projectName || currentEventId) + "”.",
-        "assistant"
-      );
+      let confirmationMessage = action.action === "open-section"
+        ? "Sezione aperta correttamente."
+        : "Operazione confermata e salvata nel progetto “" + (data.projectName || currentEventId) + "”.";
+
+      if (action.action === "add-deadline" && action.supplierResult?.created) {
+        confirmationMessage =
+          `Scadenza salvata. Ho aggiunto automaticamente “${action.supplierResult.name}” anche nella Rubrica evento.`;
+      } else if (action.action === "add-deadline" && action.supplierResult?.updated) {
+        confirmationMessage =
+          `Scadenza salvata. Ho aggiornato automaticamente “${action.supplierResult.name}” anche nella Rubrica evento.`;
+      } else if (action.action === "add-deadline" && action.supplierResult?.name) {
+        confirmationMessage =
+          `Scadenza salvata. “${action.supplierResult.name}” era già presente nella Rubrica evento, quindi non ho creato un doppione.`;
+      }
+
+      addAIMessage(confirmationMessage, "assistant");
 
     } catch (error) {
       console.error("Errore PixelUp Assistente:", error);
