@@ -5495,7 +5495,7 @@
     }, { merge: true });
 
     alert("Progetto archiviato.");
-    window.location.href = "/dashboard/";
+    window.location.href = "/IADASHBOARD/";
   }
 
   async function showArchivedProjects() {
@@ -6616,7 +6616,7 @@
 
         if (projectOwner && projectOwner !== loggedEmail && loggedRole !== "admin") {
           alert("Questo progetto non appartiene al tuo account.");
-          window.location.href = "/dashboard/";
+          window.location.href = "/IADASHBOARD/";
           return;
         }
 
