@@ -5,25 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista Regalo | Federica & Daniele</title>
 
-  <script>
-    /*
-      AREA RISERVATA LISTA REGALO
-      Codice richiesto: CELEB2026
-    */
-    const codiceCorretto = "CELEB2026";
-    const accessoSalvato = sessionStorage.getItem("accesso_lista_regalo_federica_daniele");
-
-    if (accessoSalvato !== "ok") {
-      const codiceInserito = prompt("Area riservata. Inserisci il codice per accedere:");
-
-      if (codiceInserito && codiceInserito.trim().toUpperCase() === codiceCorretto) {
-        sessionStorage.setItem("accesso_lista_regalo_federica_daniele", "ok");
-      } else {
-        alert("Codice errato. Accesso non autorizzato.");
-        window.location.href = "index.html";
-      }
-    }
-  </script>
 
   <style>
     :root {
@@ -501,11 +482,12 @@
     <div class="divider">♡</div>
 
     <p>
-      Questa sezione sarà aggiornata prossimamente.
+      Se desiderate contribuire al nostro viaggio e ai nostri progetti futuri,
+      potete farlo tramite il seguente IBAN.
     </p>
 
     <p class="gold-text">
-      Federica e Daniele stanno decidendo se inserire una lista nozze o un IBAN dedicato.
+      Grazie di cuore per il vostro affetto e per il vostro prezioso regalo.
     </p>
 
     <p style="color: var(--gold); font-size: 26px;">♡</p>
@@ -520,11 +502,11 @@
         <div class="divider">♡</div>
 
         <div class="iban" id="giftText">
-          In aggiornamento
+          IT91Y0306902118100000074422
         </div>
 
-        <div class="label">Informazioni disponibili a breve</div>
-        <div class="owners">Nessun IBAN inserito</div>
+        <div class="label">IBAN</div>
+        <div class="owners">Intestato a Federica Barbon</div>
       </div>
     </section>
 
@@ -532,7 +514,7 @@
       <div class="small-icon">❧</div>
 
       <p>
-        Appena la scelta sarà confermata, qui troverete tutte le indicazioni aggiornate.
+        Potete copiare l’IBAN con il pulsante qui sotto e utilizzarlo direttamente dalla vostra app bancaria.
       </p>
 
       <div style="font-size: 46px; color: var(--gold);">♡</div>
@@ -553,8 +535,8 @@
     </section>
 
     <div class="buttons">
-      <button class="btn btn-primary" type="button" onclick="showGiftMessage()">
-        ♡ In aggiornamento
+      <button class="btn btn-primary" type="button" onclick="copyIban()">
+        📋 Copia IBAN
       </button>
 
       <a href="index.html" class="btn btn-outline">
@@ -569,17 +551,43 @@
   </main>
 
   <div class="toast" id="toast">
-    La lista regalo sarà aggiornata prossimamente
+    IBAN copiato negli appunti
   </div>
 
   <script>
-    function showGiftMessage() {
+    const ibanFedericaDaniele = "IT91Y0306902118100000074422";
+
+    function showToast(message) {
       const toast = document.getElementById("toast");
+      toast.textContent = message;
       toast.classList.add("show");
 
       setTimeout(() => {
         toast.classList.remove("show");
       }, 2200);
+    }
+
+    async function copyIban() {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(ibanFedericaDaniele);
+        } else {
+          const tempInput = document.createElement("textarea");
+          tempInput.value = ibanFedericaDaniele;
+          tempInput.setAttribute("readonly", "");
+          tempInput.style.position = "fixed";
+          tempInput.style.opacity = "0";
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+        }
+
+        showToast("IBAN copiato negli appunti");
+      } catch (error) {
+        console.error("Errore copia IBAN:", error);
+        showToast("Non è stato possibile copiare l’IBAN");
+      }
     }
   </script>
 
