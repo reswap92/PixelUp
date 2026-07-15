@@ -6622,7 +6622,7 @@
 
         if (!projectOwner) {
           alert("Questo progetto non ha un proprietario assegnato. Controlla Firebase prima di modificarlo.");
-          window.location.href = "/dashboard/";
+        window.location.href = "/IADASHBOARD/?newProject=true";
           return;
         }
 
@@ -6655,7 +6655,7 @@
         }
       } else {
         alert("Questo progetto non esiste o è stato eliminato. Apri un progetto dalla lista oppure creane uno nuovo.");
-        window.location.href = "/dashboard/";
+        window.location.href = "/IADASHBOARD/?project=" + projectId;
         return;
       }
 
