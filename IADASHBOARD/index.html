@@ -1634,9 +1634,6 @@
     Rubrica
   </button>
 
-  <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('deadlines')">
-    Elimina voce
-  </button>
 </div>
 
         <div class="list-card" id="deadlineList"></div>
@@ -3247,10 +3244,20 @@
     }
 
     try {
-      const contacts = await getSavedSuppliers();
+      let contacts = Array.isArray(data.suppliers)
+        ? data.suppliers.map((item) => ({ ...item, source: "event" }))
+        : [];
 
       if (!contacts.length) {
-        alert("Non hai ancora contatti salvati in rubrica generale.");
+        const globalContacts = await getSavedSuppliers();
+        contacts = globalContacts.map((item) => ({ ...item, source: "global" }));
+      }
+
+      if (!contacts.length) {
+        alert(
+          "Non ci sono contatti nella Rubrica evento.\n\n" +
+          "Aggiungi prima un fornitore nella sezione Rubrica evento."
+        );
         return;
       }
 
@@ -3263,7 +3270,7 @@
       }).join("\n");
 
       const choice = prompt(
-        "Scegli un contatto da collegare alla nuova scadenza:\n\n" + listText,
+        "Scegli un contatto dalla Rubrica evento:\n\n" + listText,
         "1"
       );
 
@@ -3271,75 +3278,76 @@
 
       const index = Number(choice.trim()) - 1;
 
-      if (isNaN(index) || index < 0 || index >= contacts.length) {
+      if (!Number.isInteger(index) || index < 0 || index >= contacts.length) {
         alert("Scelta non valida.");
         return;
       }
 
       const selected = contacts[index];
-      const supplierLabel = (selected.service || "Contatto") + " - " + (selected.name || "Nome non indicato");
+      const supplierName = selected.name || selected.service || "Fornitore";
+      const supplierLabel =
+        (selected.service || "Contatto") + " - " +
+        (selected.name || "Nome non indicato");
 
-      const name = prompt("Nuova voce / servizio:", "Saldo " + (selected.service || "servizio"));
+      const name = prompt(
+        "Nuova voce / servizio:",
+        selected.service || supplierName
+      );
       if (name === null) return;
 
-      const total = prompt("Importo totale:", "0");
-      if (total === null) return;
+      const totalRaw = prompt("Importo totale:", "0");
+      if (totalRaw === null) return;
 
-      const paid = prompt("Importo già pagato / saldato:", "0");
-      if (paid === null) return;
+      const paidRaw = prompt("Importo già pagato / saldato:", "0");
+      if (paidRaw === null) return;
 
-      const date = prompt("Data scadenza formato AAAA-MM-GG:", "2026-08-01");
+      const date = prompt("Data scadenza (AAAA-MM-GG):", "");
       if (date === null) return;
 
-      const notes = prompt("Note:", "");
-      if (notes === null) return;
-
-      const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
-
-      const cleanTotal = Number(total.replace(".", "").replace(",", "."));
-      const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
-
-      if (isNaN(cleanTotal) || isNaN(cleanPaid)) {
-        alert("Importi non validi.");
-        return;
-      }
-
-      const finalPaid = Math.min(cleanPaid, cleanTotal);
-      const missing = Math.max(cleanTotal - finalPaid, 0);
-
-      let automaticStatus = "Da saldare";
-
-      if (finalPaid <= 0) {
-        automaticStatus = "Da saldare";
-      } else if (missing > 0) {
-        automaticStatus = "Acconto versato";
-      } else {
-        automaticStatus = "Saldato";
-      }
+      const total = Math.max(parseAIAmount(totalRaw) || 0, 0);
+      const paid = Math.min(Math.max(parseAIAmount(paidRaw) || 0, 0), total);
+      const missing = Math.max(total - paid, 0);
 
       data.deadlines.push({
-        name: name || "Nuova scadenza",
+        name: name.trim() || selected.service || "Nuova scadenza",
         supplier: supplierLabel,
-        total: cleanTotal,
-        paid: finalPaid,
-        date: date || "2026-08-01",
-        status: automaticStatus,
-        notes: notes || "",
-        visibleToSpouses: visibleToSpouses
+        total,
+        paid,
+        date: date.trim(),
+        status: paid <= 0
+          ? "Da saldare"
+          : (missing > 0 ? "Acconto versato" : "Saldato"),
+        notes: "",
+        visibleToSpouses: false
       });
 
-      updateTotalsFromDeadlines();
-      renderSummary();
-      renderDeadlines();
-      saveData();
+      if (selected.source === "global") {
+        const alreadyInEvent = data.suppliers.some((item) => {
+          const a = normalizeSupplierKey(item.name || item.service || "");
+          const b = normalizeSupplierKey(selected.name || selected.service || "");
+          return a && b && (a === b || a.includes(b) || b.includes(a));
+        });
 
-      alert("Scadenza aggiunta usando la rubrica generale.");
+        if (!alreadyInEvent) {
+          data.suppliers.push({
+            service: selected.service || "Fornitore",
+            name: selected.name || "Nome non indicato",
+            phone: selected.phone || "",
+            email: selected.email || ""
+          });
+        }
+      }
+
+      updateTotalsFromDeadlines();
+      renderAll();
+      await saveData();
+
+      alert("Scadenza aggiunta correttamente dalla Rubrica evento.");
     } catch (error) {
-      console.error("Errore rubrica scadenze:", error);
-      alert("Errore nel caricamento della rubrica.");
+      console.error("Errore aggiunta scadenza dalla rubrica:", error);
+      alert("Errore durante l'apertura della Rubrica evento.");
     }
   }
-
 
   async function editEventInfo() {
     if (!eventRef || !currentEventId) {
@@ -3537,23 +3545,48 @@
     }
 
     try {
-      const suppliers = await getSavedSuppliers();
+      const eventSuppliers = Array.isArray(data.suppliers)
+        ? data.suppliers.map((item) => ({ ...item, source: "event" }))
+        : [];
 
-      if (!suppliers.length) {
-        alert("Non hai ancora contatti salvati in rubrica generale.\n\nAggiungi un contatto: verrà salvato automaticamente e potrai riutilizzarlo in tutti i progetti.");
+      const globalSuppliers = (await getSavedSuppliers())
+        .map((item) => ({ ...item, source: "global" }));
+
+      const merged = [];
+      const seen = new Set();
+
+      [...eventSuppliers, ...globalSuppliers].forEach((item) => {
+        const key =
+          normalizeSupplierKey(item.name || item.service || "") + "|" +
+          String(item.phone || "").replace(/\D/g, "") + "|" +
+          String(item.email || "").trim().toLowerCase();
+
+        if (!seen.has(key)) {
+          seen.add(key);
+          merged.push(item);
+        }
+      });
+
+      if (!merged.length) {
+        alert(
+          "Non ci sono contatti né nella Rubrica evento né nella Rubrica generale."
+        );
         return;
       }
 
-      const listText = suppliers.map((item, index) => {
-        return (index + 1) + " = " + 
-          (item.service || "Servizio") + " - " + 
-          (item.name || "Nome non indicato") + 
-          (item.phone ? " - " + item.phone : "") + 
-          (item.email ? " - " + item.email : "");
+      const listText = merged.map((item, index) => {
+        const sourceLabel = item.source === "event" ? "evento" : "generale";
+
+        return (index + 1) + " = " +
+          (item.service || "Servizio") + " - " +
+          (item.name || "Nome non indicato") +
+          (item.phone ? " - " + item.phone : "") +
+          (item.email ? " - " + item.email : "") +
+          " [" + sourceLabel + "]";
       }).join("\n");
 
       const choice = prompt(
-        "Scegli un contatto dalla rubrica generale scrivendo il numero:\n\n" + listText,
+        "Scegli un contatto scrivendo il numero:\n\n" + listText,
         "1"
       );
 
@@ -3561,27 +3594,49 @@
 
       const index = Number(choice.trim()) - 1;
 
-      if (isNaN(index) || index < 0 || index >= suppliers.length) {
+      if (!Number.isInteger(index) || index < 0 || index >= merged.length) {
         alert("Scelta non valida.");
         return;
       }
 
-      const selected = suppliers[index];
+      const selected = merged[index];
+
+      if (selected.source === "event") {
+        alert("Questo contatto è già presente nella Rubrica evento.");
+        return;
+      }
+
+      const duplicate = data.suppliers.some((item) => {
+        const a = normalizeSupplierKey(item.name || item.service || "");
+        const b = normalizeSupplierKey(selected.name || selected.service || "");
+
+        const samePhone =
+          selected.phone &&
+          String(item.phone || "").replace(/\D/g, "") ===
+          String(selected.phone || "").replace(/\D/g, "");
+
+        return samePhone || (a && b && (a === b || a.includes(b) || b.includes(a)));
+      });
+
+      if (duplicate) {
+        alert("Questo contatto è già presente nella Rubrica evento.");
+        return;
+      }
 
       data.suppliers.push({
         service: selected.service || "Nuovo fornitore",
         name: selected.name || "Nome non indicato",
-        phone: selected.phone || "Telefono non indicato",
-        email: selected.email || "Email non indicata"
+        phone: selected.phone || "",
+        email: selected.email || ""
       });
 
       renderSuppliers();
-      saveData();
+      await saveData();
 
-      alert("Contatto aggiunto al progetto.");
+      alert("Contatto aggiunto alla Rubrica evento.");
     } catch (error) {
-      console.error("Errore caricamento rubrica fornitori:", error);
-      alert("Errore nel caricamento della rubrica fornitori.");
+      console.error("Errore rubrica fornitori:", error);
+      alert("Errore durante l'apertura della rubrica.");
     }
   }
 
@@ -7247,6 +7302,9 @@
   window.toggleDeadlines = toggleDeadlines;
   window.toggleSuppliers = toggleSuppliers;
   window.editDeadline = editDeadline;
+  window.deleteDeadline = deleteDeadline;
+  window.deleteItemFromSection = deleteItemFromSection;
+  window.clearProjectNotes = clearProjectNotes;
   window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
   window.addSupplier = addSupplier;
