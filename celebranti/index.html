@@ -1101,7 +1101,7 @@
           </div>
         </div>
 
-        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.doc,.docx,.png,.jpg,.jpeg" onchange="importQuestionnaireFile(event)" />
+        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,text/plain" onchange="importQuestionnaireFile(event)" />
 
         <div class="grid-2">
           <div class="card">
@@ -1121,10 +1121,10 @@
                 <h3>Modello importato</h3>
                 <small>Carica il questionario già usato dalla celebrante.</small>
               </div>
-              <span class="pill warn">PDF/DOC/TXT</span>
+              <span class="pill warn">TXT compilabile</span>
             </div>
             <div id="importedModelBox" class="empty">
-              Nessun modello importato. Puoi caricare un file e salvarlo nella cerimonia.
+              Nessun modello importato. Carica un TXT: ogni domanda verrà trasformata in un campo compilabile.
             </div>
           </div>
         </div>
@@ -1560,6 +1560,9 @@
         url: item.url || "",
         storagePath: item.storagePath || "",
         notes: item.notes || "",
+        fileName: item.fileName || "",
+        textContent: item.textContent || "",
+        parsedQuestions: Array.isArray(item.parsedQuestions) ? item.parsedQuestions.filter(Boolean) : [],
         createdAt: item.createdAt || ""
       })) : [];
 
@@ -1884,7 +1887,8 @@
               <div class="row-info">
                 <h3>${escapeHtml(data.importedQuestionnaire.name || "Modello importato")}</h3>
                 <p>${escapeHtml(data.importedQuestionnaire.notes || "File importato nella cerimonia.")}</p>
-                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello</a></p>` : ""}
+                ${data.importedQuestionnaire.questionCount ? `<p><strong>${Number(data.importedQuestionnaire.questionCount)} domande</strong> trasformate in campi compilabili.</p>` : ""}
+                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello TXT</a></p>` : ""}
               </div>
               <div class="row-right"><span class="pill warn">Importato</span></div>
             </div>
@@ -1929,55 +1933,245 @@
       document.getElementById("questionnaireFileInput")?.click();
     }
 
+    function isQuestionnaireHeading(line) {
+      const value = String(line || "").trim().toLowerCase();
+
+      if (!value) return true;
+
+      const headings = [
+        "questionario",
+        "questionario coppia",
+        "questionario conoscitivo",
+        "modello di lavoro",
+        "modello questionario",
+        "domande",
+        "domande per la coppia",
+        "pixelup celebranti",
+        "nome",
+        "nomi",
+        "nome coppia",
+        "nomi della coppia",
+        "data",
+        "data cerimonia",
+        "data della cerimonia",
+        "luogo",
+        "location",
+        "risposta",
+        "risposte"
+      ];
+
+      if (headings.includes(value.replace(/[:\-–—]+$/g, "").trim())) return true;
+
+      if (/^[_\-=*•·.\s]+$/.test(value)) return true;
+      if (/^(pagina|pag\.)\s*\d+/i.test(value)) return true;
+
+      return false;
+    }
+
+    function cleanImportedQuestionLine(line) {
+      return String(line || "")
+        .replace(/^\uFEFF/, "")
+        .replace(/^\s*(?:domanda\s*)?\d{1,3}\s*[\).:\-–—]\s*/i, "")
+        .replace(/^\s*[\-\u2022\u2023\u25E6\u2043\u2219*]\s*/, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function parseQuestionnaireTxt(rawText) {
+      const normalized = String(rawText || "")
+        .replace(/\r\n?/g, "\n")
+        .replace(/\u00A0/g, " ");
+
+      const rawLines = normalized
+        .split("\n")
+        .map((line) => line.trim());
+
+      const hasNumberedQuestions = rawLines.some((line) =>
+        /^(?:domanda\s*)?\d{1,3}\s*[\).:\-–—]\s*\S+/i.test(line)
+      );
+
+      const questions = [];
+      let current = "";
+
+      const pushCurrent = () => {
+        const clean = cleanImportedQuestionLine(current);
+        if (
+          clean &&
+          !isQuestionnaireHeading(clean) &&
+          clean.length >= 4 &&
+          !questions.some((item) => item.toLowerCase() === clean.toLowerCase())
+        ) {
+          questions.push(clean);
+        }
+        current = "";
+      };
+
+      rawLines.forEach((line) => {
+        if (!line) {
+          if (!hasNumberedQuestions) pushCurrent();
+          return;
+        }
+
+        if (isQuestionnaireHeading(line)) return;
+
+        const startsQuestion =
+          /^(?:domanda\s*)?\d{1,3}\s*[\).:\-–—]\s*\S+/i.test(line) ||
+          /^[\-\u2022\u2023\u25E6\u2043\u2219*]\s*\S+/.test(line);
+
+        if (hasNumberedQuestions) {
+          if (startsQuestion) {
+            pushCurrent();
+            current = cleanImportedQuestionLine(line);
+          } else if (current) {
+            current += " " + line;
+          }
+        } else {
+          // Nei TXT con una domanda per riga, ogni riga resta una domanda identica.
+          const clean = cleanImportedQuestionLine(line);
+          if (
+            clean &&
+            !isQuestionnaireHeading(clean) &&
+            clean.length >= 4 &&
+            !questions.some((item) => item.toLowerCase() === clean.toLowerCase())
+          ) {
+            questions.push(clean);
+          }
+        }
+      });
+
+      pushCurrent();
+
+      return questions.slice(0, 100);
+    }
+
+    function buildQuestionObjects(questionTexts) {
+      return questionTexts.map((question) => ({
+        question,
+        answer1: "",
+        answer2: "",
+        type: "testo",
+        visibleToCouple: true
+      }));
+    }
+
+    function chooseQuestionImportMode(foundCount) {
+      if (!data.questions || data.questions.length === 0) return "replace";
+
+      const choice = prompt(
+        "Sono state trovate " + foundCount + " domande.\n\n" +
+        "Scrivi SOSTITUISCI per sostituire le domande attuali.\n" +
+        "Scrivi AGGIUNGI per aggiungerle alle domande esistenti.",
+        "SOSTITUISCI"
+      );
+
+      if (choice === null) return "";
+
+      const normalizedChoice = choice.trim().toUpperCase();
+
+      if (normalizedChoice === "SOSTITUISCI") return "replace";
+      if (normalizedChoice === "AGGIUNGI") return "append";
+
+      alert("Scelta non valida. Scrivi SOSTITUISCI oppure AGGIUNGI.");
+      return "";
+    }
+
+    function applyImportedQuestions(questionTexts, mode) {
+      const newQuestions = buildQuestionObjects(questionTexts);
+
+      if (mode === "replace") {
+        data.questions = newQuestions;
+      } else {
+        data.questions = [...(data.questions || []), ...newQuestions];
+      }
+    }
+
     async function importQuestionnaireFile(event) {
       const file = event.target.files && event.target.files[0];
       event.target.value = "";
       if (!file) return;
 
-      if (!currentEventId) return alert("Apri o crea una cerimonia prima di importare un modello.");
+      if (!currentEventId) {
+        alert("Apri o crea una cerimonia prima di importare un modello.");
+        return;
+      }
 
-      const name = prompt("Nome modello questionario:", file.name);
+      const extension = String(file.name || "").split(".").pop().toLowerCase();
+
+      if (extension !== "txt") {
+        alert(
+          "Per trasformare automaticamente un modello in domande compilabili devi caricare un file TXT.\n\n" +
+          "PDF, DOC e immagini possono essere conservati come allegati, ma non vengono convertiti automaticamente in domande."
+        );
+        return;
+      }
+
+      let rawText = "";
+
+      try {
+        rawText = await file.text();
+      } catch (error) {
+        console.error(error);
+        alert("Non riesco a leggere questo file TXT.");
+        return;
+      }
+
+      const parsedQuestions = parseQuestionnaireTxt(rawText);
+
+      if (!parsedQuestions.length) {
+        alert(
+          "Nel TXT non ho trovato domande valide.\n\n" +
+          "Usa una domanda per riga oppure numerale così:\n" +
+          "1. Prima domanda\n2. Seconda domanda"
+        );
+        return;
+      }
+
+      const preview = parsedQuestions
+        .slice(0, 10)
+        .map((question, index) => (index + 1) + ". " + question)
+        .join("\n");
+
+      const confirmed = confirm(
+        "Ho trovato " + parsedQuestions.length + " domande:\n\n" +
+        preview +
+        (parsedQuestions.length > 10 ? "\n\n...e altre " + (parsedQuestions.length - 10) + "." : "") +
+        "\n\nVuoi importarle nel questionario della coppia?"
+      );
+
+      if (!confirmed) return;
+
+      const importMode = chooseQuestionImportMode(parsedQuestions.length);
+      if (!importMode) return;
+
+      const name = prompt("Nome modello questionario:", file.name.replace(/\.txt$/i, ""));
       if (name === null) return;
 
-      const notes = prompt("Note modello:", "Questionario importato dalla celebrante.");
+      const notes = prompt("Note modello:", "Questionario TXT trasformato in domande compilabili.");
       if (notes === null) return;
 
       try {
         const url = await uploadFileToStorage(file, "questionnaires");
+
         data.importedQuestionnaire = {
           name: name || file.name,
           notes: notes || "",
           url,
           fileName: file.name,
+          fileType: "txt",
+          questionCount: parsedQuestions.length,
           uploadedAt: new Date().toISOString()
         };
 
-        if (file.type === "text/plain") {
-          const text = await file.text();
-          const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-          const confirmQuestions = confirm("Ho trovato " + lines.length + " righe nel TXT. Vuoi trasformarle in domande?");
-          if (confirmQuestions) {
-            lines.slice(0, 60).forEach((line) => {
-              data.questions.push({ question: line, answer1: "", answer2: "", type: "testo", visibleToCouple: true });
-            });
-          }
-        } else {
-          const addBasic = confirm("Vuoi aggiungere alcune domande base insieme al modello importato?");
-          if (addBasic && (!data.questions || data.questions.length === 0)) {
-            data.questions = [
-              { question: "Raccontate la vostra storia d'amore.", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
-              { question: "Quali valori volete trasmettere durante la cerimonia?", answer1: "", answer2: "", type: "testo", visibleToCouple: true },
-              { question: "Ci sono persone o ricordi che desiderate citare?", answer1: "", answer2: "", type: "testo", visibleToCouple: true }
-            ];
-          }
-        }
+        applyImportedQuestions(parsedQuestions, importMode);
 
         renderQuestions();
-        saveData();
-        toast("Modello questionario importato.");
+        renderSummary();
+        await saveData();
+
+        toast(parsedQuestions.length + " domande importate e rese compilabili dalla coppia.");
       } catch (error) {
         console.error(error);
-        alert("Errore importazione modello.");
+        alert("Errore durante l'importazione del modello TXT.");
       }
     }
 
@@ -2187,18 +2381,57 @@
       const file = event.target.files && event.target.files[0];
       event.target.value = "";
       if (!file) return;
-      if (!currentEventId) return alert("Apri o crea una cerimonia prima di caricare modelli.");
+
+      if (!currentEventId) {
+        alert("Apri o crea una cerimonia prima di caricare modelli.");
+        return;
+      }
+
       const name = prompt("Nome modello:", file.name);
       if (name === null) return;
+
       const category = prompt("Categoria modello:", "Questionario / Rito");
       if (category === null) return;
+
       const notes = prompt("Note:", "");
       if (notes === null) return;
+
+      const extension = String(file.name || "").split(".").pop().toLowerCase();
+      let textContent = "";
+      let parsedQuestions = [];
+
+      if (extension === "txt") {
+        try {
+          textContent = await file.text();
+          parsedQuestions = parseQuestionnaireTxt(textContent);
+        } catch (error) {
+          console.error(error);
+          alert("Il modello verrà caricato, ma non è stato possibile leggere il contenuto TXT.");
+        }
+      }
+
       try {
         const url = await uploadFileToStorage(file, "work-models");
-        data.workModels.push({ name: name || file.name, category, notes, url, fileName: file.name, createdAt: new Date().toISOString() });
-        renderWorkModels(); saveData();
-        toast("Modello caricato.");
+
+        data.workModels.push({
+          name: name || file.name,
+          category,
+          notes,
+          url,
+          fileName: file.name,
+          textContent,
+          parsedQuestions,
+          createdAt: new Date().toISOString()
+        });
+
+        renderWorkModels();
+        await saveData();
+
+        if (parsedQuestions.length) {
+          toast("Modello caricato: " + parsedQuestions.length + " domande riconosciute.");
+        } else {
+          toast("Modello caricato.");
+        }
       } catch (error) {
         console.error(error);
         alert("Errore caricamento modello.");
@@ -2208,16 +2441,19 @@
     function renderWorkModels() {
       const list = document.getElementById("workModelsList");
       if (!list) return;
+
       if (!data.workModels || !data.workModels.length) {
         list.innerHTML = `<div class="empty">Nessun modello caricato.</div>`;
         return;
       }
+
       list.innerHTML = data.workModels.map((item, index) => `
         <div class="row">
           <div class="row-icon">▧</div>
           <div class="row-info">
             <h3>${escapeHtml(item.name)}</h3>
             <p>${escapeHtml(item.category || "Modello")} · ${escapeHtml(item.notes || "")}</p>
+            ${item.parsedQuestions && item.parsedQuestions.length ? `<p><strong>${item.parsedQuestions.length} domande TXT riconosciute</strong></p>` : ""}
             <p><a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello</a></p>
           </div>
           <div class="row-right">
@@ -2228,12 +2464,64 @@
       `).join("");
     }
 
-    function useWorkModelAsQuestionnaire(index) {
+    async function useWorkModelAsQuestionnaire(index) {
       const item = data.workModels[index];
-      data.importedQuestionnaire = { name: item.name, notes: item.notes, url: item.url, fileName: item.fileName, uploadedAt: new Date().toISOString() };
+      if (!item) return;
+
+      let parsedQuestions = Array.isArray(item.parsedQuestions)
+        ? item.parsedQuestions.filter(Boolean)
+        : [];
+
+      if (!parsedQuestions.length && item.textContent) {
+        parsedQuestions = parseQuestionnaireTxt(item.textContent);
+      }
+
+      data.importedQuestionnaire = {
+        name: item.name,
+        notes: item.notes,
+        url: item.url,
+        fileName: item.fileName,
+        fileType: parsedQuestions.length ? "txt" : "",
+        questionCount: parsedQuestions.length,
+        uploadedAt: new Date().toISOString()
+      };
+
+      if (parsedQuestions.length) {
+        const preview = parsedQuestions
+          .slice(0, 10)
+          .map((question, questionIndex) => (questionIndex + 1) + ". " + question)
+          .join("\n");
+
+        const confirmed = confirm(
+          "Questo modello contiene " + parsedQuestions.length + " domande:\n\n" +
+          preview +
+          (parsedQuestions.length > 10 ? "\n\n...e altre " + (parsedQuestions.length - 10) + "." : "") +
+          "\n\nVuoi trasformarle in domande compilabili dalla coppia?"
+        );
+
+        if (!confirmed) return;
+
+        const importMode = chooseQuestionImportMode(parsedQuestions.length);
+        if (!importMode) return;
+
+        applyImportedQuestions(parsedQuestions, importMode);
+      } else {
+        alert(
+          "Il modello è stato collegato, ma non contiene domande TXT già riconosciute.\n\n" +
+          "Per trasformarlo automaticamente usa un modello .txt con una domanda per riga."
+        );
+      }
+
       renderQuestions();
-      saveData();
-      toast("Modello collegato al questionario.");
+      renderSummary();
+      await saveData();
+
+      toast(
+        parsedQuestions.length
+          ? parsedQuestions.length + " domande applicate al questionario."
+          : "Modello collegato al questionario."
+      );
+
       openSectionById("questionsSection");
     }
 
