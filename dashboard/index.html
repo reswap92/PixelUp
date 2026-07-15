@@ -3581,6 +3581,11 @@
         const timelineCount = Array.isArray(project.timeline) ? project.timeline.length : 0;
         const dateText = project.weddingDate ? new Date(project.weddingDate).toLocaleDateString("it-IT") : "Data non indicata";
         const eventPageUrl = String(project.eventPageUrl || "").trim();
+        const safeEventPageUrl = eventPageUrl
+          .replaceAll("&", "&amp;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;");
         const percent = total > 0 ? Math.round((paid / total) * 100) : 0;
 
         list.innerHTML += `
@@ -3611,9 +3616,24 @@
                   Link sposi
                 </button>
 
-                <button class="project-pill-btn" type="button" onclick="openEventPage('${id}', '${name.replaceAll("'", "\\'")}')">
-                  Apri pagina evento
-                </button>
+                ${eventPageUrl ? `
+                  <a
+                    class="project-pill-btn"
+                    href="${safeEventPageUrl}"
+                    target="_self"
+                    rel="noopener"
+                  >
+                    Apri pagina evento
+                  </a>
+                ` : `
+                  <button
+                    class="project-pill-btn"
+                    type="button"
+                    onclick="openEventPage('${id}', '${name.replaceAll("'", "\\'")}')"
+                  >
+                    Collega pagina evento
+                  </button>
+                `}
 
                 <button class="project-pill-btn danger" type="button" onclick="deleteProject('${id}', '${name.replaceAll("'", "\\'")}')">
                   Elimina
@@ -3662,11 +3682,43 @@
       return;
     }
 
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    let eventWindow = null;
+
+    /*
+      Android e desktop: prova ad aprire una nuova scheda.
+      iPhone/iPad: usa la stessa scheda, perché Safari può bloccare
+      l'apertura successiva di una nuova finestra dopo la lettura Firebase.
+    */
+    if (!isIOS) {
+      eventWindow = window.open("", "_blank");
+
+      if (eventWindow) {
+        eventWindow.document.write(`
+          <!DOCTYPE html>
+          <html lang="it">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Apertura pagina evento...</title>
+            </head>
+            <body style="font-family:Arial,sans-serif;text-align:center;padding:40px 20px;color:#344028;">
+              <p>Stai aprendo la pagina evento...</p>
+            </body>
+          </html>
+        `);
+        eventWindow.document.close();
+      }
+    }
+
     try {
       const projectRef = doc(db, "weddingEvents", projectId);
       const projectSnap = await getDoc(projectRef);
 
       if (!projectSnap.exists()) {
+        if (eventWindow) eventWindow.close();
         alert("Progetto non trovato.");
         return;
       }
@@ -3675,7 +3727,13 @@
       const currentLink = String(projectData.eventPageUrl || "").trim();
 
       if (currentLink) {
-        window.open(currentLink, "_blank");
+        if (isIOS) {
+          window.location.href = currentLink;
+        } else if (eventWindow) {
+          eventWindow.location.href = currentLink;
+        } else {
+          window.location.href = currentLink;
+        }
         return;
       }
 
@@ -3684,11 +3742,15 @@
         ""
       );
 
-      if (newLink === null) return;
+      if (newLink === null) {
+        if (eventWindow) eventWindow.close();
+        return;
+      }
 
       const cleanLink = normalizeEventPageUrl(newLink);
 
       if (!cleanLink) {
+        if (eventWindow) eventWindow.close();
         alert("Nessun link inserito.");
         return;
       }
@@ -3702,11 +3764,16 @@
         data.eventPageUrl = cleanLink;
       }
 
-      alert("Pagina evento collegata correttamente.");
-      window.open(cleanLink, "_blank");
-      await showProjectsList();
+      if (isIOS) {
+        window.location.href = cleanLink;
+      } else if (eventWindow) {
+        eventWindow.location.href = cleanLink;
+      } else {
+        window.location.href = cleanLink;
+      }
 
     } catch (error) {
+      if (eventWindow) eventWindow.close();
       console.error("Errore apertura pagina evento:", error);
       alert("Errore durante l'apertura della pagina evento.");
     }
