@@ -153,7 +153,7 @@
     }
 
     .upload-box {
-      border: 1.5px dashed rgba(177,145,85,.62);
+      border: 1px solid rgba(218,205,184,.88);
       border-radius: 20px;
       background: rgba(255,252,246,.76);
       padding: 25px 16px;
@@ -293,6 +293,124 @@
       line-height: 1.45;
     }
 
+    .gallery-section {
+      margin-top: 22px;
+    }
+
+    .gallery-title {
+      text-align: center;
+      color: var(--green-dark);
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .gallery-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .gallery-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(177,145,85,.5) transparent;
+    }
+
+    .gallery-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gallery-scroll::-webkit-scrollbar-thumb {
+      background: rgba(177,145,85,.5);
+      border-radius: 999px;
+    }
+
+    .gallery-item {
+      flex: 0 0 78%;
+      max-width: 360px;
+      scroll-snap-align: center;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,252,246,.96);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .gallery-image-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #eee;
+      overflow: hidden;
+    }
+
+    .gallery-image-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .gallery-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .gallery-action-btn {
+      min-height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(177,145,85,.42);
+      background: rgba(255,252,246,.96);
+      color: var(--green-dark);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .gallery-action-btn.download {
+      background: linear-gradient(135deg, var(--green), #3c472d);
+      color: white;
+      border-color: rgba(214,193,145,.95);
+    }
+
+    .gallery-empty,
+    .gallery-loading {
+      width: 100%;
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 24px 10px;
+      line-height: 1.45;
+    }
+
+    .refresh-gallery {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(177,145,85,.45);
+      background: rgba(255,252,246,.92);
+      color: var(--green-dark);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
     @media (max-width: 390px) {
       .preview-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -361,6 +479,21 @@
           Non chiudere la pagina durante il caricamento. Le fotografie verranno conservate su PixelUp.
         </div>
       </div>
+
+      <div class="card gallery-section">
+        <h2 class="gallery-title">Galleria del matrimonio</h2>
+        <p class="gallery-subtitle">
+          Scorri le fotografie condivise dagli invitati.
+        </p>
+
+        <div class="gallery-scroll" id="galleryScroll">
+          <div class="gallery-loading">Caricamento fotografie...</div>
+        </div>
+
+        <button class="refresh-gallery" id="refreshGalleryButton" type="button">
+          Aggiorna galleria
+        </button>
+      </div>
     </section>
   </main>
 
@@ -370,7 +503,8 @@
       getStorage,
       ref,
       uploadBytesResumable,
-      getDownloadURL
+      getDownloadURL,
+      listAll
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
     const firebaseConfig = {
@@ -394,6 +528,8 @@
     const progressBar = document.getElementById("progressBar");
     const messageBox = document.getElementById("messageBox");
     const guestName = document.getElementById("guestName");
+    const galleryScroll = document.getElementById("galleryScroll");
+    const refreshGalleryButton = document.getElementById("refreshGalleryButton");
 
     let selectedFiles = [];
 
@@ -508,6 +644,116 @@
       });
     }
 
+    async function collectImageRefs(folderRef) {
+      const result = await listAll(folderRef);
+      let files = [...result.items];
+
+      for (const prefix of result.prefixes) {
+        const nestedFiles = await collectImageRefs(prefix);
+        files = files.concat(nestedFiles);
+      }
+
+      return files;
+    }
+
+    async function downloadGalleryPhoto(url, fileName, index) {
+      const safeFileName = fileName || ("foto-federica-daniele-" + (index + 1) + ".jpg");
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Download non disponibile");
+
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = blobUrl;
+        link.download = safeFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
+      } catch (error) {
+        console.error("Errore download fotografia:", error);
+
+        // Su alcuni iPhone il browser non forza il download:
+        // apre quindi la foto a schermo intero, da cui può essere salvata nella galleria.
+        window.open(url, "_blank", "noopener,noreferrer");
+        alert("La foto è stata aperta. Sul telefono tieni premuto sull’immagine e scegli “Salva in Foto” o “Scarica immagine”.");
+      }
+    }
+
+    window.downloadGalleryPhoto = downloadGalleryPhoto;
+
+    async function loadGallery() {
+      galleryScroll.innerHTML = '<div class="gallery-loading">Caricamento fotografie...</div>';
+      refreshGalleryButton.disabled = true;
+
+      try {
+        const galleryRoot = ref(
+          storage,
+          "pixelup-documents/public/federica-daniele/foto-matrimonio"
+        );
+
+        const fileRefs = await collectImageRefs(galleryRoot);
+
+        if (!fileRefs.length) {
+          galleryScroll.innerHTML =
+            '<div class="gallery-empty">Non ci sono ancora fotografie. Sii il primo a condividere uno scatto.</div>';
+          return;
+        }
+
+        const urls = await Promise.all(
+          fileRefs.map(async (fileRef) => ({
+            url: await getDownloadURL(fileRef),
+            name: fileRef.name
+          }))
+        );
+
+        galleryScroll.innerHTML = urls.reverse().map((item, index) => `
+          <article class="gallery-item">
+            <a
+              class="gallery-image-wrap"
+              href="${item.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Apri fotografia"
+            >
+              <img src="${item.url}" alt="Fotografia matrimonio Federica e Daniele" loading="lazy">
+            </a>
+
+            <div class="gallery-actions">
+              <a
+                class="gallery-action-btn"
+                href="${item.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                🔍 Apri
+              </a>
+
+              <button
+                class="gallery-action-btn download"
+                type="button"
+                onclick="downloadGalleryPhoto('${item.url}', '${item.name || "foto-matrimonio.jpg"}', ${index})"
+              >
+                ⬇ Scarica
+              </button>
+            </div>
+          </article>
+        `).join("");
+      } catch (error) {
+        console.error("Errore caricamento galleria:", error);
+        galleryScroll.innerHTML =
+          '<div class="gallery-empty">Non è stato possibile caricare la galleria. Riprova tra poco.</div>';
+      } finally {
+        refreshGalleryButton.disabled = false;
+      }
+    }
+
+    refreshGalleryButton.addEventListener("click", loadGallery);
+
     uploadButton.addEventListener("click", async () => {
       if (!selectedFiles.length) return;
 
@@ -543,6 +789,7 @@
         selectedFiles = [];
         photoInput.value = "";
         previewGrid.innerHTML = "";
+        await loadGallery();
       } catch (error) {
         console.error("Errore caricamento fotografie:", error);
         showMessage(
@@ -553,6 +800,8 @@
         uploadButton.disabled = selectedFiles.length === 0;
       }
     });
+
+    loadGallery();
   </script>
 </body>
 </html>
