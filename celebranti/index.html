@@ -1101,7 +1101,7 @@
           </div>
         </div>
 
-        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,text/plain" onchange="importQuestionnaireFile(event)" />
+        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg" onchange="importQuestionnaireFile(event)" />
 
         <div class="grid-2">
           <div class="card">
@@ -1121,10 +1121,10 @@
                 <h3>Modello importato</h3>
                 <small>Carica il questionario già usato dalla celebrante.</small>
               </div>
-              <span class="pill warn">TXT compilabile</span>
+              <span class="pill warn">PDF · DOCX · TXT · Immagini</span>
             </div>
             <div id="importedModelBox" class="empty">
-              Nessun modello importato. Carica un TXT: ogni domanda verrà trasformata in un campo compilabile.
+              Nessun modello importato. Carica PDF, DOCX, TXT o immagine: PixelUp estrarrà le domande e le renderà compilabili.
             </div>
           </div>
         </div>
@@ -1355,6 +1355,9 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
@@ -1561,8 +1564,10 @@
         storagePath: item.storagePath || "",
         notes: item.notes || "",
         fileName: item.fileName || "",
+        fileType: item.fileType || "",
         textContent: item.textContent || "",
         parsedQuestions: Array.isArray(item.parsedQuestions) ? item.parsedQuestions.filter(Boolean) : [],
+        extractionError: item.extractionError || "",
         createdAt: item.createdAt || ""
       })) : [];
 
@@ -1888,7 +1893,7 @@
                 <h3>${escapeHtml(data.importedQuestionnaire.name || "Modello importato")}</h3>
                 <p>${escapeHtml(data.importedQuestionnaire.notes || "File importato nella cerimonia.")}</p>
                 ${data.importedQuestionnaire.questionCount ? `<p><strong>${Number(data.importedQuestionnaire.questionCount)} domande</strong> trasformate in campi compilabili.</p>` : ""}
-                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello TXT</a></p>` : ""}
+                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello originale</a></p>` : ""}
               </div>
               <div class="row-right"><span class="pill warn">Importato</span></div>
             </div>
@@ -2085,6 +2090,97 @@
       }
     }
 
+    function fileExtension(file) {
+      return String(file?.name || "").split(".").pop().toLowerCase();
+    }
+
+    async function extractTextFromPdf(file) {
+      if (!window.pdfjsLib) throw new Error("Libreria PDF non disponibile.");
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+      const buffer = await file.arrayBuffer();
+      const pdf = await window.pdfjsLib.getDocument({ data: buffer }).promise;
+      const textParts = [];
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        toast("Lettura PDF: pagina " + pageNumber + " di " + pdf.numPages);
+        const page = await pdf.getPage(pageNumber);
+        const content = await page.getTextContent();
+        const pageText = content.items.map((item) => item.str).join(" ").trim();
+        if (pageText) textParts.push(pageText);
+      }
+
+      const extracted = textParts.join("\n").trim();
+      if (extracted.length >= 30) return extracted;
+
+      // Se il PDF è una scansione, usa OCR pagina per pagina.
+      const ocrParts = [];
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        toast("OCR PDF: pagina " + pageNumber + " di " + pdf.numPages);
+        const page = await pdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: 1.7 });
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        canvas.width = Math.ceil(viewport.width);
+        canvas.height = Math.ceil(viewport.height);
+        await page.render({ canvasContext: context, viewport }).promise;
+        const result = await window.Tesseract.recognize(canvas, "ita");
+        if (result?.data?.text) ocrParts.push(result.data.text);
+      }
+      return ocrParts.join("\n").trim();
+    }
+
+    async function extractTextFromDocx(file) {
+      if (!window.mammoth) throw new Error("Libreria DOCX non disponibile.");
+      const buffer = await file.arrayBuffer();
+      const result = await window.mammoth.extractRawText({ arrayBuffer: buffer });
+      return String(result.value || "").trim();
+    }
+
+    async function extractTextFromImage(file) {
+      if (!window.Tesseract) throw new Error("Libreria OCR non disponibile.");
+      toast("Riconoscimento del testo nell’immagine...");
+      const result = await window.Tesseract.recognize(file, "ita");
+      return String(result?.data?.text || "").trim();
+    }
+
+    async function extractTextFromModel(file) {
+      const extension = fileExtension(file);
+      const mime = String(file.type || "").toLowerCase();
+
+      if (extension === "txt" || mime === "text/plain") {
+        return await file.text();
+      }
+
+      if (extension === "pdf" || mime === "application/pdf") {
+        return await extractTextFromPdf(file);
+      }
+
+      if (extension === "docx" || mime.includes("officedocument.wordprocessingml.document")) {
+        return await extractTextFromDocx(file);
+      }
+
+      if (["png", "jpg", "jpeg"].includes(extension) || mime.startsWith("image/")) {
+        return await extractTextFromImage(file);
+      }
+
+      if (extension === "doc") {
+        throw new Error("Il vecchio formato .DOC non può essere letto direttamente dal browser. Salvalo come .DOCX o PDF.");
+      }
+
+      throw new Error("Formato non supportato. Usa PDF, DOCX, TXT, PNG, JPG o JPEG.");
+    }
+
+    function modelTypeLabel(file) {
+      const extension = fileExtension(file);
+      if (extension === "pdf") return "PDF";
+      if (extension === "docx") return "DOCX";
+      if (extension === "txt") return "TXT";
+      if (["png", "jpg", "jpeg"].includes(extension)) return "Immagine OCR";
+      return extension.toUpperCase() || "File";
+    }
+
     async function importQuestionnaireFile(event) {
       const file = event.target.files && event.target.files[0];
       event.target.value = "";
@@ -2095,85 +2191,70 @@
         return;
       }
 
-      const extension = String(file.name || "").split(".").pop().toLowerCase();
-
-      if (extension !== "txt") {
-        alert(
-          "Per trasformare automaticamente un modello in domande compilabili devi caricare un file TXT.\n\n" +
-          "PDF, DOC e immagini possono essere conservati come allegati, ma non vengono convertiti automaticamente in domande."
-        );
-        return;
-      }
-
       let rawText = "";
-
       try {
-        rawText = await file.text();
+        toast("Analisi del modello in corso...");
+        rawText = await extractTextFromModel(file);
       } catch (error) {
         console.error(error);
-        alert("Non riesco a leggere questo file TXT.");
+        alert(error.message || "Non è stato possibile leggere questo modello.");
         return;
       }
 
       const parsedQuestions = parseQuestionnaireTxt(rawText);
-
       if (!parsedQuestions.length) {
         alert(
-          "Nel TXT non ho trovato domande valide.\n\n" +
-          "Usa una domanda per riga oppure numerale così:\n" +
-          "1. Prima domanda\n2. Seconda domanda"
+          "PixelUp ha letto il documento, ma non ha riconosciuto domande valide.\n\n" +
+          "Controlla che le domande siano numerate oppure separate su righe diverse."
         );
         return;
       }
 
-      const preview = parsedQuestions
-        .slice(0, 10)
+      const preview = parsedQuestions.slice(0, 10)
         .map((question, index) => (index + 1) + ". " + question)
         .join("\n");
 
       const confirmed = confirm(
-        "Ho trovato " + parsedQuestions.length + " domande:\n\n" +
+        "PixelUp ha riconosciuto " + parsedQuestions.length + " domande da " + modelTypeLabel(file) + ":\n\n" +
         preview +
         (parsedQuestions.length > 10 ? "\n\n...e altre " + (parsedQuestions.length - 10) + "." : "") +
-        "\n\nVuoi importarle nel questionario della coppia?"
+        "\n\nVuoi trasformarle in domande compilabili dalla coppia?"
       );
-
       if (!confirmed) return;
 
       const importMode = chooseQuestionImportMode(parsedQuestions.length);
       if (!importMode) return;
 
-      const name = prompt("Nome modello questionario:", file.name.replace(/\.txt$/i, ""));
+      const name = prompt("Nome modello questionario:", file.name.replace(/\.[^.]+$/i, ""));
       if (name === null) return;
-
-      const notes = prompt("Note modello:", "Questionario TXT trasformato in domande compilabili.");
+      const notes = prompt("Note modello:", "Modello originale conservato e convertito automaticamente in domande compilabili.");
       if (notes === null) return;
 
       try {
         const url = await uploadFileToStorage(file, "questionnaires");
-
         data.importedQuestionnaire = {
           name: name || file.name,
           notes: notes || "",
           url,
           fileName: file.name,
-          fileType: "txt",
+          fileType: modelTypeLabel(file),
+          extractedText: rawText,
           questionCount: parsedQuestions.length,
           uploadedAt: new Date().toISOString()
         };
 
         applyImportedQuestions(parsedQuestions, importMode);
-
         renderQuestions();
         renderSummary();
         await saveData();
-
-        toast(parsedQuestions.length + " domande importate e rese compilabili dalla coppia.");
+        toast(parsedQuestions.length + " domande create dal modello.");
       } catch (error) {
         console.error(error);
-        alert("Errore durante l'importazione del modello TXT.");
+        alert("Le domande sono state riconosciute, ma il file originale non è stato caricato. Controlla le regole Storage.");
       }
     }
+
+
 
     function renderAppointments() {
       const list = document.getElementById("appointmentsList");
@@ -2389,38 +2470,36 @@
 
       const name = prompt("Nome modello:", file.name);
       if (name === null) return;
-
       const category = prompt("Categoria modello:", "Questionario / Rito");
       if (category === null) return;
-
       const notes = prompt("Note:", "");
       if (notes === null) return;
 
-      const extension = String(file.name || "").split(".").pop().toLowerCase();
       let textContent = "";
       let parsedQuestions = [];
+      let extractionError = "";
 
-      if (extension === "txt") {
-        try {
-          textContent = await file.text();
-          parsedQuestions = parseQuestionnaireTxt(textContent);
-        } catch (error) {
-          console.error(error);
-          alert("Il modello verrà caricato, ma non è stato possibile leggere il contenuto TXT.");
-        }
+      try {
+        toast("Analisi automatica del modello...");
+        textContent = await extractTextFromModel(file);
+        parsedQuestions = parseQuestionnaireTxt(textContent);
+      } catch (error) {
+        console.error(error);
+        extractionError = error.message || "Testo non estratto";
       }
 
       try {
         const url = await uploadFileToStorage(file, "work-models");
-
         data.workModels.push({
           name: name || file.name,
           category,
           notes,
           url,
           fileName: file.name,
+          fileType: modelTypeLabel(file),
           textContent,
           parsedQuestions,
+          extractionError,
           createdAt: new Date().toISOString()
         });
 
@@ -2429,14 +2508,17 @@
 
         if (parsedQuestions.length) {
           toast("Modello caricato: " + parsedQuestions.length + " domande riconosciute.");
+        } else if (extractionError) {
+          alert("Il file originale è stato caricato, ma non è stato convertito: " + extractionError);
         } else {
-          toast("Modello caricato.");
+          alert("Il file è stato caricato, ma non sono state riconosciute domande.");
         }
       } catch (error) {
         console.error(error);
-        alert("Errore caricamento modello.");
+        alert("Errore caricamento modello. Controlla le regole Firebase Storage.");
       }
     }
+
 
     function renderWorkModels() {
       const list = document.getElementById("workModelsList");
@@ -2453,7 +2535,7 @@
           <div class="row-info">
             <h3>${escapeHtml(item.name)}</h3>
             <p>${escapeHtml(item.category || "Modello")} · ${escapeHtml(item.notes || "")}</p>
-            ${item.parsedQuestions && item.parsedQuestions.length ? `<p><strong>${item.parsedQuestions.length} domande TXT riconosciute</strong></p>` : ""}
+            ${item.parsedQuestions && item.parsedQuestions.length ? `<p><strong>${item.parsedQuestions.length} domande riconosciute automaticamente</strong></p>` : ""}${item.extractionError ? `<p style="color:#8a3540;">${escapeHtml(item.extractionError)}</p>` : ""}
             <p><a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello</a></p>
           </div>
           <div class="row-right">
