@@ -411,6 +411,108 @@
       cursor: pointer;
     }
 
+    .photo-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(15, 13, 12, 0.94);
+      padding: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-modal.show {
+      display: flex;
+    }
+
+    .photo-modal-card {
+      width: min(760px, 100%);
+      max-height: 94vh;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .photo-modal-image-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #111;
+    }
+
+    .photo-modal-image {
+      max-width: 100%;
+      max-height: 76vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .photo-modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+    }
+
+    .photo-modal-btn {
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.10);
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .photo-modal-btn.like.active {
+      background: rgba(194, 59, 87, .92);
+      border-color: rgba(255,255,255,.32);
+    }
+
+    .photo-modal-btn.save {
+      background: linear-gradient(135deg, var(--green), #3c472d);
+      border-color: rgba(214,193,145,.75);
+    }
+
+    .photo-modal-btn.close {
+      background: rgba(255,255,255,.16);
+    }
+
+    .like-count-badge {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      min-width: 42px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(20,20,20,.72);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(5px);
+    }
+
+    .gallery-image-wrap {
+      position: relative;
+      display: block;
+    }
+
     @media (max-width: 390px) {
       .preview-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -418,6 +520,18 @@
 
       h1 {
         font-size: 38px;
+      }
+
+      .photo-modal {
+        padding: 10px;
+      }
+
+      .photo-modal-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-modal-image {
+        max-height: 70vh;
       }
     }
   </style>
@@ -497,8 +611,37 @@
     </section>
   </main>
 
+  <div class="photo-modal" id="photoModal" aria-hidden="true">
+    <div class="photo-modal-card">
+      <div class="photo-modal-image-wrap">
+        <img class="photo-modal-image" id="photoModalImage" alt="Fotografia matrimonio">
+      </div>
+
+      <div class="photo-modal-actions">
+        <button class="photo-modal-btn like" id="photoLikeButton" type="button">
+          ♡ Mi piace <span id="photoLikeCount">0</span>
+        </button>
+
+        <button class="photo-modal-btn save" id="photoSaveButton" type="button">
+          ⬇ Salva foto
+        </button>
+
+        <button class="photo-modal-btn close" id="photoCloseButton" type="button">
+          ✕ Chiudi
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      runTransaction
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
     import {
       getStorage,
       ref,
@@ -519,6 +662,7 @@
 
     const app = initializeApp(firebaseConfig);
     const storage = getStorage(app);
+    const db = getFirestore(app);
 
     const photoInput = document.getElementById("photoInput");
     const previewGrid = document.getElementById("previewGrid");
@@ -530,8 +674,15 @@
     const guestName = document.getElementById("guestName");
     const galleryScroll = document.getElementById("galleryScroll");
     const refreshGalleryButton = document.getElementById("refreshGalleryButton");
+    const photoModal = document.getElementById("photoModal");
+    const photoModalImage = document.getElementById("photoModalImage");
+    const photoLikeButton = document.getElementById("photoLikeButton");
+    const photoLikeCount = document.getElementById("photoLikeCount");
+    const photoSaveButton = document.getElementById("photoSaveButton");
+    const photoCloseButton = document.getElementById("photoCloseButton");
 
     let selectedFiles = [];
+    let currentModalPhoto = null;
 
     function safeName(value) {
       return String(value || "invitato")
@@ -686,6 +837,112 @@
 
     window.downloadGalleryPhoto = downloadGalleryPhoto;
 
+    function photoIdFromPath(fullPath) {
+      return btoa(unescape(encodeURIComponent(fullPath)))
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
+    }
+
+    function likedStorageKey(photoId) {
+      return "pixelup_liked_photo_" + photoId;
+    }
+
+    async function getPhotoLikeCount(photoId) {
+      try {
+        const snap = await getDoc(doc(db, "photoLikes", photoId));
+        return snap.exists() ? Number(snap.data().count || 0) : 0;
+      } catch (error) {
+        console.error("Errore lettura like:", error);
+        return 0;
+      }
+    }
+
+    async function togglePhotoLike() {
+      if (!currentModalPhoto) return;
+
+      const photoId = currentModalPhoto.photoId;
+      const alreadyLiked = localStorage.getItem(likedStorageKey(photoId)) === "true";
+
+      if (alreadyLiked) {
+        alert("Hai già messo Mi piace a questa foto da questo dispositivo.");
+        return;
+      }
+
+      try {
+        const likeRef = doc(db, "photoLikes", photoId);
+
+        const newCount = await runTransaction(db, async (transaction) => {
+          const snap = await transaction.get(likeRef);
+          const currentCount = snap.exists() ? Number(snap.data().count || 0) : 0;
+          const nextCount = currentCount + 1;
+
+          transaction.set(likeRef, {
+            count: nextCount,
+            eventId: "federica-daniele",
+            photoPath: currentModalPhoto.fullPath,
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+
+          return nextCount;
+        });
+
+        localStorage.setItem(likedStorageKey(photoId), "true");
+        photoLikeCount.textContent = newCount;
+        photoLikeButton.classList.add("active");
+        photoLikeButton.firstChild.textContent = "♥ Mi piace ";
+        const badge = document.getElementById("likeBadge-" + photoId);
+        if (badge) badge.innerHTML = "♥ " + newCount;
+      } catch (error) {
+        console.error("Errore salvataggio like:", error);
+        alert("Non è stato possibile registrare il Mi piace. Controlla le regole Firestore.");
+      }
+    }
+
+    async function openPhotoModal(url, fileName, fullPath, photoId) {
+      currentModalPhoto = { url, fileName, fullPath, photoId };
+      photoModalImage.src = url;
+      photoModal.classList.add("show");
+      photoModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      const count = await getPhotoLikeCount(photoId);
+      photoLikeCount.textContent = count;
+
+      const alreadyLiked = localStorage.getItem(likedStorageKey(photoId)) === "true";
+      photoLikeButton.classList.toggle("active", alreadyLiked);
+      photoLikeButton.firstChild.textContent = alreadyLiked ? "♥ Mi piace " : "♡ Mi piace ";
+    }
+
+    function closePhotoModal() {
+      photoModal.classList.remove("show");
+      photoModal.setAttribute("aria-hidden", "true");
+      photoModalImage.src = "";
+      currentModalPhoto = null;
+      document.body.style.overflow = "";
+    }
+
+    photoLikeButton.addEventListener("click", togglePhotoLike);
+    photoSaveButton.addEventListener("click", () => {
+      if (!currentModalPhoto) return;
+      downloadGalleryPhoto(
+        currentModalPhoto.url,
+        currentModalPhoto.fileName,
+        0
+      );
+    });
+    photoCloseButton.addEventListener("click", closePhotoModal);
+
+    photoModal.addEventListener("click", (event) => {
+      if (event.target === photoModal) closePhotoModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closePhotoModal();
+    });
+
+    window.openPhotoModal = openPhotoModal;
+
     async function loadGallery() {
       galleryScroll.innerHTML = '<div class="gallery-loading">Caricamento fotografie...</div>';
       refreshGalleryButton.disabled = true;
@@ -705,42 +962,37 @@
         }
 
         const urls = await Promise.all(
-          fileRefs.map(async (fileRef) => ({
-            url: await getDownloadURL(fileRef),
-            name: fileRef.name
-          }))
+          fileRefs.map(async (fileRef) => {
+            const photoId = photoIdFromPath(fileRef.fullPath);
+            return {
+              url: await getDownloadURL(fileRef),
+              name: fileRef.name,
+              fullPath: fileRef.fullPath,
+              photoId,
+              likeCount: await getPhotoLikeCount(photoId)
+            };
+          })
         );
 
-        galleryScroll.innerHTML = urls.reverse().map((item, index) => `
+        galleryScroll.innerHTML = urls.reverse().map((item) => `
           <article class="gallery-item">
-            <a
+            <button
               class="gallery-image-wrap"
-              href="${item.url}"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Apri fotografia"
+              type="button"
+              onclick="openPhotoModal(
+                '${item.url}',
+                '${item.name || "foto-matrimonio.jpg"}',
+                '${item.fullPath}',
+                '${item.photoId}'
+              )"
+              aria-label="Apri fotografia a schermo intero"
+              style="border:0;padding:0;cursor:pointer;width:100%;"
             >
               <img src="${item.url}" alt="Fotografia matrimonio Federica e Daniele" loading="lazy">
-            </a>
-
-            <div class="gallery-actions">
-              <a
-                class="gallery-action-btn"
-                href="${item.url}"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                🔍 Apri
-              </a>
-
-              <button
-                class="gallery-action-btn download"
-                type="button"
-                onclick="downloadGalleryPhoto('${item.url}', '${item.name || "foto-matrimonio.jpg"}', ${index})"
-              >
-                ⬇ Scarica
-              </button>
-            </div>
+              <span class="like-count-badge" id="likeBadge-${item.photoId}">
+                ♥ ${item.likeCount}
+              </span>
+            </button>
           </article>
         `).join("");
       } catch (error) {
