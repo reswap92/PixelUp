@@ -959,7 +959,383 @@
         justify-content: flex-start;
       }
     }
-  </style>
+  
+/* ==========================================================
+   PIXELUP CELEBRANTI — LAYOUT COMPATTO STILE DASHBOARD WEDDING
+   Mantiene colori, immagine e funzioni originali.
+   ========================================================== */
+
+body{
+  background:linear-gradient(180deg,#fff8f0 0%,#fbefe5 55%,#fff7fb 100%);
+}
+
+.desktop-shell{
+  display:block;
+  width:100%;
+  max-width:540px;
+  min-height:100vh;
+  margin:0 auto;
+  background:linear-gradient(180deg,#fffaf4 0%,#fbefe5 48%,#fff8f5 100%);
+  box-shadow:0 0 70px rgba(43,25,51,.10);
+  overflow:hidden;
+  position:relative;
+}
+
+.sidebar{
+  display:none !important;
+}
+
+.main{
+  padding:0 0 38px;
+  min-width:0;
+}
+
+.topbar{
+  height:66px;
+  padding:0 18px;
+  margin:0;
+  position:sticky;
+  top:0;
+  z-index:80;
+  background:rgba(255,252,248,.97);
+  border-bottom:1px solid rgba(111,74,142,.14);
+  backdrop-filter:blur(9px);
+  box-shadow:0 5px 18px rgba(43,25,51,.05);
+}
+
+.mobile-menu-btn{
+  display:grid !important;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid rgba(198,154,72,.52);
+  background:rgba(255,255,255,.72);
+  color:var(--purple);
+  font-size:22px;
+  flex:0 0 auto;
+}
+
+.page-title{
+  flex:1;
+  text-align:center;
+  min-width:0;
+  padding:0 8px;
+}
+
+.page-title h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;
+  font-weight:400;
+  line-height:1.05;
+  letter-spacing:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:var(--purple-dark);
+}
+
+.page-title p{
+  font-size:11px;
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.top-actions{
+  display:flex;
+  flex:0 0 auto;
+}
+
+.top-actions .btn{
+  display:none;
+}
+
+.top-actions .btn:nth-child(2){
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  min-height:38px;
+  padding:0;
+  border-radius:50%;
+  font-size:0;
+  background:rgba(111,74,142,.08);
+  border:1px solid rgba(111,74,142,.22);
+  box-shadow:none;
+}
+
+.top-actions .btn:nth-child(2)::before{
+  content:"♡";
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:22px;
+  color:var(--purple);
+}
+
+.section{
+  padding:18px 20px 0;
+}
+
+#overviewSection{
+  padding:0;
+}
+
+.hero-grid{
+  display:block;
+  margin:0;
+}
+
+.overview-card{
+  min-height:310px;
+  border-radius:0;
+  border:0;
+  padding:42px 24px 76px;
+  color:white;
+  background:
+    linear-gradient(180deg,rgba(35,18,43,.22) 0%,rgba(35,18,43,.55) 100%),
+    var(--hero-image) center/cover no-repeat;
+  box-shadow:none;
+  text-align:center;
+}
+
+.overview-card::after{
+  content:"";
+  left:-8%;
+  right:auto;
+  bottom:-1px;
+  width:116%;
+  height:58px;
+  background:var(--cream);
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  z-index:1;
+}
+
+.project-name{
+  position:relative;
+  z-index:2;
+}
+
+.project-name small{
+  color:#f0c97b;
+}
+
+.project-name h2{
+  color:white;
+  font-size:clamp(38px,10vw,52px);
+  text-shadow:0 4px 18px rgba(0,0,0,.30);
+}
+
+.project-name p{
+  color:rgba(255,255,255,.92);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.stats-grid{
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:24px;
+}
+
+.stat{
+  min-height:98px;
+  padding:13px 10px;
+  background:rgba(255,255,255,.90);
+  text-align:center;
+}
+
+.stat .stat-ico{
+  margin:0 auto 8px;
+}
+
+.stat strong{
+  font-size:22px;
+}
+
+.couple-access{
+  margin:18px 20px 0;
+  min-height:0;
+  border-radius:22px;
+  padding:18px;
+}
+
+.couple-access h3{
+  font-size:24px;
+}
+
+#overviewSection > .grid-3,
+#overviewSection > .section-head,
+#overviewSection > .card{
+  margin-left:20px;
+  margin-right:20px;
+}
+
+.grid-2,
+.grid-3{
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.section-head{
+  align-items:flex-start;
+  margin:12px 0 12px;
+  flex-direction:column;
+}
+
+.section-head h2{
+  font-size:26px;
+}
+
+.section-actions{
+  width:100%;
+  justify-content:flex-start;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.section-actions .btn{
+  width:100%;
+  padding:0 10px;
+  min-height:44px;
+}
+
+.card{
+  border-radius:20px;
+  padding:16px;
+}
+
+.row{
+  grid-template-columns:46px 1fr;
+}
+
+.row-right{
+  grid-column:1 / -1;
+  width:100%;
+  min-width:0;
+  justify-content:flex-start;
+  padding-left:58px;
+}
+
+.stats-grid,
+.summary-grid{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.form-grid{
+  grid-template-columns:1fr;
+}
+
+.full{
+  grid-column:auto;
+}
+
+.modal{
+  padding:76px 14px 18px;
+  background:rgba(35,23,40,.52);
+}
+
+.modal-card{
+  width:100%;
+  max-width:500px;
+  margin:0 auto;
+  max-height:calc(100vh - 96px);
+  overflow-y:auto;
+  border-radius:24px;
+  padding:18px;
+}
+
+#mobileMenuModal .modal-head h3{
+  font-size:24px;
+}
+
+#mobileMenuModal .side-nav{
+  display:grid;
+  gap:8px;
+}
+
+#mobileMenuModal .nav-btn{
+  color:var(--purple-dark);
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(111,74,142,.12);
+}
+
+#mobileMenuModal .nav-btn .ico{
+  color:var(--gold);
+}
+
+#mobileMenuModal .nav-btn.active,
+#mobileMenuModal .nav-btn:hover{
+  background:linear-gradient(135deg,rgba(198,154,72,.15),rgba(111,74,142,.15));
+  border-color:rgba(198,154,72,.42);
+  color:var(--purple-dark);
+}
+
+.menu-project-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.menu-project-actions .btn{
+  width:100%;
+  min-height:48px;
+  padding:0 10px;
+}
+
+.model-conversion-info{
+  margin-bottom:14px;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(111,74,142,.08);
+  border:1px solid rgba(111,74,142,.16);
+  color:var(--purple-dark);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.model-conversion-info strong{
+  display:block;
+  margin-bottom:5px;
+  color:var(--purple-dark);
+}
+
+@media(max-width:390px){
+  .section{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  #overviewSection > .grid-3,
+  #overviewSection > .section-head,
+  #overviewSection > .card{
+    margin-left:16px;
+    margin-right:16px;
+  }
+
+  .couple-access{
+    margin-left:16px;
+    margin-right:16px;
+  }
+
+  .overview-card{
+    min-height:300px;
+    padding-left:18px;
+    padding-right:18px;
+  }
+
+  .section-actions{
+    grid-template-columns:1fr;
+  }
+
+  .row-right{
+    padding-left:0;
+  }
+}
+
+</style>
 </head>
 
 <body>
@@ -1003,16 +1379,16 @@
 
     <main class="main">
       <header class="topbar">
-        <button class="mobile-menu-btn" type="button" onclick="openMobileMenu()">☰</button>
+        <button class="mobile-menu-btn" type="button" onclick="openMobileMenu()" aria-label="Apri menu">☰</button>
 
         <div class="page-title">
           <h1 id="welcomeTitle">Dashboard Celebrante</h1>
-          <p id="welcomeSubtitle">Gestisci cerimonie, coppie, questionari e testi in un unico spazio.</p>
+          <p id="welcomeSubtitle">PixelUp · Gestione cerimonia</p>
         </div>
 
         <div class="top-actions">
           <button class="btn" type="button" onclick="showInstallGuide()">＋ Home</button>
-          <button class="btn" type="button" onclick="copyCoupleLink()">Link coppia</button>
+          <button class="btn" type="button" onclick="copyCoupleLink()" aria-label="Copia link coppia">Link coppia</button>
           <button class="btn primary" type="button" onclick="createNewCeremony()">+ Nuova cerimonia</button>
           <button class="btn danger" type="button" onclick="logoutPixelUp()">Esci</button>
         </div>
@@ -1101,7 +1477,7 @@
           </div>
         </div>
 
-        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg" onchange="importQuestionnaireFile(event)" />
+        <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.docx,.md,.csv,.rtf,.html,.htm,.png,.jpg,.jpeg,text/plain,text/markdown,text/csv,text/rtf,text/html,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg" onchange="importQuestionnaireFile(event)" />
 
         <div class="grid-2">
           <div class="card">
@@ -1138,7 +1514,13 @@
           </div>
         </div>
 
-        <input class="hidden-input" id="workModelFileInput" type="file" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" onchange="uploadWorkModel(event)" />
+        <input class="hidden-input" id="workModelFileInput" type="file" accept=".pdf,.docx,.txt,.md,.csv,.rtf,.html,.htm,.png,.jpg,.jpeg,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/csv,text/rtf,text/html,image/png,image/jpeg" onchange="uploadWorkModel(event)" />
+
+        <div class="model-conversion-info">
+          <strong>Conversione automatica in domande compilabili</strong>
+          Carica il modello della celebrante: PixelUp legge tutto il documento, riconosce le domande e le trasferisce nel questionario della coppia. 
+          PDF testuali e scansionati, DOCX, TXT, immagini, RTF, CSV, Markdown e HTML sono gestiti direttamente. Il vecchio formato DOC deve essere prima salvato come DOCX o PDF.
+        </div>
 
         <div class="grid-2">
           <div class="card">
@@ -1333,9 +1715,15 @@
   <div class="modal" id="mobileMenuModal">
     <div class="modal-card">
       <div class="modal-head">
-        <h3>Menu PixelUp</h3>
+        <h3>I miei progetti</h3>
         <button class="close-btn" type="button" onclick="closeMobileMenu()">×</button>
       </div>
+
+      <div class="menu-project-actions">
+        <button class="btn primary" type="button" onclick="createNewCeremony(); closeMobileMenu();">+ Nuova cerimonia</button>
+        <button class="btn" type="button" onclick="openSectionById('ceremoniesSection'); showCeremoniesList(); closeMobileMenu();">Le mie cerimonie</button>
+      </div>
+
       <div class="side-nav" style="margin:0;">
         <button class="nav-btn active" type="button" onclick="openSectionById('overviewSection'); closeMobileMenu();"><span class="ico">⌂</span> Panoramica</button>
         <button class="nav-btn" type="button" onclick="openSectionById('ceremoniesSection'); closeMobileMenu();"><span class="ico">♡</span> Le mie cerimonie</button>
@@ -2021,7 +2409,8 @@
 
         const startsQuestion =
           /^(?:domanda\s*)?\d{1,3}\s*[\).:\-–—]\s*\S+/i.test(line) ||
-          /^[\-\u2022\u2023\u25E6\u2043\u2219*]\s*\S+/.test(line);
+          /^[\-\u2022\u2023\u25E6\u2043\u2219*]\s*\S+/.test(line) ||
+          /\?$/.test(line);
 
         if (hasNumberedQuestions) {
           if (startsQuestion) {
@@ -2149,8 +2538,31 @@
       const extension = fileExtension(file);
       const mime = String(file.type || "").toLowerCase();
 
-      if (extension === "txt" || mime === "text/plain") {
+      if (
+        ["txt", "md", "csv"].includes(extension) ||
+        mime === "text/plain" ||
+        mime === "text/markdown" ||
+        mime === "text/csv"
+      ) {
         return await file.text();
+      }
+
+      if (["html", "htm"].includes(extension) || mime === "text/html") {
+        const rawHtml = await file.text();
+        const parsed = new DOMParser().parseFromString(rawHtml, "text/html");
+        return String(parsed.body?.innerText || parsed.documentElement?.innerText || "").trim();
+      }
+
+      if (extension === "rtf" || mime === "text/rtf" || mime === "application/rtf") {
+        const rawRtf = await file.text();
+        return rawRtf
+          .replace(/\\par[d]?/gi, "\n")
+          .replace(/\\'[0-9a-f]{2}/gi, " ")
+          .replace(/\\[a-z]+-?\d* ?/gi, " ")
+          .replace(/[{}]/g, " ")
+          .replace(/\s+/g, " ")
+          .replace(/\s*\n\s*/g, "\n")
+          .trim();
       }
 
       if (extension === "pdf" || mime === "application/pdf") {
@@ -2169,7 +2581,7 @@
         throw new Error("Il vecchio formato .DOC non può essere letto direttamente dal browser. Salvalo come .DOCX o PDF.");
       }
 
-      throw new Error("Formato non supportato. Usa PDF, DOCX, TXT, PNG, JPG o JPEG.");
+      throw new Error("Formato non supportato. Usa PDF, DOCX, TXT, MD, CSV, RTF, HTML, PNG, JPG o JPEG.");
     }
 
     function modelTypeLabel(file) {
@@ -2177,6 +2589,10 @@
       if (extension === "pdf") return "PDF";
       if (extension === "docx") return "DOCX";
       if (extension === "txt") return "TXT";
+      if (extension === "md") return "Markdown";
+      if (extension === "csv") return "CSV";
+      if (extension === "rtf") return "RTF";
+      if (["html", "htm"].includes(extension)) return "HTML";
       if (["png", "jpg", "jpeg"].includes(extension)) return "Immagine OCR";
       return extension.toUpperCase() || "File";
     }
@@ -2503,15 +2919,43 @@
           createdAt: new Date().toISOString()
         });
 
+        if (parsedQuestions.length) {
+          const importMode = chooseQuestionImportMode(parsedQuestions.length);
+
+          if (importMode) {
+            applyImportedQuestions(parsedQuestions, importMode);
+
+            data.importedQuestionnaire = {
+              name: name || file.name,
+              notes: notes || "Modello di lavoro convertito automaticamente.",
+              url,
+              fileName: file.name,
+              fileType: modelTypeLabel(file),
+              extractedText: textContent,
+              questionCount: parsedQuestions.length,
+              uploadedAt: new Date().toISOString()
+            };
+          }
+        }
+
         renderWorkModels();
+        renderQuestions();
+        renderSummary();
         await saveData();
 
         if (parsedQuestions.length) {
-          toast("Modello caricato: " + parsedQuestions.length + " domande riconosciute.");
+          toast(
+            "Modello caricato e convertito: " +
+            parsedQuestions.length +
+            " domande disponibili nel link della coppia."
+          );
         } else if (extractionError) {
           alert("Il file originale è stato caricato, ma non è stato convertito: " + extractionError);
         } else {
-          alert("Il file è stato caricato, ma non sono state riconosciute domande.");
+          alert(
+            "Il file è stato caricato, ma non sono state riconosciute domande. " +
+            "Controlla che ogni domanda sia numerata, termini con ? oppure sia separata su una nuova riga."
+          );
         }
       } catch (error) {
         console.error(error);
