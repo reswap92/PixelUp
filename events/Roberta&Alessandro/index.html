@@ -580,6 +580,78 @@
       line-height: 1;
     }
 
+    /* CARD STORIA GRANDE */
+
+    .story-card{
+      grid-column:1 / -1;
+      display:flex;
+      align-items:center;
+      gap:18px;
+      min-height:108px;
+      border-radius:15px;
+      background:var(--card);
+      border:1px solid rgba(230,218,198,.82);
+      box-shadow:var(--soft-shadow);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      transition:transform .18s ease,opacity .18s ease;
+    }
+
+    .story-card:active{
+      transform:scale(.985);
+      opacity:.92;
+    }
+
+    .story-circle{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(177,145,85,.55);
+      color:var(--gold);
+      font-size:22px;
+      letter-spacing:2px;
+      background:rgba(255,250,241,.35);
+    }
+
+    .story-center{
+      flex:1;
+    }
+
+    .story-center h3{
+      font-size:18px;
+      color:var(--text);
+    }
+
+    .story-right{
+      font-size:22px;
+      color:var(--gold);
+      padding-left:10px;
+    }
+
+    @media(max-width:390px){
+      .story-card{
+        min-height:102px;
+      }
+
+      .story-circle{
+        width:60px;
+        height:60px;
+        font-size:20px;
+      }
+
+      .story-center h3{
+        font-size:16px;
+      }
+
+      .story-center p{
+        font-size:13px;
+      }
+    }
+
+
     .quote {
       margin-top: 14px;
       background: var(--card);
@@ -824,7 +896,7 @@
       </div>
 
       <!-- SEI PULSANTI IN BASSO -->
-      <div class="cards">
+      <div class="cards" id="sezioni">
 
         <!-- DRESS CODE -->
         <a class="small-card" href="dress-code.html">
@@ -858,6 +930,14 @@
   <span class="arrow">→</span>
 </a>
 
+        <!-- CARICA FOTO -->
+        <a class="small-card" href="carica-foto.html">
+          <span class="icon">📷</span>
+          <h3>Carica Foto</h3>
+          <p>Condividi i tuoi scatti</p>
+          <span class="arrow">→</span>
+        </a>
+
         <!-- CONTATTI -->
         <a class="small-card" href="contatti.html">
           <span class="icon">♡</span>
@@ -866,10 +946,14 @@
           <span class="arrow">→</span>
         </a>
 
-        <!-- LOGO / DETTAGLIO EVENTO -->
-        <a class="small-card logo-card" href="storia.html">
-          <span class="floral">R|A</span>
-          <p>❦</p>
+        <!-- STORIA -->
+        <a class="story-card" href="storia.html">
+          <div class="story-center" style="text-align:center;width:100%;">
+            <div class="story-circle" style="margin:0 auto 12px;">R|A</div>
+            <h3 style="margin:0;font-style:italic;font-weight:400;letter-spacing:0.5px;text-transform:none;">La nostra storia</h3>
+          </div>
+
+          <div class="story-right">→</div>
         </a>
 
       </div>
