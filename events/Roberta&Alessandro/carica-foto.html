@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carica le foto | Roberta & Alessandro</title>
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --card: rgba(255, 252, 246, 0.95);
+      --text: #263122;
+      --muted: #7b6f62;
+      --gold: #b19155;
+      --green: #4d5a3a;
+      --green-dark: #344028;
+      --border: rgba(218, 205, 184, 0.88);
+      --shadow: 0 18px 40px rgba(60, 45, 28, 0.13);
+      --soft-shadow: 0 8px 22px rgba(60, 45, 28, 0.09);
+      --hero-image: url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=90");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf1e2 55%, #fffaf2 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff8ed 0%, #fbf2e4 48%, #fff9ef 100%);
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .hero {
+      min-height: 280px;
+      position: relative;
+      padding: 22px 22px 70px;
+      text-align: center;
+      background:
+        linear-gradient(180deg, rgba(20,22,18,.18), rgba(255,246,230,.94)),
+        var(--hero-image) center / cover no-repeat;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      display: grid;
+      place-items: center;
+      font-size: 31px;
+      box-shadow: var(--soft-shadow);
+      z-index: 2;
+    }
+
+    .monogram {
+      width: 88px;
+      height: 88px;
+      margin: 40px auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      border: 1px solid rgba(177,145,85,.6);
+      background: rgba(255,250,241,.35);
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      font-size: 43px;
+      font-weight: 400;
+      color: var(--green-dark);
+      line-height: 1;
+    }
+
+    .hero p {
+      margin-top: 12px;
+      font-size: 17px;
+      color: #4f4a3c;
+      font-style: italic;
+    }
+
+    .content {
+      padding: 0 20px 38px;
+      margin-top: -40px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .intro {
+      text-align: center;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .intro strong {
+      display: block;
+      font-size: 22px;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .name-input {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0 15px;
+      background: rgba(255,255,255,.85);
+      font-size: 16px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .upload-box {
+      border: 1px solid rgba(218,205,184,.88);
+      border-radius: 20px;
+      background: rgba(255,252,246,.76);
+      padding: 25px 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .upload-box .icon {
+      display: block;
+      font-size: 44px;
+      margin-bottom: 10px;
+    }
+
+    .upload-box strong {
+      display: block;
+      font-size: 19px;
+      color: var(--green-dark);
+    }
+
+    .upload-box small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    #photoInput {
+      display: none;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 16px;
+    }
+
+    .preview {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #eee;
+    }
+
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upload-btn {
+      width: 100%;
+      min-height: 58px;
+      border: 1.5px solid rgba(214,193,145,.95);
+      border-radius: 17px;
+      background: linear-gradient(135deg, var(--green), #3c472d);
+      color: white;
+      font-size: 17px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-top: 18px;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(54,64,42,.24);
+    }
+
+    .upload-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .progress-wrap {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .progress-wrap.show {
+      display: block;
+    }
+
+    .progress-text {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(177,145,85,.15);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, var(--green), var(--gold));
+      transition: width .2s ease;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 15px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(77,90,58,.10);
+      border: 1px solid rgba(77,90,58,.25);
+      color: var(--green-dark);
+    }
+
+    .message.error {
+      background: rgba(145,55,55,.08);
+      border: 1px solid rgba(145,55,55,.22);
+      color: #7a3030;
+    }
+
+    .note {
+      margin-top: 15px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    .gallery-section {
+      margin-top: 22px;
+    }
+
+    .gallery-title {
+      text-align: center;
+      color: var(--green-dark);
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .gallery-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .gallery-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(177,145,85,.5) transparent;
+    }
+
+    .gallery-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .gallery-scroll::-webkit-scrollbar-thumb {
+      background: rgba(177,145,85,.5);
+      border-radius: 999px;
+    }
+
+    .gallery-item {
+      flex: 0 0 78%;
+      max-width: 360px;
+      scroll-snap-align: center;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,252,246,.96);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .gallery-image-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #eee;
+      overflow: hidden;
+    }
+
+    .gallery-image-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .gallery-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .gallery-action-btn {
+      min-height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(177,145,85,.42);
+      background: rgba(255,252,246,.96);
+      color: var(--green-dark);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .gallery-action-btn.download {
+      background: linear-gradient(135deg, var(--green), #3c472d);
+      color: white;
+      border-color: rgba(214,193,145,.95);
+    }
+
+    .gallery-empty,
+    .gallery-loading {
+      width: 100%;
+      text-align: center;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 24px 10px;
+      line-height: 1.45;
+    }
+
+    .refresh-gallery {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(177,145,85,.45);
+      background: rgba(255,252,246,.92);
+      color: var(--green-dark);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .photo-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(15, 13, 12, 0.94);
+      padding: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-modal.show {
+      display: flex;
+    }
+
+    .photo-modal-card {
+      width: min(760px, 100%);
+      max-height: 94vh;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .photo-modal-image-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #111;
+    }
+
+    .photo-modal-image {
+      max-width: 100%;
+      max-height: 76vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .photo-modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+    }
+
+    .photo-modal-btn {
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.10);
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .photo-modal-btn.like.active {
+      background: rgba(194, 59, 87, .92);
+      border-color: rgba(255,255,255,.32);
+    }
+
+    .photo-modal-btn.save {
+      background: linear-gradient(135deg, var(--green), #3c472d);
+      border-color: rgba(214,193,145,.75);
+    }
+
+    .photo-modal-btn.close {
+      background: rgba(255,255,255,.16);
+    }
+
+    .like-count-badge {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      min-width: 42px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(20,20,20,.72);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(5px);
+    }
+
+    .gallery-image-wrap {
+      position: relative;
+      display: block;
+    }
+
+    @media (max-width: 390px) {
+      .preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .photo-modal {
+        padding: 10px;
+      }
+
+      .photo-modal-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-modal-image {
+        max-height: 70vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section class="hero">
+      <a class="back-btn" href="index.html" aria-label="Torna all'evento">‹</a>
+      <div class="monogram">R|A</div>
+      <h1>Condividi le foto</h1>
+      <p>Raccogliamo insieme i ricordi più belli del matrimonio</p>
+    </section>
+
+    <section class="content">
+      <div class="card">
+        <div class="intro">
+          <strong>Carica i tuoi scatti</strong>
+          <p>Puoi selezionare più foto dal telefono. Saranno raccolte nell’album privato di Roberta e Alessandro.</p>
+        </div>
+
+        <input
+          class="name-input"
+          id="guestName"
+          type="text"
+          placeholder="Il tuo nome (facoltativo)"
+          maxlength="80"
+        />
+
+        <label class="upload-box" for="photoInput">
+          <span class="icon">📷</span>
+          <strong>Scegli le foto</strong>
+          <small>Formati accettati: JPG, JPEG e PNG<br>Massimo 10 MB per fotografia</small>
+        </label>
+
+        <input
+          id="photoInput"
+          type="file"
+          accept="image/jpeg,image/png"
+          multiple
+        />
+
+        <div class="preview-grid" id="previewGrid"></div>
+
+        <button class="upload-btn" id="uploadButton" type="button" disabled>
+          Carica le foto
+        </button>
+
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-text" id="progressText">Preparazione caricamento...</div>
+          <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+
+        <div class="message" id="messageBox"></div>
+
+        <div class="note">
+          Non chiudere la pagina durante il caricamento. Le fotografie verranno conservate su PixelUp.
+        </div>
+      </div>
+
+      <div class="card gallery-section">
+        <h2 class="gallery-title">Galleria del matrimonio</h2>
+        <p class="gallery-subtitle">
+          Scorri le fotografie condivise dagli invitati.
+        </p>
+
+        <div class="gallery-scroll" id="galleryScroll">
+          <div class="gallery-loading">Caricamento fotografie...</div>
+        </div>
+
+        <button class="refresh-gallery" id="refreshGalleryButton" type="button">
+          Aggiorna galleria
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="photo-modal" id="photoModal" aria-hidden="true">
+    <div class="photo-modal-card">
+      <div class="photo-modal-image-wrap">
+        <img class="photo-modal-image" id="photoModalImage" alt="Fotografia matrimonio">
+      </div>
+
+      <div class="photo-modal-actions">
+        <button class="photo-modal-btn like" id="photoLikeButton" type="button">
+          ♡ Mi piace <span id="photoLikeCount">0</span>
+        </button>
+
+        <button class="photo-modal-btn save" id="photoSaveButton" type="button">
+          ⬇ Salva foto
+        </button>
+
+        <button class="photo-modal-btn close" id="photoCloseButton" type="button">
+          ✕ Chiudi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      runTransaction
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytesResumable,
+      getDownloadURL,
+      listAll
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.firebasestorage.app",
+      messagingSenderId: "415455463905",
+      appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",
+      measurementId: "G-6565LXTZW7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+
+    const photoInput = document.getElementById("photoInput");
+    const previewGrid = document.getElementById("previewGrid");
+    const uploadButton = document.getElementById("uploadButton");
+    const progressWrap = document.getElementById("progressWrap");
+    const progressText = document.getElementById("progressText");
+    const progressBar = document.getElementById("progressBar");
+    const messageBox = document.getElementById("messageBox");
+    const guestName = document.getElementById("guestName");
+    const galleryScroll = document.getElementById("galleryScroll");
+    const refreshGalleryButton = document.getElementById("refreshGalleryButton");
+    const photoModal = document.getElementById("photoModal");
+    const photoModalImage = document.getElementById("photoModalImage");
+    const photoLikeButton = document.getElementById("photoLikeButton");
+    const photoLikeCount = document.getElementById("photoLikeCount");
+    const photoSaveButton = document.getElementById("photoSaveButton");
+    const photoCloseButton = document.getElementById("photoCloseButton");
+
+    let selectedFiles = [];
+    let currentModalPhoto = null;
+
+    function safeName(value) {
+      return String(value || "invitato")
+        .trim()
+        .toLowerCase()
+        .replace(/[àáâãäå]/g, "a")
+        .replace(/[èéêë]/g, "e")
+        .replace(/[ìíîï]/g, "i")
+        .replace(/[òóôõö]/g, "o")
+        .replace(/[ùúûü]/g, "u")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 50) || "invitato";
+    }
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = "message show " + type;
+    }
+
+    function renderPreviews() {
+      previewGrid.innerHTML = "";
+
+      selectedFiles.forEach((file) => {
+        const box = document.createElement("div");
+        box.className = "preview";
+
+        const image = document.createElement("img");
+        image.alt = "Anteprima fotografia";
+        image.src = URL.createObjectURL(file);
+
+        image.onload = () => URL.revokeObjectURL(image.src);
+
+        box.appendChild(image);
+        previewGrid.appendChild(box);
+      });
+
+      uploadButton.disabled = selectedFiles.length === 0;
+    }
+
+    photoInput.addEventListener("change", () => {
+      messageBox.className = "message";
+      const files = Array.from(photoInput.files || []);
+
+      const validFiles = [];
+      const rejected = [];
+
+      files.forEach((file) => {
+        const validType = file.type === "image/jpeg" || file.type === "image/png";
+        const validSize = file.size < 10 * 1024 * 1024;
+
+        if (validType && validSize) {
+          validFiles.push(file);
+        } else {
+          rejected.push(file.name);
+        }
+      });
+
+      selectedFiles = validFiles;
+      renderPreviews();
+
+      if (rejected.length) {
+        showMessage(
+          "Alcune foto non sono state selezionate perché non sono JPG/PNG oppure superano 10 MB: " +
+          rejected.join(", "),
+          "error"
+        );
+      }
+    });
+
+    function uploadSingleFile(file, index, total, folderName) {
+      return new Promise((resolve, reject) => {
+        const extension = file.name.split(".").pop().toLowerCase();
+        const uniqueName =
+          Date.now() + "-" +
+          String(index + 1).padStart(2, "0") + "-" +
+          Math.random().toString(36).slice(2, 8) + "." +
+          extension;
+
+        const storagePath =
+          "pixelup-documents/public/roberta-alessandro/foto-matrimonio/" +
+          folderName + "/" +
+          uniqueName;
+
+        const storageRef = ref(storage, storagePath);
+        const task = uploadBytesResumable(storageRef, file, {
+          contentType: file.type,
+          customMetadata: {
+            eventId: "roberta-alessandro",
+            uploadedBy: guestName.value.trim() || "Invitato"
+          }
+        });
+
+        task.on(
+          "state_changed",
+          (snapshot) => {
+            const fileProgress = snapshot.bytesTransferred / snapshot.totalBytes;
+            const totalProgress = ((index + fileProgress) / total) * 100;
+
+            progressBar.style.width = Math.min(totalProgress, 100) + "%";
+            progressText.textContent =
+              "Caricamento foto " + (index + 1) + " di " + total + "...";
+          },
+          reject,
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            resolve(url);
+          }
+        );
+      });
+    }
+
+    async function collectImageRefs(folderRef) {
+      const result = await listAll(folderRef);
+      let files = [...result.items];
+
+      for (const prefix of result.prefixes) {
+        const nestedFiles = await collectImageRefs(prefix);
+        files = files.concat(nestedFiles);
+      }
+
+      return files;
+    }
+
+    async function downloadGalleryPhoto(url, fileName, index) {
+      const safeFileName = fileName || ("foto-roberta-alessandro-" + (index + 1) + ".jpg");
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Download non disponibile");
+
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = blobUrl;
+        link.download = safeFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
+      } catch (error) {
+        console.error("Errore download fotografia:", error);
+
+        // Su alcuni iPhone il browser non forza il download:
+        // apre quindi la foto a schermo intero, da cui può essere salvata nella galleria.
+        window.open(url, "_blank", "noopener,noreferrer");
+        alert("La foto è stata aperta. Sul telefono tieni premuto sull’immagine e scegli “Salva in Foto” o “Scarica immagine”.");
+      }
+    }
+
+    window.downloadGalleryPhoto = downloadGalleryPhoto;
+
+    function photoIdFromPath(fullPath) {
+      return btoa(unescape(encodeURIComponent(fullPath)))
+        .replaceAll("+", "-")
+        .replaceAll("/", "_")
+        .replaceAll("=", "");
+    }
+
+    function likedStorageKey(photoId) {
+      return "pixelup_liked_photo_" + photoId;
+    }
+
+    async function getPhotoLikeCount(photoId) {
+      try {
+        const snap = await getDoc(doc(db, "photoLikes", photoId));
+        return snap.exists() ? Number(snap.data().count || 0) : 0;
+      } catch (error) {
+        console.error("Errore lettura like:", error);
+        return 0;
+      }
+    }
+
+    async function togglePhotoLike() {
+      if (!currentModalPhoto) return;
+
+      const photoId = currentModalPhoto.photoId;
+      const alreadyLiked = localStorage.getItem(likedStorageKey(photoId)) === "true";
+
+      if (alreadyLiked) {
+        alert("Hai già messo Mi piace a questa foto da questo dispositivo.");
+        return;
+      }
+
+      try {
+        const likeRef = doc(db, "photoLikes", photoId);
+
+        const newCount = await runTransaction(db, async (transaction) => {
+          const snap = await transaction.get(likeRef);
+          const currentCount = snap.exists() ? Number(snap.data().count || 0) : 0;
+          const nextCount = currentCount + 1;
+
+          transaction.set(likeRef, {
+            count: nextCount,
+            eventId: "roberta-alessandro",
+            photoPath: currentModalPhoto.fullPath,
+            updatedAt: new Date().toISOString()
+          }, { merge: true });
+
+          return nextCount;
+        });
+
+        localStorage.setItem(likedStorageKey(photoId), "true");
+        photoLikeCount.textContent = newCount;
+        photoLikeButton.classList.add("active");
+        photoLikeButton.firstChild.textContent = "♥ Mi piace ";
+        const badge = document.getElementById("likeBadge-" + photoId);
+        if (badge) badge.innerHTML = "♥ " + newCount;
+      } catch (error) {
+        console.error("Errore salvataggio like:", error);
+        alert("Non è stato possibile registrare il Mi piace. Controlla le regole Firestore.");
+      }
+    }
+
+    async function openPhotoModal(url, fileName, fullPath, photoId) {
+      currentModalPhoto = { url, fileName, fullPath, photoId };
+      photoModalImage.src = url;
+      photoModal.classList.add("show");
+      photoModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      const count = await getPhotoLikeCount(photoId);
+      photoLikeCount.textContent = count;
+
+      const alreadyLiked = localStorage.getItem(likedStorageKey(photoId)) === "true";
+      photoLikeButton.classList.toggle("active", alreadyLiked);
+      photoLikeButton.firstChild.textContent = alreadyLiked ? "♥ Mi piace " : "♡ Mi piace ";
+    }
+
+    function closePhotoModal() {
+      photoModal.classList.remove("show");
+      photoModal.setAttribute("aria-hidden", "true");
+      photoModalImage.src = "";
+      currentModalPhoto = null;
+      document.body.style.overflow = "";
+    }
+
+    photoLikeButton.addEventListener("click", togglePhotoLike);
+    photoSaveButton.addEventListener("click", () => {
+      if (!currentModalPhoto) return;
+      downloadGalleryPhoto(
+        currentModalPhoto.url,
+        currentModalPhoto.fileName,
+        0
+      );
+    });
+    photoCloseButton.addEventListener("click", closePhotoModal);
+
+    photoModal.addEventListener("click", (event) => {
+      if (event.target === photoModal) closePhotoModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closePhotoModal();
+    });
+
+    window.openPhotoModal = openPhotoModal;
+
+    async function loadGallery() {
+      galleryScroll.innerHTML = '<div class="gallery-loading">Caricamento fotografie...</div>';
+      refreshGalleryButton.disabled = true;
+
+      try {
+        const galleryRoot = ref(
+          storage,
+          "pixelup-documents/public/roberta-alessandro/foto-matrimonio"
+        );
+
+        const fileRefs = await collectImageRefs(galleryRoot);
+
+        if (!fileRefs.length) {
+          galleryScroll.innerHTML =
+            '<div class="gallery-empty">Non ci sono ancora fotografie. Sii il primo a condividere uno scatto.</div>';
+          return;
+        }
+
+        const urls = await Promise.all(
+          fileRefs.map(async (fileRef) => {
+            const photoId = photoIdFromPath(fileRef.fullPath);
+            return {
+              url: await getDownloadURL(fileRef),
+              name: fileRef.name,
+              fullPath: fileRef.fullPath,
+              photoId,
+              likeCount: await getPhotoLikeCount(photoId)
+            };
+          })
+        );
+
+        galleryScroll.innerHTML = urls.reverse().map((item) => `
+          <article class="gallery-item">
+            <button
+              class="gallery-image-wrap"
+              type="button"
+              onclick="openPhotoModal(
+                '${item.url}',
+                '${item.name || "foto-matrimonio.jpg"}',
+                '${item.fullPath}',
+                '${item.photoId}'
+              )"
+              aria-label="Apri fotografia a schermo intero"
+              style="border:0;padding:0;cursor:pointer;width:100%;"
+            >
+              <img src="${item.url}" alt="Fotografia matrimonio Roberta e Alessandro" loading="lazy">
+              <span class="like-count-badge" id="likeBadge-${item.photoId}">
+                ♥ ${item.likeCount}
+              </span>
+            </button>
+          </article>
+        `).join("");
+      } catch (error) {
+        console.error("Errore caricamento galleria:", error);
+        galleryScroll.innerHTML =
+          '<div class="gallery-empty">Non è stato possibile caricare la galleria. Riprova tra poco.</div>';
+      } finally {
+        refreshGalleryButton.disabled = false;
+      }
+    }
+
+    refreshGalleryButton.addEventListener("click", loadGallery);
+
+    uploadButton.addEventListener("click", async () => {
+      if (!selectedFiles.length) return;
+
+      uploadButton.disabled = true;
+      progressWrap.classList.add("show");
+      progressBar.style.width = "0%";
+      messageBox.className = "message";
+
+      const folderName =
+        safeName(guestName.value) + "-" +
+        new Date().toISOString().replace(/[:.]/g, "-");
+
+      try {
+        for (let index = 0; index < selectedFiles.length; index++) {
+          await uploadSingleFile(
+            selectedFiles[index],
+            index,
+            selectedFiles.length,
+            folderName
+          );
+        }
+
+        progressBar.style.width = "100%";
+        progressText.textContent = "Caricamento completato";
+
+        showMessage(
+          selectedFiles.length === 1
+            ? "Grazie! La tua fotografia è stata caricata correttamente."
+            : "Grazie! Le tue " + selectedFiles.length + " fotografie sono state caricate correttamente.",
+          "success"
+        );
+
+        selectedFiles = [];
+        photoInput.value = "";
+        previewGrid.innerHTML = "";
+        await loadGallery();
+      } catch (error) {
+        console.error("Errore caricamento fotografie:", error);
+        showMessage(
+          "Il caricamento non è riuscito. Controlla la connessione e riprova.",
+          "error"
+        );
+      } finally {
+        uploadButton.disabled = selectedFiles.length === 0;
+      }
+    });
+
+    loadGallery();
+  </script>
+</body>
+</html>
