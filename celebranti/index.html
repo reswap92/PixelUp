@@ -1367,6 +1367,164 @@ body{
   }
 }
 
+
+/* ==========================================================
+   HOME OPERATIVA A FISARMONICA
+   Aggiunta senza modificare le funzioni esistenti.
+   ========================================================== */
+.home-control-center{
+  margin:18px 20px 0;
+}
+
+.home-control-head{
+  margin-bottom:12px;
+}
+
+.home-control-head h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:27px;
+  font-weight:400;
+  color:var(--purple-dark);
+}
+
+.home-control-head p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+
+.home-accordion{
+  display:grid;
+  gap:10px;
+}
+
+.home-accordion-item{
+  background:rgba(255,255,255,.90);
+  border:1px solid rgba(111,74,142,.14);
+  border-radius:19px;
+  box-shadow:var(--soft-shadow);
+  overflow:hidden;
+}
+
+.home-accordion-trigger{
+  width:100%;
+  min-height:72px;
+  padding:13px 14px;
+  border:0;
+  background:transparent;
+  color:var(--purple-dark);
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  align-items:center;
+  gap:11px;
+  text-align:left;
+}
+
+.home-accordion-trigger:hover{
+  background:rgba(111,74,142,.035);
+}
+
+.home-accordion-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:rgba(111,74,142,.10);
+  color:var(--purple);
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  font-weight:800;
+}
+
+.home-accordion-copy strong{
+  display:block;
+  font-size:15px;
+  margin-bottom:4px;
+}
+
+.home-accordion-copy small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.35;
+}
+
+.home-accordion-arrow{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:rgba(198,154,72,.12);
+  color:var(--gold);
+  font-size:16px;
+  transition:transform .2s ease;
+}
+
+.home-accordion-item.open .home-accordion-arrow{
+  transform:rotate(180deg);
+}
+
+.home-accordion-panel{
+  display:none;
+  padding:0 14px 14px;
+}
+
+.home-accordion-item.open .home-accordion-panel{
+  display:block;
+  animation:fade .18s ease;
+}
+
+.home-accordion-summary{
+  margin-bottom:11px;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(111,74,142,.055);
+  border:1px solid rgba(111,74,142,.09);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+
+.home-accordion-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.home-accordion-actions .btn{
+  width:100%;
+  min-height:42px;
+  padding:0 9px;
+}
+
+.home-visibility-note{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(66,141,94,.07);
+  border:1px solid rgba(66,141,94,.15);
+  font-size:11px;
+  color:#287143;
+  font-weight:700;
+}
+
+@media(max-width:390px){
+  .home-control-center{
+    margin-left:16px;
+    margin-right:16px;
+  }
+
+  .home-accordion-actions{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 
@@ -1455,24 +1613,236 @@ body{
           </div>
         </div>
 
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-title"><div><h3>Questionari personalizzati</h3><small>Crea, importa o gestisci le domande.</small></div><span class="pill">Top</span></div>
-            <p class="empty" style="padding:0;text-align:left;">La celebrante può creare domande a mano oppure importare un modello di lavoro in PDF/DOC/TXT.</p>
-            <button class="btn" style="margin-top:14px;" type="button" onclick="openSectionById('questionsSection')">Vai</button>
-          </article>
+        <div class="home-control-center">
+          <div class="home-control-head">
+            <h2>Gestione della cerimonia</h2>
+            <p>Apri una sezione alla volta e gestisci tutto direttamente dalla Home.</p>
+          </div>
 
-          <article class="card">
-            <div class="card-title"><div><h3>Area coppia dedicata</h3><small>Compilazione semplice per gli sposi.</small></div><span class="pill ok">Privata</span></div>
-            <p class="empty" style="padding:0;text-align:left;">La coppia vede solo questionario, documenti richiesti, programma e messaggi condivisi.</p>
-            <button class="btn" style="margin-top:14px;" type="button" onclick="copyCoupleLink()">Copia link</button>
-          </article>
+          <div class="home-accordion" id="homeAccordion">
 
-          <article class="card">
-            <div class="card-title"><div><h3>Rito e testi finali</h3><small>Bozze, promesse, letture e PDF finale.</small></div><span class="pill warn">Cerimonia</span></div>
-            <p class="empty" style="padding:0;text-align:left;">Organizza i testi del rito e prepara il documento finale da condividere o stampare.</p>
-            <button class="btn" style="margin-top:14px;" type="button" onclick="openSectionById('riteSection')">Vai</button>
-          </article>
+            <article class="home-accordion-item open" data-home-panel="ceremonies">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('ceremonies')">
+                <span class="home-accordion-icon">♡</span>
+                <span class="home-accordion-copy">
+                  <strong>Le mie cerimonie</strong>
+                  <small id="homeCeremoniesSummary">Gestisci e crea i tuoi progetti.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeCeremoniesDetail">Apri l’archivio delle cerimonie oppure crea un nuovo progetto.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="createNewCeremony()">+ Nuova cerimonia</button>
+                  <button class="btn" type="button" onclick="openSectionById('ceremoniesSection')">Apri elenco</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="questions">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('questions')">
+                <span class="home-accordion-icon">☷</span>
+                <span class="home-accordion-copy">
+                  <strong>Questionario coppia</strong>
+                  <small id="homeQuestionsSummary">Domande, risposte e modelli importati.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeQuestionsDetail">Aggiungi domande, importa un modello e controlla le risposte degli sposi.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn gold" type="button" onclick="triggerImportQuestionnaire()">Importa modello</button>
+                  <button class="btn" type="button" onclick="openSectionById('questionsSection')">Apri questionario</button>
+                </div>
+                <div class="home-visibility-note"><span>Visibilità gestibile dalla sezione dedicata</span><button class="small-btn" type="button" onclick="openSectionById('visibilitySection')">Gestisci</button></div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="models">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('models')">
+                <span class="home-accordion-icon">▧</span>
+                <span class="home-accordion-copy">
+                  <strong>Modelli di lavoro</strong>
+                  <small id="homeModelsSummary">Archivio dei modelli della celebrante.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeModelsDetail">Carica e riutilizza questionari, testi e modelli di lavoro.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn gold" type="button" onclick="triggerWorkModelUpload()">Carica modello</button>
+                  <button class="btn" type="button" onclick="openSectionById('workModelsSection')">Apri archivio</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="appointments">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('appointments')">
+                <span class="home-accordion-icon">▦</span>
+                <span class="home-accordion-copy">
+                  <strong>Appuntamenti</strong>
+                  <small id="homeAppointmentsSummary">Agenda e prossimo incontro.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeAppointmentsDetail">Aggiungi incontri, videochiamate e appuntamenti con la coppia.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="addAppointment()">+ Appuntamento</button>
+                  <button class="btn" type="button" onclick="openSectionById('appointmentsSection')">Apri agenda</button>
+                </div>
+                <div class="home-visibility-note"><span>Puoi mostrare o nascondere gli appuntamenti alla coppia</span><button class="small-btn" type="button" onclick="openSectionById('visibilitySection')">Gestisci</button></div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="rite">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('rite')">
+                <span class="home-accordion-icon">✒</span>
+                <span class="home-accordion-copy">
+                  <strong>Rito e testi</strong>
+                  <small id="homeRiteSummary">Bozza, struttura e PDF finale.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeRiteDetail">Continua la bozza della cerimonia e organizza i blocchi del rito.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn" type="button" onclick="addRiteBlock()">+ Blocco testo</button>
+                  <button class="btn primary" type="button" onclick="openSectionById('riteSection')">Apri rito</button>
+                </div>
+                <div class="home-visibility-note"><span>Bozza e rito possono essere nascosti fino a quando sono pronti</span><button class="small-btn" type="button" onclick="openSectionById('visibilitySection')">Gestisci</button></div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="documents">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('documents')">
+                <span class="home-accordion-icon">▤</span>
+                <span class="home-accordion-copy">
+                  <strong>Documenti e file</strong>
+                  <small id="homeDocumentsSummary">File caricati e link utili.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeDocumentsDetail">Carica documenti oppure aggiungi collegamenti esterni.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn gold" type="button" onclick="triggerDocumentUpload()">Carica file</button>
+                  <button class="btn" type="button" onclick="openSectionById('documentsSection')">Apri documenti</button>
+                </div>
+                <div class="home-visibility-note"><span>Ogni documento può essere visibile o interno</span><button class="small-btn" type="button" onclick="openSectionById('visibilitySection')">Gestisci</button></div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="contacts">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('contacts')">
+                <span class="home-accordion-icon">☏</span>
+                <span class="home-accordion-copy">
+                  <strong>Contatti</strong>
+                  <small id="homeContactsSummary">Clienti, fornitori e riferimenti utili.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeContactsDetail">Organizza tutti i contatti collegati alla cerimonia.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="addContact()">+ Contatto</button>
+                  <button class="btn" type="button" onclick="openSectionById('contactsSection')">Apri contatti</button>
+                </div>
+                <div class="home-visibility-note"><span>I contatti utili possono essere condivisi con gli sposi</span><button class="small-btn" type="button" onclick="openSectionById('visibilitySection')">Gestisci</button></div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="tasks">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('tasks')">
+                <span class="home-accordion-icon">✓</span>
+                <span class="home-accordion-copy">
+                  <strong>Attività</strong>
+                  <small id="homeTasksSummary">Promemoria e cose da completare.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeTasksDetail">Controlla le attività concluse e quelle ancora da fare.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="addTask()">+ Attività</button>
+                  <button class="btn" type="button" onclick="openSectionById('tasksSection')">Apri attività</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="notes">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('notes')">
+                <span class="home-accordion-icon">❦</span>
+                <span class="home-accordion-copy">
+                  <strong>Note e idee</strong>
+                  <small id="homeNotesSummary">Appunti privati della celebrante.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary" id="homeNotesDetail">Annota idee, frasi, dettagli emotivi e promemoria interni.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="openSectionById('notesSection')">Apri note</button>
+                  <button class="btn" type="button" onclick="saveNotes()">Salva note</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="report">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('report')">
+                <span class="home-accordion-icon">PDF</span>
+                <span class="home-accordion-copy">
+                  <strong>Report e backup</strong>
+                  <small>Riepilogo completo della cerimonia.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary">Genera il PDF completo oppure copia il riepilogo della cerimonia.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn gold" type="button" onclick="downloadFullReportPDF()">Scarica PDF</button>
+                  <button class="btn" type="button" onclick="openSectionById('reportSection')">Apri report</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="visibility">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('visibility')">
+                <span class="home-accordion-icon">◉</span>
+                <span class="home-accordion-copy">
+                  <strong>Visibilità coppia</strong>
+                  <small>Decidi cosa possono vedere gli sposi.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary">Mostra o nascondi informazioni, questionario, appuntamenti, documenti, rito, contatti e messaggi.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="openSectionById('visibilitySection')">Gestisci visibilità</button>
+                  <button class="btn" type="button" onclick="copyCoupleLink()">Copia link coppia</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="home-accordion-item" data-home-panel="settings">
+              <button class="home-accordion-trigger" type="button" onclick="toggleHomeAccordion('settings')">
+                <span class="home-accordion-icon">⚙</span>
+                <span class="home-accordion-copy">
+                  <strong>Impostazioni</strong>
+                  <small>Dati, stato e configurazione della cerimonia.</small>
+                </span>
+                <span class="home-accordion-arrow">⌄</span>
+              </button>
+              <div class="home-accordion-panel">
+                <div class="home-accordion-summary">Aggiorna nome, data, luogo, tipo, stile e stato del progetto.</div>
+                <div class="home-accordion-actions">
+                  <button class="btn primary" type="button" onclick="editCeremonyInfo()">Modifica dati</button>
+                  <button class="btn" type="button" onclick="openSectionById('settingsSection')">Apri impostazioni</button>
+                </div>
+              </div>
+            </article>
+
+          </div>
         </div>
 
         <div class="section-head">
@@ -3521,8 +3891,98 @@ body{
       window.location.href = "/dasgboardemo/accedi.html";
     }
 
+
+    function toggleHomeAccordion(panelName) {
+      const items = Array.from(document.querySelectorAll(".home-accordion-item"));
+      const selected = items.find((item) => item.dataset.homePanel === panelName);
+      if (!selected) return;
+
+      const wasOpen = selected.classList.contains("open");
+      items.forEach((item) => item.classList.remove("open"));
+
+      if (!wasOpen) selected.classList.add("open");
+    }
+
+    function setHomeText(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    }
+
+    function renderHomeAccordion() {
+      const questions = Array.isArray(data.questions) ? data.questions : [];
+      const answeredQuestions = questions.filter((item) => item.answer1 || item.answer2).length;
+      const questionPercent = questions.length
+        ? Math.round((answeredQuestions / questions.length) * 100)
+        : 0;
+
+      const appointments = Array.isArray(data.appointments) ? data.appointments : [];
+      const nextAppointment = appointments
+        .filter((item) => item.date && new Date(item.date) >= new Date())
+        .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+
+      const documents = Array.isArray(data.documents) ? data.documents : [];
+      const visibleDocuments = documents.filter((item) => item.visibleToCouple === true).length;
+
+      const workModels = Array.isArray(data.workModels) ? data.workModels : [];
+      const contacts = Array.isArray(data.contacts) ? data.contacts : [];
+      const tasks = Array.isArray(data.tasks) ? data.tasks : [];
+      const completedTasks = tasks.filter((item) => item.done === true).length;
+      const pendingTasks = tasks.length - completedTasks;
+      const riteBlocks = Array.isArray(data.riteBlocks) ? data.riteBlocks : [];
+      const ceremoniesText = currentEventId
+        ? "Progetto aperto: " + (data.projectName || "Cerimonia")
+        : "Nessuna cerimonia selezionata";
+
+      setHomeText("homeCeremoniesSummary", ceremoniesText);
+      setHomeText("homeCeremoniesDetail", currentEventId
+        ? "Stai lavorando su “" + (data.projectName || "Cerimonia") + "”. Puoi aprire l’elenco o creare un nuovo progetto."
+        : "Apri l’archivio delle cerimonie oppure crea un nuovo progetto.");
+
+      setHomeText("homeQuestionsSummary", questions.length + " domande · " + questionPercent + "% completato");
+      setHomeText("homeQuestionsDetail", answeredQuestions + " domande con almeno una risposta su " + questions.length + ".");
+
+      setHomeText("homeModelsSummary", workModels.length + " modelli salvati");
+      setHomeText("homeModelsDetail", workModels.length
+        ? "Hai " + workModels.length + " modelli disponibili nell’archivio."
+        : "Non hai ancora caricato modelli di lavoro.");
+
+      setHomeText("homeAppointmentsSummary", nextAppointment
+        ? "Prossimo: " + formatDate(nextAppointment.date) + " · " + formatTime(nextAppointment.date)
+        : "Nessun appuntamento futuro");
+      setHomeText("homeAppointmentsDetail", nextAppointment
+        ? (nextAppointment.title || "Appuntamento") + (nextAppointment.place ? " · " + nextAppointment.place : "")
+        : "Aggiungi incontri, videochiamate e appuntamenti con la coppia.");
+
+      setHomeText("homeRiteSummary",
+        (data.riteDraft ? "Bozza presente" : "Bozza non iniziata") + " · " + riteBlocks.length + " blocchi");
+      setHomeText("homeRiteDetail", data.riteDraft
+        ? "La bozza è stata avviata. Continua la scrittura oppure organizza i blocchi del rito."
+        : "Inizia la bozza della cerimonia e organizza i blocchi del rito.");
+
+      setHomeText("homeDocumentsSummary", documents.length + " documenti · " + visibleDocuments + " visibili");
+      setHomeText("homeDocumentsDetail", documents.length
+        ? "Sono presenti " + documents.length + " documenti, di cui " + visibleDocuments + " visibili alla coppia."
+        : "Carica documenti oppure aggiungi collegamenti esterni.");
+
+      setHomeText("homeContactsSummary", contacts.length + " contatti salvati");
+      setHomeText("homeContactsDetail", contacts.length
+        ? "Hai " + contacts.length + " contatti collegati a questa cerimonia."
+        : "Organizza tutti i contatti collegati alla cerimonia.");
+
+      setHomeText("homeTasksSummary", pendingTasks + " da fare · " + completedTasks + " completate");
+      setHomeText("homeTasksDetail", tasks.length
+        ? "Attività totali: " + tasks.length + ". Da completare: " + pendingTasks + "."
+        : "Non sono ancora presenti attività.");
+
+      setHomeText("homeNotesSummary", data.notes ? "Note salvate" : "Nessuna nota inserita");
+      setHomeText("homeNotesDetail", data.notes
+        ? "Le note interne sono state salvate e restano private."
+        : "Annota idee, frasi, dettagli emotivi e promemoria interni.");
+    }
+
     function renderAll() {
       renderSummary();
+      renderHomeAccordion();
       renderRecentActivity();
       renderQuestions();
       renderAppointments();
@@ -3627,6 +4087,7 @@ body{
     window.toggleVisibleRiteDraft = toggleVisibleRiteDraft;
     window.saveCoupleMessage = saveCoupleMessage;
     window.logoutPixelUp = logoutPixelUp;
+    window.toggleHomeAccordion = toggleHomeAccordion;
     window.renderAll = renderAll;
   </script>
 </body>
