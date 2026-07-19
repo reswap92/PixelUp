@@ -2816,7 +2816,7 @@ body{
       const safeEmail = makeId(loggedEmail);
       const safeName = makeId(file.name.replace(/\.[^/.]+$/, "")) || "file";
       const ext = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "file";
-      const path = `celebrant-documents/${safeEmail}/${currentEventId}/${folder}/${Date.now()}-${safeName}.${ext}`;
+      const path = `pixelup-documents/${safeEmail}/${currentEventId}/${folder}/${Date.now()}-${safeName}.${ext}`;
       const fileRef = ref(storage, path);
 
       const progressWrap = document.getElementById("uploadProgressWrap");
