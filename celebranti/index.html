@@ -1526,32 +1526,12 @@ body{
 }
 
 
-/* ==========================================================
-   PULSANTE RITORNO ALLA HOME DELLA CERIMONIA
-   ========================================================== */
-.section-home-back{
-  width:100%;
-  margin:0 0 14px;
-}
-
-.section-home-back .btn{
-  width:100%;
-  min-height:44px;
-  justify-content:flex-start;
-  background:rgba(255,255,255,.88);
-  border:1px solid rgba(111,74,142,.16);
-  color:var(--purple-dark);
-  box-shadow:var(--soft-shadow);
-}
-
-.section-home-back .btn:hover{
-  background:rgba(111,74,142,.07);
-}
-
-.section-home-back .back-arrow{
-  font-size:18px;
-  color:var(--purple);
-}
+/* PIXELUP GESTIONALE PROFESSIONALE */
+.save-state{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 10px;border-radius:999px;background:rgba(66,141,94,.10);color:#287143;border:1px solid rgba(66,141,94,.18);font-size:10px;font-weight:900;white-space:nowrap}.save-state.saving{background:rgba(198,154,72,.12);color:#8a6428}.save-state.error{background:rgba(138,53,64,.10);color:#8a3540}
+.pro-dashboard{margin:18px 20px 0;display:grid;gap:12px}.pro-progress-card,.pro-alerts-card,.pro-timeline-card{background:rgba(255,255,255,.90);border:1px solid rgba(111,74,142,.13);border-radius:20px;box-shadow:var(--soft-shadow);padding:16px}.pro-progress-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.pro-progress-head h3,.pro-alerts-card h3,.pro-timeline-card h3{font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:400;color:var(--purple-dark)}.pro-progress-head strong{font-size:24px;color:var(--purple)}.pro-progress-track{height:12px;margin-top:12px;border-radius:999px;background:rgba(111,74,142,.10);overflow:hidden}.pro-progress-bar{height:100%;width:0;background:linear-gradient(135deg,var(--purple),var(--gold));border-radius:999px;transition:width .3s}.pro-progress-caption{margin-top:8px;color:var(--muted);font-size:11px}.pro-alert-list,.pro-timeline{display:grid;gap:8px;margin-top:12px}.pro-alert{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:10px 11px;border-radius:14px;font-size:12px;line-height:1.4;background:rgba(198,154,72,.08);border:1px solid rgba(198,154,72,.14)}.pro-alert.ok{background:rgba(66,141,94,.07);border-color:rgba(66,141,94,.14)}.pro-alert.danger{background:rgba(138,53,64,.07);border-color:rgba(138,53,64,.13)}.pro-timeline-step{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;font-size:12px;color:var(--muted)}.pro-timeline-dot{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:rgba(111,74,142,.09);color:var(--purple);font-weight:900}.pro-timeline-step.done .pro-timeline-dot{background:rgba(66,141,94,.13);color:#287143}.pro-timeline-step.current .pro-timeline-dot{background:rgba(198,154,72,.17);color:#8a6428}
+.question-toolbar{display:grid;grid-template-columns:1fr auto;gap:9px;margin-bottom:12px}.question-toolbar input{width:100%;min-height:44px;border:1px solid rgba(111,74,142,.18);border-radius:14px;padding:0 13px;background:white}.question-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.question-kpi{padding:10px 8px;border-radius:14px;background:rgba(255,255,255,.82);border:1px solid rgba(111,74,142,.11);text-align:center}.question-kpi strong{display:block;font-size:18px;color:var(--purple-dark)}.question-kpi span{font-size:10px;color:var(--muted);font-weight:800}.question-card.new-answer{border-color:rgba(141,95,173,.45);box-shadow:0 10px 28px rgba(111,74,142,.12)}.new-answer-badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:rgba(111,74,142,.12);color:var(--purple);font-size:10px;font-weight:900;margin-bottom:8px}.ai-suggestion{margin-top:10px;padding:11px 12px;border-radius:14px;background:linear-gradient(135deg,rgba(111,74,142,.08),rgba(198,154,72,.09));border:1px solid rgba(111,74,142,.13);font-size:12px;line-height:1.5}.ai-suggestion strong{display:block;margin-bottom:5px;color:var(--purple)}
+.rite-draggable{cursor:grab}.rite-draggable.dragging{opacity:.45}.rite-drag-handle{font-size:20px;color:var(--gold);font-weight:900}
+@media(max-width:390px){.pro-dashboard{margin-left:16px;margin-right:16px}.question-kpis{grid-template-columns:repeat(2,1fr)}.question-toolbar{grid-template-columns:1fr}}
 
 </style>
 </head>
@@ -1604,6 +1584,7 @@ body{
           <p id="welcomeSubtitle">PixelUp · Gestione cerimonia</p>
         </div>
 
+        <div class="save-state" id="saveState">✓ Salvato</div>
         <div class="top-actions">
           <button class="btn" type="button" onclick="showInstallGuide()">＋ Home</button>
           <button class="btn" type="button" onclick="copyCoupleLink()" aria-label="Copia link coppia">Link coppia</button>
@@ -1639,6 +1620,13 @@ body{
               <button class="btn gold" style="width:100%;" type="button" onclick="copyCoupleLink()">Copia link coppia</button>
             </div>
           </div>
+        </div>
+
+        
+        <div class="pro-dashboard">
+          <section class="pro-progress-card"><div class="pro-progress-head"><div><h3>Preparazione cerimonia</h3><p class="pro-progress-caption" id="proProgressCaption">Calcolo avanzamento...</p></div><strong id="proProgressValue">0%</strong></div><div class="pro-progress-track"><div class="pro-progress-bar" id="proProgressBar"></div></div></section>
+          <section class="pro-alerts-card"><h3>Controllo rapido</h3><div class="pro-alert-list" id="proAlertsList"></div></section>
+          <section class="pro-timeline-card"><h3>Percorso della cerimonia</h3><div class="pro-timeline" id="proTimeline"></div></section>
         </div>
 
         <div class="home-control-center">
@@ -1885,13 +1873,6 @@ body{
       </section>
 
       <section class="section" id="ceremoniesSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Le mie cerimonie</h2>
           <div class="section-actions">
@@ -1905,13 +1886,6 @@ body{
       </section>
 
       <section class="section" id="questionsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Questionario coppia</h2>
           <div class="section-actions">
@@ -1923,6 +1897,7 @@ body{
 
         <input class="hidden-input" id="questionnaireFileInput" type="file" accept=".txt,.pdf,.docx,.md,.csv,.rtf,.html,.htm,.png,.jpg,.jpeg,text/plain,text/markdown,text/csv,text/rtf,text/html,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg" onchange="importQuestionnaireFile(event)" />
 
+        <div class="question-kpis"><div class="question-kpi"><strong id="qKpiTotal">0</strong><span>Domande</span></div><div class="question-kpi"><strong id="qKpiComplete">0</strong><span>Complete</span></div><div class="question-kpi"><strong id="qKpiMissing">0</strong><span>Mancanti</span></div><div class="question-kpi"><strong id="qKpiNew">0</strong><span>Nuove</span></div></div><div class="question-toolbar"><input id="questionSearchInput" type="search" placeholder="Cerca domanda o risposta..." oninput="renderQuestions()"><button class="btn" type="button" onclick="markAllQuestionsRead()">Segna tutte lette</button></div>
         <div class="grid-2">
           <div class="card">
             <div class="card-title">
@@ -1951,13 +1926,6 @@ body{
       </section>
 
       <section class="section" id="workModelsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Modelli di lavoro</h2>
           <div class="section-actions">
@@ -1988,13 +1956,6 @@ body{
       </section>
 
       <section class="section" id="appointmentsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Appuntamenti</h2>
           <div class="section-actions">
@@ -2005,13 +1966,6 @@ body{
       </section>
 
       <section class="section" id="riteSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Rito e testi</h2>
           <div class="section-actions">
@@ -2033,13 +1987,6 @@ body{
       </section>
 
       <section class="section" id="documentsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Documenti e file</h2>
           <div class="section-actions">
@@ -2058,13 +2005,6 @@ body{
       </section>
 
       <section class="section" id="contactsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Clienti, fornitori e contatti</h2>
           <div class="section-actions">
@@ -2075,13 +2015,6 @@ body{
       </section>
 
       <section class="section" id="tasksSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Attività</h2>
           <div class="section-actions">
@@ -2092,13 +2025,6 @@ body{
       </section>
 
       <section class="section" id="notesSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Note e idee</h2>
           <div class="section-actions">
@@ -2112,13 +2038,6 @@ body{
       </section>
 
       <section class="section" id="reportSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Report e backup</h2>
           <div class="section-actions">
@@ -2156,13 +2075,6 @@ body{
 
 
       <section class="section" id="visibilitySection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Visibilità area coppia</h2>
           <div class="section-actions">
@@ -2197,13 +2109,6 @@ body{
       </section>
 
       <section class="section" id="settingsSection">
-        <div class="section-home-back">
-          <button class="btn" type="button" onclick="openSectionById('overviewSection')">
-            <span class="back-arrow">←</span>
-            Torna alla Home della cerimonia
-          </button>
-        </div>
-
         <div class="section-head">
           <h2>Impostazioni</h2>
           <div class="section-actions">
@@ -2438,7 +2343,10 @@ body{
         answer1: item.answer1 || "",
         answer2: item.answer2 || "",
         type: item.type || "testo",
-        visibleToCouple: item.visibleToCouple !== false
+        visibleToCouple: item.visibleToCouple !== false,
+        answeredAt: item.answeredAt || "",
+        readAt: item.readAt || "",
+        aiSuggestion: item.aiSuggestion || ""
       })) : [];
 
       merged.appointments = Array.isArray(safe.appointments) ? safe.appointments.map((item) => ({
@@ -2501,23 +2409,17 @@ body{
       return merged;
     }
 
-    async function saveData() {
-      if (!eventRef) {
-        toast("Apri o crea una cerimonia prima di salvare.");
-        return;
-      }
-      if (!firebaseReady) return;
+    function setSaveState(state, text) { const el=document.getElementById("saveState"); if(!el)return; el.className="save-state"+(state?" "+state:""); el.textContent=text; }
 
+    async function saveData() {
+      if (!eventRef) { toast("Apri o crea una cerimonia prima di salvare."); return; }
+      if (!firebaseReady) return;
       try {
-        data.ownerEmail = loggedEmail;
-        data.ownerRole = loggedRole;
-        data.accessCode = loggedCode;
-        data.updatedAt = new Date().toISOString();
-        await setDoc(eventRef, data, { merge: true });
-      } catch (error) {
-        console.error("Errore salvataggio:", error);
-        alert("Errore nel salvataggio. Controlla Firebase.");
-      }
+        setSaveState("saving","● Salvataggio...");
+        data.ownerEmail=loggedEmail; data.ownerRole=loggedRole; data.accessCode=loggedCode; data.updatedAt=new Date().toISOString();
+        await setDoc(eventRef,data,{merge:true});
+        setSaveState("","✓ Salvato "+new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}));
+      } catch(error){ console.error("Errore salvataggio:",error); setSaveState("error","⚠ Errore salvataggio"); alert("Errore nel salvataggio. Controlla Firebase."); }
     }
 
     async function countUserCeremonies() {
@@ -2687,6 +2589,19 @@ body{
       document.getElementById("mobileMenuModal")?.classList.remove("show");
     }
 
+
+    function questionIsAnswered(item){return Boolean(cleanText(item.answer1)||cleanText(item.answer2));}
+    function questionIsComplete(item){return Boolean(cleanText(item.answer1)&&cleanText(item.answer2));}
+    function questionIsNew(item){if(!questionIsAnswered(item))return false;if(!item.readAt)return true;if(!item.answeredAt)return false;return new Date(item.answeredAt)>new Date(item.readAt);}
+    function calculateCeremonyProgress(){const q=data.questions||[];const vals=[q.length?q.filter(questionIsAnswered).length/q.length:0,(data.appointments||[]).length?1:0,(data.documents||[]).length?1:0,(data.tasks||[]).length?(data.tasks||[]).filter(t=>t.done).length/(data.tasks||[]).length:0,(cleanText(data.riteDraft)||(data.riteBlocks||[]).length)?1:0];return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*100);}
+    function renderProfessionalHome(){
+      const p=calculateCeremonyProgress(); const pv=document.getElementById("proProgressValue"),pb=document.getElementById("proProgressBar"),pc=document.getElementById("proProgressCaption"); if(pv)pv.textContent=p+"%";if(pb)pb.style.width=p+"%";if(pc)pc.textContent=p<35?"Il percorso è nelle fasi iniziali.":p<70?"La preparazione sta procedendo bene.":p<100?"Mancano gli ultimi dettagli.":"Cerimonia pronta.";
+      const q=data.questions||[],answered=q.filter(questionIsAnswered).length,newA=q.filter(questionIsNew).length,docs=data.documents||[],visible=docs.filter(d=>d.visibleToCouple).length,next=(data.appointments||[]).filter(a=>a.date&&new Date(a.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+      const alerts=[]; if(!q.length)alerts.push(["danger","☷","Non è ancora presente un questionario."]);else if(answered<q.length)alerts.push(["","⚠","Questionario compilato: "+answered+" su "+q.length+" domande."]);else alerts.push(["ok","✓","Tutte le domande hanno almeno una risposta."]); if(newA)alerts.push(["","●",newA+" risposte nuove da leggere."]); if(!docs.length)alerts.push(["danger","▤","Nessun documento caricato."]);else alerts.push([visible?"ok":"","◉",visible+" documenti visibili alla coppia."]); alerts.push([next?"ok":"","▦",next?"Prossimo appuntamento: "+formatDate(next.date)+" alle "+formatTime(next.date)+".":"Nessun appuntamento futuro programmato."]);
+      const al=document.getElementById("proAlertsList");if(al)al.innerHTML=alerts.map(([k,i,t])=>`<div class="pro-alert ${k}"><strong>${i}</strong><span>${escapeHtml(t)}</span></div>`).join("");
+      const steps=[["Cerimonia creata",Boolean(currentEventId)],["Questionario inviato",q.length>0],["Risposte ricevute",answered>0],["Documenti ricevuti",docs.length>0],["Rito in lavorazione",Boolean(cleanText(data.riteDraft)||(data.riteBlocks||[]).length)],["Cerimonia completata",String(data.status||"").toLowerCase().includes("complet")]];let current=false;const tl=document.getElementById("proTimeline");if(tl)tl.innerHTML=steps.map(([l,d])=>{let c=d?"done":"";if(!d&&!current){c="current";current=true}return `<div class="pro-timeline-step ${c}"><span class="pro-timeline-dot">${d?"✓":"○"}</span><strong>${escapeHtml(l)}</strong><small>${d?"Completato":c==="current"?"In corso":"Da fare"}</small></div>`}).join("");
+    }
+
     function renderSummary() {
       const title = document.getElementById("projectTitle");
       const welcomeTitle = document.getElementById("welcomeTitle");
@@ -2761,57 +2676,14 @@ body{
       `).join("");
     }
 
-    function renderQuestions() {
-      const list = document.getElementById("questionsList");
-      const countPill = document.getElementById("questionsCountPill");
-      if (!list) return;
-      if (countPill) countPill.textContent = (data.questions || []).length + " domande";
-
-      if (!data.questions || !data.questions.length) {
-        list.innerHTML = `<div class="empty">Nessuna domanda. Aggiungi domande o importa un modello.</div>`;
-      } else {
-        list.innerHTML = data.questions.map((item, index) => `
-          <div class="question-card">
-            <div class="card-title" style="margin-bottom:8px;">
-              <div><h4>${index + 1}. ${escapeHtml(item.question)}</h4><small>${item.visibleToCouple ? "Visibile alla coppia" : "Interna"}</small></div>
-              <div class="row-right">
-                <button class="small-btn" type="button" onclick="editQuestion(${index})">Modifica</button>
-                <button class="small-btn danger" type="button" onclick="deleteQuestion(${index})">Elimina</button>
-              </div>
-            </div>
-            <div class="question-answers">
-              <div class="question-answer-box ${item.answer1 ? "" : "empty-answer"}">
-                <strong>Risposta primo partner</strong>
-                ${escapeHtml(item.answer1 || "In attesa di risposta") }
-              </div>
-              <div class="question-answer-box ${item.answer2 ? "" : "empty-answer"}">
-                <strong>Risposta secondo partner</strong>
-                ${escapeHtml(item.answer2 || "In attesa di risposta") }
-              </div>
-            </div>
-          </div>
-        `).join("");
-      }
-
-      const box = document.getElementById("importedModelBox");
-      if (box) {
-        if (data.importedQuestionnaire) {
-          box.innerHTML = `
-            <div class="row">
-              <div class="row-icon">▧</div>
-              <div class="row-info">
-                <h3>${escapeHtml(data.importedQuestionnaire.name || "Modello importato")}</h3>
-                <p>${escapeHtml(data.importedQuestionnaire.notes || "File importato nella cerimonia.")}</p>
-                ${data.importedQuestionnaire.questionCount ? `<p><strong>${Number(data.importedQuestionnaire.questionCount)} domande</strong> trasformate in campi compilabili.</p>` : ""}
-                ${data.importedQuestionnaire.url ? `<p><a href="${data.importedQuestionnaire.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple);font-weight:900;">Apri modello originale</a></p>` : ""}
-              </div>
-              <div class="row-right"><span class="pill warn">Importato</span></div>
-            </div>
-          `;
-        } else {
-          box.innerHTML = "Nessun modello importato. Puoi caricare un file e salvarlo nella cerimonia.";
-        }
-      }
+    function localAiSuggestion(item){const combined=[cleanText(item.answer1),cleanText(item.answer2)].filter(Boolean).join(" ");if(!combined)return "Le risposte non sono ancora disponibili.";const themes=["amore","famiglia","insieme","ricordo","sogno","promessa","difficile"].filter(w=>combined.toLowerCase().includes(w));return "Questa risposta può diventare un passaggio narrativo della cerimonia"+(themes.length?", valorizzando i temi: "+themes.slice(0,3).join(", "):"")+". Mantieni il ricordo centrale e usa le parole più autentiche della coppia.";}
+    function generateQuestionSuggestion(index){const item=data.questions[index];if(!item)return;item.aiSuggestion=localAiSuggestion(item);item.readAt=new Date().toISOString();renderQuestions();renderProfessionalHome();saveData();}
+    function markQuestionRead(index){const item=data.questions[index];if(!item)return;item.readAt=new Date().toISOString();renderQuestions();renderProfessionalHome();saveData();}
+    function markAllQuestionsRead(){const now=new Date().toISOString();(data.questions||[]).forEach(i=>{if(questionIsAnswered(i))i.readAt=now});renderQuestions();renderProfessionalHome();saveData();toast("Tutte le risposte sono state segnate come lette.");}
+    function renderQuestions(){
+      const list=document.getElementById("questionsList"),pill=document.getElementById("questionsCountPill");if(!list)return;const q=data.questions||[],search=cleanText(document.getElementById("questionSearchInput")?.value).toLowerCase();const filtered=q.map((item,index)=>({item,index})).filter(({item})=>!search||[item.question,item.answer1,item.answer2].some(v=>String(v||"").toLowerCase().includes(search)));const answered=q.filter(questionIsAnswered).length,complete=q.filter(questionIsComplete).length,newCount=q.filter(questionIsNew).length;const st=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};st("qKpiTotal",q.length);st("qKpiComplete",complete);st("qKpiMissing",q.length-answered);st("qKpiNew",newCount);if(pill)pill.textContent=q.length+" domande";
+      if(!q.length)list.innerHTML=`<div class="empty">Nessuna domanda. Aggiungi domande o importa un modello.</div>`;else if(!filtered.length)list.innerHTML=`<div class="empty">Nessun risultato.</div>`;else list.innerHTML=filtered.map(({item,index})=>{const isNew=questionIsNew(item);return `<div class="question-card ${isNew?"new-answer":""}">${isNew?`<span class="new-answer-badge">● NUOVA RISPOSTA</span>`:""}<div class="card-title" style="margin-bottom:8px;"><div><h4>${index+1}. ${escapeHtml(item.question)}</h4><small>${item.visibleToCouple?"Visibile alla coppia":"Interna"} · ${questionIsComplete(item)?"Completa":questionIsAnswered(item)?"Parziale":"In attesa"}</small></div><div class="row-right">${isNew?`<button class="small-btn" onclick="markQuestionRead(${index})">Segna letta</button>`:""}<button class="small-btn" onclick="editQuestion(${index})">Modifica</button><button class="small-btn danger" onclick="deleteQuestion(${index})">Elimina</button></div></div><div class="question-answers"><div class="question-answer-box ${item.answer1?"":"empty-answer"}"><strong>Risposta primo partner</strong>${escapeHtml(item.answer1||"In attesa di risposta")}</div><div class="question-answer-box ${item.answer2?"":"empty-answer"}"><strong>Risposta secondo partner</strong>${escapeHtml(item.answer2||"In attesa di risposta")}</div></div>${questionIsAnswered(item)?`<div style="margin-top:10px"><button class="small-btn" onclick="generateQuestionSuggestion(${index})">✨ Suggerimento IA locale</button></div>`:""}${item.aiSuggestion?`<div class="ai-suggestion"><strong>✨ Idea per il rito</strong>${escapeHtml(item.aiSuggestion)}</div>`:""}</div>`}).join("");
+      const box=document.getElementById("importedModelBox");if(box){if(data.importedQuestionnaire){box.innerHTML=`<div class="row"><div class="row-icon">▧</div><div class="row-info"><h3>${escapeHtml(data.importedQuestionnaire.name||"Modello importato")}</h3><p>${escapeHtml(data.importedQuestionnaire.notes||"File importato nella cerimonia.")}</p>${data.importedQuestionnaire.questionCount?`<p><strong>${Number(data.importedQuestionnaire.questionCount)} domande</strong> trasformate in campi compilabili.</p>`:""}${data.importedQuestionnaire.url?`<p><a href="${data.importedQuestionnaire.url}" target="_blank" style="color:var(--purple);font-weight:900">Apri modello originale</a></p>`:""}</div><div class="row-right"><span class="pill warn">Importato</span></div></div>`}else box.innerHTML="Nessun modello importato. Puoi caricare un file e salvarlo nella cerimonia."}
     }
 
     function addQuestion() {
@@ -3710,34 +3582,11 @@ body{
       renderTasks(); saveData();
     }
 
-    function renderRite() {
-      const input = document.getElementById("riteDraftInput");
-      if (input && input.value !== data.riteDraft) input.value = data.riteDraft || "";
-
-      const list = document.getElementById("riteBlocksList");
-      if (!list) return;
-      if (!data.riteBlocks || !data.riteBlocks.length) {
-        list.innerHTML = `<div class="empty">Nessun blocco rito inserito.</div>`;
-        return;
-      }
-      list.innerHTML = [...data.riteBlocks].sort((a,b)=>(a.order||0)-(b.order||0)).map((item) => {
-        const index = data.riteBlocks.indexOf(item);
-        return `
-          <div class="row">
-            <div class="row-icon">✒</div>
-            <div class="row-info">
-              <h3>${escapeHtml(item.title)}</h3>
-              <p>${escapeHtml((item.text || "").slice(0, 180))}${(item.text || "").length > 180 ? "..." : ""}</p>
-              <p>${item.visibleToCouple ? "Visibile alla coppia" : "Interno celebrante"}</p>
-            </div>
-            <div class="row-right">
-              <button class="small-btn" type="button" onclick="editRiteBlock(${index})">Modifica</button>
-              <button class="small-btn danger" type="button" onclick="deleteRiteBlock(${index})">Elimina</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
+    let draggedRiteIndex=null;
+    function onRiteDragStart(index,event){draggedRiteIndex=index;event.currentTarget.classList.add("dragging");}
+    function onRiteDragEnd(event){event.currentTarget.classList.remove("dragging");draggedRiteIndex=null;}
+    function onRiteDrop(targetIndex,event){event.preventDefault();if(draggedRiteIndex===null||draggedRiteIndex===targetIndex)return;const item=data.riteBlocks.splice(draggedRiteIndex,1)[0];data.riteBlocks.splice(targetIndex,0,item);data.riteBlocks.forEach((b,i)=>b.order=i+1);renderRite();saveData();}
+    function renderRite(){const input=document.getElementById("riteDraftInput");if(input&&input.value!==data.riteDraft)input.value=data.riteDraft||"";const list=document.getElementById("riteBlocksList");if(!list)return;if(!data.riteBlocks||!data.riteBlocks.length){list.innerHTML=`<div class="empty">Nessun blocco rito inserito.</div>`;return}const ordered=[...data.riteBlocks].sort((a,b)=>(a.order||0)-(b.order||0));list.innerHTML=ordered.map((item,displayIndex)=>{const index=data.riteBlocks.indexOf(item);return `<div class="row rite-draggable" draggable="true" ondragstart="onRiteDragStart(${index},event)" ondragend="onRiteDragEnd(event)" ondragover="event.preventDefault()" ondrop="onRiteDrop(${index},event)"><div class="row-icon rite-drag-handle">↕</div><div class="row-info"><h3>${displayIndex+1}. ${escapeHtml(item.title)}</h3><p>${escapeHtml((item.text||"").slice(0,180))}${(item.text||"").length>180?"...":""}</p><p>${item.visibleToCouple?"Visibile alla coppia":"Interno celebrante"} · Trascina per cambiare ordine</p></div><div class="row-right"><button class="small-btn" onclick="editRiteBlock(${index})">Modifica</button><button class="small-btn danger" onclick="deleteRiteBlock(${index})">Elimina</button></div></div>`}).join("");}
 
     function saveRiteDraftLocal() {
       const input = document.getElementById("riteDraftInput");
@@ -4094,6 +3943,7 @@ body{
 
     function renderAll() {
       renderSummary();
+      renderProfessionalHome();
       renderHomeAccordion();
       renderRecentActivity();
       renderQuestions();
@@ -4200,6 +4050,12 @@ body{
     window.saveCoupleMessage = saveCoupleMessage;
     window.logoutPixelUp = logoutPixelUp;
     window.toggleHomeAccordion = toggleHomeAccordion;
+    window.generateQuestionSuggestion=generateQuestionSuggestion;
+    window.markQuestionRead=markQuestionRead;
+    window.markAllQuestionsRead=markAllQuestionsRead;
+    window.onRiteDragStart=onRiteDragStart;
+    window.onRiteDragEnd=onRiteDragEnd;
+    window.onRiteDrop=onRiteDrop;
     window.renderAll = renderAll;
   </script>
 </body>
