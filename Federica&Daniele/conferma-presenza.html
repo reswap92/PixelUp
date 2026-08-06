@@ -463,6 +463,26 @@
       line-height: 1.25;
     }
 
+    /* TRASPORTO */
+    .transport-options {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .transport-routes {
+      width: calc(100% - 44px);
+      margin-left: 44px;
+      margin-top: 12px;
+      display: none;
+      gap: 9px;
+    }
+
+    .transport-routes.show {
+      display: grid;
+    }
+
     .submit-btn {
       width: 100%;
       min-height: 58px;
@@ -605,7 +625,9 @@
       }
 
       .companions-container,
-      .needs-options {
+      .needs-options,
+      .transport-options,
+      .transport-routes {
         width: calc(100% - 38px);
         margin-left: 38px;
       }
@@ -754,6 +776,43 @@
           ></textarea>
         </div>
 
+        <!-- TRASPORTO -->
+        <div class="form-row">
+          <div class="label-line">
+            <div class="label-icon">↔</div>
+            <label>Hai bisogno del trasporto?</label>
+          </div>
+
+          <div class="transport-options">
+            <label class="flag-option">
+              <input type="radio" name="trasporto" value="si">
+              <span>Sì</span>
+            </label>
+
+            <label class="flag-option">
+              <input type="radio" name="trasporto" value="no" checked>
+              <span>No</span>
+            </label>
+          </div>
+
+          <div class="transport-routes" id="transportRoutes">
+            <label class="flag-option">
+              <input type="radio" name="trattaTrasporto" value="Dalla chiesa alla location">
+              <span>Dalla chiesa alla location</span>
+            </label>
+
+            <label class="flag-option">
+              <input type="radio" name="trattaTrasporto" value="Dalla location alla chiesa">
+              <span>Dalla location alla chiesa</span>
+            </label>
+
+            <label class="flag-option">
+              <input type="radio" name="trattaTrasporto" value="Andata e ritorno">
+              <span>Andata e ritorno</span>
+            </label>
+          </div>
+        </div>
+
         <!-- NOTE -->
         <div class="form-row">
           <div class="label-line">
@@ -828,6 +887,9 @@
   const form = document.getElementById("rsvpForm");
   const successMessage = document.getElementById("successMessage");
   const companionsContainer = document.getElementById("companionsContainer");
+  const transportRoutes = document.getElementById("transportRoutes");
+  const transportInputs = document.querySelectorAll('input[name="trasporto"]');
+  const transportRouteInputs = document.querySelectorAll('input[name="trattaTrasporto"]');
 
   let attendanceValue = "si";
   let guestsValue = "1";
@@ -892,6 +954,21 @@
     });
   });
 
+  transportInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      if (input.value === "si" && input.checked) {
+        transportRoutes.classList.add("show");
+      }
+
+      if (input.value === "no" && input.checked) {
+        transportRoutes.classList.remove("show");
+        transportRouteInputs.forEach((routeInput) => {
+          routeInput.checked = false;
+        });
+      }
+    });
+  });
+
   renderCompanionFields(guestsValue);
 
   form.addEventListener("submit", async (event) => {
@@ -901,6 +978,17 @@
     const allergie = document.getElementById("allergie").value.trim();
     const note = document.getElementById("note").value.trim();
     const dettagliEsigenze = document.getElementById("dettagliEsigenze").value.trim();
+
+    const trasportoSelezionato = document.querySelector('input[name="trasporto"]:checked');
+    const trattaTrasportoSelezionata = document.querySelector('input[name="trattaTrasporto"]:checked');
+
+    const necessitaTrasporto = trasportoSelezionato
+      ? trasportoSelezionato.value
+      : "no";
+
+    const trattaTrasporto = necessitaTrasporto === "si"
+      ? (trattaTrasportoSelezionata ? trattaTrasportoSelezionata.value : "Tratta non indicata")
+      : "Nessun trasporto richiesto";
 
     const esigenzeSelezionate = Array.from(
       document.querySelectorAll(".accessibility-options input:checked")
@@ -950,6 +1038,8 @@
       "Allergie o intolleranze: " + (allergie || "Nessuna indicata") + "\n" +
       "Esigenze particolari: " + esigenzeText + "\n" +
       "Dettagli esigenze: " + (dettagliEsigenze || "Nessun dettaglio indicato") + "\n" +
+      "Trasporto richiesto: " + (necessitaTrasporto === "si" ? "Sì" : "No") + "\n" +
+      "Tratta trasporto: " + trattaTrasporto + "\n" +
       "Note: " + (note || "Nessuna nota") + "\n\n" +
       "Messaggio inviato dalla pagina evento PixelUp Events.";
 
@@ -965,6 +1055,8 @@
           allergie: allergie || "",
           esigenzeParticolari: esigenzeSelezionate,
           dettagliEsigenze: dettagliEsigenze || "",
+          necessitaTrasporto: necessitaTrasporto,
+          trattaTrasporto: trattaTrasporto,
           note: note || "",
           evento: "Federica & Daniele",
           eventDate: "2027-06-12",
