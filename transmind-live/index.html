@@ -16,6 +16,7 @@
   >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -24,8 +25,10 @@
     body {
       margin: 0;
       padding: 0;
+
       width: 100%;
       min-height: 100%;
+
       background: #090807;
     }
 
@@ -33,31 +36,49 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* =========================
+       PAGINA
+    ========================= */
+
     .page {
       width: 100%;
+
       display: flex;
       justify-content: center;
+
       background: #090807;
     }
 
+    /* =========================
+       LOCANDINA
+    ========================= */
+
     .poster-container {
       position: relative;
+
       width: 100%;
       max-width: 1024px;
+
       line-height: 0;
+
       overflow: hidden;
     }
 
     .poster {
       display: block;
+
       width: 100%;
       height: auto;
     }
 
-    /*
-      AREA CLICCABILE SOPRA IL PULSANTE
-      "ACQUISTA IL TUO BIGLIETTO"
-    */
+    /* =========================
+       ACQUISTA IL TUO BIGLIETTO
+
+       Area trasparente cliccabile
+       posizionata sopra il pulsante
+       presente nella locandina.
+    ========================= */
+
     .buy-button {
       position: absolute;
 
@@ -76,39 +97,60 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /*
-      AREA DEL QR CODE.
+    .buy-button:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 3px;
+    }
 
-      Per ora cliccandolo si apre qr.html.
-      Successivamente inseriremo anche il QR definitivo.
-    */
-    .qr-link {
+    /* =========================
+       QR CODE DEFINITIVO
+
+       NON è cliccabile.
+       Deve essere semplicemente
+       inquadrato con la fotocamera.
+
+       Destinazione QR:
+       pixelup.it/transmind-live/qr.html
+    ========================= */
+
+    .qr-code {
       position: absolute;
 
       left: 83%;
       top: 80.5%;
 
       width: 14%;
-      height: 10%;
+      height: auto;
 
-      z-index: 10;
+      z-index: 20;
 
-      cursor: pointer;
+      display: block;
 
-      -webkit-tap-highlight-color: transparent;
+      background: white;
+
+      padding: 4px;
+
+      pointer-events: none;
+
+      user-select: none;
     }
 
-    .buy-button:focus-visible,
-    .qr-link:focus-visible {
-      outline: 3px solid white;
-      outline-offset: 3px;
-    }
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
+
       .poster-container {
         width: 100%;
       }
+
+      .qr-code {
+        padding: 2px;
+      }
+
     }
+
   </style>
 </head>
 
@@ -118,26 +160,41 @@
 
     <div class="poster-container">
 
-      <!-- LOCANDINA TRANSMIND -->
+      <!-- =====================
+           LOCANDINA TRANSMIND
+      ====================== -->
+
       <img
         src="assets/transmind-live-poster.jpg"
         class="poster"
         alt="TRANSMIND LIVE - 23 e 24 ottobre 2027"
       >
 
-      <!-- ACQUISTA IL TUO BIGLIETTO -->
+
+      <!-- =====================
+           ACQUISTA IL TUO BIGLIETTO
+      ====================== -->
+
       <a
         href="acquista.html"
         class="buy-button"
         aria-label="Acquista il tuo biglietto TRANSMIND LIVE"
       ></a>
 
-      <!-- QR / SCOPRI DI PIÙ -->
-      <a
-        href="qr.html"
-        class="qr-link"
-        aria-label="Scopri di più su TRANSMIND LIVE"
-      ></a>
+
+      <!-- =====================
+           QR CODE DEFINITIVO
+
+           Solo da scansionare.
+           NON cliccabile.
+      ====================== -->
+
+      <img
+        src="assets/qr-transmind-live-definitivo.png"
+        class="qr-code"
+        alt="QR Code TRANSMIND LIVE"
+        draggable="false"
+      >
 
     </div>
 
