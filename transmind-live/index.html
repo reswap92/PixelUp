@@ -25,10 +25,8 @@
     body {
       margin: 0;
       padding: 0;
-
       width: 100%;
       min-height: 100%;
-
       background: #090807;
     }
 
@@ -42,10 +40,8 @@
 
     .page {
       width: 100%;
-
       display: flex;
       justify-content: center;
-
       background: #090807;
     }
 
@@ -55,18 +51,14 @@
 
     .poster-container {
       position: relative;
-
       width: 100%;
       max-width: 1024px;
-
       line-height: 0;
-
       overflow: hidden;
     }
 
     .poster {
       display: block;
-
       width: 100%;
       height: auto;
     }
@@ -103,36 +95,6 @@
     }
 
     /* =========================
-       QR CODE DEFINITIVO
-
-       NON è cliccabile.
-       Deve essere semplicemente
-       inquadrato con la fotocamera.
-
-       Destinazione QR:
-       pixelup.it/transmind-live/qr.html
-    ========================= */
-
-.qr-code {
-  position: absolute;
-
-  left: 83.2%;
-  top: 79.2%;
-
-  width: 13.2%;
-  height: auto;
-
-  z-index: 20;
-
-  display: block;
-
-  background: white;
-  padding: 5px;
-
-  pointer-events: none;
-  user-select: none;
-}
-    /* =========================
        MOBILE
     ========================= */
 
@@ -140,10 +102,6 @@
 
       .poster-container {
         width: 100%;
-      }
-
-      .qr-code {
-        padding: 2px;
       }
 
     }
@@ -159,6 +117,9 @@
 
       <!-- =====================
            LOCANDINA TRANSMIND
+
+           Il QR definitivo è già
+           incorporato nell'immagine.
       ====================== -->
 
       <img
@@ -177,21 +138,6 @@
         class="buy-button"
         aria-label="Acquista il tuo biglietto TRANSMIND LIVE"
       ></a>
-
-
-      <!-- =====================
-           QR CODE DEFINITIVO
-
-           Solo da scansionare.
-           NON cliccabile.
-      ====================== -->
-
-      <img
-        src="assets/qr-transmind-live-definitivo.png"
-        class="qr-code"
-        alt="QR Code TRANSMIND LIVE"
-        draggable="false"
-      >
 
     </div>
 
