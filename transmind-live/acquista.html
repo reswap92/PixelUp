@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <title>Acquista | TRANSMIND LIVE</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      color: #fff7ef;
+
+      background:
+        radial-gradient(
+          circle at 75% 15%,
+          rgba(214, 153, 93, 0.25),
+          transparent 32%
+        ),
+        linear-gradient(
+          145deg,
+          #0d0907 0%,
+          #211710 50%,
+          #0a0706 100%
+        );
+    }
+
+    .page {
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      padding: 35px 18px;
+    }
+
+    .box {
+      width: 100%;
+      max-width: 720px;
+
+      padding: 36px;
+
+      border-radius: 26px;
+
+      border: 1px solid rgba(238, 188, 139, 0.25);
+
+      background: rgba(13, 9, 7, 0.88);
+
+      box-shadow:
+        0 30px 90px rgba(0,0,0,0.4);
+    }
+
+    .brand {
+      font-size: 12px;
+
+      letter-spacing: 0.28em;
+
+      color: #e5b37f;
+
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+
+      font-family: Georgia, "Times New Roman", serif;
+
+      font-size: 46px;
+      font-weight: 500;
+    }
+
+    .subtitle {
+      margin-bottom: 30px;
+
+      font-size: 17px;
+      line-height: 1.5;
+
+      color: #d9cec5;
+    }
+
+    .ticket-choice {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 14px;
+
+      margin-bottom: 28px;
+    }
+
+    .ticket-option {
+      border: 1px solid rgba(231, 179, 127, 0.35);
+
+      border-radius: 18px;
+
+      padding: 20px;
+
+      cursor: pointer;
+
+      background: rgba(255,255,255,0.03);
+
+      transition: 0.2s ease;
+    }
+
+    .ticket-option:hover {
+      border-color: #e5b37f;
+
+      transform: translateY(-1px);
+    }
+
+    .ticket-option.active {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(230,179,127,0.20),
+          rgba(255,255,255,0.05)
+        );
+
+      border-color: #e5b37f;
+    }
+
+    .ticket-option strong {
+      display: block;
+
+      font-size: 20px;
+
+      margin-bottom: 7px;
+    }
+
+    .ticket-option span {
+      display: block;
+
+      font-size: 14px;
+      line-height: 1.4;
+
+      color: #cfc2b8;
+    }
+
+    form {
+      display: grid;
+
+      gap: 18px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      color: #e8d7c7;
+    }
+
+    input {
+      width: 100%;
+
+      min-height: 52px;
+
+      border-radius: 13px;
+
+      border: 1px solid rgba(255,255,255,0.16);
+
+      background: rgba(255,255,255,0.05);
+
+      color: white;
+
+      font-size: 16px;
+
+      padding: 0 15px;
+
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #e5b37f;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .notice {
+      padding: 15px;
+
+      border-radius: 14px;
+
+      background: rgba(229,179,127,0.10);
+
+      border: 1px solid rgba(229,179,127,0.25);
+
+      font-size: 14px;
+      line-height: 1.5;
+
+      color: #efd7c1;
+    }
+
+    .test {
+      padding: 13px 15px;
+
+      border-radius: 14px;
+
+      background: rgba(255, 208, 90, 0.10);
+
+      border: 1px solid rgba(255, 208, 90, 0.30);
+
+      color: #ffe6a3;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+
+      min-height: 58px;
+
+      margin-top: 7px;
+
+      border: 0;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #e7b073,
+          #f6cea1
+        );
+
+      color: #1c120c;
+
+      font-size: 17px;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+    }
+
+    .back {
+      display: block;
+
+      margin-top: 22px;
+
+      text-align: center;
+
+      color: #cdb197;
+
+      text-decoration: none;
+
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+
+      .box {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .ticket-choice {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="box">
+
+      <div class="brand">
+        TRANSMIND LIVE
+      </div>
+
+      <h1>
+        Acquista il tuo biglietto
+      </h1>
+
+      <div class="subtitle">
+        23 e 24 ottobre 2027 · Teatro Teca · Cassano d’Adda (MI)
+      </div>
+
+      <div class="test">
+        MODALITÀ TEST — Nessun pagamento reale verrà effettuato.
+      </div>
+
+      <br>
+
+      <div class="ticket-choice">
+
+        <div
+          class="ticket-option active"
+          id="transOption"
+          onclick="selectTicket('trans')"
+        >
+
+          <strong>Persona Trans</strong>
+
+          <span>
+            Biglietto principale per partecipare a TRANSMIND LIVE.
+          </span>
+
+        </div>
+
+        <div
+          class="ticket-option"
+          id="companionOption"
+          onclick="selectTicket('companion')"
+        >
+
+          <strong>Accompagnatore</strong>
+
+          <span>
+            Richiede il codice prenotazione di una Persona Trans.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <form id="bookingForm">
+
+        <input
+          type="hidden"
+          id="ticketType"
+          value="trans"
+        >
+
+
+        <div>
+
+          <label for="name">
+            Nome *
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            required
+            autocomplete="given-name"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label for="surname">
+            Cognome *
+          </label>
+
+          <input
+            id="surname"
+            type="text"
+            required
+            autocomplete="family-name"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label for="email">
+            Email *
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            required
+            autocomplete="email"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label for="phone">
+            Telefono
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            autocomplete="tel"
+          >
+
+        </div>
+
+
+        <div
+          id="referenceBox"
+          class="hidden"
+        >
+
+          <label for="referenceCode">
+            Codice prenotazione Persona Trans *
+          </label>
+
+          <input
+            id="referenceCode"
+            type="text"
+            placeholder="Es. TM27-X8K4P2"
+          >
+
+          <div
+            class="notice"
+            style="margin-top:10px;"
+          >
+            Per acquistare un biglietto Accompagnatore
+            è obbligatorio inserire un codice prenotazione
+            valido appartenente alla Persona Trans accompagnata.
+          </div>
+
+        </div>
+
+
+        <button type="submit">
+          COMPLETA PRENOTAZIONE TEST
+        </button>
+
+      </form>
+
+
+      <a
+        href="index.html"
+        class="back"
+      >
+        ← Torna a TRANSMIND LIVE
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    function selectTicket(type) {
+
+      const trans =
+        document.getElementById("transOption");
+
+      const companion =
+        document.getElementById("companionOption");
+
+      const reference =
+        document.getElementById("referenceBox");
+
+      const referenceInput =
+        document.getElementById("referenceCode");
+
+      const ticketType =
+        document.getElementById("ticketType");
+
+
+      ticketType.value = type;
+
+
+      if (type === "trans") {
+
+        trans.classList.add("active");
+
+        companion.classList.remove("active");
+
+        reference.classList.add("hidden");
+
+        referenceInput.required = false;
+
+      } else {
+
+        companion.classList.add("active");
+
+        trans.classList.remove("active");
+
+        reference.classList.remove("hidden");
+
+        referenceInput.required = true;
+
+      }
+
+    }
+
+
+    document
+      .getElementById("bookingForm")
+      .addEventListener(
+        "submit",
+        function(event) {
+
+          event.preventDefault();
+
+          alert(
+            "Perfetto. La pagina grafica funziona. " +
+            "Nel prossimo passaggio collegheremo Firebase, " +
+            "generazione codice, biglietto ed email."
+          );
+
+        }
+      );
+
+  </script>
+
+</body>
+</html>
