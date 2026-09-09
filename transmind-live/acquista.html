@@ -8,185 +8,141 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <title>Acquista | TRANSMIND LIVE</title>
+  <title>Biglietti | TRANSMIND LIVE</title>
 
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       min-height: 100%;
     }
 
     body {
       min-height: 100vh;
-
       font-family: Arial, Helvetica, sans-serif;
-
       color: #fff7ef;
 
       background:
-        radial-gradient(
-          circle at 75% 15%,
-          rgba(214, 153, 93, 0.25),
-          transparent 32%
-        ),
-        linear-gradient(
-          145deg,
-          #0d0907 0%,
-          #211710 50%,
-          #0a0706 100%
-        );
+        radial-gradient(circle at 75% 15%, rgba(214,153,93,.25), transparent 32%),
+        linear-gradient(145deg, #0d0907 0%, #211710 50%, #0a0706 100%);
     }
 
     .page {
       min-height: 100vh;
-
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-
       padding: 35px 18px;
     }
 
     .box {
       width: 100%;
       max-width: 720px;
-
       padding: 36px;
-
       border-radius: 26px;
-
-      border: 1px solid rgba(238, 188, 139, 0.25);
-
-      background: rgba(13, 9, 7, 0.88);
-
-      box-shadow:
-        0 30px 90px rgba(0,0,0,0.4);
+      border: 1px solid rgba(238,188,139,.25);
+      background: rgba(13,9,7,.90);
+      box-shadow: 0 30px 90px rgba(0,0,0,.4);
     }
 
     .brand {
       font-size: 12px;
-
-      letter-spacing: 0.28em;
-
+      letter-spacing: .28em;
       color: #e5b37f;
-
       margin-bottom: 12px;
     }
 
     h1 {
       margin: 0 0 12px;
-
       font-family: Georgia, "Times New Roman", serif;
-
       font-size: 46px;
       font-weight: 500;
     }
 
     .subtitle {
-      margin-bottom: 30px;
-
-      font-size: 17px;
-      line-height: 1.5;
-
+      margin-bottom: 25px;
       color: #d9cec5;
+      line-height: 1.5;
+    }
+
+    .notice {
+      padding: 14px;
+      margin-bottom: 25px;
+      border-radius: 14px;
+      background: rgba(229,179,127,.10);
+      border: 1px solid rgba(229,179,127,.25);
+      color: #efd7c1;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .ticket-choice {
       display: grid;
-
       grid-template-columns: 1fr 1fr;
-
       gap: 14px;
-
       margin-bottom: 28px;
     }
 
     .ticket-option {
-      border: 1px solid rgba(231, 179, 127, 0.35);
-
+      border: 1px solid rgba(231,179,127,.35);
       border-radius: 18px;
-
       padding: 20px;
-
       cursor: pointer;
-
-      background: rgba(255,255,255,0.03);
-
-      transition: 0.2s ease;
+      background: rgba(255,255,255,.03);
+      transition: .2s ease;
     }
 
     .ticket-option:hover {
       border-color: #e5b37f;
-
-      transform: translateY(-1px);
     }
 
     .ticket-option.active {
-      background:
-        linear-gradient(
-          135deg,
-          rgba(230,179,127,0.20),
-          rgba(255,255,255,0.05)
-        );
-
       border-color: #e5b37f;
+      background: rgba(229,179,127,.13);
     }
 
     .ticket-option strong {
       display: block;
-
       font-size: 20px;
-
       margin-bottom: 7px;
     }
 
-    .ticket-option span {
+    .price {
       display: block;
+      font-size: 28px;
+      color: #f3c490;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
 
-      font-size: 14px;
-      line-height: 1.4;
-
+    .ticket-option small {
       color: #cfc2b8;
+      line-height: 1.4;
     }
 
     form {
       display: grid;
-
       gap: 18px;
     }
 
     label {
       display: block;
-
       margin-bottom: 7px;
-
       font-size: 14px;
-
       color: #e8d7c7;
     }
 
     input {
       width: 100%;
-
       min-height: 52px;
-
       border-radius: 13px;
-
-      border: 1px solid rgba(255,255,255,0.16);
-
-      background: rgba(255,255,255,0.05);
-
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
       color: white;
-
       font-size: 16px;
-
       padding: 0 15px;
-
       outline: none;
     }
 
@@ -198,82 +154,52 @@
       display: none;
     }
 
-    .notice {
-      padding: 15px;
-
-      border-radius: 14px;
-
-      background: rgba(229,179,127,0.10);
-
-      border: 1px solid rgba(229,179,127,0.25);
-
-      font-size: 14px;
-      line-height: 1.5;
-
-      color: #efd7c1;
-    }
-
-    .test {
-      padding: 13px 15px;
-
-      border-radius: 14px;
-
-      background: rgba(255, 208, 90, 0.10);
-
-      border: 1px solid rgba(255, 208, 90, 0.30);
-
-      color: #ffe6a3;
-
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
     button {
       width: 100%;
-
       min-height: 58px;
-
       margin-top: 7px;
-
       border: 0;
-
       border-radius: 999px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #e7b073,
-          #f6cea1
-        );
-
+      background: linear-gradient(90deg,#e7b073,#f6cea1);
       color: #1c120c;
-
       font-size: 17px;
       font-weight: 700;
-
       cursor: pointer;
     }
 
-    button:hover {
-      filter: brightness(1.05);
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .result {
+      display: none;
+      margin-top: 25px;
+      padding: 22px;
+      border: 1px solid rgba(229,179,127,.35);
+      border-radius: 18px;
+      background: rgba(229,179,127,.08);
+      line-height: 1.6;
+    }
+
+    .code {
+      display: block;
+      margin: 15px 0;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #f5c995;
     }
 
     .back {
       display: block;
-
-      margin-top: 22px;
-
+      margin-top: 24px;
       text-align: center;
-
       color: #cdb197;
-
       text-decoration: none;
-
-      font-size: 14px;
     }
 
     @media (max-width: 600px) {
-
       .box {
         padding: 28px 20px;
       }
@@ -291,245 +217,539 @@
 
 <body>
 
-  <main class="page">
+<main class="page">
 
-    <section class="box">
+  <section class="box">
 
-      <div class="brand">
-        TRANSMIND LIVE
-      </div>
+    <div class="brand">TRANSMIND LIVE</div>
 
-      <h1>
-        Acquista il tuo biglietto
-      </h1>
+    <h1>Acquista il tuo biglietto</h1>
 
-      <div class="subtitle">
-        23 e 24 ottobre 2027 · Teatro Teca · Cassano d’Adda (MI)
-      </div>
+    <div class="subtitle">
+      23 e 24 ottobre 2027 · Teatro Teca · Cassano d’Adda (MI)
+    </div>
 
-      <div class="test">
-        MODALITÀ TEST — Nessun pagamento reale verrà effettuato.
-      </div>
+    <div class="notice">
+      Il pagamento online è in fase di attivazione.
+      In questa fase stiamo verificando il sistema di prenotazione:
+      <strong>non verrà effettuato alcun addebito.</strong>
+    </div>
 
-      <br>
 
-      <div class="ticket-choice">
+    <div class="ticket-choice">
 
-        <div
-          class="ticket-option active"
-          id="transOption"
-          onclick="selectTicket('trans')"
-        >
-
-          <strong>Persona Trans</strong>
-
-          <span>
-            Biglietto principale per partecipare a TRANSMIND LIVE.
-          </span>
-
-        </div>
-
-        <div
-          class="ticket-option"
-          id="companionOption"
-          onclick="selectTicket('companion')"
-        >
-
-          <strong>Accompagnatore</strong>
-
-          <span>
-            Richiede il codice prenotazione di una Persona Trans.
-          </span>
-
-        </div>
-
+      <div
+        id="transOption"
+        class="ticket-option active"
+        onclick="selectTicket('trans')"
+      >
+        <strong>Persona Trans</strong>
+        <span class="price">€150</span>
+        <small>Biglietto principale TRANSMIND LIVE.</small>
       </div>
 
 
-      <form id="bookingForm">
+      <div
+        id="companionOption"
+        class="ticket-option"
+        onclick="selectTicket('companion')"
+      >
+        <strong>Accompagnatore</strong>
+        <span class="price">€90</span>
+        <small>
+          Acquistabile esclusivamente tramite un codice
+          prenotazione Persona Trans valido.
+        </small>
+      </div>
+
+    </div>
+
+
+    <form id="bookingForm">
+
+      <input id="ticketType" type="hidden" value="trans">
+
+
+      <div>
+        <label for="name">Nome *</label>
+        <input id="name" type="text" required>
+      </div>
+
+
+      <div>
+        <label for="surname">Cognome *</label>
+        <input id="surname" type="text" required>
+      </div>
+
+
+      <div>
+        <label for="email">Email *</label>
+        <input id="email" type="email" required>
+      </div>
+
+
+      <div>
+        <label for="phone">Telefono *</label>
+        <input id="phone" type="tel" required>
+      </div>
+
+
+      <div id="referenceBox" class="hidden">
+
+        <label for="referenceCode">
+          Codice prenotazione Persona Trans *
+        </label>
 
         <input
-          type="hidden"
-          id="ticketType"
-          value="trans"
+          id="referenceCode"
+          type="text"
+          placeholder="Es. TM27-T-AB12CD"
         >
 
-
-        <div>
-
-          <label for="name">
-            Nome *
-          </label>
-
-          <input
-            id="name"
-            type="text"
-            required
-            autocomplete="given-name"
-          >
-
+        <div class="notice" style="margin-top:10px;margin-bottom:0;">
+          Il codice verrà verificato automaticamente.
+          Non è possibile registrare un accompagnatore senza
+          una prenotazione Persona Trans valida.
         </div>
 
-
-        <div>
-
-          <label for="surname">
-            Cognome *
-          </label>
-
-          <input
-            id="surname"
-            type="text"
-            required
-            autocomplete="family-name"
-          >
-
-        </div>
+      </div>
 
 
-        <div>
+      <button id="submitButton" type="submit">
+        CONFERMA PRENOTAZIONE
+      </button>
 
-          <label for="email">
-            Email *
-          </label>
-
-          <input
-            id="email"
-            type="email"
-            required
-            autocomplete="email"
-          >
-
-        </div>
+    </form>
 
 
-        <div>
+    <div id="result" class="result">
 
-          <label for="phone">
-            Telefono
-          </label>
+      <strong>Prenotazione registrata correttamente.</strong>
 
-          <input
-            id="phone"
-            type="tel"
-            autocomplete="tel"
-          >
+      <span id="resultCode" class="code"></span>
 
-        </div>
+      <div id="resultText"></div>
+
+    </div>
 
 
-        <div
-          id="referenceBox"
-          class="hidden"
-        >
+    <a class="back" href="index.html">
+      ← Torna a TRANSMIND LIVE
+    </a>
 
-          <label for="referenceCode">
-            Codice prenotazione Persona Trans *
-          </label>
+  </section>
 
-          <input
-            id="referenceCode"
-            type="text"
-            placeholder="Es. TM27-X8K4P2"
-          >
-
-          <div
-            class="notice"
-            style="margin-top:10px;"
-          >
-            Per acquistare un biglietto Accompagnatore
-            è obbligatorio inserire un codice prenotazione
-            valido appartenente alla Persona Trans accompagnata.
-          </div>
-
-        </div>
+</main>
 
 
-        <button type="submit">
-          COMPLETA PRENOTAZIONE TEST
-        </button>
+<script type="module">
 
-      </form>
+  import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-
-      <a
-        href="index.html"
-        class="back"
-      >
-        ← Torna a TRANSMIND LIVE
-      </a>
-
-    </section>
-
-  </main>
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    runTransaction,
+    serverTimestamp
+  }
+  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
-  <script>
+  const firebaseConfig = {
 
-    function selectTicket(type) {
+    apiKey:
+      "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
 
-      const trans =
-        document.getElementById("transOption");
+    authDomain:
+      "backtag-16de3.firebaseapp.com",
 
-      const companion =
-        document.getElementById("companionOption");
+    projectId:
+      "backtag-16de3",
 
-      const reference =
-        document.getElementById("referenceBox");
+    storageBucket:
+      "backtag-16de3.firebasestorage.app",
 
-      const referenceInput =
-        document.getElementById("referenceCode");
+    messagingSenderId:
+      "415455463905",
 
-      const ticketType =
-        document.getElementById("ticketType");
+    appId:
+      "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0"
+
+  };
 
 
-      ticketType.value = type;
+  const app = initializeApp(firebaseConfig);
+
+  const db = getFirestore(app);
 
 
-      if (type === "trans") {
+  window.selectTicket = function(type) {
 
-        trans.classList.add("active");
+    const trans =
+      document.getElementById("transOption");
 
-        companion.classList.remove("active");
+    const companion =
+      document.getElementById("companionOption");
 
-        reference.classList.add("hidden");
+    const referenceBox =
+      document.getElementById("referenceBox");
 
-        referenceInput.required = false;
+    const referenceInput =
+      document.getElementById("referenceCode");
 
-      } else {
+    document.getElementById("ticketType").value = type;
 
-        companion.classList.add("active");
 
-        trans.classList.remove("active");
+    if (type === "trans") {
 
-        reference.classList.remove("hidden");
+      trans.classList.add("active");
 
-        referenceInput.required = true;
+      companion.classList.remove("active");
 
-      }
+      referenceBox.classList.add("hidden");
+
+      referenceInput.required = false;
 
     }
 
+    else {
 
-    document
-      .getElementById("bookingForm")
-      .addEventListener(
-        "submit",
-        function(event) {
+      companion.classList.add("active");
 
-          event.preventDefault();
+      trans.classList.remove("active");
 
-          alert(
-            "Perfetto. La pagina grafica funziona. " +
-            "Nel prossimo passaggio collegheremo Firebase, " +
-            "generazione codice, biglietto ed email."
-          );
+      referenceBox.classList.remove("hidden");
+
+      referenceInput.required = true;
+
+    }
+
+  };
+
+
+  function generateCode(type) {
+
+    const chars =
+      "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    let random = "";
+
+    for (let i = 0; i < 6; i++) {
+
+      random +=
+        chars.charAt(
+          Math.floor(Math.random() * chars.length)
+        );
+
+    }
+
+    return type === "trans"
+      ? "TM27-T-" + random
+      : "TM27-A-" + random;
+
+  }
+
+
+  function clean(value) {
+
+    return value.trim();
+
+  }
+
+
+  document
+    .getElementById("bookingForm")
+    .addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        const button =
+          document.getElementById("submitButton");
+
+        button.disabled = true;
+
+        button.textContent =
+          "REGISTRAZIONE IN CORSO...";
+
+
+        try {
+
+          const type =
+            document.getElementById("ticketType").value;
+
+          const name =
+            clean(document.getElementById("name").value);
+
+          const surname =
+            clean(document.getElementById("surname").value);
+
+          const email =
+            clean(document.getElementById("email").value)
+            .toLowerCase();
+
+          const phone =
+            clean(document.getElementById("phone").value);
+
+
+          const bookingCode =
+            generateCode(type);
+
+
+          const bookingRef =
+            doc(
+              db,
+              "transmindBookings",
+              bookingCode
+            );
+
+
+          if (type === "trans") {
+
+            await setDoc(
+              bookingRef,
+              {
+
+                bookingCode: bookingCode,
+
+                ticketType: "trans",
+
+                ticketLabel: "Persona Trans",
+
+                price: 150,
+
+                name: name,
+
+                surname: surname,
+
+                email: email,
+
+                phone: phone,
+
+                status: "confirmed",
+
+                paymentStatus: "test_no_payment",
+
+                companionUsed: false,
+
+                companionCode: null,
+
+                organizerEmail:
+                  "emiliaweddingevents@gmail.com",
+
+                createdAt:
+                  serverTimestamp()
+
+              }
+            );
+
+          }
+
+
+          else {
+
+            const referenceCode =
+              clean(
+                document
+                  .getElementById("referenceCode")
+                  .value
+              )
+              .toUpperCase();
+
+
+            const transRef =
+              doc(
+                db,
+                "transmindBookings",
+                referenceCode
+              );
+
+
+            await runTransaction(
+              db,
+              async (transaction) => {
+
+                const transSnap =
+                  await transaction.get(transRef);
+
+
+                if (!transSnap.exists()) {
+
+                  throw new Error(
+                    "Il codice Persona Trans inserito non esiste."
+                  );
+
+                }
+
+
+                const transData =
+                  transSnap.data();
+
+
+                if (
+                  transData.ticketType !== "trans"
+                ) {
+
+                  throw new Error(
+                    "Il codice inserito non appartiene a una prenotazione Persona Trans."
+                  );
+
+                }
+
+
+                if (
+                  transData.status !== "confirmed"
+                ) {
+
+                  throw new Error(
+                    "La prenotazione Persona Trans non è valida."
+                  );
+
+                }
+
+
+                if (
+                  transData.companionUsed === true
+                ) {
+
+                  throw new Error(
+                    "A questa prenotazione è già associato un accompagnatore."
+                  );
+
+                }
+
+
+                transaction.set(
+                  bookingRef,
+                  {
+
+                    bookingCode:
+                      bookingCode,
+
+                    ticketType:
+                      "companion",
+
+                    ticketLabel:
+                      "Accompagnatore",
+
+                    price:
+                      90,
+
+                    name:
+                      name,
+
+                    surname:
+                      surname,
+
+                    email:
+                      email,
+
+                    phone:
+                      phone,
+
+                    status:
+                      "confirmed",
+
+                    paymentStatus:
+                      "test_no_payment",
+
+                    linkedTransCode:
+                      referenceCode,
+
+                    organizerEmail:
+                      "emiliaweddingevents@gmail.com",
+
+                    createdAt:
+                      serverTimestamp()
+
+                  }
+                );
+
+
+                transaction.update(
+                  transRef,
+                  {
+
+                    companionUsed:
+                      true,
+
+                    companionCode:
+                      bookingCode
+
+                  }
+                );
+
+              }
+            );
+
+          }
+
+
+          document
+            .getElementById("bookingForm")
+            .style.display = "none";
+
+
+          const result =
+            document.getElementById("result");
+
+          result.style.display = "block";
+
+
+          document
+            .getElementById("resultCode")
+            .textContent = bookingCode;
+
+
+          document
+            .getElementById("resultText")
+            .innerHTML =
+              type === "trans"
+
+              ? `
+                Conserva questo codice.
+                Servirà anche nel caso in cui un accompagnatore
+                acquisti successivamente il proprio biglietto.
+                <br><br>
+                Prezzo biglietto: <strong>€150</strong>
+              `
+
+              : `
+                Accompagnatore collegato correttamente
+                alla prenotazione Persona Trans.
+                <br><br>
+                Prezzo biglietto: <strong>€90</strong>
+              `;
+
 
         }
-      );
 
-  </script>
+        catch (error) {
+
+          console.error(error);
+
+          alert(
+            error.message ||
+            "Si è verificato un errore durante la prenotazione."
+          );
+
+          button.disabled = false;
+
+          button.textContent =
+            "CONFERMA PRENOTAZIONE";
+
+        }
+
+      }
+    );
+
+</script>
 
 </body>
 </html>
