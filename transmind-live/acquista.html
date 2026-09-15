@@ -240,6 +240,21 @@
       text-decoration: none;
     }
 
+
+    .payment-box{padding:18px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(229,179,127,.25)}
+    .payment-title{margin-bottom:6px;font-weight:700;color:#f3c490;font-size:17px}
+    .payment-subtitle{margin-bottom:15px;color:#d9cec5;font-size:13px;line-height:1.5}
+    .payment-options{display:grid;gap:10px}
+    .payment-option{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:12px 14px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(255,255,255,.04)}
+    .payment-option input[type="radio"]{width:auto;min-height:auto;padding:0;accent-color:#e5b37f}
+    .payment-icon{width:38px;text-align:center;font-size:22px}
+    .payment-name{font-weight:700;color:#fff7ef}
+    .payment-note{display:block;margin-top:3px;color:#bfae9f;font-size:12px;line-height:1.35}
+    .bank-details{display:none;margin-top:14px;padding:14px;border-radius:12px;background:rgba(229,179,127,.08);border:1px solid rgba(229,179,127,.20);color:#ead9ca;font-size:14px;line-height:1.65}
+    .bank-details strong{color:#fff7ef}
+    .payment-logos{margin-top:18px;text-align:center;color:#cdb197;font-size:12px;line-height:1.6}
+    .payment-logos span{display:inline-block;margin:3px 5px;padding:6px 9px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.035);color:#e8d7c7;font-weight:700}
+
     @media (max-width: 600px) {
       .box {
         padding: 28px 20px;
@@ -387,6 +402,20 @@
       </div>
 
 
+
+      <div class="payment-box">
+        <div class="payment-title">Metodo di pagamento</div>
+        <div class="payment-subtitle">Scegli come desideri pagare. Carta, Klarna e PayPal saranno attivati appena completata la configurazione.</div>
+        <div class="payment-options">
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="stripe_card"><span class="payment-icon">💳</span><span><span class="payment-name">Carta di credito o debito</span><span class="payment-note">Visa, Mastercard e carte supportate · tramite Stripe</span></span></label>
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="klarna"><span class="payment-icon">K</span><span><span class="payment-name">Klarna</span><span class="payment-note">Pagamento tramite Klarna · attivazione in corso</span></span></label>
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="paypal"><span class="payment-icon">P</span><span><span class="payment-name">PayPal</span><span class="payment-note">Pagamento con PayPal · attivazione in corso</span></span></label>
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="bank_transfer"><span class="payment-icon">🏦</span><span><span class="payment-name">Bonifico bancario</span><span class="payment-note">Wise · visualizza i dati per il bonifico</span></span></label>
+        </div>
+        <div id="bankDetails" class="bank-details"><strong>Bonifico bancario</strong><br>Intestatario: <strong>Edward Montis</strong><br>IBAN: <strong>BE52905981582009</strong><br>Banca: <strong>Wise</strong><br><br>La prenotazione tramite bonifico dovrà essere confermata dopo la verifica dell'accredito.</div>
+        <div class="payment-logos"><span>VISA</span><span>Mastercard</span><span>Klarna</span><span>PayPal</span><span>Wise</span></div>
+      </div>
+
       <button id="submitButton" type="submit">
         CONFERMA PRENOTAZIONE
       </button>
@@ -532,6 +561,13 @@
 
   }
 
+
+  document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
+    radio.addEventListener("change", function() {
+      document.getElementById("bankDetails").style.display =
+        this.value === "bank_transfer" ? "block" : "none";
+    });
+  });
 
   document
     .getElementById("bookingForm")
