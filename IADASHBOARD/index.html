@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
 
-  <title>Wedding Board | Roberta & Alessandro</title>
+  <title>PixelUp Wedding</title>
 
   <style>
     :root {
@@ -383,7 +383,8 @@
 .notes-section,
 .backup-section,
 .spouse-contact-section,
-.visibility-section {
+.visibility-section,
+.experience-section {
   display: none;
   animation: fade 0.22s ease;
 }
@@ -397,7 +398,8 @@
 .notes-section.show,
 .backup-section.show,
 .spouse-contact-section.show,
-.visibility-section.show {
+.visibility-section.show,
+.experience-section.show {
   display: block;
 }
 
@@ -1391,7 +1393,12 @@
         text-align: left;
       }
     }
-  </style>
+  
+
+/* PIXELUP EXPERIENCE / PREVENTIVI */
+.experience-grid{display:grid;gap:12px}.experience-card{background:rgba(255,252,246,.96);border:1px solid var(--border);border-radius:18px;padding:15px;box-shadow:var(--soft-shadow)}.experience-card h3{color:var(--green-dark);font-size:17px;margin-bottom:5px}.experience-card p{font-family:Arial,sans-serif;color:var(--muted);font-size:12px;line-height:1.45}.experience-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-price div{padding:10px;border-radius:13px;background:rgba(77,90,58,.07);font-family:Arial,sans-serif;font-size:11px}.experience-price strong{display:block;color:var(--green-dark);font-size:15px;margin-top:3px}.experience-actions{display:flex;gap:8px;flex-wrap:wrap}.experience-actions button{flex:1;min-width:120px;border-radius:999px;padding:9px 12px;border:1px solid rgba(177,145,85,.45);background:#fffdf8;color:var(--green-dark);font-family:Arial,sans-serif;font-weight:700}.experience-actions button.primary{background:var(--green);color:#fff;border-color:var(--green)}.proposal-row{padding:12px 0;border-bottom:1px solid rgba(177,145,85,.18);font-family:Arial,sans-serif}.proposal-row:last-child{border-bottom:0}.proposal-row strong{color:var(--green-dark)}.proposal-row small{display:block;color:var(--muted);margin-top:4px}.ai-loading{opacity:.65;pointer-events:none}.ai-confirm-summary{white-space:pre-wrap}
+
+</style>
 </head>
 
 <body>
@@ -1402,7 +1409,7 @@
    <button class="circle-btn" type="button" onclick="toggleProjectMenu()">☰</button>
 
       <div class="top-title">
-       <h1 id="projectTitle">Roberta & Alessandro</h1>
+       <h1 id="projectTitle">PixelUp Wedding</h1>
         <p>Dashboard Wedding Planner</p>
       </div>
 
@@ -1445,6 +1452,10 @@
 
     <button class="project-main-btn secondary" type="button" onclick="toggleVisibilitySettings()">
       Visibilità area sposi
+    </button>
+
+    <button class="project-main-btn secondary" type="button" onclick="closeProjectModal(); openExperienceSection();">
+      PIXELUP EXPERIENCE · PREVENTIVI
     </button>
 
     <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
@@ -1588,6 +1599,12 @@
   <span>♡</span>
   <span>Contatta sposi</span>
 </button>
+
+
+      <button class="secondary-action" type="button" onclick="toggleExperience()">
+        <span>✦</span>
+        <span>PixelUp Experience & Preventivi</span>
+      </button>
 
       <button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
@@ -1925,6 +1942,19 @@
 
 </div>
 
+
+<div class="experience-section" id="experienceSection">
+  <div class="section-title"><h2>PixelUp Experience</h2><span>Servizi & preventivi</span></div>
+  <div class="list-card">
+    <div class="report-info-card"><strong>Guadagna con PixelUp</strong>Seleziona i servizi da proporre agli sposi. Il prezzo partner e il margine sono visibili solo alla wedding planner.</div>
+    <div class="experience-grid" id="experienceCatalog"></div>
+  </div>
+  <div class="list-card">
+    <div class="section-title" style="margin-top:0"><h2>Proposte create</h2><span id="proposalCount">0</span></div>
+    <div id="proposalList"></div>
+  </div>
+</div>
+
 <div class="backup-section" id="backupSection">
 
   <div class="section-title">
@@ -2095,7 +2125,7 @@
   const eventRef = currentEventId ? doc(db, "weddingEvents", currentEventId) : null;
 
   const defaultData = {
-    projectName: "Seleziona o crea un progetto",
+    projectName: "",
     weddingDate: "2026-08-27T15:00:00",
     budget: 0,
     due: 0,
@@ -2133,7 +2163,8 @@
 
     timeline: [],
 
-    spouseContacts: []
+    spouseContacts: [],
+    pixelupProposals: []
   };
 
   let data = structuredClone(defaultData);
@@ -2173,6 +2204,9 @@
 
     if (!Array.isArray(safeRemoteData.spouseContacts)) {
       merged.spouseContacts = defaultData.spouseContacts || [];
+    }
+    if (!Array.isArray(safeRemoteData.pixelupProposals)) {
+      merged.pixelupProposals = [];
     }
 
     merged.projectName = merged.projectName || "Wedding Board";
@@ -2249,10 +2283,17 @@
     }));
 
     merged.spouseContacts = merged.spouseContacts.map((item) => ({
-      role: item.role || "",
-      name: item.name || "",
-      phone: item.phone || "",
-      email: item.email || ""
+      role: item.role || "", name: item.name || "", phone: item.phone || "", email: item.email || ""
+    }));
+    merged.pixelupProposals = merged.pixelupProposals.map((item) => ({
+      id: item.id || crypto.randomUUID(),
+      createdAt: item.createdAt || new Date().toISOString(),
+      status: item.status || "Bozza",
+      services: Array.isArray(item.services) ? item.services : [],
+      retailTotal: Number(item.retailTotal) || 0,
+      partnerTotal: Number(item.partnerTotal) || 0,
+      plannerMargin: Number(item.plannerMargin) || 0,
+      shareUrl: item.shareUrl || ""
     }));
 
     return merged;
@@ -2359,11 +2400,12 @@
     const projectMonogram = document.getElementById("projectMonogram");
 
     if (projectTitle) {
-      projectTitle.textContent = data.projectName || "Wedding Board";
+      projectTitle.textContent = currentEventId && data.projectName ? data.projectName : "PixelUp Wedding";
+      document.title = currentEventId && data.projectName ? `PixelUp Wedding | ${data.projectName}` : "PixelUp Wedding";
     }
 
     if (projectMonogram) {
-      projectMonogram.textContent = getProjectMonogram(data.projectName);
+      projectMonogram.textContent = currentEventId && data.projectName ? getProjectMonogram(data.projectName) : "P|W";
     }
 
     const totalReal = Number(data.paid) + Number(data.due);
@@ -2436,6 +2478,7 @@
       "notesSection",
       "spouseContactSection",
       "visibilitySection",
+      "experienceSection",
       "backupSection"
     ];
 
@@ -5101,6 +5144,32 @@
     saveData();
   }
 
+
+  const PIXELUP_CATALOG = [
+    { id:"wedding-page", name:"Wedding Page", description:"Pagina matrimonio digitale con informazioni, RSVP, mappa e QR.", retail:149, partner:99, type:"digital" },
+    { id:"audio-guestbook", name:"Audio Guest Book", description:"Telefono audio per raccogliere i messaggi vocali degli invitati.", retail:249, partner:189, type:"experience" },
+    { id:"magic-mirror", name:"Magic Mirror", description:"Esperienza fotografica Magic Mirror. Disponibilità da confermare in base a data e luogo.", retail:449, partner:349, type:"experience" }
+  ];
+
+  function toggleExperience(){ openSingleSection("experienceSection"); renderExperience(); }
+  function renderExperience(){
+    const catalog=document.getElementById("experienceCatalog");
+    if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno planner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">Dettagli</button><button class="primary" onclick="createPixelUpProposal(['${x.id}'])">Aggiungi proposta</button></div></div>`).join("");
+    const list=document.getElementById("proposalList"); const proposals=data.pixelupProposals||[];
+    document.getElementById("proposalCount") && (document.getElementById("proposalCount").textContent=String(proposals.length));
+    if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno planner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
+  }
+  function previewExperience(id){ const x=PIXELUP_CATALOG.find(v=>v.id===id); if(!x)return; alert(`${x.name}\n\n${x.description}\n\nPrezzo sposi: ${euro(x.retail)}\nGuadagno planner: ${euro(x.retail-x.partner)}`); }
+  async function createPixelUpProposal(serviceIds){
+    const unique=[...new Set(serviceIds)].filter(id=>PIXELUP_CATALOG.some(x=>x.id===id)); if(!unique.length)return;
+    const items=unique.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)); const retailTotal=items.reduce((a,x)=>a+x.retail,0); const partnerTotal=items.reduce((a,x)=>a+x.partner,0);
+    const proposal={id:crypto.randomUUID(),createdAt:new Date().toISOString(),status:"Bozza",services:unique,retailTotal,partnerTotal,plannerMargin:retailTotal-partnerTotal,shareUrl:""};
+    data.pixelupProposals=data.pixelupProposals||[]; data.pixelupProposals.push(proposal); await saveData(); renderExperience(); return proposal;
+  }
+  function proposalText(p){ const names=p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + "); return `PixelUp · ${data.projectName}\n${names}\nTotale: ${euro(p.retailTotal)}\n\nSe vuoi procedere, rispondi a questo messaggio e PixelUp preparerà la prenotazione.`; }
+  async function copyProposalText(id){ const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return; await navigator.clipboard.writeText(proposalText(p)); alert("Proposta copiata."); }
+  function shareProposal(id){ const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return; const text=proposalText(p); const phone=(data.spouseContacts||[]).find(x=>x.phone)?.phone?.replace(/\D/g,"")||""; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,"_blank"); }
+
   function toggleBackup() {
     openSingleSection("backupSection");
   }
@@ -6910,7 +6979,47 @@
     };
   }
 
-  function sendAICommand() {
+
+  const PIXELUP_AI_ENDPOINT = "https://europe-west1-backtag-16de3.cloudfunctions.net/pixelUpAI";
+  let aiPendingActions = [];
+
+  function buildAIContext(){
+    return { eventId:currentEventId, projectName:data.projectName, weddingDate:data.weddingDate, budget:{total:data.budget,paid:data.paid,due:data.due}, deadlines:data.deadlines, suppliers:data.suppliers, agenda:data.agenda, checklist:data.checklist, timeline:data.timeline, spouseContacts:data.spouseContacts, proposals:data.pixelupProposals||[], catalog:PIXELUP_CATALOG };
+  }
+  async function askPixelUpAI(text){
+    try{
+      const res=await fetch(PIXELUP_AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({command:text,context:buildAIContext()})});
+      if(!res.ok) throw new Error("AI HTTP "+res.status); return await res.json();
+    }catch(err){ console.warn("PixelUp AI remoto non disponibile, uso motore locale",err); return null; }
+  }
+  function addAIMultiConfirmation(result){
+    const actions=Array.isArray(result.actions)?result.actions:[]; if(!actions.length)return;
+    aiPendingActions=actions; aiPendingAction={type:"multi",summary:result.summary||`${actions.length} modifiche proposte`};
+    const messages=document.getElementById("aiMessages"); const card=document.createElement("div"); card.className="ai-confirm-card"; card.id="aiPendingConfirmation";
+    card.innerHTML=`<h4>Conferma ${actions.length} operazioni</h4><div class="ai-confirm-summary">${escapeAIHtml(result.summary||actions.map((a,i)=>`${i+1}. ${a.summary||a.action}`).join("\n"))}</div><div class="ai-confirm-actions"><button class="ai-confirm-btn cancel" onclick="cancelAIAction()">Annulla</button><button class="ai-confirm-btn confirm" onclick="confirmAIMultipleActions()">Conferma tutto</button></div>`;
+    messages.appendChild(card); messages.scrollTop=messages.scrollHeight;
+  }
+  async function applyAIAction(action){
+    switch(action.action){
+      case "add-deadline":{const item=action.payload||{};const finalPaid=Math.min(Number(item.paid)||0,Number(item.total)||0);const missing=Math.max((Number(item.total)||0)-finalPaid,0);data.deadlines.push({name:item.name||"Nuova scadenza",supplier:item.supplier||item.name||"Fornitore non indicato",total:Number(item.total)||0,paid:finalPaid,date:item.date||"",notes:item.notes||"",visibleToSpouses:item.visibleToSpouses===true,status:finalPaid<=0?"Da saldare":(missing>0?"Acconto versato":"Saldato")});upsertSupplierFromDeadline(item);updateTotalsFromDeadlines();break;}
+      case "add-supplier": data.suppliers.push(action.payload); break;
+      case "add-agenda": data.agenda.push(action.payload); break;
+      case "add-checklist": data.checklist.push(action.payload); break;
+      case "add-timeline": data.timeline.push(action.payload); break;
+      case "append-note": data.projectNotes=[String(data.projectNotes||"").trim(),action.payload.note].filter(Boolean).join("\n\n"); break;
+      case "set-visibility": data.visibility={...defaultData.visibility,...(data.visibility||{}),[action.payload.key]:action.payload.visible}; break;
+      case "create-proposal": await createPixelUpProposal(action.payload.serviceIds||[]); break;
+      case "update-timeline": {const i=Number(action.payload.index); if(!data.timeline[i])throw new Error("Timeline non trovata"); data.timeline[i]={...data.timeline[i],...action.payload.patch}; break;}
+      case "update-agenda": {const i=Number(action.payload.index); if(!data.agenda[i])throw new Error("Agenda non trovata"); data.agenda[i]={...data.agenda[i],...action.payload.patch}; break;}
+      default: throw new Error("Azione AI non supportata: "+action.action);
+    }
+  }
+  async function confirmAIMultipleActions(){
+    if(!aiPendingActions.length)return; const actions=[...aiPendingActions]; aiPendingActions=[]; aiPendingAction=null; document.getElementById("aiPendingConfirmation")?.remove();
+    try{for(const action of actions) await applyAIAction(action); renderAll();renderVisibilitySettings();renderExperience();await saveData();addAIMessage(`${actions.length} operazioni confermate e salvate nel progetto.`,"assistant");}catch(e){console.error(e);addAIMessage("Una delle operazioni non è stata completata. Controlla i dati del progetto.","assistant");}
+  }
+
+  async function sendAICommand() {
     const input = document.getElementById("aiInput");
     if (!input) return;
 
@@ -6925,15 +7034,13 @@
     addAIMessage(text, "user");
     input.value = "";
 
+    const inputBox=document.getElementById("aiInput"); inputBox?.classList.add("ai-loading");
+    const remote = await askPixelUpAI(text); inputBox?.classList.remove("ai-loading");
+    if(remote?.type === "answer"){ addAIMessage(remote.text || "", "assistant"); return; }
+    if(remote?.type === "actions" && Array.isArray(remote.actions) && remote.actions.length){ addAIMessage(remote.message || "Ho preparato le modifiche. Controllale prima di confermare.","assistant"); addAIMultiConfirmation(remote); return; }
     const result = interpretAICommand(text);
-
-    if (result.type === "message") {
-      addAIMessage(result.text, "assistant");
-      return;
-    }
-
-    addAIMessage("Ho preparato l'operazione. Controlla i dati prima di confermare.", "assistant");
-    addAIConfirmation(result);
+    if (result.type === "message") { addAIMessage(result.text, "assistant"); return; }
+    addAIMessage("Ho preparato l'operazione. Controlla i dati prima di confermare.", "assistant"); addAIConfirmation(result);
   }
 
   async function confirmAIAction() {
@@ -7097,6 +7204,7 @@
   }
 
   function cancelAIAction() {
+    aiPendingActions = [];
     aiPendingAction = null;
     document.getElementById("aiPendingConfirmation")?.remove();
     addAIMessage("Operazione annullata. Non ho modificato nulla.", "assistant");
@@ -7178,6 +7286,7 @@
     renderTimeline();
     renderProjectNotes();
     renderSpouseContacts();
+    renderExperience();
     updateAIProjectStrip();
     updateCountdown();
   }
@@ -7342,6 +7451,12 @@
   window.addSpouseContact = addSpouseContact;
   window.editSpouseContact = editSpouseContact;
   window.deleteSpouseContact = deleteSpouseContact;
+  window.toggleExperience = toggleExperience;
+  window.previewExperience = previewExperience;
+  window.createPixelUpProposal = createPixelUpProposal;
+  window.copyProposalText = copyProposalText;
+  window.shareProposal = shareProposal;
+  window.confirmAIMultipleActions = confirmAIMultipleActions;
   window.toggleBackup = toggleBackup;
   window.copyProjectSummary = copyProjectSummary;
   window.downloadInternalReportPDF = downloadInternalReportPDF;
