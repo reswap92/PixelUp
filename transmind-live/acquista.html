@@ -286,9 +286,9 @@
     </div>
 
     <div class="notice">
-      Il pagamento online è in fase di attivazione.
-      In questa fase stiamo verificando il sistema di prenotazione:
-      <strong>non verrà effettuato alcun addebito.</strong>
+      Scegli il biglietto e il metodo di pagamento.
+      <strong>PayPal è disponibile per il pagamento online.</strong>
+      Carta, Klarna e bonifico saranno completati nelle prossime fasi di configurazione.
     </div>
 
 
@@ -405,11 +405,11 @@
 
       <div class="payment-box">
         <div class="payment-title">Metodo di pagamento</div>
-        <div class="payment-subtitle">Scegli come desideri pagare. Carta, Klarna e PayPal saranno attivati appena completata la configurazione.</div>
+        <div class="payment-subtitle">Scegli come desideri pagare. PayPal è disponibile; Carta, Klarna e bonifico sono ancora in fase di configurazione.</div>
         <div class="payment-options">
           <label class="payment-option"><input type="radio" name="paymentMethod" value="stripe_card"><span class="payment-icon">💳</span><span><span class="payment-name">Carta di credito o debito</span><span class="payment-note">Visa, Mastercard e carte supportate · tramite Stripe</span></span></label>
           <label class="payment-option"><input type="radio" name="paymentMethod" value="klarna"><span class="payment-icon">K</span><span><span class="payment-name">Klarna</span><span class="payment-note">Pagamento tramite Klarna · attivazione in corso</span></span></label>
-          <label class="payment-option"><input type="radio" name="paymentMethod" value="paypal"><span class="payment-icon">P</span><span><span class="payment-name">PayPal</span><span class="payment-note">Pagamento con PayPal · attivazione in corso</span></span></label>
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="paypal"><span class="payment-icon">P</span><span><span class="payment-name">PayPal</span><span class="payment-note">Pagamento online con PayPal</span></span></label>
           <label class="payment-option"><input type="radio" name="paymentMethod" value="bank_transfer"><span class="payment-icon">🏦</span><span><span class="payment-name">Bonifico bancario</span><span class="payment-note">Wise · visualizza i dati per il bonifico</span></span></label>
         </div>
         <div id="bankDetails" class="bank-details"><strong>Bonifico bancario</strong><br>Intestatario: <strong>Edward Montis</strong><br>IBAN: <strong>BE52905981582009</strong><br>Banca: <strong>Wise</strong><br><br>La prenotazione tramite bonifico dovrà essere confermata dopo la verifica dell'accredito.</div>
@@ -571,300 +571,122 @@
 
   document
     .getElementById("bookingForm")
-    .addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        const button =
-          document.getElementById("submitButton");
-
-        button.disabled = true;
-
-        button.textContent =
-          "REGISTRAZIONE IN CORSO...";
-
-
-        try {
-
-          const type =
-            document.getElementById("ticketType").value;
-
-          const name =
-            clean(document.getElementById("name").value);
-
-          const surname =
-            clean(document.getElementById("surname").value);
-
-          const email =
-            clean(document.getElementById("email").value)
-            .toLowerCase();
-
-          const phone =
-            clean(document.getElementById("phone").value);
-
-          const mediaConsent =
-            document.querySelector('input[name="mediaConsent"]:checked')?.value
-            || "not_selected";
-
-
-          const bookingCode =
-            generateCode(type);
-
-
-          const bookingRef =
-            doc(
-              db,
-              "transmindBookings",
-              bookingCode
-            );
-
-
-          if (type === "trans") {
-
-            await setDoc(
-              bookingRef,
-              {
-
-                bookingCode: bookingCode,
-
-                ticketType: "trans",
-
-                ticketLabel: "Persona Trans",
-
-                price: 180,
-
-                name: name,
-
-                surname: surname,
-
-                email: email,
-
-                phone: phone,
-
-                mediaConsent: mediaConsent,
-
-                status: "confirmed",
-
-                paymentStatus: "test_no_payment",
-
-                companionUsed: false,
-
-                companionCode: null,
-
-                organizerEmail:
-                  "emiliaweddingevents@libero.it",
-
-                createdAt:
-                  serverTimestamp()
-
-              }
-            );
-
-          }
-
-
-          else {
-
-            const referenceCode =
-              clean(
-                document
-                  .getElementById("referenceCode")
-                  .value
-              )
-              .toUpperCase();
-
-
-            const transRef =
-              doc(
-                db,
-                "transmindBookings",
-                referenceCode
-              );
-
-
-            await runTransaction(
-              db,
-              async (transaction) => {
-
-                const transSnap =
-                  await transaction.get(transRef);
-
-
-                if (!transSnap.exists()) {
-
-                  throw new Error(
-                    "Il codice Persona Trans inserito non esiste."
-                  );
-
-                }
-
-
-                const transData =
-                  transSnap.data();
-
-
-                if (
-                  transData.ticketType !== "trans"
-                ) {
-
-                  throw new Error(
-                    "Il codice inserito non appartiene a una prenotazione Persona Trans."
-                  );
-
-                }
-
-
-                if (
-                  transData.status !== "confirmed"
-                ) {
-
-                  throw new Error(
-                    "La prenotazione Persona Trans non è valida."
-                  );
-
-                }
-
-
-                if (
-                  transData.companionUsed === true
-                ) {
-
-                  throw new Error(
-                    "A questa prenotazione è già associato un accompagnatore."
-                  );
-
-                }
-
-
-                transaction.set(
-                  bookingRef,
-                  {
-
-                    bookingCode:
-                      bookingCode,
-
-                    ticketType:
-                      "companion",
-
-                    ticketLabel:
-                      "Accompagnatore",
-
-                    price:
-                      100,
-
-                    name:
-                      name,
-
-                    surname:
-                      surname,
-
-                    email:
-                      email,
-
-                    phone:
-                      phone,
-
-                    mediaConsent:
-                      mediaConsent,
-
-                    status:
-                      "confirmed",
-
-                    paymentStatus:
-                      "test_no_payment",
-
-                    linkedTransCode:
-                      referenceCode,
-
-                    organizerEmail:
-                      "emiliaweddingevents@libero.it",
-
-                    createdAt:
-                      serverTimestamp()
-
-                  }
-                );
-
-
-                transaction.update(
-                  transRef,
-                  {
-
-                    companionUsed:
-                      true,
-
-                    companionCode:
-                      bookingCode
-
-                  }
-                );
-
-              }
-            );
-
-          }
-
-
-          document
-            .getElementById("bookingForm")
-            .style.display = "none";
-
-
-          const result =
-            document.getElementById("result");
-
-          result.style.display = "block";
-
-
-          document
-            .getElementById("resultCode")
-            .textContent = bookingCode;
-
-
-          document
-            .getElementById("resultText")
-            .innerHTML =
-              type === "trans"
-
-              ? `
-                Conserva questo codice.
-                Servirà anche nel caso in cui un accompagnatore
-                acquisti successivamente il proprio biglietto.
-                <br><br>
-                Prezzo biglietto: <strong>€180</strong>
-              `
-
-              : `
-                Accompagnatore collegato correttamente
-                alla prenotazione Persona Trans.
-                <br><br>
-                Prezzo biglietto: <strong>€100</strong>
-              `;
-
-
+    .addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const button = document.getElementById("submitButton");
+      button.disabled = true;
+      button.textContent = "ATTENDI...";
+
+      try {
+        const type = document.getElementById("ticketType").value;
+        const name = clean(document.getElementById("name").value);
+        const surname = clean(document.getElementById("surname").value);
+        const email = clean(document.getElementById("email").value).toLowerCase();
+        const phone = clean(document.getElementById("phone").value);
+        const mediaConsent =
+          document.querySelector('input[name="mediaConsent"]:checked')?.value ||
+          "not_selected";
+        const paymentMethod =
+          document.querySelector('input[name="paymentMethod"]:checked')?.value;
+        const referenceCode =
+          type === "companion"
+            ? clean(document.getElementById("referenceCode").value).toUpperCase()
+            : "";
+
+        if (!paymentMethod) {
+          throw new Error("Seleziona un metodo di pagamento.");
         }
 
-        catch (error) {
+        if (type === "companion" && !referenceCode) {
+          throw new Error("Inserisci il codice prenotazione Persona Trans.");
+        }
 
-          console.error(error);
+        const payload = {
+          ticketType: type,
+          name,
+          surname,
+          email,
+          phone,
+          mediaConsent,
+          referenceCode,
+          paymentMethod
+        };
 
-          alert(
-            error.message ||
-            "Si è verificato un errore durante la prenotazione."
+        if (paymentMethod === "paypal") {
+          button.textContent = "APERTURA PAYPAL...";
+
+          const response = await fetch(
+            "https://europe-west1-backtag-16de3.cloudfunctions.net/createTransmindPayPalOrder",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            }
           );
 
-          button.disabled = false;
+          const data = await response.json();
 
-          button.textContent =
-            "CONFERMA PRENOTAZIONE";
+          if (!response.ok || !data.url) {
+            throw new Error(data.error || "Impossibile avviare PayPal.");
+          }
 
+          window.location.href = data.url;
+          return;
         }
 
+        if (paymentMethod === "stripe_card" || paymentMethod === "klarna") {
+          button.textContent = "APERTURA PAGAMENTO...";
+
+          const response = await fetch(
+            "https://europe-west1-backtag-16de3.cloudfunctions.net/createTransmindCheckout",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok || !data.url) {
+            throw new Error(data.error || "Impossibile avviare il pagamento.");
+          }
+
+          window.location.href = data.url;
+          return;
+        }
+
+        if (paymentMethod === "bank_transfer") {
+          throw new Error("Il pagamento tramite bonifico non è ancora attivo.");
+        }
+
+        throw new Error("Metodo di pagamento non valido.");
+      } catch (error) {
+        console.error(error);
+        alert(error.message || "Si è verificato un errore.");
+        button.disabled = false;
+        button.textContent = "CONFERMA PRENOTAZIONE";
       }
-    );
+    });
+
+  const paymentParams = new URLSearchParams(window.location.search);
+  const paymentResult = paymentParams.get("payment");
+  const returnedBookingCode = paymentParams.get("booking");
+
+  if (paymentResult === "success" && returnedBookingCode) {
+    document.getElementById("bookingForm").style.display = "none";
+    const result = document.getElementById("result");
+    result.style.display = "block";
+    document.getElementById("resultCode").textContent = returnedBookingCode;
+    document.getElementById("resultText").innerHTML =
+      "Pagamento confermato. Conserva il codice della prenotazione. Riceverai anche la conferma all'indirizzo email indicato.";
+  } else if (paymentResult === "paypal_error") {
+    alert("Non è stato possibile completare il pagamento PayPal. Nessuna nuova prenotazione è stata confermata.");
+  } else if (paymentResult === "cancelled") {
+    alert("Pagamento annullato. Puoi riprovare quando vuoi.");
+  }
+
 
 </script>
 
