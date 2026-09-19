@@ -1398,6 +1398,10 @@
 /* PIXELUP EXPERIENCE / PREVENTIVI */
 .experience-grid{display:grid;gap:12px}.experience-card{background:rgba(255,252,246,.96);border:1px solid var(--border);border-radius:18px;padding:15px;box-shadow:var(--soft-shadow)}.experience-card h3{color:var(--green-dark);font-size:17px;margin-bottom:5px}.experience-card p{font-family:Arial,sans-serif;color:var(--muted);font-size:12px;line-height:1.45}.experience-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-price div{padding:10px;border-radius:13px;background:rgba(77,90,58,.07);font-family:Arial,sans-serif;font-size:11px}.experience-price strong{display:block;color:var(--green-dark);font-size:15px;margin-top:3px}.experience-actions{display:flex;gap:8px;flex-wrap:wrap}.experience-actions button{flex:1;min-width:120px;border-radius:999px;padding:9px 12px;border:1px solid rgba(177,145,85,.45);background:#fffdf8;color:var(--green-dark);font-family:Arial,sans-serif;font-weight:700}.experience-actions button.primary{background:var(--green);color:#fff;border-color:var(--green)}.proposal-row{padding:12px 0;border-bottom:1px solid rgba(177,145,85,.18);font-family:Arial,sans-serif}.proposal-row:last-child{border-bottom:0}.proposal-row strong{color:var(--green-dark)}.proposal-row small{display:block;color:var(--muted);margin-top:4px}.ai-loading{opacity:.65;pointer-events:none}.ai-confirm-summary{white-space:pre-wrap}
 
+
+/* ===== PixelUp V3 polish ===== */
+.hero{min-height:220px;padding:26px 24px}.monogram{width:68px;height:68px;margin-bottom:10px}.hero h2{font-size:30px}.countdown-card{margin-top:18px;padding:13px 12px}.secondary-action{min-height:48px;margin-bottom:10px;font-size:14px;border-radius:15px}.main-action{min-height:52px;margin-bottom:10px}.ai-top-btn{width:48px;border-radius:18px;font-size:9px;line-height:1.05}.today-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}.today-item{background:rgba(255,252,246,.94);border:1px solid var(--border);border-radius:14px;padding:9px 7px;text-align:center;font-family:Arial,sans-serif}.today-item small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}.today-item strong{display:block;color:var(--green-dark);font-size:12px;margin-top:4px}.experience-featured{border:1.5px solid rgba(177,145,85,.75)!important;background:linear-gradient(135deg,rgba(255,252,246,.98),rgba(177,145,85,.08))!important;position:relative}.experience-featured:before{content:"SERVIZI PER GLI SPOSI";position:absolute;top:-9px;left:16px;background:var(--green);color:#fff;padding:3px 9px;border-radius:999px;font:700 8px Arial,sans-serif;letter-spacing:.8px}.experience-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(31,39,27,.56);backdrop-filter:blur(5px);padding:16px;align-items:flex-end;justify-content:center}.experience-modal.show{display:flex}.experience-modal-card{width:min(100%,520px);max-height:91vh;overflow:auto;background:#fffaf2;border:1px solid rgba(177,145,85,.4);border-radius:26px 26px 18px 18px;box-shadow:0 28px 70px rgba(0,0,0,.3)}.experience-modal-image{width:100%;max-height:46vh;object-fit:cover;object-position:top;border-radius:25px 25px 0 0;background:#eee}.experience-modal-body{padding:18px}.experience-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.experience-modal-head h2{font-size:25px;color:var(--green-dark);font-weight:400}.experience-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--green-dark);font-size:20px;flex:none}.experience-tagline{font:13px/1.45 Arial,sans-serif;color:var(--muted);margin:7px 0 14px}.experience-detail-block{padding:13px 0;border-top:1px solid rgba(177,145,85,.18)}.experience-detail-block strong{display:block;color:var(--green-dark);font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}.experience-detail-block p,.experience-detail-block li{font:13px/1.5 Arial,sans-serif;color:var(--muted)}.experience-detail-block ul{padding-left:18px}.experience-modal-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-modal-price div{background:rgba(77,90,58,.08);padding:11px;border-radius:14px;font:11px Arial,sans-serif}.experience-modal-price b{display:block;font:20px Georgia,serif;color:var(--green-dark);margin-top:4px}.experience-modal-cta{width:100%;min-height:50px;border:0;border-radius:15px;background:var(--green);color:#fff;font:700 13px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}.experience-card .service-type{display:inline-block;margin-bottom:8px;padding:4px 8px;border-radius:999px;background:rgba(177,145,85,.11);color:#8a6729;font:700 9px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}@media(max-width:420px){.hero{min-height:205px}.hero h2{font-size:27px}.today-strip{gap:5px}.today-item{padding:8px 4px}.experience-modal{padding:8px}.experience-modal-card{max-height:94vh}}
+
 </style>
 </head>
 
@@ -1414,7 +1418,7 @@
       </div>
 
       <button class="circle-btn ai-top-btn" type="button" onclick="togglePixelUpAI()" aria-label="Apri PixelUp IA">
-        IA
+        PIXEL<br>AI
       </button>
     </header>
 
@@ -1454,8 +1458,8 @@
       Visibilità area sposi
     </button>
 
-    <button class="project-main-btn secondary" type="button" onclick="closeProjectModal(); openExperienceSection();">
-      PIXELUP EXPERIENCE · PREVENTIVI
+    <button class="project-main-btn secondary" type="button" onclick="toggleProjectMenu(); toggleExperience();">
+      PIXELUP EXPERIENCE
     </button>
 
     <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
@@ -1518,6 +1522,12 @@
     </section>
 
     <section class="content">
+
+      <div class="today-strip" id="todayStrip">
+        <div class="today-item"><small>Attività aperte</small><strong id="todayOpenTasks">0</strong></div>
+        <div class="today-item"><small>Prossima scadenza</small><strong id="todayNextDeadline">—</strong></div>
+        <div class="today-item"><small>Da completare</small><strong id="todayChecklist">0</strong></div>
+      </div>
 
       <div class="section-title">
         <h2>Panoramica</h2>
@@ -1601,9 +1611,9 @@
 </button>
 
 
-      <button class="secondary-action" type="button" onclick="toggleExperience()">
+      <button class="secondary-action experience-featured" type="button" onclick="toggleExperience()">
         <span>✦</span>
-        <span>PixelUp Experience & Preventivi</span>
+        <span><strong>PixelUp Experience</strong><small style="display:block;font:10px Arial,sans-serif;letter-spacing:.2px;text-transform:none;color:var(--muted);margin-top:3px">Pagine · Guest Book · QR · Magic Mirror</small></span>
       </button>
 
       <button class="secondary-action" type="button" onclick="toggleBackup()">
@@ -2004,6 +2014,20 @@
 
   </main>
 
+
+
+<div class="experience-modal" id="experienceModal" aria-hidden="true" onclick="if(event.target===this) closeExperienceModal()">
+  <article class="experience-modal-card">
+    <img id="experienceModalImage" class="experience-modal-image" alt="">
+    <div class="experience-modal-body">
+      <div class="experience-modal-head"><div><h2 id="experienceModalTitle"></h2><p class="experience-tagline" id="experienceModalTagline"></p></div><button class="experience-close" onclick="closeExperienceModal()">×</button></div>
+      <div class="experience-detail-block"><strong>Come funziona</strong><p id="experienceModalHow"></p></div>
+      <div class="experience-detail-block"><strong>Cosa comprende</strong><ul id="experienceModalIncludes"></ul></div>
+      <div class="experience-modal-price"><div>Prezzo sposi<b id="experienceModalRetail"></b></div><div>Guadagno Partner<b id="experienceModalMargin"></b></div></div>
+      <button class="experience-modal-cta" id="experienceModalAdd">Aggiungi alla proposta</button>
+    </div>
+  </article>
+</div>
 
   <!-- PIXELUP ASSISTENTE INTELLIGENTE -->
   <div class="ai-overlay" id="pixelUpAIOverlay" aria-hidden="true">
@@ -5146,20 +5170,37 @@
 
 
   const PIXELUP_CATALOG = [
-    { id:"wedding-page", name:"Wedding Page", description:"Pagina matrimonio digitale con informazioni, RSVP, mappa e QR.", retail:149, partner:99, type:"digital" },
-    { id:"audio-guestbook", name:"Audio Guest Book", description:"Telefono audio per raccogliere i messaggi vocali degli invitati.", retail:249, partner:189, type:"experience" },
-    { id:"magic-mirror", name:"Magic Mirror", description:"Esperienza fotografica Magic Mirror. Disponibilità da confermare in base a data e luogo.", retail:449, partner:349, type:"experience" }
+    { id:"wedding-page", name:"Wedding Page", short:"Il matrimonio in un unico link elegante e personalizzato.", description:"Pagina matrimonio digitale con RSVP, mappa, programma, menu, lista regalo, foto e informazioni utili.", retail:149, partner:99, type:"digitale", image:"assets/wedding-page.png", how:"PixelUp prepara una pagina mobile dedicata agli sposi. Gli invitati aprono il link o scansionano il QR e trovano tutte le informazioni del matrimonio, con possibilità di confermare la presenza.", includes:["Design personalizzato","RSVP invitati","Location e mappa","Programma e menu","Lista regalo e contatti","Foto e informazioni utili"] },
+    { id:"photo-qr", name:"Photo QR", short:"Le foto degli invitati raccolte senza app.", description:"QR dedicato per raccogliere foto del matrimonio in una gallery privata degli sposi.", retail:99, partner:69, type:"digitale", image:"", how:"Gli invitati scansionano il QR dal proprio telefono e caricano le foto. Nessuna app da installare: i contenuti confluiscono nella raccolta privata del matrimonio.", includes:["QR personalizzato","Accesso da smartphone","Raccolta foto invitati","Gallery privata","Consegna digitale"] },
+    { id:"video-guestbook", name:"Video Guest Book QR", short:"Messaggi video autentici dagli invitati.", description:"Gli invitati scansionano un QR e registrano un video messaggio per gli sposi.", retail:129, partner:89, type:"digitale", image:"assets/video-guest-book.png", how:"Il QR porta a una pagina semplice da cui l’invitato registra e invia il proprio video. Gli sposi ritrovano i messaggi in una raccolta privata.", includes:["QR personalizzato","Registrazione da telefono","Nessuna app richiesta","Gallery video privata","Consegna digitale"] },
+    { id:"audio-guestbook", name:"Audio Guest Book", short:"Le voci del matrimonio da riascoltare per sempre.", description:"Telefono audio scenografico per raccogliere messaggi vocali degli invitati.", retail:249, partner:189, type:"experience", image:"assets/audio-guest-book.png", how:"Gli invitati alzano la cornetta e lasciano un messaggio agli sposi. Al termine dell’evento le registrazioni vengono raccolte e consegnate in formato digitale.", includes:["Telefono Audio Guest Book","Istruzioni per gli invitati","Raccolta messaggi vocali","File audio digitali","Preparazione del servizio"] },
+    { id:"magic-mirror", name:"Magic Mirror", short:"Un photobooth elegante che diventa parte dell’evento.", description:"Esperienza fotografica interattiva Magic Mirror. Disponibilità da confermare in base a data e luogo.", retail:449, partner:349, type:"experience", image:"assets/magic-mirror.png", how:"Gli invitati interagiscono con lo specchio e creano ricordi fotografici durante il ricevimento. La configurazione effettiva viene confermata in base al pacchetto e alla disponibilità per data e location.", includes:["Magic Mirror","Grafica personalizzata","Accessori disponibili secondo pacchetto","Condivisione digitale secondo configurazione","Verifica disponibilità prima della conferma"] },
+    { id:"digital-pack", name:"Digital Wedding Pack", short:"Il pacchetto digitale completo per gli sposi.", description:"Wedding Page + Photo QR + Video Guest Book QR in un’unica proposta.", retail:249, partner:169, type:"pacchetto", image:"", how:"Un unico pacchetto riunisce pagina matrimonio e raccolta dei ricordi degli invitati. È la proposta digitale più semplice da vendere e può essere erogata in tutta Italia.", includes:["Wedding Page","RSVP e informazioni matrimonio","Photo QR","Video Guest Book QR","Un’unica gestione PixelUp"] }
   ];
 
   function toggleExperience(){ openSingleSection("experienceSection"); renderExperience(); }
   function renderExperience(){
     const catalog=document.getElementById("experienceCatalog");
-    if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno planner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">Dettagli</button><button class="primary" onclick="createPixelUpProposal(['${x.id}'])">Aggiungi proposta</button></div></div>`).join("");
+    if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><span class="service-type">${escapeAIHtml(x.type)}</span><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.short||x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno Partner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">Dettagli</button><button class="primary" onclick="createPixelUpProposal(['${x.id}'])">Aggiungi proposta</button></div></div>`).join("");
     const list=document.getElementById("proposalList"); const proposals=data.pixelupProposals||[];
     document.getElementById("proposalCount") && (document.getElementById("proposalCount").textContent=String(proposals.length));
-    if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno planner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
+    if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno Partner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
   }
-  function previewExperience(id){ const x=PIXELUP_CATALOG.find(v=>v.id===id); if(!x)return; alert(`${x.name}\n\n${x.description}\n\nPrezzo sposi: ${euro(x.retail)}\nGuadagno planner: ${euro(x.retail-x.partner)}`); }
+  function previewExperience(id){
+    const x=PIXELUP_CATALOG.find(v=>v.id===id); if(!x)return;
+    const modal=document.getElementById("experienceModal");
+    const img=document.getElementById("experienceModalImage");
+    document.getElementById("experienceModalTitle").textContent=x.name;
+    document.getElementById("experienceModalTagline").textContent=x.short||x.description;
+    document.getElementById("experienceModalHow").textContent=x.how||x.description;
+    document.getElementById("experienceModalIncludes").innerHTML=(x.includes||[]).map(v=>`<li>${escapeAIHtml(v)}</li>`).join("");
+    document.getElementById("experienceModalRetail").textContent=euro(x.retail);
+    document.getElementById("experienceModalMargin").textContent=euro(x.retail-x.partner);
+    document.getElementById("experienceModalAdd").onclick=()=>{createPixelUpProposal([x.id]);closeExperienceModal();};
+    if(x.image){img.src=x.image;img.alt=x.name;img.style.display="block";}else{img.removeAttribute("src");img.style.display="none";}
+    modal.classList.add("show"); modal.setAttribute("aria-hidden","false");
+  }
+  function closeExperienceModal(){const modal=document.getElementById("experienceModal");if(modal){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}}
   async function createPixelUpProposal(serviceIds){
     const unique=[...new Set(serviceIds)].filter(id=>PIXELUP_CATALOG.some(x=>x.id===id)); if(!unique.length)return;
     const items=unique.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)); const retailTotal=items.reduce((a,x)=>a+x.retail,0); const partnerTotal=items.reduce((a,x)=>a+x.partner,0);
@@ -5172,6 +5213,15 @@
 
   function toggleBackup() {
     openSingleSection("backupSection");
+  }
+
+  function renderTodayStrip(){
+    const openTasks=(data.agenda||[]).length+(data.deadlines||[]).filter(x=>Number(x.paid||0)<Number(x.total||0)).length;
+    const checklist=(data.checklist||[]).filter(x=>!x.done).length;
+    const future=(data.deadlines||[]).filter(x=>x.date && new Date(x.date+"T23:59:59")>=new Date()).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+    const el1=document.getElementById("todayOpenTasks"), el2=document.getElementById("todayChecklist"), el3=document.getElementById("todayNextDeadline");
+    if(el1)el1.textContent=String(openTasks); if(el2)el2.textContent=String(checklist);
+    if(el3)el3.textContent=future[0]?.date?new Date(future[0].date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"short"}):"—";
   }
 
   function buildProjectSummary() {
@@ -7277,6 +7327,7 @@
 
 
   function renderAll() {
+    renderTodayStrip();
     renderSummary();
     renderDeadlines();
     renderSuppliers();
@@ -7453,6 +7504,7 @@
   window.deleteSpouseContact = deleteSpouseContact;
   window.toggleExperience = toggleExperience;
   window.previewExperience = previewExperience;
+  window.closeExperienceModal = closeExperienceModal;
   window.createPixelUpProposal = createPixelUpProposal;
   window.copyProposalText = copyProposalText;
   window.shareProposal = shareProposal;
