@@ -1470,6 +1470,25 @@
 .project-settings-action{margin-top:4px}
 </style>
 
+
+<style id="pixelup-v10-fix-experience">
+/* Experience: evidenziato ma coerente con gli altri pulsanti del progetto */
+.experience-entry,
+.experience-main-btn,
+button[onclick*="toggleExperience"],
+button[onclick*="openExperienceSection"] {
+  min-height: 66px !important;
+  padding: 10px 16px !important;
+  margin-top: 4px !important;
+  margin-bottom: 14px !important;
+  line-height: 1.15 !important;
+}
+.experience-entry .experience-subtitle,
+.experience-main-btn .experience-subtitle {
+  margin-top: 4px !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -4570,11 +4589,6 @@
 
     let eventWindow = null;
 
-    /*
-      Android e desktop: prova ad aprire una nuova scheda.
-      iPhone/iPad: usa la stessa scheda, perché Safari può bloccare
-      l'apertura successiva di una nuova finestra dopo la lettura Firebase.
-    */
     if (!isIOS) {
       eventWindow = window.open("", "_blank");
 
@@ -4589,65 +4603,7 @@
             </head>
             <body style="font-family:Arial,sans-serif;text-align:center;padding:40px 20px;color:#344028;">
               <p>Stai aprendo la pagina evento...</p>
-            <script>
-// V8: controlla i promemoria mentre PixelUp è aperto. Le push a browser chiuso richiedono il backend FCM/service worker.
-setTimeout(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },2500);
-setInterval(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },60000);
-</script>
-
-<script>
-(function(){
-  const langs=["it","en","fr"];
-  const labels={it:"IT ▾",en:"EN ▾",fr:"FR ▾"};
-
-  function currentDashboardLanguage(){
-    try{
-      if(window.dashboardLanguage && langs.includes(String(window.dashboardLanguage).toLowerCase()))
-        return String(window.dashboardLanguage).toLowerCase();
-      const saved=localStorage.getItem("pixelup_dashboard_language") || localStorage.getItem("pixelupLanguage") || localStorage.getItem("pixelup_language");
-      if(saved && langs.includes(saved.toLowerCase())) return saved.toLowerCase();
-    }catch(e){}
-    return "it";
-  }
-
-  function refreshMenuLanguage(){
-    const el=document.getElementById("menuLanguageValue");
-    if(el) el.textContent=labels[currentDashboardLanguage()] || "IT ▾";
-  }
-
-  window.cycleDashboardLanguage=function(){
-    const current=currentDashboardLanguage();
-    const names={it:"Italiano",en:"English",fr:"Français"};
-    const choice=prompt(
-      "Lingua dashboard:\\n\\n1 · Italiano\\n2 · English\\n3 · Français",
-      current==="it" ? "1" : current==="en" ? "2" : "3"
-    );
-    if(choice===null) return;
-    const next=choice==="1"?"it":choice==="2"?"en":choice==="3"?"fr":null;
-    if(!next){ alert("Seleziona 1, 2 oppure 3."); return; }
-
-    try{
-      localStorage.setItem("pixelup_dashboard_language",next);
-      localStorage.setItem("pixelupLanguage",next);
-    }catch(e){}
-
-    // Reuse V9 translator if present.
-    if(typeof window.setDashboardLanguage==="function") window.setDashboardLanguage(next);
-    else if(typeof window.setLanguage==="function") window.setLanguage(next);
-    else if(typeof window.changeLanguage==="function") window.changeLanguage(next);
-    else {
-      window.dashboardLanguage=next;
-      alert("Lingua dashboard impostata su " + names[next] + ".");
-    }
-    setTimeout(refreshMenuLanguage,0);
-  };
-
-  document.addEventListener("DOMContentLoaded",refreshMenuLanguage);
-  setTimeout(refreshMenuLanguage,0);
-})();
-</script>
-
-</body>
+            </body>
           </html>
         `);
         eventWindow.document.close();
@@ -4668,13 +4624,9 @@ setInterval(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },60000);
       const currentLink = String(projectData.eventPageUrl || "").trim();
 
       if (currentLink) {
-        if (isIOS) {
-          window.location.href = currentLink;
-        } else if (eventWindow) {
-          eventWindow.location.href = currentLink;
-        } else {
-          window.location.href = currentLink;
-        }
+        if (isIOS) window.location.href = currentLink;
+        else if (eventWindow) eventWindow.location.href = currentLink;
+        else window.location.href = currentLink;
         return;
       }
 
@@ -4701,17 +4653,11 @@ setInterval(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },60000);
         updatedAt: new Date().toISOString()
       }, { merge: true });
 
-      if (projectId === currentEventId) {
-        data.eventPageUrl = cleanLink;
-      }
+      if (projectId === currentEventId) data.eventPageUrl = cleanLink;
 
-      if (isIOS) {
-        window.location.href = cleanLink;
-      } else if (eventWindow) {
-        eventWindow.location.href = cleanLink;
-      } else {
-        window.location.href = cleanLink;
-      }
+      if (isIOS) window.location.href = cleanLink;
+      else if (eventWindow) eventWindow.location.href = cleanLink;
+      else window.location.href = cleanLink;
 
     } catch (error) {
       if (eventWindow) eventWindow.close();
