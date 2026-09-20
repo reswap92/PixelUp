@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- PixelUp V10: menu professionale + riepilogo matrimonio -->
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -1435,7 +1436,40 @@
 /* ===== PixelUp V3 polish ===== */
 .hero{min-height:220px;padding:26px 24px}.monogram{width:68px;height:68px;margin-bottom:10px}.hero h2{font-size:30px}.countdown-card{margin-top:18px;padding:13px 12px}.secondary-action{min-height:48px;margin-bottom:10px;font-size:14px;border-radius:15px}.main-action{min-height:52px;margin-bottom:10px}.ai-top-btn{width:48px;border-radius:18px;font-size:9px;line-height:1.05}.today-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}.today-item{background:rgba(255,252,246,.94);border:1px solid var(--border);border-radius:14px;padding:9px 7px;text-align:center;font-family:Arial,sans-serif}.today-item small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}.today-item strong{display:block;color:var(--green-dark);font-size:12px;margin-top:4px}.experience-featured{border:1.5px solid rgba(177,145,85,.78)!important;background:linear-gradient(135deg,#66734f 0%,#53613f 100%)!important;color:#fffdf8!important;position:relative;box-shadow:0 8px 22px rgba(77,90,58,.16)!important}.experience-featured>span:first-child{color:#e4c98f!important}.experience-featured strong{color:#fffdf8!important}.experience-featured small{color:rgba(255,253,248,.78)!important}.experience-featured:after{content:"›";margin-left:auto;color:#e4c98f;font-size:25px;line-height:1}.experience-featured:before{content:"SERVIZI PER GLI SPOSI";position:absolute;top:-9px;left:16px;background:var(--green);color:#fff;padding:3px 9px;border-radius:999px;font:700 8px Arial,sans-serif;letter-spacing:.8px}.experience-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(31,39,27,.56);backdrop-filter:blur(5px);padding:16px;align-items:flex-end;justify-content:center}.experience-modal.show{display:flex}.experience-modal-card{width:min(100%,520px);max-height:91vh;overflow:auto;background:#fffaf2;border:1px solid rgba(177,145,85,.4);border-radius:26px 26px 18px 18px;box-shadow:0 28px 70px rgba(0,0,0,.3)}.experience-modal-image{width:100%;max-height:46vh;object-fit:cover;object-position:top;border-radius:25px 25px 0 0;background:#eee}.experience-modal-body{padding:18px}.experience-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.experience-modal-head h2{font-size:25px;color:var(--green-dark);font-weight:400}.experience-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--green-dark);font-size:20px;flex:none}.experience-tagline{font:13px/1.45 Arial,sans-serif;color:var(--muted);margin:7px 0 14px}.experience-detail-block{padding:13px 0;border-top:1px solid rgba(177,145,85,.18)}.experience-detail-block strong{display:block;color:var(--green-dark);font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}.experience-detail-block p,.experience-detail-block li{font:13px/1.5 Arial,sans-serif;color:var(--muted)}.experience-detail-block ul{padding-left:18px}.experience-modal-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-modal-price div{background:rgba(77,90,58,.08);padding:11px;border-radius:14px;font:11px Arial,sans-serif}.experience-modal-price b{display:block;font:20px Georgia,serif;color:var(--green-dark);margin-top:4px}.experience-modal-cta{width:100%;min-height:50px;border:0;border-radius:15px;background:var(--green);color:#fff;font:700 13px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}@media(max-width:420px){.hero{min-height:205px}.hero h2{font-size:27px}.today-strip{gap:5px}.today-item{padding:8px 4px}.experience-modal{padding:8px}.experience-modal-card{max-height:94vh}}
 
+
+/* ===== PixelUp V9 · Multilingua IT / EN / FR ===== */
+.language-tools{display:flex;gap:6px;align-items:center;justify-content:center;padding:8px 12px;background:rgba(251,244,232,.72);border-bottom:1px solid rgba(177,145,85,.18)}
+.lang-select{border:1px solid var(--border);background:#fffaf2;color:var(--green-dark);border-radius:999px;padding:7px 10px;font:700 10px Arial,sans-serif;letter-spacing:.3px;max-width:48%}
+.lang-label{font:700 9px Arial,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:420px){.language-tools{padding:7px 8px;gap:5px}.lang-select{padding:7px 7px;font-size:9px}}
 </style>
+
+<style>
+.menu-group-label{
+  margin:16px 4px 7px;
+  font-family:Arial,sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.35px;
+  color:var(--gold);
+}
+.experience-menu-btn{
+  min-height:66px !important;
+  background:linear-gradient(135deg,var(--green) 0%,#344028 100%) !important;
+  color:#fff !important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  border-color:rgba(214,193,145,.95) !important;
+}
+.experience-menu-title{font-size:14px;font-weight:800;letter-spacing:1px}
+.experience-menu-sub{font-family:Arial,sans-serif;font-size:10px;opacity:.84;text-transform:none;letter-spacing:.3px}
+.language-menu-btn{display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.project-settings-action{margin-top:4px}
+</style>
+
 </head>
 
 <body>
@@ -1455,66 +1489,70 @@
       </button>
     </header>
 
+    <div class="language-tools">
+      <span class="lang-label" data-i18n-key="dashboardLanguage">Dashboard</span>
+      <select id="dashboardLanguageSelect" class="lang-select" onchange="setDashboardLanguage(this.value)">
+        <option value="it">🇮🇹 Italiano</option><option value="en">🇬🇧 English</option><option value="fr">🇫🇷 Français</option>
+      </select>
+      <span class="lang-label" data-i18n-key="spousesLanguage">Sposi</span>
+      <select id="spousesLanguageSelect" class="lang-select" onchange="setSpousesLanguage(this.value)">
+        <option value="it">🇮🇹 Italiano</option><option value="en">🇬🇧 English</option><option value="fr">🇫🇷 Français</option>
+      </select>
+    </div>
+
     <div class="project-menu" id="projectMenu">
   <div class="project-menu-card">
 
     <div class="project-menu-title">
-      <h3>Gestione progetti</h3>
+      <h3>PixelUp Wedding</h3>
       <button type="button" onclick="toggleProjectMenu()">×</button>
     </div>
 
-    <button class="project-main-btn" type="button" onclick="showProjectsList()">
-      I miei progetti
+    <div class="menu-group-label">SERVIZI</div>
+    <button class="project-main-btn experience-menu-btn" type="button" onclick="closeProjectModal(); openExperienceSection();">
+      <span class="experience-menu-title">PIXELUP EXPERIENCE &amp; PREVENTIVI</span>
+      <span class="experience-menu-sub">Servizi per i tuoi sposi</span>
     </button>
 
+    <div class="menu-group-label">PROGETTI</div>
+    <button class="project-main-btn secondary" type="button" onclick="showProjectsList()">
+      I miei progetti
+    </button>
     <button class="project-main-btn secondary" type="button" onclick="createNewProject()">
       Nuovo progetto
     </button>
-
-    <button class="project-main-btn secondary" type="button" onclick="editEventInfo()">
-      Modifica evento
-    </button>
-
-    <button class="project-main-btn secondary" type="button" onclick="archiveCurrentProject()">
-      Archivia progetto
-    </button>
-
     <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
       Progetti archiviati
     </button>
 
+    <div class="menu-group-label">STRUMENTI</div>
     <button class="project-main-btn secondary" type="button" onclick="openGlobalContactBook()">
-      Rubrica generale
+      Rubrica professionale
     </button>
-
-    <button class="project-main-btn secondary" type="button" onclick="toggleVisibilitySettings()">
-      Visibilità area sposi
-    </button>
-
-    <button class="project-main-btn secondary" type="button" onclick="toggleProjectMenu(); toggleExperience();">
-      PIXELUP EXPERIENCE
-    </button>
-
     <button class="project-main-btn secondary" type="button" onclick="showInstallGuide()">
       Aggiungi PixelUp alla Home
     </button>
-    <button class="project-main-btn logout" type="button" onclick="logoutPixelUp()">
-  Esci
-</button>
+
+    <div class="menu-group-label">IMPOSTAZIONI</div>
+    <button class="project-main-btn secondary language-menu-btn" type="button" onclick="if(window.cycleDashboardLanguage){cycleDashboardLanguage()}">
+      <span>Lingua dashboard</span><span id="menuLanguageValue">IT ▾</span>
+    </button>
+
+    <button class="project-main-btn logout" type="button" onclick="logoutPixelUp()">Esci</button>
 
     <div class="projects-list" id="projectsList"></div>
 
     <div class="quick-guide">
       <strong>Guida rapida</strong>
       <ol>
-        <li>Clicca “Nuovo progetto” per creare una dashboard.</li>
-        <li>Inserisci nome evento e data.</li>
-        <li>Compila budget, scadenze, rubrica evento, agenda e documenti.</li>
-        <li>Da “I miei progetti” copia il link sposi/cliente o collega la pagina evento.</li>
+        <li>Apri “I miei progetti” oppure crea un nuovo matrimonio.</li>
+        <li>Gestisci tutte le attività direttamente dalla dashboard del progetto.</li>
+        <li>Usa PixelUp Experience per creare proposte e preventivi per gli sposi.</li>
       </ol>
     </div>
 
   </div>
+</div>
 </div>
     
 
@@ -1650,7 +1688,7 @@
 
 <button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
-  <span>Report progetto</span>
+  <span>Riepilogo Matrimonio</span>
 </button>
 
       <div class="deadline-section" id="deadlineSection">
@@ -1736,7 +1774,7 @@
       letter-spacing:0.8px;
     "
   >
-    Rubrica generale
+    Rubrica professionale
   </button>
 
   <button class="section-delete-btn" type="button" onclick="deleteItemFromSection('suppliers')">
@@ -2000,13 +2038,13 @@
 <div class="backup-section" id="backupSection">
 
   <div class="section-title">
-    <h2>Report progetto</h2>
+    <h2>Riepilogo Matrimonio</h2>
     <span>PDF e riepilogo</span>
   </div>
 
   <div class="list-card">
     <div class="report-info-card">
-      <strong>Riepilogo professionale</strong>
+      <strong>Riepilogo del matrimonio</strong>
       Genera un PDF ordinato del progetto, più leggibile del vecchio backup tecnico.
       Il PDF interno contiene tutto; il PDF sposi contiene solo le voci rese visibili agli sposi.
     </div>
@@ -2037,6 +2075,18 @@
 </div>
 
       </div>
+
+
+      <button class="secondary-action project-settings-action" type="button" onclick="editEventInfo()">
+        <span>⚙</span>
+        <span>Modifica Progetto</span>
+      </button>
+
+
+      <button class="secondary-action project-settings-action" type="button" onclick="archiveCurrentProject()">
+        <span>⌁</span>
+        <span>Archivia Progetto</span>
+      </button>
 
       <div class="bottom-note">
         Questa è la versione wedding planner: i dati possono essere modificati direttamente da questa dashboard.
@@ -2193,6 +2243,7 @@
     archived: false,
     projectNotes: "",
     eventPageUrl: "",
+    spousesLanguage: "it",
     visibility: {
       overview: true,
       budget: false,
@@ -2277,6 +2328,7 @@
     merged.archived = merged.archived === true;
     merged.projectNotes = String(merged.projectNotes || "");
     merged.eventPageUrl = String(merged.eventPageUrl || "").trim();
+    merged.spousesLanguage = ["it","en","fr"].includes(merged.spousesLanguage) ? merged.spousesLanguage : "it";
     merged.visibility = {
       ...defaultData.visibility,
       ...(safeRemoteData.visibility || {})
@@ -2290,7 +2342,11 @@
       date: item.date || "",
       status: item.status || "Da saldare",
       notes: item.notes || "",
-      visibleToSpouses: item.visibleToSpouses === true
+      visibleToSpouses: item.visibleToSpouses === true,
+      reminderEnabled: item.reminderEnabled === true,
+      reminderPreset: item.reminderPreset || "none",
+      reminderAt: item.reminderAt || "",
+      reminderSentAt: item.reminderSentAt || ""
     }));
 
     merged.suppliers = merged.suppliers.map((item) => ({
@@ -2451,7 +2507,47 @@
     return firstInitial + "|" + secondInitial;
   }
 
+  // ===== PixelUp V9 multilingual engine =====
+  const PIXELUP_I18N = {
+    en:{
+      "Dashboard Wedding Planner":"Wedding Planner Dashboard","Gestione progetti":"Project management","I miei progetti":"My projects","Nuovo progetto":"New project","Modifica evento":"Edit event","Archivia progetto":"Archive project","Progetti archiviati":"Archived projects","Rubrica professionale":"General contacts","Visibilità area sposi":"Couple area visibility","Aggiungi PixelUp alla Home":"Add PixelUp to Home","Esci":"Log out","Guida rapida":"Quick guide","PixelUp Experience":"PixelUp Experience","Servizi per gli sposi · Guadagna su ogni vendita":"Services for the couple · Earn on every sale","Agenda":"Schedule","Checklist":"Checklist","Timeline Evento":"Event timeline","Rubrica Evento":"Event contacts","Documenti":"Documents","Note Progetto":"Project notes","Contatta sposi":"Contact couple","Report Progetto":"Project report","Scadenze":"Deadlines","Scadenze e pagamenti":"Deadlines & payments","Fornitori":"Suppliers","Panoramica":"Overview","Prezzo sposi":"Couple price","Guadagno Partner":"Partner earnings","Dettagli":"Details","Invia proposta":"Send proposal","Scarica PDF sposi":"Download couple PDF","Scarica PDF interno":"Download internal PDF","Controllo link sposi":"Couple link controls","Italiano":"Italian","Dashboard":"Dashboard","Sposi":"Couple","Nessun promemoria":"No reminder","Il giorno stesso":"Same day","1 giorno prima":"1 day before","3 giorni prima":"3 days before","7 giorni prima":"7 days before","14 giorni prima":"14 days before","Personalizzato":"Custom","Visibile agli sposi":"Visible to couple","Nascosto agli sposi":"Hidden from couple","Proposta inviata":"Proposal sent","Accettata":"Accepted","Richiesta disponibilità":"Availability requested","Disponibilità confermata":"Availability confirmed","In attesa pagamento":"Awaiting payment","Pagata / Prenotata":"Paid / Booked","Rifiutata":"Declined","Annullata":"Cancelled"
+    },
+    fr:{
+      "Dashboard Wedding Planner":"Tableau de bord Wedding Planner","Gestione progetti":"Gestion des projets","I miei progetti":"Mes projets","Nuovo progetto":"Nouveau projet","Modifica evento":"Modifier l’événement","Archivia progetto":"Archiver le projet","Progetti archiviati":"Projets archivés","Rubrica professionale":"Contacts généraux","Visibilità area sposi":"Visibilité espace mariés","Aggiungi PixelUp alla Home":"Ajouter PixelUp à l’accueil","Esci":"Déconnexion","Guida rapida":"Guide rapide","PixelUp Experience":"PixelUp Experience","Servizi per gli sposi · Guadagna su ogni vendita":"Services pour les mariés · Gagnez sur chaque vente","Agenda":"Agenda","Checklist":"Checklist","Timeline Evento":"Déroulé de l’événement","Rubrica Evento":"Contacts événement","Documenti":"Documents","Note Progetto":"Notes du projet","Contatta sposi":"Contacter les mariés","Report Progetto":"Rapport du projet","Scadenze":"Échéances","Scadenze e pagamenti":"Échéances et paiements","Fornitori":"Prestataires","Panoramica":"Vue d’ensemble","Prezzo sposi":"Prix mariés","Guadagno Partner":"Gain partenaire","Dettagli":"Détails","Invia proposta":"Envoyer la proposition","Scarica PDF sposi":"Télécharger PDF mariés","Scarica PDF interno":"Télécharger PDF interne","Controllo link sposi":"Contrôle espace mariés","Italiano":"Italien","Dashboard":"Dashboard","Sposi":"Mariés","Nessun promemoria":"Aucun rappel","Il giorno stesso":"Le jour même","1 giorno prima":"1 jour avant","3 giorni prima":"3 jours avant","7 giorni prima":"7 jours avant","14 giorni prima":"14 jours avant","Personalizzato":"Personnalisé","Visibile agli sposi":"Visible aux mariés","Nascosto agli sposi":"Masqué aux mariés","Proposta inviata":"Proposition envoyée","Accettata":"Acceptée","Richiesta disponibilità":"Disponibilité demandée","Disponibilità confermata":"Disponibilité confirmée","In attesa pagamento":"En attente de paiement","Pagata / Prenotata":"Payée / Réservée","Rifiutata":"Refusée","Annullata":"Annulée"
+    }
+  };
+  let dashboardLanguage = localStorage.getItem("pixelup_dashboard_language") || "it";
+  const ORIGINAL_TEXT = new WeakMap();
+  function uiT(text, lang=dashboardLanguage){ return lang==='it' ? text : (PIXELUP_I18N[lang]?.[text] || text); }
+  function translateStaticUI(){
+    document.documentElement.lang=dashboardLanguage;
+    const root=document.querySelector('main.app'); if(!root)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let n; while(n=walker.nextNode()){
+      if(!n.parentElement || ['SCRIPT','STYLE','OPTION'].includes(n.parentElement.tagName)) continue;
+      if(!ORIGINAL_TEXT.has(n)) ORIGINAL_TEXT.set(n,n.nodeValue);
+      const original=ORIGINAL_TEXT.get(n), trimmed=original.trim(); if(!trimmed)continue;
+      const translated=uiT(trimmed); if(translated!==trimmed){ const a=original.match(/^\s*/)[0],b=original.match(/\s*$/)[0]; n.nodeValue=a+translated+b; }
+      else if(dashboardLanguage==='it') n.nodeValue=original;
+    }
+    document.querySelectorAll('[data-i18n-key]').forEach(el=>{ const k=el.dataset.i18nKey; el.textContent=k==='spousesLanguage'?(dashboardLanguage==='fr'?'Mariés':dashboardLanguage==='en'?'Couple':'Sposi'):'Dashboard'; });
+    const ds=document.getElementById('dashboardLanguageSelect'); if(ds)ds.value=dashboardLanguage;
+    const ss=document.getElementById('spousesLanguageSelect'); if(ss)ss.value=data?.spousesLanguage||'it';
+  }
+  function setDashboardLanguage(lang){ if(!['it','en','fr'].includes(lang))return; dashboardLanguage=lang; localStorage.setItem('pixelup_dashboard_language',lang); location.reload(); }
+  async function setSpousesLanguage(lang){
+    if(!['it','en','fr'].includes(lang))return; data.spousesLanguage=lang;
+    if(eventRef && currentEventId) await setDoc(eventRef,{spousesLanguage:lang,updatedAt:new Date().toISOString()},{merge:true});
+    const names={it:'Italiano',en:'English',fr:'Français'}; alert((dashboardLanguage==='fr'?'Langue des mariés : ':dashboardLanguage==='en'?'Couple language: ':'Lingua sposi: ')+names[lang]);
+  }
+  const SPOUSE_TEXT={
+    en:{"Proposta matrimonio":"Wedding proposal","MODALITÀ DI PAGAMENTO":"PAYMENT METHODS","Bonifico bancario: coordinate IBAN disponibili a breve":"Bank transfer: IBAN details available shortly","PayPal: link di pagamento disponibile a breve":"PayPal: payment link available shortly","Per procedere rispondi a questo messaggio: PixelUp verificherà la disponibilità e preparerà la conferma definitiva.":"To proceed, reply to this message. PixelUp will check availability and prepare the final confirmation.","Report per sposi":"Couple report","Generato il ":"Generated on ","Panoramica progetto":"Project overview","Panoramica":"Overview","Riepilogo economico e stato del progetto.":"Budget summary and project status.","Recapiti sposi":"Couple contacts","Contatti rapidi inseriti nella dashboard.":"Contact details saved in the dashboard.","Scadenze e pagamenti":"Deadlines & payments","Solo scadenze condivise con gli sposi.":"Only deadlines shared with the couple.","Rubrica evento":"Event contacts","Contatti utili collegati al progetto.":"Useful contacts linked to the project.","Agenda":"Schedule","Appuntamenti condivisi con gli sposi.":"Appointments shared with the couple.","Documenti":"Documents","Documenti condivisi con gli sposi.":"Documents shared with the couple.","Checklist":"Checklist","Attività condivise con gli sposi.":"Tasks shared with the couple.","Timeline evento":"Event timeline","Momenti principali del giorno evento.":"Key moments of the wedding day.","Nessuna scadenza presente in questo report.":"No deadlines in this report.","Nessun appuntamento presente in questo report.":"No appointments in this report.","Nessun documento presente in questo report.":"No documents in this report.","Nessuna voce checklist presente in questo report.":"No checklist items in this report.","Nessun momento timeline presente in questo report.":"No timeline items in this report."},
+    fr:{"Proposta matrimonio":"Proposition de mariage","MODALITÀ DI PAGAMENTO":"MODES DE PAIEMENT","Bonifico bancario: coordinate IBAN disponibili a breve":"Virement bancaire : coordonnées IBAN bientôt disponibles","PayPal: link di pagamento disponibile a breve":"PayPal : lien de paiement bientôt disponible","Per procedere rispondi a questo messaggio: PixelUp verificherà la disponibilità e preparerà la conferma definitiva.":"Pour continuer, répondez à ce message. PixelUp vérifiera la disponibilité et préparera la confirmation définitive.","Report per sposi":"Rapport pour les mariés","Generato il ":"Généré le ","Panoramica progetto":"Vue d’ensemble du projet","Panoramica":"Vue d’ensemble","Riepilogo economico e stato del progetto.":"Résumé du budget et état du projet.","Recapiti sposi":"Coordonnées des mariés","Contatti rapidi inseriti nella dashboard.":"Coordonnées enregistrées dans le tableau de bord.","Scadenze e pagamenti":"Échéances et paiements","Solo scadenze condivise con gli sposi.":"Uniquement les échéances partagées avec les mariés.","Rubrica evento":"Contacts événement","Contatti utili collegati al progetto.":"Contacts utiles liés au projet.","Agenda":"Agenda","Appuntamenti condivisi con gli sposi.":"Rendez-vous partagés avec les mariés.","Documenti":"Documents","Documenti condivisi con gli sposi.":"Documents partagés avec les mariés.","Checklist":"Checklist","Attività condivise con gli sposi.":"Tâches partagées avec les mariés.","Timeline evento":"Déroulé de l’événement","Momenti principali del giorno evento.":"Moments clés du jour du mariage.","Nessuna scadenza presente in questo report.":"Aucune échéance dans ce rapport.","Nessun appuntamento presente in questo report.":"Aucun rendez-vous dans ce rapport.","Nessun documento presente in questo report.":"Aucun document dans ce rapport.","Nessuna voce checklist presente in questo report.":"Aucune tâche dans ce rapport.","Nessun momento timeline presente in questo report.":"Aucun élément dans le déroulé."}
+  };
+  function spouseT(text){ const l=data?.spousesLanguage||'it'; return l==='it'?text:(SPOUSE_TEXT[l]?.[text]||PIXELUP_I18N[l]?.[text]||text); }
+
   function renderSummary() {
+    setTimeout(translateStaticUI,0);
     const projectTitle = document.getElementById("projectTitle");
     const projectMonogram = document.getElementById("projectMonogram");
 
@@ -2659,7 +2755,7 @@
             <p>${item.supplier}</p>
             <p>Totale: ${euro(item.total)} · Pagato: ${euro(item.paid)}</p>
             ${item.notes ? `<p>Note: ${item.notes}</p>` : ""}
-            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}</p>
+            <p>${item.visibleToSpouses ? "Visibile agli sposi" : "Interno wedding"}<br>🔔 ${deadlineReminderLabel(item)}</p>
 
             <span class="status ${isPaid ? "paid" : ""}">
               ${isPaid ? "Saldato" : item.status}
@@ -2805,6 +2901,60 @@
     saveData();
   }
 
+  function configureDeadlineReminder(date, current={}) {
+    const choices = [
+      ["0","Nessun promemoria"], ["same","Il giorno stesso alle 09:00"],
+      ["1","1 giorno prima alle 09:00"], ["3","3 giorni prima alle 09:00"],
+      ["7","7 giorni prima alle 09:00"], ["14","14 giorni prima alle 09:00"],
+      ["custom","Data e ora personalizzate"]
+    ];
+    const menu=choices.map((x,i)=>`${i+1} - ${x[1]}`).join("\n");
+    const answer=prompt(`Promemoria scadenza:\n\n${menu}\n\nScegli da 1 a 7.`, current.reminderPreset && current.reminderPreset!=="none" ? String(Math.max(1,choices.findIndex(x=>x[0]===current.reminderPreset)+1)) : "1");
+    if(answer===null) return current;
+    const choice=choices[Math.max(0,Math.min(choices.length-1,(parseInt(answer,10)||1)-1))][0];
+    if(choice==="0") return {reminderEnabled:false,reminderPreset:"none",reminderAt:"",reminderSentAt:""};
+    if(choice==="custom"){
+      const suggested=current.reminderAt ? current.reminderAt.slice(0,16) : `${date||new Date().toISOString().slice(0,10)}T09:00`;
+      const custom=prompt("Data e ora promemoria (AAAA-MM-GGTHH:MM):",suggested);
+      if(custom===null || !custom.trim()) return {reminderEnabled:false,reminderPreset:"none",reminderAt:"",reminderSentAt:""};
+      return {reminderEnabled:true,reminderPreset:"custom",reminderAt:custom.trim(),reminderSentAt:""};
+    }
+    const base=new Date(`${date}T09:00:00`);
+    if(Number.isNaN(base.getTime())) return {reminderEnabled:false,reminderPreset:"none",reminderAt:"",reminderSentAt:""};
+    const days=choice==="same"?0:Number(choice);
+    base.setDate(base.getDate()-days);
+    const local=`${base.getFullYear()}-${String(base.getMonth()+1).padStart(2,"0")}-${String(base.getDate()).padStart(2,"0")}T09:00`;
+    return {reminderEnabled:true,reminderPreset:choice,reminderAt:local,reminderSentAt:""};
+  }
+
+  function deadlineReminderLabel(item){
+    if(!item?.reminderEnabled || !item.reminderAt) return "Nessun promemoria";
+    const d=new Date(item.reminderAt);
+    return Number.isNaN(d.getTime()) ? "Promemoria attivo" : `Promemoria ${d.toLocaleDateString("it-IT")} · ${d.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"})}`;
+  }
+
+  async function enablePixelUpNotifications(){
+    if(!("Notification" in window)){ alert("Le notifiche non sono supportate da questo browser."); return false; }
+    if(Notification.permission==="granted") return true;
+    const permission=await Notification.requestPermission();
+    return permission==="granted";
+  }
+
+  async function checkDueDeadlineReminders(){
+    if(!Array.isArray(data.deadlines)) return;
+    const now=Date.now(); let changed=false;
+    for(const item of data.deadlines){
+      if(!item.reminderEnabled || !item.reminderAt || item.reminderSentAt) continue;
+      const when=new Date(item.reminderAt).getTime();
+      if(!Number.isNaN(when) && when<=now){
+        const body=`${item.name||"Scadenza"}${item.supplier?` · ${item.supplier}`:""}${Number(item.total)>0?` · ${euro(item.total)}`:""}`;
+        if("Notification" in window && Notification.permission==="granted") new Notification("PixelUp Wedding · Promemoria",{body,icon:"icons/icon-192.png"});
+        item.reminderSentAt=new Date().toISOString(); changed=true;
+      }
+    }
+    if(changed) await saveData();
+  }
+
   function editDeadline(index) {
     const item = data.deadlines[index];
 
@@ -2827,6 +2977,8 @@
     if (notes === null) return;
 
     const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+    const reminder = configureDeadlineReminder(date || item.date, item);
+    if (reminder.reminderEnabled) enablePixelUpNotifications();
 
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
@@ -2857,7 +3009,8 @@
       date: date || item.date,
       status: automaticStatus,
       notes: notes || "",
-      visibleToSpouses: visibleToSpouses
+      visibleToSpouses: visibleToSpouses,
+      ...reminder
     };
 
     updateTotalsFromDeadlines();
@@ -2887,6 +3040,8 @@
     if (notes === null) return;
 
     const visibleToSpouses = confirm("Vuoi rendere questa scadenza visibile agli sposi?");
+    const reminder = configureDeadlineReminder(date, {});
+    if (reminder.reminderEnabled) enablePixelUpNotifications();
 
     const cleanTotal = Number(total.replace(".", "").replace(",", "."));
     const cleanPaid = Number(paid.replace(".", "").replace(",", "."));
@@ -2917,7 +3072,8 @@
       date: date || "2026-08-01",
       status: automaticStatus,
       notes: notes || "",
-      visibleToSpouses: visibleToSpouses
+      visibleToSpouses: visibleToSpouses,
+      ...reminder
     });
 
     updateTotalsFromDeadlines();
@@ -3502,6 +3658,9 @@
       data.eventPageUrl = normalizeEventPageUrl(eventPageUrl);
     }
 
+    const langEdit = prompt("Lingua comunicazioni sposi (IT / EN / FR):", (data.spousesLanguage || "it").toUpperCase());
+    if (langEdit !== null) { const l=langEdit.trim().toLowerCase(); data.spousesLanguage=l.startsWith("en")?"en":l.startsWith("fr")?"fr":"it"; }
+
     const editContacts = confirm("Vuoi aggiornare anche i recapiti sposi?");
     if (editContacts) {
       const existingBride = (data.spouseContacts || [])[0] || {};
@@ -3668,7 +3827,7 @@
 
       if (!merged.length) {
         alert(
-          "Non ci sono contatti né nella Rubrica evento né nella Rubrica generale."
+          "Non ci sono contatti né nella Rubrica evento né nella Rubrica professionale."
         );
         return;
       }
@@ -4178,6 +4337,11 @@
 
     if (eventPageUrl === null) return;
 
+    const spouseLangChoice = prompt("Lingua comunicazioni sposi: IT, EN o FR", "IT");
+    if (spouseLangChoice === null) return;
+    const spouseLangRaw = spouseLangChoice.trim().toLowerCase();
+    const spouseLanguage = spouseLangRaw.startsWith("en") ? "en" : spouseLangRaw.startsWith("fr") ? "fr" : "it";
+
     const spouseContacts = [];
 
     if (brideName.trim() || bridePhone.trim() || brideEmail.trim()) {
@@ -4215,6 +4379,7 @@
       archived: false,
       projectNotes: "",
       eventPageUrl: normalizeEventPageUrl(eventPageUrl),
+      spousesLanguage: spouseLanguage,
       visibility: structuredClone(defaultData.visibility),
       checklist: [],
       timeline: [],
@@ -4424,7 +4589,65 @@
             </head>
             <body style="font-family:Arial,sans-serif;text-align:center;padding:40px 20px;color:#344028;">
               <p>Stai aprendo la pagina evento...</p>
-            </body>
+            <script>
+// V8: controlla i promemoria mentre PixelUp è aperto. Le push a browser chiuso richiedono il backend FCM/service worker.
+setTimeout(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },2500);
+setInterval(()=>{ try{ checkDueDeadlineReminders(); }catch(e){} },60000);
+</script>
+
+<script>
+(function(){
+  const langs=["it","en","fr"];
+  const labels={it:"IT ▾",en:"EN ▾",fr:"FR ▾"};
+
+  function currentDashboardLanguage(){
+    try{
+      if(window.dashboardLanguage && langs.includes(String(window.dashboardLanguage).toLowerCase()))
+        return String(window.dashboardLanguage).toLowerCase();
+      const saved=localStorage.getItem("pixelup_dashboard_language") || localStorage.getItem("pixelupLanguage") || localStorage.getItem("pixelup_language");
+      if(saved && langs.includes(saved.toLowerCase())) return saved.toLowerCase();
+    }catch(e){}
+    return "it";
+  }
+
+  function refreshMenuLanguage(){
+    const el=document.getElementById("menuLanguageValue");
+    if(el) el.textContent=labels[currentDashboardLanguage()] || "IT ▾";
+  }
+
+  window.cycleDashboardLanguage=function(){
+    const current=currentDashboardLanguage();
+    const names={it:"Italiano",en:"English",fr:"Français"};
+    const choice=prompt(
+      "Lingua dashboard:\\n\\n1 · Italiano\\n2 · English\\n3 · Français",
+      current==="it" ? "1" : current==="en" ? "2" : "3"
+    );
+    if(choice===null) return;
+    const next=choice==="1"?"it":choice==="2"?"en":choice==="3"?"fr":null;
+    if(!next){ alert("Seleziona 1, 2 oppure 3."); return; }
+
+    try{
+      localStorage.setItem("pixelup_dashboard_language",next);
+      localStorage.setItem("pixelupLanguage",next);
+    }catch(e){}
+
+    // Reuse V9 translator if present.
+    if(typeof window.setDashboardLanguage==="function") window.setDashboardLanguage(next);
+    else if(typeof window.setLanguage==="function") window.setLanguage(next);
+    else if(typeof window.changeLanguage==="function") window.changeLanguage(next);
+    else {
+      window.dashboardLanguage=next;
+      alert("Lingua dashboard impostata su " + names[next] + ".");
+    }
+    setTimeout(refreshMenuLanguage,0);
+  };
+
+  document.addEventListener("DOMContentLoaded",refreshMenuLanguage);
+  setTimeout(refreshMenuLanguage,0);
+})();
+</script>
+
+</body>
           </html>
         `);
         eventWindow.document.close();
@@ -5159,7 +5382,7 @@
       ["checklist", "Checklist", "Mostra solo attività segnate come visibili agli sposi."],
       ["timeline", "Timeline evento", "Mostra solo i momenti segnati come visibili agli sposi."],
       ["contacts", "Contatta sposi", "Mostra i recapiti salvati degli sposi nel link sposi."],
-      ["report", "Report sposi", "Permette di mostrare/scaricare un riepilogo per gli sposi."],
+      ["report", "Riepilogo Matrimonio", "Permette di mostrare/scaricare un riepilogo per gli sposi."],
       ["notes", "Note progetto", "Sconsigliato: le note interne dovrebbero restare nascoste."]
     ];
   }
@@ -5202,12 +5425,12 @@
 
 
   const PIXELUP_CATALOG = [
-    { id:"wedding-page", name:"Wedding Page", short:"Il matrimonio in un unico link elegante e personalizzato.", description:"Pagina matrimonio digitale con RSVP, mappa, programma, menu, lista regalo, foto e informazioni utili.", retail:149, partner:99, type:"digitale", image:"assets/wedding-page.png", how:"PixelUp prepara una pagina mobile dedicata agli sposi. Gli invitati aprono il link o scansionano il QR e trovano tutte le informazioni del matrimonio, con possibilità di confermare la presenza.", includes:["Design personalizzato","RSVP invitati","Location e mappa","Programma e menu","Lista regalo e contatti","Foto e informazioni utili"] },
-    { id:"photo-qr", name:"Photo QR", short:"Le foto degli invitati raccolte senza app.", description:"QR dedicato per raccogliere foto del matrimonio in una gallery privata degli sposi.", retail:99, partner:69, type:"digitale", image:"", how:"Gli invitati scansionano il QR dal proprio telefono e caricano le foto. Nessuna app da installare: i contenuti confluiscono nella raccolta privata del matrimonio.", includes:["QR personalizzato","Accesso da smartphone","Raccolta foto invitati","Gallery privata","Consegna digitale"] },
-    { id:"video-guestbook", name:"Video Guest Book QR", short:"Messaggi video autentici dagli invitati.", description:"Gli invitati scansionano un QR e registrano un video messaggio per gli sposi.", retail:129, partner:89, type:"digitale", image:"assets/video-guest-book.png", how:"Il QR porta a una pagina semplice da cui l’invitato registra e invia il proprio video. Gli sposi ritrovano i messaggi in una raccolta privata.", includes:["QR personalizzato","Registrazione da telefono","Nessuna app richiesta","Gallery video privata","Consegna digitale"] },
-    { id:"audio-guestbook", name:"Audio Guest Book", short:"Le voci del matrimonio da riascoltare per sempre.", description:"Telefono audio scenografico per raccogliere messaggi vocali degli invitati.", retail:249, partner:189, type:"experience", image:"assets/audio-guest-book.png", how:"Gli invitati alzano la cornetta e lasciano un messaggio agli sposi. Al termine dell’evento le registrazioni vengono raccolte e consegnate in formato digitale.", includes:["Telefono Audio Guest Book","Istruzioni per gli invitati","Raccolta messaggi vocali","File audio digitali","Preparazione del servizio"] },
-    { id:"magic-mirror", name:"Magic Mirror", short:"Un photobooth elegante che diventa parte dell’evento.", description:"Esperienza fotografica interattiva Magic Mirror. Disponibilità da confermare in base a data e luogo.", retail:449, partner:349, type:"experience", image:"assets/magic-mirror.png", how:"Gli invitati interagiscono con lo specchio e creano ricordi fotografici durante il ricevimento. La configurazione effettiva viene confermata in base al pacchetto e alla disponibilità per data e location.", includes:["Magic Mirror","Grafica personalizzata","Accessori disponibili secondo pacchetto","Condivisione digitale secondo configurazione","Verifica disponibilità prima della conferma"] },
-    { id:"digital-pack", name:"Digital Wedding Pack", short:"Il pacchetto digitale completo per gli sposi.", description:"Wedding Page + Photo QR + Video Guest Book QR in un’unica proposta.", retail:249, partner:169, type:"pacchetto", image:"", how:"Un unico pacchetto riunisce pagina matrimonio e raccolta dei ricordi degli invitati. È la proposta digitale più semplice da vendere e può essere erogata in tutta Italia.", includes:["Wedding Page","RSVP e informazioni matrimonio","Photo QR","Video Guest Book QR","Un’unica gestione PixelUp"] }
+    { id:"wedding-page", name:"Wedding Page", short:"Il matrimonio in un unico link elegante e personalizzato.", description:"Pagina matrimonio digitale con RSVP, mappa, programma, menu, lista regalo, foto e informazioni utili.", retail:79, partner:55, type:"digitale", image:"assets/wedding-page.png", how:"PixelUp prepara una pagina mobile dedicata agli sposi. Gli invitati aprono il link o scansionano il QR e trovano tutte le informazioni del matrimonio, con possibilità di confermare la presenza.", includes:["Design personalizzato","RSVP invitati","Location e mappa","Programma e menu","Lista regalo e contatti","Foto e informazioni utili"] },
+    { id:"photo-qr", name:"Photo QR", short:"Le foto degli invitati raccolte senza app.", description:"QR dedicato per raccogliere foto del matrimonio in una gallery privata degli sposi.", retail:39, partner:29, type:"digitale", image:"assets/photo-qr.png", how:"Gli invitati scansionano il QR dal proprio telefono e caricano le foto. Nessuna app da installare: i contenuti confluiscono nella raccolta privata del matrimonio.", includes:["QR personalizzato","Accesso da smartphone","Raccolta foto invitati","Gallery privata","Consegna digitale"] },
+    { id:"video-guestbook", name:"Video Guest Book QR", short:"Messaggi video autentici dagli invitati.", description:"Gli invitati scansionano un QR e registrano un video messaggio per gli sposi.", retail:59, partner:44, type:"digitale", image:"assets/video-guest-book.png", how:"Il QR porta a una pagina semplice da cui l’invitato registra e invia il proprio video. Gli sposi ritrovano i messaggi in una raccolta privata.", includes:["QR personalizzato","Registrazione da telefono","Nessuna app richiesta","Gallery video privata","Consegna digitale"] },
+    { id:"audio-guestbook", name:"Audio Guest Book", short:"Le voci del matrimonio da riascoltare per sempre.", description:"Telefono audio scenografico per raccogliere messaggi vocali degli invitati.", retail:399, partner:319, type:"experience", image:"assets/audio-guest-book.png", how:"Gli invitati alzano la cornetta e lasciano un messaggio agli sposi. Al termine dell’evento le registrazioni vengono raccolte e consegnate in formato digitale.", includes:["Telefono Audio Guest Book","Istruzioni per gli invitati","Raccolta messaggi vocali","File audio digitali","Preparazione del servizio"] },
+    { id:"magic-mirror", name:"Magic Mirror", short:"Un photobooth elegante che diventa parte dell’evento.", description:"Esperienza fotografica interattiva Magic Mirror. Disponibilità da confermare in base a data e luogo.", retail:359, partner:289, type:"experience", image:"assets/magic-mirror.png", durationOptions:[{label:"3 ore",retail:359,partner:289},{label:"6 ore",retail:499,partner:399}], how:"Gli invitati interagiscono con lo specchio e creano ricordi fotografici durante il ricevimento. La configurazione effettiva viene confermata in base al pacchetto e alla disponibilità per data e location.", includes:["Magic Mirror","Grafica personalizzata","Accessori disponibili secondo pacchetto","Condivisione digitale secondo configurazione","Verifica disponibilità prima della conferma"] },
+    { id:"digital-pack", name:"Digital Wedding Pack", short:"Il pacchetto digitale completo per gli sposi.", description:"Wedding Page + Photo QR + Video Guest Book QR in un’unica proposta.", retail:149, partner:109, type:"pacchetto", image:"assets/digital-wedding-pack.png", how:"Un unico pacchetto riunisce pagina matrimonio e raccolta dei ricordi degli invitati. È la proposta digitale più semplice da vendere e può essere erogata in tutta Italia.", includes:["Wedding Page","RSVP e informazioni matrimonio","Photo QR","Video Guest Book QR","Un’unica gestione PixelUp"] }
   ];
 
   function toggleExperience(){ openSingleSection("experienceSection"); renderExperience(); }
@@ -5216,8 +5439,25 @@
     if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><div class="experience-card-media ${x.image?'':'no-image'}"><span class="service-type">${escapeAIHtml(x.type)}</span>${x.image?`<img src="${escapeAIHtml(x.image)}" alt="${escapeAIHtml(x.name)}" loading="lazy">`:``}</div><div class="experience-card-body"><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.short||x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno Partner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">ⓘ Dettagli</button><button class="primary" onclick="sendExperienceProposal('${x.id}')">✈ Invia proposta</button></div></div></div>`).join("");
     const list=document.getElementById("proposalList"); const proposals=data.pixelupProposals||[];
     document.getElementById("proposalCount") && (document.getElementById("proposalCount").textContent=String(proposals.length));
-    if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno Partner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
+    if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno Partner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button onclick="advanceProposalStatus('${p.id}')">Aggiorna stato</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
   }
+  async function advanceProposalStatus(id){
+    const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return;
+    const physical=(p.services||[]).some(id=>["magic-mirror","audio-guestbook"].includes(id));
+    const states=physical
+      ? ["Proposta inviata","Accettata","Disponibilità da verificare","Disponibilità confermata","In attesa di pagamento","Pagata / Prenotata","Rifiutata","Annullata"]
+      : ["Proposta inviata","Accettata","In attesa di pagamento","Pagata / Prenotata","Rifiutata","Annullata"];
+    const menu=states.map((x,i)=>`${i+1} - ${x}`).join("\n");
+    const answer=prompt(`Stato proposta attuale: ${p.status}\n\n${menu}\n\nScegli il nuovo stato.`,String(Math.max(1,states.indexOf(p.status)+1)));
+    if(answer===null)return;
+    const state=states[Math.max(0,Math.min(states.length-1,(parseInt(answer,10)||1)-1))];
+    p.status=state; p.updatedAt=new Date().toISOString();
+    if(state==="Accettata")p.acceptedAt=p.updatedAt;
+    if(state==="Disponibilità confermata")p.availabilityConfirmedAt=p.updatedAt;
+    if(state==="Pagata / Prenotata")p.paidAt=p.updatedAt;
+    await saveData(); renderExperience();
+  }
+
   function previewExperience(id){
     const x=PIXELUP_CATALOG.find(v=>v.id===id); if(!x)return;
     const modal=document.getElementById("experienceModal");
@@ -5233,24 +5473,88 @@
     modal.classList.add("show"); modal.setAttribute("aria-hidden","false");
   }
   function closeExperienceModal(){const modal=document.getElementById("experienceModal");if(modal){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}}
+  const PIXELUP_PAYMENT = {
+    iban: "DA_INSERIRE",
+    ibanHolder: "PixelUp",
+    paypal: "DA_INSERIRE"
+  };
+
   async function sendExperienceProposal(serviceId){
     const x=PIXELUP_CATALOG.find(v=>v.id===serviceId); if(!x)return;
     const couple=data.projectName||"gli sposi";
-    const ok=confirm(`Inviare ${x.name} a ${couple}?\n\nPrezzo sposi: ${euro(x.retail)}\nIl tuo guadagno Partner: ${euro(x.retail-x.partner)}\n\nConfermi di preparare la proposta?`);
+    let selected={label:"",retail:x.retail,partner:x.partner};
+    if(Array.isArray(x.durationOptions) && x.durationOptions.length){
+      const menu=x.durationOptions.map((o,i)=>`${i+1} - ${o.label} · ${euro(o.retail)}`).join("\n");
+      const answer=prompt(`Scegli la durata per ${x.name}:\n\n${menu}\n\nScrivi 1 o 2.`,"1");
+      if(answer===null)return;
+      const idx=Math.max(0,Math.min(x.durationOptions.length-1,(parseInt(answer,10)||1)-1));
+      selected=x.durationOptions[idx];
+    }
+    const ok=confirm(`Inviare ${x.name}${selected.label?` · ${selected.label}`:""} a ${couple}?\n\nPrezzo sposi: ${euro(selected.retail)}\nIl tuo guadagno Partner: ${euro(selected.retail-selected.partner)}\n\nLa proposta includerà immagine, dettagli e modalità di pagamento.\n\nConfermi?`);
     if(!ok)return;
-    const proposal=await createPixelUpProposal([serviceId]);
+    const proposal=await createPixelUpProposal([serviceId],{[serviceId]:selected});
     if(proposal) shareProposal(proposal.id);
   }
 
-  async function createPixelUpProposal(serviceIds){
+  async function createPixelUpProposal(serviceIds, selections={}){
     const unique=[...new Set(serviceIds)].filter(id=>PIXELUP_CATALOG.some(x=>x.id===id)); if(!unique.length)return;
-    const items=unique.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)); const retailTotal=items.reduce((a,x)=>a+x.retail,0); const partnerTotal=items.reduce((a,x)=>a+x.partner,0);
-    const proposal={id:crypto.randomUUID(),createdAt:new Date().toISOString(),status:"Bozza",services:unique,retailTotal,partnerTotal,plannerMargin:retailTotal-partnerTotal,shareUrl:""};
+    const items=unique.map(id=>{const x=PIXELUP_CATALOG.find(v=>v.id===id); const sel=selections[id]||{}; return {...x,selectedLabel:sel.label||"",retail:Number(sel.retail??x.retail),partner:Number(sel.partner??x.partner)};});
+    const retailTotal=items.reduce((a,x)=>a+x.retail,0); const partnerTotal=items.reduce((a,x)=>a+x.partner,0);
+    const proposal={id:crypto.randomUUID(),createdAt:new Date().toISOString(),status:"Proposta inviata",services:unique,selections:Object.fromEntries(items.map(x=>[x.id,{label:x.selectedLabel,retail:x.retail,partner:x.partner}])),retailTotal,partnerTotal,plannerMargin:retailTotal-partnerTotal,shareUrl:""};
     data.pixelupProposals=data.pixelupProposals||[]; data.pixelupProposals.push(proposal); await saveData(); renderExperience(); return proposal;
   }
-  function proposalText(p){ const names=p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + "); return `PixelUp · ${data.projectName}\n${names}\nTotale: ${euro(p.retailTotal)}\n\nSe vuoi procedere, rispondi a questo messaggio e PixelUp preparerà la prenotazione.`; }
+
+  function proposalItems(p){
+    return p.services.map(id=>{
+      const x=PIXELUP_CATALOG.find(v=>v.id===id); if(!x)return null;
+      const sel=p.selections?.[id]||{};
+      return {...x,selectedLabel:sel.label||"",selectedRetail:Number(sel.retail??x.retail)};
+    }).filter(Boolean);
+  }
+
+  function proposalText(p){
+    const lang=data.spousesLanguage||"it";
+    const items=proposalItems(p);
+    const lines=items.map(x=>`• ${x.name}${x.selectedLabel?` · ${x.selectedLabel}`:""} — ${euro(x.selectedRetail)}\n  ${x.short||x.description}`).join("\n\n");
+    const payment=[];
+    if(PIXELUP_PAYMENT.iban!=="DA_INSERIRE") payment.push(`${lang==='fr'?'Virement bancaire':lang==='en'?'Bank transfer':'Bonifico bancario'}\n${lang==='fr'?'Titulaire':lang==='en'?'Account holder':'Intestatario'}: ${PIXELUP_PAYMENT.ibanHolder}\nIBAN: ${PIXELUP_PAYMENT.iban}`);
+    else payment.push(spouseT("Bonifico bancario: coordinate IBAN disponibili a breve"));
+    if(PIXELUP_PAYMENT.paypal!=="DA_INSERIRE") payment.push(`PayPal: ${PIXELUP_PAYMENT.paypal}`);
+    else payment.push(spouseT("PayPal: link di pagamento disponibile a breve"));
+    const total=lang==='fr'?'TOTAL':lang==='en'?'TOTAL':'TOTALE';
+    return `PIXELUP WEDDING EXPERIENCE\n${data.projectName||spouseT("Proposta matrimonio")}\n\n${lines}\n\n${total}: ${euro(p.retailTotal)}\n\n${spouseT("MODALITÀ DI PAGAMENTO")}\n${payment.join("\n\n")}\n\n${spouseT("Per procedere rispondi a questo messaggio: PixelUp verificherà la disponibilità e preparerà la conferma definitiva.")}`;
+  }
+
   async function copyProposalText(id){ const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return; await navigator.clipboard.writeText(proposalText(p)); alert("Proposta copiata."); }
-  function shareProposal(id){ const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return; const text=proposalText(p); const phone=(data.spouseContacts||[]).find(x=>x.phone)?.phone?.replace(/\D/g,"")||""; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,"_blank"); }
+
+  async function shareProposal(id){
+    const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return;
+    p.status="Proposta inviata"; p.sentAt=p.sentAt||new Date().toISOString(); await saveData(); renderExperience();
+    const text=proposalText(p);
+    const items=proposalItems(p);
+    const image=items[0]?.image||"";
+    try{
+      if(image && navigator.share){
+        const res=await fetch(image);
+        if(res.ok){
+          const blob=await res.blob();
+          const ext=(image.split(".").pop()||"png").split("?")[0];
+          const file=new File([blob],`pixelup-${items[0].id}.${ext}`,{type:blob.type||"image/png"});
+          if(!navigator.canShare || navigator.canShare({files:[file]})){
+            await navigator.share({title:`PixelUp · ${items[0].name}`,text,files:[file]});
+            return;
+          }
+        }
+      }
+    }catch(err){
+      if(err?.name==="AbortError") return;
+      console.warn("Condivisione immagine non disponibile, uso fallback WhatsApp.",err);
+    }
+    const phone=(data.spouseContacts||[]).find(x=>x.phone)?.phone?.replace(/\D/g,"")||"";
+    const imageUrl=image?new URL(image,window.location.href).href:"";
+    const fallback=imageUrl?`${text}\n\nImmagine servizio: ${imageUrl}`:text;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(fallback)}`,"_blank");
+  }
 
   function toggleBackup() {
     openSingleSection("backupSection");
@@ -5435,6 +5739,7 @@
     }
 
     function addHeader(title) {
+      if (isSpouses) title = spouseT(title);
       doc.setFillColor(cream[0], cream[1], cream[2]);
       doc.rect(0, 0, pageWidth, 18, "F");
       doc.setFont("helvetica", "bold");
@@ -5457,6 +5762,7 @@
     }
 
     function sectionTitle(title, subtitle) {
+      if (isSpouses) { title = spouseT(title); subtitle = spouseT(subtitle); }
       ensureSpace(18);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(14);
@@ -5495,7 +5801,7 @@
     }
 
     function emptyText(label) {
-      textBlock(label, 10);
+      textBlock(isSpouses ? spouseT(label) : label, 10);
     }
 
     function smallLabel(text, x, yPos) {
@@ -5602,12 +5908,13 @@
     const percent = totalReal > 0 ? Math.round((Number(data.paid) / totalReal) * 100) : 0;
     const generated = new Date().toLocaleDateString("it-IT") + " " + new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
 
-    const deadlines = isSpouses ? (data.deadlines || []).filter((item) => item.visibleToSpouses === true) : (data.deadlines || []);
-    const agenda = isSpouses ? (data.agenda || []).filter((item) => item.visibleToSpouses === true) : (data.agenda || []);
-    const documents = isSpouses ? (data.documents || []).filter((item) => item.visibleToSpouses === true) : (data.documents || []);
-    const checklist = isSpouses ? (data.checklist || []).filter((item) => item.visibleToSpouses === true) : (data.checklist || []);
-    const timeline = isSpouses ? (data.timeline || []).filter((item) => item.visibleToSpouses === true) : (data.timeline || []);
-    const suppliers = data.suppliers || [];
+    const spouseVisibility={...defaultData.visibility,...(data.visibility||{})};
+    const deadlines = isSpouses ? (spouseVisibility.deadlines ? (data.deadlines || []).filter((item) => item.visibleToSpouses === true) : []) : (data.deadlines || []);
+    const agenda = isSpouses ? (spouseVisibility.agenda ? (data.agenda || []).filter((item) => item.visibleToSpouses === true) : []) : (data.agenda || []);
+    const documents = isSpouses ? (spouseVisibility.documents ? (data.documents || []).filter((item) => item.visibleToSpouses === true) : []) : (data.documents || []);
+    const checklist = isSpouses ? (spouseVisibility.checklist ? (data.checklist || []).filter((item) => item.visibleToSpouses === true) : []) : (data.checklist || []);
+    const timeline = isSpouses ? (spouseVisibility.timeline ? (data.timeline || []).filter((item) => item.visibleToSpouses === true) : []) : (data.timeline || []);
+    const suppliers = isSpouses ? (spouseVisibility.suppliers ? (data.suppliers || []) : []) : (data.suppliers || []);
 
     /* Copertina */
     doc.setFillColor(251, 244, 232);
@@ -5640,7 +5947,7 @@
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(greenDark[0], greenDark[1], greenDark[2]);
-    doc.text(isSpouses ? "Report per sposi" : "Report interno wedding", pageWidth / 2, 152, { align: "center" });
+    doc.text(isSpouses ? spouseT("Report per sposi") : "Report interno wedding", pageWidth / 2, 152, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
@@ -7092,7 +7399,7 @@
   }
   async function applyAIAction(action){
     switch(action.action){
-      case "add-deadline":{const item=action.payload||{};const finalPaid=Math.min(Number(item.paid)||0,Number(item.total)||0);const missing=Math.max((Number(item.total)||0)-finalPaid,0);data.deadlines.push({name:item.name||"Nuova scadenza",supplier:item.supplier||item.name||"Fornitore non indicato",total:Number(item.total)||0,paid:finalPaid,date:item.date||"",notes:item.notes||"",visibleToSpouses:item.visibleToSpouses===true,status:finalPaid<=0?"Da saldare":(missing>0?"Acconto versato":"Saldato")});upsertSupplierFromDeadline(item);updateTotalsFromDeadlines();break;}
+      case "add-deadline":{const item=action.payload||{};const finalPaid=Math.min(Number(item.paid)||0,Number(item.total)||0);const missing=Math.max((Number(item.total)||0)-finalPaid,0);data.deadlines.push({name:item.name||"Nuova scadenza",supplier:item.supplier||item.name||"Fornitore non indicato",total:Number(item.total)||0,paid:finalPaid,date:item.date||"",notes:item.notes||"",visibleToSpouses:item.visibleToSpouses===true,reminderEnabled:false,reminderPreset:"none",reminderAt:"",reminderSentAt:"",status:finalPaid<=0?"Da saldare":(missing>0?"Acconto versato":"Saldato")});upsertSupplierFromDeadline(item);updateTotalsFromDeadlines();break;}
       case "add-supplier": data.suppliers.push(action.payload); break;
       case "add-agenda": data.agenda.push(action.payload); break;
       case "add-checklist": data.checklist.push(action.payload); break;
@@ -7587,4 +7894,6 @@
 
   window.location.href = "/dasgboardemo/accedi.html";
 };
+
+  window.addEventListener("DOMContentLoaded",()=>setTimeout(translateStaticUI,250));
 </script>
