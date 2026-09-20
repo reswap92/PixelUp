@@ -1340,6 +1340,39 @@
   color: #8b8173;
 }
 
+/* Pixel AI V2 — mobile safety/readability */
+.ai-overlay{box-sizing:border-box;overflow:hidden;}
+.ai-panel,.ai-panel *{box-sizing:border-box;min-width:0;}
+.ai-panel{max-width:520px;max-height:calc(100dvh - 20px);}
+.ai-header-title{min-width:0;overflow:hidden;}
+.ai-header-title strong,.ai-header-title span,.ai-project-strip,.ai-message,.ai-confirm-summary{overflow-wrap:anywhere;word-break:normal;}
+.ai-messages{width:100%;overflow-x:hidden;}
+.ai-message{width:auto;max-width:86%;min-width:0;}
+.ai-message.user{max-width:88%;}
+.ai-confirm-card{width:100%;overflow:hidden;}
+.ai-suggestions{width:100%;max-width:100%;}
+.ai-composer-wrap{width:100%;min-width:0;}
+.ai-composer{width:100%;min-width:0;grid-template-columns:40px minmax(0,1fr) 42px;}
+.ai-input{min-width:0;max-width:100%;}
+@media (max-width: 599px){
+  .ai-overlay{padding:8px;align-items:flex-end;}
+  .ai-panel{width:100%;height:min(92dvh,780px);border-radius:22px 22px 16px 16px;}
+  .ai-header{grid-template-columns:40px minmax(0,1fr) 34px;padding:11px 12px;gap:9px;}
+  .ai-avatar{width:40px;height:40px;border-radius:13px;font-size:11px;}
+  .ai-header-title strong{font-size:17px;}
+  .ai-header-title span{font-size:10px;line-height:1.25;}
+  .ai-project-strip{padding:8px 12px;font-size:11px;}
+  .ai-messages{padding:12px 10px 16px;gap:9px;}
+  .ai-message{font-size:13px;line-height:1.42;padding:10px 11px;}
+  .ai-suggestions{padding:0 10px 8px;}
+  .ai-chip{font-size:10.5px;padding:7px 10px;}
+  .ai-composer-wrap{padding:8px 9px calc(8px + env(safe-area-inset-bottom));}
+  .ai-composer{gap:6px;}
+  .ai-mic,.ai-send{width:40px;height:40px;border-radius:12px;}
+  .ai-input{font-size:16px;min-height:40px;padding:9px 10px;} /* evita zoom iOS */
+  .ai-footnote{font-size:9px;}
+}
+
 @media (min-width: 600px) {
   .ai-overlay {
     align-items: center;
@@ -1396,11 +1429,11 @@
   
 
 /* PIXELUP EXPERIENCE / PREVENTIVI */
-.experience-grid{display:grid;gap:12px}.experience-card{background:rgba(255,252,246,.96);border:1px solid var(--border);border-radius:18px;padding:15px;box-shadow:var(--soft-shadow)}.experience-card h3{color:var(--green-dark);font-size:17px;margin-bottom:5px}.experience-card p{font-family:Arial,sans-serif;color:var(--muted);font-size:12px;line-height:1.45}.experience-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-price div{padding:10px;border-radius:13px;background:rgba(77,90,58,.07);font-family:Arial,sans-serif;font-size:11px}.experience-price strong{display:block;color:var(--green-dark);font-size:15px;margin-top:3px}.experience-actions{display:flex;gap:8px;flex-wrap:wrap}.experience-actions button{flex:1;min-width:120px;border-radius:999px;padding:9px 12px;border:1px solid rgba(177,145,85,.45);background:#fffdf8;color:var(--green-dark);font-family:Arial,sans-serif;font-weight:700}.experience-actions button.primary{background:var(--green);color:#fff;border-color:var(--green)}.proposal-row{padding:12px 0;border-bottom:1px solid rgba(177,145,85,.18);font-family:Arial,sans-serif}.proposal-row:last-child{border-bottom:0}.proposal-row strong{color:var(--green-dark)}.proposal-row small{display:block;color:var(--muted);margin-top:4px}.ai-loading{opacity:.65;pointer-events:none}.ai-confirm-summary{white-space:pre-wrap}
+.experience-grid{display:grid;gap:16px}.experience-card{background:rgba(255,252,246,.98);border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:0 8px 24px rgba(52,62,42,.10)}.experience-card-media{position:relative;width:100%;height:178px;background:linear-gradient(135deg,#d8d2c3,#aab398);overflow:hidden}.experience-card-media img{width:100%;height:100%;object-fit:cover;display:block}.experience-card-media.no-image{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#66734f,#c6b181)}.experience-card-media.no-image:after{content:"PixelUp Wedding";font:italic 24px Georgia,serif;color:#fffdf8;opacity:.9}.experience-card-body{padding:15px}.experience-card h3{color:var(--green-dark);font-size:23px;font-weight:400;margin-bottom:5px}.experience-card p{font-family:Arial,sans-serif;color:var(--muted);font-size:13px;line-height:1.45}.experience-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0}.experience-price div{padding:11px 12px;border-radius:15px;background:rgba(77,90,58,.07);font-family:Arial,sans-serif;font-size:11px}.experience-price strong{display:block;color:var(--green-dark);font-size:20px;margin-top:3px}.experience-actions{display:flex;gap:8px;flex-wrap:nowrap}.experience-actions button{flex:1;min-width:0;border-radius:999px;padding:11px 8px;border:1px solid rgba(177,145,85,.45);background:#fffdf8;color:var(--green-dark);font-family:Arial,sans-serif;font-weight:700;font-size:12px}.experience-actions button.primary{background:var(--green);color:#fff;border-color:var(--green)}.experience-card .service-type{position:absolute;z-index:2;top:12px;left:12px;display:inline-block;margin:0;padding:6px 11px;border-radius:999px;background:rgba(62,78,48,.92);color:#fff;font:700 9px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px;box-shadow:0 3px 10px rgba(0,0,0,.12)}@media(max-width:420px){.experience-card-media{height:165px}.experience-card-body{padding:13px}.experience-card h3{font-size:21px}.experience-card p{font-size:12px}.experience-actions button{font-size:11px;padding:10px 6px}}.proposal-row{padding:12px 0;border-bottom:1px solid rgba(177,145,85,.18);font-family:Arial,sans-serif}.proposal-row:last-child{border-bottom:0}.proposal-row strong{color:var(--green-dark)}.proposal-row small{display:block;color:var(--muted);margin-top:4px}.ai-loading{opacity:.65;pointer-events:none}.ai-confirm-summary{white-space:pre-wrap}
 
 
 /* ===== PixelUp V3 polish ===== */
-.hero{min-height:220px;padding:26px 24px}.monogram{width:68px;height:68px;margin-bottom:10px}.hero h2{font-size:30px}.countdown-card{margin-top:18px;padding:13px 12px}.secondary-action{min-height:48px;margin-bottom:10px;font-size:14px;border-radius:15px}.main-action{min-height:52px;margin-bottom:10px}.ai-top-btn{width:48px;border-radius:18px;font-size:9px;line-height:1.05}.today-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}.today-item{background:rgba(255,252,246,.94);border:1px solid var(--border);border-radius:14px;padding:9px 7px;text-align:center;font-family:Arial,sans-serif}.today-item small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}.today-item strong{display:block;color:var(--green-dark);font-size:12px;margin-top:4px}.experience-featured{border:1.5px solid rgba(177,145,85,.75)!important;background:linear-gradient(135deg,rgba(255,252,246,.98),rgba(177,145,85,.08))!important;position:relative}.experience-featured:before{content:"SERVIZI PER GLI SPOSI";position:absolute;top:-9px;left:16px;background:var(--green);color:#fff;padding:3px 9px;border-radius:999px;font:700 8px Arial,sans-serif;letter-spacing:.8px}.experience-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(31,39,27,.56);backdrop-filter:blur(5px);padding:16px;align-items:flex-end;justify-content:center}.experience-modal.show{display:flex}.experience-modal-card{width:min(100%,520px);max-height:91vh;overflow:auto;background:#fffaf2;border:1px solid rgba(177,145,85,.4);border-radius:26px 26px 18px 18px;box-shadow:0 28px 70px rgba(0,0,0,.3)}.experience-modal-image{width:100%;max-height:46vh;object-fit:cover;object-position:top;border-radius:25px 25px 0 0;background:#eee}.experience-modal-body{padding:18px}.experience-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.experience-modal-head h2{font-size:25px;color:var(--green-dark);font-weight:400}.experience-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--green-dark);font-size:20px;flex:none}.experience-tagline{font:13px/1.45 Arial,sans-serif;color:var(--muted);margin:7px 0 14px}.experience-detail-block{padding:13px 0;border-top:1px solid rgba(177,145,85,.18)}.experience-detail-block strong{display:block;color:var(--green-dark);font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}.experience-detail-block p,.experience-detail-block li{font:13px/1.5 Arial,sans-serif;color:var(--muted)}.experience-detail-block ul{padding-left:18px}.experience-modal-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-modal-price div{background:rgba(77,90,58,.08);padding:11px;border-radius:14px;font:11px Arial,sans-serif}.experience-modal-price b{display:block;font:20px Georgia,serif;color:var(--green-dark);margin-top:4px}.experience-modal-cta{width:100%;min-height:50px;border:0;border-radius:15px;background:var(--green);color:#fff;font:700 13px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}.experience-card .service-type{display:inline-block;margin-bottom:8px;padding:4px 8px;border-radius:999px;background:rgba(177,145,85,.11);color:#8a6729;font:700 9px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}@media(max-width:420px){.hero{min-height:205px}.hero h2{font-size:27px}.today-strip{gap:5px}.today-item{padding:8px 4px}.experience-modal{padding:8px}.experience-modal-card{max-height:94vh}}
+.hero{min-height:220px;padding:26px 24px}.monogram{width:68px;height:68px;margin-bottom:10px}.hero h2{font-size:30px}.countdown-card{margin-top:18px;padding:13px 12px}.secondary-action{min-height:48px;margin-bottom:10px;font-size:14px;border-radius:15px}.main-action{min-height:52px;margin-bottom:10px}.ai-top-btn{width:48px;border-radius:18px;font-size:9px;line-height:1.05}.today-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}.today-item{background:rgba(255,252,246,.94);border:1px solid var(--border);border-radius:14px;padding:9px 7px;text-align:center;font-family:Arial,sans-serif}.today-item small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}.today-item strong{display:block;color:var(--green-dark);font-size:12px;margin-top:4px}.experience-featured{border:1.5px solid rgba(177,145,85,.78)!important;background:linear-gradient(135deg,#66734f 0%,#53613f 100%)!important;color:#fffdf8!important;position:relative;box-shadow:0 8px 22px rgba(77,90,58,.16)!important}.experience-featured>span:first-child{color:#e4c98f!important}.experience-featured strong{color:#fffdf8!important}.experience-featured small{color:rgba(255,253,248,.78)!important}.experience-featured:after{content:"›";margin-left:auto;color:#e4c98f;font-size:25px;line-height:1}.experience-featured:before{content:"SERVIZI PER GLI SPOSI";position:absolute;top:-9px;left:16px;background:var(--green);color:#fff;padding:3px 9px;border-radius:999px;font:700 8px Arial,sans-serif;letter-spacing:.8px}.experience-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(31,39,27,.56);backdrop-filter:blur(5px);padding:16px;align-items:flex-end;justify-content:center}.experience-modal.show{display:flex}.experience-modal-card{width:min(100%,520px);max-height:91vh;overflow:auto;background:#fffaf2;border:1px solid rgba(177,145,85,.4);border-radius:26px 26px 18px 18px;box-shadow:0 28px 70px rgba(0,0,0,.3)}.experience-modal-image{width:100%;max-height:46vh;object-fit:cover;object-position:top;border-radius:25px 25px 0 0;background:#eee}.experience-modal-body{padding:18px}.experience-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.experience-modal-head h2{font-size:25px;color:var(--green-dark);font-weight:400}.experience-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--green-dark);font-size:20px;flex:none}.experience-tagline{font:13px/1.45 Arial,sans-serif;color:var(--muted);margin:7px 0 14px}.experience-detail-block{padding:13px 0;border-top:1px solid rgba(177,145,85,.18)}.experience-detail-block strong{display:block;color:var(--green-dark);font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}.experience-detail-block p,.experience-detail-block li{font:13px/1.5 Arial,sans-serif;color:var(--muted)}.experience-detail-block ul{padding-left:18px}.experience-modal-price{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.experience-modal-price div{background:rgba(77,90,58,.08);padding:11px;border-radius:14px;font:11px Arial,sans-serif}.experience-modal-price b{display:block;font:20px Georgia,serif;color:var(--green-dark);margin-top:4px}.experience-modal-cta{width:100%;min-height:50px;border:0;border-radius:15px;background:var(--green);color:#fff;font:700 13px Arial,sans-serif;text-transform:uppercase;letter-spacing:.7px}@media(max-width:420px){.hero{min-height:205px}.hero h2{font-size:27px}.today-strip{gap:5px}.today-item{padding:8px 4px}.experience-modal{padding:8px}.experience-modal-card{max-height:94vh}}
 
 </style>
 </head>
@@ -1570,6 +1603,11 @@
         </div>
       </div>
 
+      <button class="secondary-action experience-featured" type="button" onclick="toggleExperience()">
+        <span>✦</span>
+        <span><strong>PixelUp Experience</strong><small style="display:block;font:10px Arial,sans-serif;letter-spacing:.2px;text-transform:none;margin-top:3px">Servizi per gli sposi · Guadagna su ogni vendita</small></span>
+      </button>
+
       <button class="main-action" type="button" onclick="toggleDeadlines()">
         <span>▤</span>
         <span>Scadenze prossime</span>
@@ -1610,13 +1648,7 @@
   <span>Contatta sposi</span>
 </button>
 
-
-      <button class="secondary-action experience-featured" type="button" onclick="toggleExperience()">
-        <span>✦</span>
-        <span><strong>PixelUp Experience</strong><small style="display:block;font:10px Arial,sans-serif;letter-spacing:.2px;text-transform:none;color:var(--muted);margin-top:3px">Pagine · Guest Book · QR · Magic Mirror</small></span>
-      </button>
-
-      <button class="secondary-action" type="button" onclick="toggleBackup()">
+<button class="secondary-action" type="button" onclick="toggleBackup()">
   <span>▤</span>
   <span>Report progetto</span>
 </button>
@@ -2037,11 +2069,11 @@
         <div class="ai-avatar">PU</div>
 
         <div class="ai-header-title">
-          <strong id="pixelUpAITitle">PixelUp Assistente</strong>
-          <span>Organizza il progetto con comandi naturali e conferma finale</span>
+          <strong id="pixelUpAITitle">Pixel AI</strong>
+          <span>Il tuo assistente operativo per questo matrimonio</span>
         </div>
 
-        <button class="ai-close" type="button" onclick="togglePixelUpAI()" aria-label="Chiudi assistente">×</button>
+        <button class="ai-close" type="button" onclick="togglePixelUpAI()" aria-label="Chiudi Pixel AI">×</button>
       </header>
 
       <div class="ai-project-strip" id="aiProjectStrip">
@@ -2066,7 +2098,7 @@
               class="ai-input"
               id="aiInput"
               rows="1"
-              placeholder="Scrivi cosa vuoi fare nel progetto..."
+              placeholder="Scrivi o detta cosa vuoi fare…"
             ></textarea>
 
             <button class="ai-send" type="button" onclick="sendAICommand()" aria-label="Invia comando">➤</button>
@@ -5181,7 +5213,7 @@
   function toggleExperience(){ openSingleSection("experienceSection"); renderExperience(); }
   function renderExperience(){
     const catalog=document.getElementById("experienceCatalog");
-    if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><span class="service-type">${escapeAIHtml(x.type)}</span><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.short||x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno Partner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">Dettagli</button><button class="primary" onclick="createPixelUpProposal(['${x.id}'])">Aggiungi proposta</button></div></div>`).join("");
+    if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><div class="experience-card-media ${x.image?'':'no-image'}"><span class="service-type">${escapeAIHtml(x.type)}</span>${x.image?`<img src="${escapeAIHtml(x.image)}" alt="${escapeAIHtml(x.name)}" loading="lazy">`:``}</div><div class="experience-card-body"><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.short||x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno Partner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">ⓘ Dettagli</button><button class="primary" onclick="sendExperienceProposal('${x.id}')">✈ Invia proposta</button></div></div></div>`).join("");
     const list=document.getElementById("proposalList"); const proposals=data.pixelupProposals||[];
     document.getElementById("proposalCount") && (document.getElementById("proposalCount").textContent=String(proposals.length));
     if(list) list.innerHTML=proposals.length?proposals.slice().reverse().map(p=>`<div class="proposal-row"><strong>${p.services.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)?.name||id).join(" + ")}</strong><small>${p.status} · Totale ${euro(p.retailTotal)} · Guadagno Partner ${euro(p.plannerMargin)}</small><div class="experience-actions" style="margin-top:8px"><button onclick="copyProposalText('${p.id}')">Copia proposta</button><button class="primary" onclick="shareProposal('${p.id}')">Invia agli sposi</button></div></div>`).join(""):"<p style='font-family:Arial,sans-serif;color:var(--muted);font-size:13px'>Nessuna proposta ancora creata.</p>";
@@ -5201,6 +5233,15 @@
     modal.classList.add("show"); modal.setAttribute("aria-hidden","false");
   }
   function closeExperienceModal(){const modal=document.getElementById("experienceModal");if(modal){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}}
+  async function sendExperienceProposal(serviceId){
+    const x=PIXELUP_CATALOG.find(v=>v.id===serviceId); if(!x)return;
+    const couple=data.projectName||"gli sposi";
+    const ok=confirm(`Inviare ${x.name} a ${couple}?\n\nPrezzo sposi: ${euro(x.retail)}\nIl tuo guadagno Partner: ${euro(x.retail-x.partner)}\n\nConfermi di preparare la proposta?`);
+    if(!ok)return;
+    const proposal=await createPixelUpProposal([serviceId]);
+    if(proposal) shareProposal(proposal.id);
+  }
+
   async function createPixelUpProposal(serviceIds){
     const unique=[...new Set(serviceIds)].filter(id=>PIXELUP_CATALOG.some(x=>x.id===id)); if(!unique.length)return;
     const items=unique.map(id=>PIXELUP_CATALOG.find(x=>x.id===id)); const retailTotal=items.reduce((a,x)=>a+x.retail,0); const partnerTotal=items.reduce((a,x)=>a+x.partner,0);
@@ -7087,10 +7128,18 @@
     const inputBox=document.getElementById("aiInput"); inputBox?.classList.add("ai-loading");
     const remote = await askPixelUpAI(text); inputBox?.classList.remove("ai-loading");
     if(remote?.type === "answer"){ addAIMessage(remote.text || "", "assistant"); return; }
-    if(remote?.type === "actions" && Array.isArray(remote.actions) && remote.actions.length){ addAIMessage(remote.message || "Ho preparato le modifiche. Controllale prima di confermare.","assistant"); addAIMultiConfirmation(remote); return; }
+    if(remote?.type === "clarify"){ addAIMessage(remote.text || "Mi serve un dettaglio in più prima di procedere.", "assistant"); return; }
+    if(remote?.type === "actions" && Array.isArray(remote.actions) && remote.actions.length){
+      addAIMessage(remote.message || "Ho capito. Ti mostro cosa modificherei: controlla e conferma.","assistant");
+      addAIMultiConfirmation(remote); return;
+    }
+    // Fallback locale solo per comandi semplici se il servizio AI non è raggiungibile.
     const result = interpretAICommand(text);
-    if (result.type === "message") { addAIMessage(result.text, "assistant"); return; }
-    addAIMessage("Ho preparato l'operazione. Controlla i dati prima di confermare.", "assistant"); addAIConfirmation(result);
+    if (result.type === "action") {
+      addAIMessage("Pixel AI online non è raggiungibile. Ho riconosciuto questo comando con il motore locale: controllalo bene prima di confermare.", "assistant");
+      addAIConfirmation(result); return;
+    }
+    addAIMessage("Pixel AI non è raggiungibile in questo momento. Non ho modificato nulla: riprova tra poco.", "assistant");
   }
 
   async function confirmAIAction() {
