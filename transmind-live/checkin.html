@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>TRANSMIND LIVE - Check-in</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #1b1b1b 0%, #0c0c0c 45%, #050505 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(18, 18, 18, 0.96);
+      border: 1px solid #3a3a3a;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: 2px;
+    }
+
+    .logo p {
+      margin: 8px 0 0;
+      color: #bdbdbd;
+      font-size: 14px;
+    }
+
+    .status {
+      display: none;
+      text-align: center;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 22px;
+    }
+
+    .status.valid {
+      display: block;
+      background: #11391f;
+      border: 2px solid #32c66b;
+    }
+
+    .status.used {
+      display: block;
+      background: #4a3010;
+      border: 2px solid #f2a93b;
+    }
+
+    .status.error {
+      display: block;
+      background: #481818;
+      border: 2px solid #e45858;
+    }
+
+    .status h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .status p {
+      margin: 0;
+      color: #e0e0e0;
+    }
+
+    .details {
+      display: none;
+      background: #111111;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .row {
+      margin-bottom: 14px;
+    }
+
+    .row:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #9a9a9a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .login-box {
+      margin-top: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 15px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background: #0c0c0c;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      background: #c9a84c;
+      color: #101010;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .small {
+      margin-top: 14px;
+      text-align: center;
+      color: #8c8c8c;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="logo">
+      <h1>TRANSMIND LIVE</h1>
+      <p>Check-in evento • 23-24 ottobre 2027</p>
+    </div>
+
+    <div id="status" class="status">
+      <h2 id="statusTitle"></h2>
+      <p id="statusText"></p>
+    </div>
+
+    <div id="details" class="details">
+
+      <div class="row">
+        <div class="label">Nome</div>
+        <div id="fullName" class="value">-</div>
+      </div>
+
+      <div class="row">
+        <div class="label">Biglietto</div>
+        <div id="ticketLabel" class="value">-</div>
+      </div>
+
+      <div class="row">
+        <div class="label">Codice prenotazione</div>
+        <div id="bookingCode" class="value">-</div>
+      </div>
+
+    </div>
+
+    <div id="loginBox" class="login-box">
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Email operatore"
+        autocomplete="username"
+      />
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+      />
+
+      <button id="loginButton" onclick="loginOperator()">
+        ACCEDI E VERIFICA BIGLIETTO
+      </button>
+
+    </div>
+
+    <div class="small">
+      Accesso riservato allo staff TRANSMIND LIVE
+    </div>
+
+  </div>
+
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+
+    const firebaseConfig = {
+      apiKey: "INSERISCI_API_KEY",
+      authDomain: "backtag-16de3.firebaseapp.com",
+      projectId: "backtag-16de3",
+      storageBucket: "backtag-16de3.appspot.com",
+      messagingSenderId: "415455463905",
+      appId: "INSERISCI_APP_ID"
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const auth =
+      getAuth(app);
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const qrToken =
+      params.get("token") || "";
+
+
+    const statusBox =
+      document.getElementById("status");
+
+    const statusTitle =
+      document.getElementById("statusTitle");
+
+    const statusText =
+      document.getElementById("statusText");
+
+    const details =
+      document.getElementById("details");
+
+    const fullName =
+      document.getElementById("fullName");
+
+    const ticketLabel =
+      document.getElementById("ticketLabel");
+
+    const bookingCode =
+      document.getElementById("bookingCode");
+
+    const loginBox =
+      document.getElementById("loginBox");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+
+    function showStatus(
+      type,
+      title,
+      text
+    ) {
+
+      statusBox.className =
+        "status " + type;
+
+      statusTitle.textContent =
+        title;
+
+      statusText.textContent =
+        text;
+
+    }
+
+
+    function showBooking(data) {
+
+      details.style.display =
+        "block";
+
+      fullName.textContent =
+        `${data.name || ""} ${data.surname || ""}`.trim();
+
+      ticketLabel.textContent =
+        data.ticketLabel || "-";
+
+      bookingCode.textContent =
+        data.bookingCode || "-";
+
+    }
+
+
+    async function verifyTicket(idToken) {
+
+      if (!qrToken) {
+
+        showStatus(
+          "error",
+          "QR NON VALIDO",
+          "Nel link non è presente alcun token."
+        );
+
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            "https://europe-west1-backtag-16de3.cloudfunctions.net/transmindCheckIn",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                "Authorization":
+                  `Bearer ${idToken}`
+              },
+
+              body:
+                JSON.stringify({
+                  token: qrToken
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          data.alreadyUsed === true
+        ) {
+
+          showStatus(
+            "used",
+            "GIÀ UTILIZZATO",
+            "Questo biglietto risulta già convalidato."
+          );
+
+          showBooking(data);
+
+          loginBox.style.display =
+            "none";
+
+          return;
+        }
+
+
+        if (
+          response.ok &&
+          data.valid === true
+        ) {
+
+          showStatus(
+            "valid",
+            "BIGLIETTO VALIDO",
+            "Ingresso registrato correttamente."
+          );
+
+          showBooking(data);
+
+          loginBox.style.display =
+            "none";
+
+          return;
+        }
+
+
+        showStatus(
+          "error",
+          "BIGLIETTO NON VALIDO",
+          data.error ||
+          "Non è stato possibile verificare il biglietto."
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        showStatus(
+          "error",
+          "ERRORE",
+          "Impossibile contattare il sistema di check-in."
+        );
+
+      }
+
+    }
+
+
+    window.loginOperator =
+      async function () {
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        if (
+          !email ||
+          !password
+        ) {
+
+          showStatus(
+            "error",
+            "DATI MANCANTI",
+            "Inserisci email e password operatore."
+          );
+
+          return;
+        }
+
+
+        loginButton.disabled =
+          true;
+
+        loginButton.textContent =
+          "VERIFICA IN CORSO...";
+
+
+        try {
+
+          const credential =
+            await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+          const idToken =
+            await credential
+              .user
+              .getIdToken();
+
+          await verifyTicket(
+            idToken
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(error);
+
+          showStatus(
+            "error",
+            "ACCESSO NEGATO",
+            "Email o password operatore non corretti."
+          );
+
+        }
+
+        finally {
+
+          loginButton.disabled =
+            false;
+
+          loginButton.textContent =
+            "ACCEDI E VERIFICA BIGLIETTO";
+
+        }
+
+      };
+
+  </script>
+
+</body>
+</html>
