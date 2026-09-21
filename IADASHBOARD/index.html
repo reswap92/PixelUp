@@ -2524,7 +2524,7 @@
     const root=document.querySelector('main.app'); if(!root)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     let n; while(n=walker.nextNode()){
-      if(!n.parentElement || ['SCRIPT','STYLE','OPTION'].includes(n.parentElement.tagName)) continue;
+      if(!n.parentElement || ['SCRIPT','STYLE'].includes(n.parentElement.tagName)) continue;
       if(!ORIGINAL_TEXT.has(n)) ORIGINAL_TEXT.set(n,n.nodeValue);
       const original=ORIGINAL_TEXT.get(n), trimmed=original.trim(); if(!trimmed)continue;
       const translated=uiT(trimmed); if(translated!==trimmed){ const a=original.match(/^\s*/)[0],b=original.match(/\s*$/)[0]; n.nodeValue=a+translated+b; }
@@ -2535,7 +2535,16 @@
     const ss=document.getElementById('spousesLanguageSelect'); if(ss)ss.value=data?.spousesLanguage||'it';
     refreshMenuLanguage();
   }
-  function setDashboardLanguage(lang){ if(!['it','en','fr'].includes(lang))return; dashboardLanguage=lang; localStorage.setItem('pixelup_dashboard_language',lang); location.reload(); }
+  function setDashboardLanguage(lang){
+    if(!['it','en','fr'].includes(lang)) return;
+    dashboardLanguage=lang;
+    localStorage.setItem('pixelup_dashboard_language',lang);
+    translateStaticUI();
+    refreshMenuLanguage();
+    // Ripassa la traduzione dopo eventuali render dinamici della dashboard.
+    setTimeout(translateStaticUI, 50);
+    setTimeout(translateStaticUI, 250);
+  }
   function refreshMenuLanguage(){
     const labels={it:"IT ▾",en:"EN ▾",fr:"FR ▾"};
     const el=document.getElementById("menuLanguageValue");
