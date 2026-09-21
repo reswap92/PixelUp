@@ -1470,25 +1470,6 @@
 .project-settings-action{margin-top:4px}
 </style>
 
-
-<style id="pixelup-v10-fix-experience">
-/* Experience: evidenziato ma coerente con gli altri pulsanti del progetto */
-.experience-entry,
-.experience-main-btn,
-button[onclick*="toggleExperience"],
-button[onclick*="openExperienceSection"] {
-  min-height: 66px !important;
-  padding: 10px 16px !important;
-  margin-top: 4px !important;
-  margin-bottom: 14px !important;
-  line-height: 1.15 !important;
-}
-.experience-entry .experience-subtitle,
-.experience-main-btn .experience-subtitle {
-  margin-top: 4px !important;
-}
-</style>
-
 </head>
 
 <body>
@@ -2125,7 +2106,7 @@ button[onclick*="openExperienceSection"] {
       <div class="experience-detail-block"><strong>Come funziona</strong><p id="experienceModalHow"></p></div>
       <div class="experience-detail-block"><strong>Cosa comprende</strong><ul id="experienceModalIncludes"></ul></div>
       <div class="experience-modal-price"><div>Prezzo sposi<b id="experienceModalRetail"></b></div><div>Guadagno Partner<b id="experienceModalMargin"></b></div></div>
-      <button class="experience-modal-cta" id="experienceModalAdd">Invia proposta</button>
+      <button class="experience-modal-cta" id="experienceModalAdd">Aggiungi alla proposta</button>
     </div>
   </article>
 </div>
@@ -4589,6 +4570,11 @@ button[onclick*="openExperienceSection"] {
 
     let eventWindow = null;
 
+    /*
+      Android e desktop: prova ad aprire una nuova scheda.
+      iPhone/iPad: usa la stessa scheda, perché Safari può bloccare
+      l'apertura successiva di una nuova finestra dopo la lettura Firebase.
+    */
     if (!isIOS) {
       eventWindow = window.open("", "_blank");
 
@@ -4624,9 +4610,13 @@ button[onclick*="openExperienceSection"] {
       const currentLink = String(projectData.eventPageUrl || "").trim();
 
       if (currentLink) {
-        if (isIOS) window.location.href = currentLink;
-        else if (eventWindow) eventWindow.location.href = currentLink;
-        else window.location.href = currentLink;
+        if (isIOS) {
+          window.location.href = currentLink;
+        } else if (eventWindow) {
+          eventWindow.location.href = currentLink;
+        } else {
+          window.location.href = currentLink;
+        }
         return;
       }
 
@@ -4653,11 +4643,17 @@ button[onclick*="openExperienceSection"] {
         updatedAt: new Date().toISOString()
       }, { merge: true });
 
-      if (projectId === currentEventId) data.eventPageUrl = cleanLink;
+      if (projectId === currentEventId) {
+        data.eventPageUrl = cleanLink;
+      }
 
-      if (isIOS) window.location.href = cleanLink;
-      else if (eventWindow) eventWindow.location.href = cleanLink;
-      else window.location.href = cleanLink;
+      if (isIOS) {
+        window.location.href = cleanLink;
+      } else if (eventWindow) {
+        eventWindow.location.href = cleanLink;
+      } else {
+        window.location.href = cleanLink;
+      }
 
     } catch (error) {
       if (eventWindow) eventWindow.close();
@@ -5414,8 +5410,7 @@ button[onclick*="openExperienceSection"] {
     document.getElementById("experienceModalIncludes").innerHTML=(x.includes||[]).map(v=>`<li>${escapeAIHtml(v)}</li>`).join("");
     document.getElementById("experienceModalRetail").textContent=euro(x.retail);
     document.getElementById("experienceModalMargin").textContent=euro(x.retail-x.partner);
-    document.getElementById("experienceModalAdd").textContent=uiT("Invia proposta");
-    document.getElementById("experienceModalAdd").onclick=()=>{closeExperienceModal();sendExperienceProposal(x.id);};
+    document.getElementById("experienceModalAdd").onclick=()=>{createPixelUpProposal([x.id]);closeExperienceModal();};
     if(x.image){img.src=x.image;img.alt=x.name;img.style.display="block";}else{img.removeAttribute("src");img.style.display="none";}
     modal.classList.add("show"); modal.setAttribute("aria-hidden","false");
   }
@@ -5474,89 +5469,33 @@ button[onclick*="openExperienceSection"] {
 
   async function copyProposalText(id){ const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return; await navigator.clipboard.writeText(proposalText(p)); alert("Proposta copiata."); }
 
-  function getProposalRecipients(){
-    return (data.spouseContacts || [])
-      .map((c,index)=>({
-        index,
-        role:c.role || "Sposo/Sposa",
-        name:c.name || `Contatto ${index+1}`,
-        phone:c.phone || "",
-        email:c.email || ""
-      }))
-      .filter(c=>c.phone || c.email);
-  }
-
-  function proposalWithImageLink(p){
-    const text=proposalText(p);
-    const first=proposalItems(p)[0];
-    if(!first?.image) return text;
-    try{
-      const imageUrl=new URL(first.image,window.location.href).href;
-      return `${text}
-
-Immagine servizio: ${imageUrl}`;
-    }catch(e){
-      return text;
-    }
-  }
-
   async function shareProposal(id){
     const p=(data.pixelupProposals||[]).find(x=>x.id===id); if(!p)return;
-
-    const recipients=getProposalRecipients();
-    if(!recipients.length){
-      alert("Nel progetto non risultano recapiti degli sposi. Inserisci almeno un numero WhatsApp o un'email in Contatta sposi.");
-      return;
-    }
-
-    const options=[];
-    recipients.forEach((c)=>{
-      if(c.phone) options.push({type:"whatsapp",contact:c,label:`WhatsApp · ${c.name}${c.role?` (${c.role})`:""} · ${c.phone}`});
-      if(c.email) options.push({type:"email",contact:c,label:`Email · ${c.name}${c.role?` (${c.role})`:""} · ${c.email}`});
-    });
-
-    const menu=options.map((o,i)=>`${i+1} - ${o.label}`).join("
-");
-    const answer=prompt(`Dove vuoi inviare la proposta?
-
-${menu}
-
-Seleziona il numero del recapito.`, "1");
-    if(answer===null)return;
-
-    const idx=parseInt(answer,10)-1;
-    if(!Number.isInteger(idx) || idx<0 || idx>=options.length){
-      alert("Selezione non valida.");
-      return;
-    }
-
-    const chosen=options[idx];
-    p.status="Proposta inviata";
-    p.sentAt=p.sentAt||new Date().toISOString();
-    p.sentVia=chosen.type;
-    p.sentTo=chosen.type==="whatsapp" ? chosen.contact.phone : chosen.contact.email;
-    await saveData();
-    renderExperience();
-
-    const body=proposalWithImageLink(p);
-
-    if(chosen.type==="whatsapp"){
-      const number=makeWhatsAppNumber(chosen.contact.phone);
-      if(!number){
-        alert("Il numero WhatsApp selezionato non è valido.");
-        return;
+    p.status="Proposta inviata"; p.sentAt=p.sentAt||new Date().toISOString(); await saveData(); renderExperience();
+    const text=proposalText(p);
+    const items=proposalItems(p);
+    const image=items[0]?.image||"";
+    try{
+      if(image && navigator.share){
+        const res=await fetch(image);
+        if(res.ok){
+          const blob=await res.blob();
+          const ext=(image.split(".").pop()||"png").split("?")[0];
+          const file=new File([blob],`pixelup-${items[0].id}.${ext}`,{type:blob.type||"image/png"});
+          if(!navigator.canShare || navigator.canShare({files:[file]})){
+            await navigator.share({title:`PixelUp · ${items[0].name}`,text,files:[file]});
+            return;
+          }
+        }
       }
-      window.open(`https://wa.me/${number}?text=${encodeURIComponent(body)}`,"_blank");
-      return;
+    }catch(err){
+      if(err?.name==="AbortError") return;
+      console.warn("Condivisione immagine non disponibile, uso fallback WhatsApp.",err);
     }
-
-    const lang=data.spousesLanguage||"it";
-    const subject=lang==="fr"
-      ? `Proposition PixelUp · ${data.projectName||"Mariage"}`
-      : lang==="en"
-        ? `PixelUp proposal · ${data.projectName||"Wedding"}`
-        : `Proposta PixelUp · ${data.projectName||"Matrimonio"}`;
-    window.location.href=`mailto:${encodeURIComponent(chosen.contact.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const phone=(data.spouseContacts||[]).find(x=>x.phone)?.phone?.replace(/\D/g,"")||"";
+    const imageUrl=image?new URL(image,window.location.href).href:"";
+    const fallback=imageUrl?`${text}\n\nImmagine servizio: ${imageUrl}`:text;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(fallback)}`,"_blank");
   }
 
   function toggleBackup() {
@@ -7863,9 +7802,6 @@ Seleziona il numero del recapito.`, "1");
   window.deleteSpouseContact = deleteSpouseContact;
   window.toggleExperience = toggleExperience;
   window.previewExperience = previewExperience;
-  window.sendExperienceProposal = sendExperienceProposal;
-  window.setDashboardLanguage = setDashboardLanguage;
-  window.setSpousesLanguage = setSpousesLanguage;
   window.closeExperienceModal = closeExperienceModal;
   window.createPixelUpProposal = createPixelUpProposal;
   window.copyProposalText = copyProposalText;
