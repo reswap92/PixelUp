@@ -1468,6 +1468,20 @@
 .experience-menu-sub{font-family:Arial,sans-serif;font-size:10px;opacity:.84;text-transform:none;letter-spacing:.3px}
 .language-menu-btn{display:flex;align-items:center;justify-content:space-between;padding:0 16px}
 .project-settings-action{margin-top:4px}
+
+/* ===== PixelUp V11 · stabilità UI / azioni ===== */
+.deadline-payment-actions{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;margin-top:6px}
+.mark-paid-btn{border:1px solid rgba(77,90,58,.38);background:rgba(77,90,58,.10);color:var(--green);border-radius:999px;padding:6px 9px;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.mark-paid-btn:disabled{opacity:.48;cursor:default}
+.supplier-section .section-title,.document-section .section-title{flex-wrap:wrap;align-items:center}
+.supplier-section .section-title h2,.document-section .section-title h2{margin-right:auto}
+@media(max-width:430px){
+ .supplier-section .section-title,.document-section .section-title{justify-content:flex-start;gap:6px}
+ .supplier-section .section-title h2,.document-section .section-title h2{flex:0 0 100%;margin-bottom:2px}
+ .supplier-section .section-title button,.document-section .section-title button{font-size:10px!important;padding:7px 9px!important;max-width:100%;white-space:normal}
+ .deadline-payment-actions{justify-content:flex-start}
+}
+
 </style>
 
 </head>
@@ -2455,6 +2469,13 @@
     return "https://" + cleanValue;
   }
 
+  function normalizeExternalUrl(value) {
+    const cleanValue = String(value || "").trim();
+    if (!cleanValue) return "";
+    if (/^(https?:|mailto:|tel:)/i.test(cleanValue)) return cleanValue;
+    return "https://" + cleanValue.replace(/^\/+/, "");
+  }
+
   function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -2516,6 +2537,12 @@
       "Dashboard Wedding Planner":"Tableau de bord Wedding Planner","Gestione progetti":"Gestion des projets","I miei progetti":"Mes projets","Nuovo progetto":"Nouveau projet","Modifica evento":"Modifier l’événement","Archivia progetto":"Archiver le projet","Progetti archiviati":"Projets archivés","Rubrica professionale":"Contacts généraux","Visibilità area sposi":"Visibilité espace mariés","Aggiungi PixelUp alla Home":"Ajouter PixelUp à l’accueil","Esci":"Déconnexion","Guida rapida":"Guide rapide","PixelUp Experience":"PixelUp Experience","Servizi per gli sposi · Guadagna su ogni vendita":"Services pour les mariés · Gagnez sur chaque vente","Agenda":"Agenda","Checklist":"Checklist","Timeline Evento":"Déroulé de l’événement","Rubrica Evento":"Contacts événement","Documenti":"Documents","Note Progetto":"Notes du projet","Contatta sposi":"Contacter les mariés","Report Progetto":"Rapport du projet","Scadenze":"Échéances","Scadenze e pagamenti":"Échéances et paiements","Fornitori":"Prestataires","Panoramica":"Vue d’ensemble","Prezzo sposi":"Prix mariés","Guadagno Partner":"Gain partenaire","Dettagli":"Détails","Invia proposta":"Envoyer la proposition","Scarica PDF sposi":"Télécharger PDF mariés","Scarica PDF interno":"Télécharger PDF interne","Controllo link sposi":"Contrôle espace mariés","Italiano":"Italien","Dashboard":"Dashboard","Sposi":"Mariés","Nessun promemoria":"Aucun rappel","Il giorno stesso":"Le jour même","1 giorno prima":"1 jour avant","3 giorni prima":"3 jours avant","7 giorni prima":"7 jours avant","14 giorni prima":"14 jours avant","Personalizzato":"Personnalisé","Visibile agli sposi":"Visible aux mariés","Nascosto agli sposi":"Masqué aux mariés","Proposta inviata":"Proposition envoyée","Accettata":"Acceptée","Richiesta disponibilità":"Disponibilité demandée","Disponibilità confermata":"Disponibilité confirmée","In attesa pagamento":"En attente de paiement","Pagata / Prenotata":"Payée / Réservée","Rifiutata":"Refusée","Annullata":"Annulée"
     }
   };
+  Object.assign(PIXELUP_I18N.en,{
+    "Area privata wedding":"Private wedding area","Gestisci budget, acconti, saldi, scadenze e fornitori del matrimonio in modo semplice e ordinato.":"Manage the wedding budget, deposits, balances, deadlines and suppliers simply and clearly.","Mancano":"Time left","Giorni":"Days","Ore":"Hours","Minuti":"Minutes","Secondi":"Seconds","Attività aperte":"Open tasks","Prossima scadenza":"Next deadline","Da completare":"To complete","Tocca un box per modificare":"Tap a box to edit","Totale":"Total","spesa prevista":"planned spend","Da saldare":"To pay","saldo residuo":"remaining balance","Saldato":"Paid","già pagato":"already paid","Avanzamento pagamenti":"Payment progress","Scadenze prossime":"Upcoming deadlines","Rubrica evento":"Event contacts","Timeline evento":"Event timeline","Note progetto":"Project notes","Riepilogo Matrimonio":"Wedding summary","Modifica Progetto":"Edit project","Archivia Progetto":"Archive project","+ Aggiungi":"+ Add","Rubrica":"Contacts","Rubrica professionale":"Professional contacts","Elimina voce":"Delete item","+ Link":"+ Link","Carica PDF":"Upload PDF","Salva":"Save","Svuota note":"Clear notes","Mostra / nascondi":"Show / hide","Servizi & preventivi":"Services & quotes","Proposte create":"Created proposals","PDF e riepilogo":"PDF & summary","Copia riepilogo testuale":"Copy text summary","Scarica copia TXT":"Download TXT copy","Come funziona":"How it works","Cosa comprende":"What is included","Il tuo assistente operativo per questo matrimonio":"Your operational assistant for this wedding","Progetto attivo:":"Active project:","nessun progetto":"no project","Aggiungi scadenza":"Add deadline","Nuovo fornitore":"New supplier","Nuovo appuntamento":"New appointment","Chiedi riepilogo":"Ask for summary","Nessuna modifica viene eseguita senza la tua conferma.":"No changes are made without your confirmation.","Modifica":"Edit","Elimina":"Delete","Interno wedding":"Wedding planner only","Pagato":"Paid","Note":"Notes","Categoria":"Category","Non indicata":"Not specified","documento":"document","Upload":"Upload","Link":"Link","Confermi di aver saldato completamente questa scadenza?":"Confirm this deadline has been fully paid?","Scadenza":"Deadline"
+  });
+  Object.assign(PIXELUP_I18N.fr,{
+    "Area privata wedding":"Espace privé mariage","Gestisci budget, acconti, saldi, scadenze e fornitori del matrimonio in modo semplice e ordinato.":"Gérez simplement le budget, les acomptes, les soldes, les échéances et les prestataires du mariage.","Mancano":"Temps restant","Giorni":"Jours","Ore":"Heures","Minuti":"Minutes","Secondi":"Secondes","Attività aperte":"Tâches ouvertes","Prossima scadenza":"Prochaine échéance","Da completare":"À terminer","Tocca un box per modificare":"Touchez une case pour modifier","Totale":"Total","spesa prevista":"dépense prévue","Da saldare":"À payer","saldo residuo":"solde restant","Saldato":"Payé","già pagato":"déjà payé","Avanzamento pagamenti":"Avancement des paiements","Scadenze prossime":"Prochaines échéances","Rubrica evento":"Contacts événement","Timeline evento":"Déroulé de l’événement","Note progetto":"Notes du projet","Riepilogo Matrimonio":"Récapitulatif mariage","Modifica Progetto":"Modifier le projet","Archivia Progetto":"Archiver le projet","+ Aggiungi":"+ Ajouter","Rubrica":"Contacts","Rubrica professionale":"Contacts professionnels","Elimina voce":"Supprimer une entrée","+ Link":"+ Lien","Carica PDF":"Charger PDF","Salva":"Enregistrer","Svuota note":"Effacer les notes","Mostra / nascondi":"Afficher / masquer","Servizi & preventivi":"Services & devis","Proposte create":"Propositions créées","PDF e riepilogo":"PDF & récapitulatif","Copia riepilogo testuale":"Copier le récapitulatif texte","Scarica copia TXT":"Télécharger copie TXT","Come funziona":"Comment ça marche","Cosa comprende":"Ce qui est inclus","Il tuo assistente operativo per questo matrimonio":"Votre assistant opérationnel pour ce mariage","Progetto attivo:":"Projet actif :","nessun progetto":"aucun projet","Aggiungi scadenza":"Ajouter une échéance","Nuovo fornitore":"Nouveau prestataire","Nuovo appuntamento":"Nouveau rendez-vous","Chiedi riepilogo":"Demander un récapitulatif","Nessuna modifica viene eseguita senza la tua conferma.":"Aucune modification n’est effectuée sans votre confirmation.","Modifica":"Modifier","Elimina":"Supprimer","Interno wedding":"Interne wedding planner","Pagato":"Payé","Note":"Notes","Categoria":"Catégorie","Non indicata":"Non indiquée","documento":"document","Upload":"Fichier","Link":"Lien","Confermi di aver saldato completamente questa scadenza?":"Confirmez-vous que cette échéance est entièrement payée ?","Scadenza":"Échéance"
+  });
   let dashboardLanguage = localStorage.getItem("pixelup_dashboard_language") || "it";
   const ORIGINAL_TEXT = new WeakMap();
   function uiT(text, lang=dashboardLanguage){ return lang==='it' ? text : (PIXELUP_I18N[lang]?.[text] || text); }
@@ -2534,11 +2561,17 @@
     const ds=document.getElementById('dashboardLanguageSelect'); if(ds)ds.value=dashboardLanguage;
     const ss=document.getElementById('spousesLanguageSelect'); if(ss)ss.value=data?.spousesLanguage||'it';
     refreshMenuLanguage();
+    const attrMap=[
+      ["projectNotesInput","placeholder","Scrivi qui note interne, preferenze degli sposi, dettagli importanti o promemoria del progetto..."],
+      ["aiInput","placeholder","Scrivi o detta cosa vuoi fare…"]
+    ];
+    attrMap.forEach(([id,attr,key])=>{const el=document.getElementById(id);if(el)el.setAttribute(attr,uiT(key));});
   }
   function setDashboardLanguage(lang){
     if(!['it','en','fr'].includes(lang)) return;
     dashboardLanguage=lang;
     localStorage.setItem('pixelup_dashboard_language',lang);
+    renderAll();
     translateStaticUI();
     refreshMenuLanguage();
     // Ripassa la traduzione dopo eventuali render dinamici della dashboard.
@@ -2785,7 +2818,9 @@
           <div class="row-right">
             <strong>${euro(missing)}</strong>
             <small>${isPaid ? "saldato" : "da saldare"}</small>
-            <button class="edit-btn" type="button" onclick="editDeadline(${realIndex})">Modifica</button>
+            <div class="deadline-payment-actions">
+              <button class="mark-paid-btn" type="button" onclick="markDeadlinePaid(${realIndex})" ${isPaid ? "disabled" : ""}>${uiT("Saldato")}</button>
+              <button class="edit-btn" type="button" onclick="editDeadline(${realIndex})">${uiT("Modifica")}</button>
 
             <button
               class="edit-btn"
@@ -2793,14 +2828,28 @@
               onclick="deleteDeadline(${realIndex})"
               style="color:#8a3d2c;border-color:rgba(138,61,44,0.35);margin-left:4px;"
             >
-              Elimina
+              ${uiT("Elimina")}
             </button>
+            </div>
           </div>
         </div>
       `;
     }).join("");
   }
 
+
+  async function markDeadlinePaid(index) {
+    const item = data.deadlines[index];
+    if (!item) return;
+    const total = Math.max(Number(item.total) || 0, 0);
+    if (Number(item.paid) >= total) return;
+    if (!confirm(`${uiT("Confermi di aver saldato completamente questa scadenza?")}\n\n${item.name || item.supplier || uiT("Scadenza")} · ${euro(total)}`)) return;
+    item.paid = total;
+    item.status = "Saldato";
+    updateTotalsFromDeadlines();
+    renderAll();
+    await saveData();
+  }
 
   function deleteDeadline(index) {
     const item = data.deadlines[index];
@@ -2871,7 +2920,7 @@
     return config[sectionName] || null;
   }
 
-  function deleteItemFromSection(sectionName) {
+  async function deleteItemFromSection(sectionName) {
     const config = getSectionDeleteConfig(sectionName);
     if (!config) return;
 
@@ -2903,9 +2952,15 @@
 
     if (!confirm(`Confermi l'eliminazione?\n\n${description}`)) return;
 
+    if (sectionName === "documents") {
+      const docItem = items[index];
+      if (docItem?.type === "upload" && docItem.filePath) {
+        try { await deleteObject(storageRef(storage, docItem.filePath)); } catch (error) { console.warn("File Storage non eliminato o già assente:", error); }
+      }
+    }
     config.remove(index);
     renderAll();
-    saveData();
+    await saveData();
   }
 
   function clearProjectNotes() {
@@ -4010,7 +4065,7 @@
 
             <p style="margin-top:7px;">
               <a 
-                href="${item.url}" 
+                href="${normalizeExternalUrl(item.url)}" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 style="color:#4d5a3a; font-weight:bold;"
@@ -4061,7 +4116,7 @@
 
     const visibleToSpouses = confirm("Vuoi rendere questo documento visibile agli sposi?");
 
-    const cleanUrl = url.trim();
+    const cleanUrl = normalizeExternalUrl(url);
 
     if (!cleanUrl) {
       alert("Inserisci un link valido.");
@@ -4217,7 +4272,7 @@
       const url = prompt("Link documento / Google Drive:", item.url);
       if (url === null) return;
 
-      cleanUrl = url.trim();
+      cleanUrl = normalizeExternalUrl(url);
 
       if (!cleanUrl) {
         alert("Inserisci un link valido.");
@@ -7672,6 +7727,7 @@
     renderExperience();
     updateAIProjectStrip();
     updateCountdown();
+    setTimeout(translateStaticUI, 0);
   }
 
   if (eventRef) {
@@ -7722,7 +7778,7 @@
         }
       } else {
         alert("Questo progetto non esiste o è stato eliminato. Apri un progetto dalla lista oppure creane uno nuovo.");
-        window.location.href = "/IADASHBOARD/?project=" + projectId;
+        window.location.href = "/IADASHBOARD/";
         return;
       }
 
@@ -7795,6 +7851,7 @@
   window.toggleSuppliers = toggleSuppliers;
   window.editDeadline = editDeadline;
   window.deleteDeadline = deleteDeadline;
+  window.markDeadlinePaid = markDeadlinePaid;
   window.deleteItemFromSection = deleteItemFromSection;
   window.clearProjectNotes = clearProjectNotes;
   window.addDeadline = addDeadline;
