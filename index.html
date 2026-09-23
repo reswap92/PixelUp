@@ -37,9 +37,71 @@
     .solutions,.pricing,.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}.solution,.benefit,.demo-card,.price-box{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:22px;box-shadow:var(--soft);overflow:hidden}.solution{padding:28px;min-height:320px;display:grid;grid-template-columns:100px 1fr;gap:22px;align-items:start}.solution-icon{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,#fff7e8,#f0dfc1);border:1px solid #eadcc6;display:grid;place-items:center;color:var(--gold);font-size:48px}.solution h3,.benefit h3{font-family:Georgia,serif;color:var(--green);font-size:25px;font-weight:500;margin-bottom:8px}.solution p,.benefit p{color:#4b554d;font-size:14px;margin-bottom:14px}.ticks{list-style:none;display:grid;gap:8px;color:#263122;font-size:13px;font-weight:600}.ticks li{display:flex;gap:8px;align-items:flex-start}.ticks li::before{content:"✓";width:18px;height:18px;border-radius:50%;background:var(--green);color:white;display:inline-grid;place-items:center;font-size:11px;flex:0 0 auto;margin-top:1px}
 
     .solution-link{display:block;height:100%}
-    .solution{height:100%;transition:.18s ease;cursor:pointer}
-    .solution:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:rgba(181,138,59,.42)}
-    .solution-cta{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:var(--green);font-weight:800;font-size:13px}
+    .solution{
+      height:100%;
+      min-height:390px;
+      transition:.2s ease;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 18px 38px rgba(20,30,24,.16);
+      background-size:cover;
+      background-position:center;
+      isolation:isolate;
+      color:white;
+    }
+    .solution::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:linear-gradient(180deg,rgba(5,26,20,.38) 0%,rgba(6,40,31,.76) 56%,rgba(4,29,23,.95) 100%);
+    }
+    .solution::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:radial-gradient(circle at 15% 10%,rgba(215,181,109,.22),transparent 30%);
+    }
+    .solution.wedding-card{
+      background-image:url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=82");
+    }
+    .solution.events-card{
+      background-image:url("https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=82");
+    }
+    .solution.ecosystem-card{
+      background-image:url("https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=82");
+    }
+    .solution:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(20,30,24,.22)}
+    .solution-icon{
+      background:rgba(255,255,255,.12)!important;
+      border:1px solid rgba(255,255,255,.22)!important;
+      color:#f2cf82!important;
+      backdrop-filter:blur(6px);
+    }
+    .solution h3{color:white!important}
+    .solution p{color:rgba(255,255,255,.84)!important}
+    .solution .ticks{color:rgba(255,255,255,.93)!important}
+    .solution .ticks li::before{
+      background:#d7b56d!important;
+      color:#18231d!important;
+    }
+    .solution-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:18px;
+      min-height:40px;
+      padding:0 14px;
+      border-radius:10px;
+      background:rgba(255,255,255,.94);
+      color:var(--green);
+      font-weight:900;
+      font-size:13px;
+      box-shadow:0 6px 16px rgba(0,0,0,.12);
+    }
     .solution-cta::after{content:"→";font-size:17px}
 
     .benefit{padding:26px;min-height:190px}.benefit-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:var(--green);background:#f7ecd9;border:1px solid rgba(181,138,59,.22);font-size:26px;margin-bottom:16px}
@@ -233,7 +295,7 @@
         <div class="solutions">
 
           <a class="solution-link" href="/wedding.html">
-            <article class="solution">
+            <article class="solution wedding-card">
               <div class="solution-icon">💍</div>
               <div>
                 <h3>PixelUp Wedding</h3>
@@ -252,7 +314,7 @@
           </a>
 
           <a class="solution-link" href="/eventi-digitali.html">
-            <article class="solution">
+            <article class="solution events-card">
               <div class="solution-icon">📱</div>
               <div>
                 <h3>Eventi Digitali</h3>
@@ -271,7 +333,7 @@
           </a>
 
           <a class="solution-link" href="/ecosistema.html">
-            <article class="solution">
+            <article class="solution ecosystem-card">
               <div class="solution-icon">⚙️</div>
               <div>
                 <h3>Crea il tuo ecosistema</h3>
