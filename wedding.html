@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PixelUp Wedding — Dashboard per wedding planner</title>
+  <meta name="description" content="PixelUp Wedding è la dashboard per wedding planner: matrimoni, sposi, fornitori, scadenze, documenti, timeline, servizi da proporre e assistente AI nel piano PRO." />
+
+  <style>
+    :root{
+      --bg:#fffaf2;--cream:#fbf4e8;--panel:#ffffff;--ink:#213024;--muted:#6f675d;
+      --green:#0f3b2e;--green2:#174f3d;--gold:#b58a3b;--gold2:#d7b56d;
+      --line:#e8ddca;--shadow:0 18px 45px rgba(36,28,16,.10);--soft:0 10px 25px rgba(36,28,16,.07);--max:1180px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(circle at 8% 4%,rgba(215,181,109,.18),transparent 28%),radial-gradient(circle at 95% 12%,rgba(15,59,46,.08),transparent 32%),linear-gradient(180deg,#fffdf8 0%,#fbf4e8 48%,#fffaf2 100%);color:var(--ink);line-height:1.5;overflow-x:hidden}
+    a{color:inherit;text-decoration:none} button{font:inherit}.wrap{width:min(var(--max),92%);margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(255,253,248,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:max-content}
+    .brand-mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--green) 0 48%,transparent 48%),linear-gradient(45deg,var(--gold) 0 50%,var(--green2) 50%);position:relative;box-shadow:0 8px 20px rgba(15,59,46,.16)}
+    .brand-mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:white;font-family:Georgia,serif;font-size:24px;font-weight:700}
+    .brand-name{font-family:Georgia,"Times New Roman",serif;font-size:30px;color:var(--green);line-height:1;letter-spacing:-.8px}.brand-name span{color:var(--gold)}
+    .menu{display:flex;align-items:center;gap:20px;color:#252b27;font-size:14px;font-weight:600}.nav-actions{display:flex;align-items:center;gap:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;border-radius:10px;padding:0 22px;border:1px solid var(--line);background:white;color:var(--green);font-weight:700;font-size:14px;transition:.18s ease;box-shadow:0 4px 14px rgba(20,30,24,.04);cursor:pointer;white-space:nowrap}
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--soft)}.btn.primary{background:linear-gradient(135deg,var(--green),#06281f);color:white;border-color:rgba(15,59,46,.9)}.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1d221e;border-color:rgba(181,138,59,.7)}
+    .mobile-menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--green);font-size:22px}.mobile-panel{display:none}
+
+    .hero{position:relative;padding:76px 0 66px;border-bottom:1px solid var(--line);overflow:hidden}
+    .hero::before{content:"";position:absolute;right:-80px;top:20px;width:300px;height:300px;opacity:.20;background:radial-gradient(circle at 50% 50%,transparent 0 38%,var(--gold) 39% 40%,transparent 41%),radial-gradient(circle at 35% 35%,transparent 0 22%,var(--green) 23% 24%,transparent 25%);border-radius:50%}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:54px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid rgba(181,138,59,.24);border-radius:999px;color:var(--green);background:rgba(255,255,255,.70);font-size:13px;font-weight:700;margin-bottom:22px}
+    .eyebrow span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:white;background:var(--green);font-size:12px}
+    h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(46px,6vw,78px);line-height:.98;letter-spacing:-2.5px;color:var(--green);margin-bottom:22px;max-width:760px}
+    .hero-sub{max-width:680px;color:#3d453f;font-size:19px;line-height:1.58;margin-bottom:28px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:22px}.hero-note{display:flex;align-items:flex-start;gap:11px;color:#48524b;max-width:630px;font-size:14px}
+    .check{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(181,138,59,.35);color:var(--gold);flex:0 0 auto;font-weight:900;background:white}
+
+    .dashboard-mock{position:relative;min-height:465px}.laptop{position:absolute;right:14px;top:8px;width:92%;min-height:390px;border-radius:26px;background:#0b251e;box-shadow:var(--shadow);border:10px solid #121816;padding:18px;overflow:hidden}
+    .screen{height:100%;min-height:340px;border-radius:14px;background:#f8f4ed;display:grid;grid-template-columns:120px 1fr;overflow:hidden}.side{background:linear-gradient(180deg,#103b2d,#06231b);color:white;padding:18px 14px;font-size:12px}.side-logo{font-family:Georgia,serif;color:#f6d797;font-size:20px;margin-bottom:18px}.side ul{list-style:none;display:grid;gap:13px;color:rgba(255,255,255,.88)}
+    .dash{padding:18px;overflow:hidden}.hello{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.hello h3{color:#173729;font-size:21px;font-family:Georgia,serif;font-weight:500}.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ead4b0,#fff);border:1px solid #e0ccb0}
+    .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.dash-stat,.dash-card{background:white;border:1px solid #eadfce;border-radius:14px;padding:13px;box-shadow:0 5px 14px rgba(0,0,0,.04)}.dash-stat small{color:var(--muted);font-size:10px}.dash-stat strong{display:block;color:var(--green);font-size:18px;margin-top:5px}.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px}.dash-card h4{font-size:14px;color:var(--green);margin-bottom:9px}.line-row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #eee2d1;padding:8px 0;font-size:11px;color:#596257}
+    .ai-chip{position:absolute;left:0;bottom:2px;z-index:4;width:260px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#0f3b2e,#174f3d);color:white;box-shadow:0 18px 38px rgba(15,59,46,.25);border:1px solid rgba(255,255,255,.18)}.ai-chip strong{display:block;color:#f2cf82;margin-bottom:5px}.ai-chip span{font-size:12px;color:rgba(255,255,255,.82);line-height:1.45}
+
+    section{padding:54px 0}.section-head{text-align:center;margin-bottom:30px}.section-head h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,4vw,48px);color:var(--green);font-weight:500;line-height:1.05;letter-spacing:-.8px}.section-head p{max-width:800px;margin:12px auto 0;color:var(--muted);font-size:17px}
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.feature{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--soft);min-height:165px}.feature .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#f7ecd9;border:1px solid rgba(181,138,59,.22);color:var(--green);font-size:23px;margin-bottom:14px}.feature h3{font-family:Georgia,serif;color:var(--green);font-size:20px;font-weight:500;margin-bottom:7px}.feature p{color:#4b554d;font-size:13px}
+
+    .spouses{background:radial-gradient(circle at 0% 0%,rgba(181,138,59,.14),transparent 30%),linear-gradient(135deg,rgba(15,59,46,.97),rgba(7,40,32,.96));color:white;border-radius:30px;padding:38px;box-shadow:0 22px 55px rgba(15,59,46,.18);border:1px solid rgba(255,255,255,.12)}
+    .spouses-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}.spouses h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,4vw,48px);font-weight:500;line-height:1.05;margin-bottom:14px}.spouses p{color:rgba(255,255,255,.82);font-size:16px;margin-bottom:18px}.spouse-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}.spouse-list li{display:flex;gap:8px;align-items:flex-start;color:rgba(255,255,255,.88);font-size:13px}.spouse-list li::before{content:"✓";width:18px;height:18px;border-radius:50%;background:rgba(215,181,109,.95);color:#17241c;display:inline-grid;place-items:center;font-size:11px;font-weight:900;flex:0 0 auto;margin-top:1px}
+    .spouse-card{background:rgba(255,255,255,.94);color:var(--ink);border-radius:24px;padding:24px;border:1px solid rgba(255,255,255,.65);box-shadow:0 18px 38px rgba(0,0,0,.14)}.spouse-card h3{font-family:Georgia,serif;color:var(--green);font-size:25px;font-weight:500;margin-bottom:10px}.mini-row{padding:11px 0;border-bottom:1px solid #eadfce;display:flex;justify-content:space-between;gap:10px;font-size:13px}.mini-row:last-child{border-bottom:0}.mini-row strong{color:var(--green)}
+
+    .earn-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:30px;align-items:center}.earn-copy h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,4vw,50px);color:var(--green);font-weight:500;line-height:1.05;margin-bottom:14px}.earn-copy p{color:#4b554d;font-size:16px;margin-bottom:16px}.earn-list{list-style:none;display:grid;gap:10px;margin:18px 0 22px}.earn-list li{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:#263122}.earn-list li::before{content:"€";width:23px;height:23px;border-radius:50%;background:var(--green);color:white;display:inline-grid;place-items:center;font-size:12px;font-weight:900;flex:0 0 auto}
+    .services{display:grid;grid-template-columns:1fr 1fr;gap:14px}.service{padding:18px;border-radius:18px;background:white;border:1px solid var(--line);box-shadow:var(--soft)}.service strong{display:block;color:var(--green);font-size:15px;margin-bottom:5px}.service span{color:var(--muted);font-size:12px;line-height:1.45}
+
+    .ai-section{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.25));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.ai-panel{border-radius:26px;background:linear-gradient(135deg,#0f3b2e,#06281f);color:white;padding:30px;box-shadow:0 20px 45px rgba(15,59,46,.20);position:relative;overflow:hidden}.ai-panel::after{content:"AI";position:absolute;right:-12px;bottom:-28px;font-size:130px;font-weight:900;color:rgba(255,255,255,.045);line-height:1}.ai-panel h3{font-family:Georgia,serif;font-size:30px;font-weight:500;color:#f2cf82;margin-bottom:10px}.ai-panel p{color:rgba(255,255,255,.82);margin-bottom:16px}.ai-examples{display:grid;gap:9px}.ai-example{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:11px 13px;font-size:13px}.ai-copy h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,4vw,50px);color:var(--green);font-weight:500;line-height:1.05;margin-bottom:14px}.ai-copy p{color:#4b554d;font-size:16px;margin-bottom:16px}
+
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.step{text-align:center}.step-num{width:38px;height:38px;margin:0 auto 12px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center;font-weight:900}.step-icon{width:78px;height:78px;border-radius:50%;margin:0 auto 12px;background:white;border:1px solid var(--line);display:grid;place-items:center;font-size:32px;color:var(--gold);box-shadow:var(--soft)}.step h3{color:var(--green);font-size:15px;margin-bottom:6px}.step p{color:var(--muted);font-size:13px;line-height:1.4}
+
+    .pricing{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto}.price-card{background:white;border:1px solid var(--line);border-radius:24px;box-shadow:var(--soft);overflow:hidden;position:relative}.price-card.pro{border:2px solid rgba(181,138,59,.65);transform:translateY(-4px)}.price-head{padding:24px;background:linear-gradient(135deg,var(--green),#072820);color:white}.price-card.pro .price-head{background:linear-gradient(135deg,var(--gold),#c79d4d);color:#1e251f}.price-head small{display:block;text-transform:uppercase;letter-spacing:.9px;font-size:11px;margin-bottom:6px;opacity:.8}.price-head h3{font-family:Georgia,serif;font-size:30px;font-weight:500}.price{font-size:44px;font-weight:900;margin-top:6px;line-height:1}.price span{font-size:14px;font-weight:600}.price-body{padding:24px}.price-list{list-style:none;display:grid;gap:11px;margin-bottom:22px}.price-list li{display:flex;gap:9px;align-items:flex-start;color:#344038;font-size:14px}.price-list li::before{content:"✓";width:19px;height:19px;border-radius:50%;background:var(--green);color:white;display:inline-grid;place-items:center;font-size:11px;flex:0 0 auto;margin-top:1px}.price-card.pro .price-list li.ai::before{content:"AI";font-size:8px;background:var(--gold);color:#1f271f;font-weight:900}.price-body .btn{width:100%}.access-box{margin-top:26px;max-width:900px;margin-left:auto;margin-right:auto;text-align:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.78);color:var(--muted);font-size:13px}
+
+    .cta{background:radial-gradient(circle at 0% 0%,rgba(215,181,109,.16),transparent 30%),linear-gradient(135deg,var(--green),#06271e);color:white}.cta-card{text-align:center;max-width:900px;margin:0 auto}.cta-card h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,4.5vw,54px);font-weight:500;line-height:1.05;margin-bottom:14px}.cta-card p{color:rgba(255,255,255,.80);font-size:16px;max-width:700px;margin:0 auto 24px}.cta-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.cta .btn{border-color:rgba(255,255,255,.25)}.cta .btn.primary{background:white;color:var(--green);border-color:white}.cta .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1d221e}
+
+    .footer{background:linear-gradient(135deg,var(--green),#06271e);color:white;padding:28px 0;border-top:1px solid rgba(255,255,255,.10)}.footer-grid{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.footer .brand-name{color:white;font-size:27px}.footer .brand-name span{color:#e2bf78}.footer-links{display:flex;flex-wrap:wrap;gap:24px;font-size:14px;color:rgba(255,255,255,.86)}.copyright{color:rgba(255,255,255,.75);font-size:13px}
+
+    @media(max-width:1040px){.hero-grid,.spouses-grid,.earn-grid,.ai-grid{grid-template-columns:1fr}.dashboard-mock{min-height:440px}.features{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr 1fr}}
+    @media(max-width:760px){.nav{min-height:66px}.brand-name{font-size:25px}.menu,.nav-actions{display:none}.mobile-menu-btn{display:grid;place-items:center}.mobile-panel{display:none;border-top:1px solid var(--line);padding:12px 0 18px}.mobile-panel.show{display:grid;gap:10px}.mobile-panel a{min-height:42px;display:flex;align-items:center;border:1px solid var(--line);background:white;border-radius:12px;padding:0 14px;font-weight:700;color:var(--green)}.hero{padding:48px 0 44px}.hero-sub{font-size:17px}.hero-actions .btn{width:100%}.dashboard-mock{min-height:385px}.laptop{position:relative;width:100%;right:auto;top:auto;min-height:300px;padding:13px;border-width:7px}.screen{grid-template-columns:85px 1fr;min-height:265px}.side{padding:13px 9px;font-size:10px}.side ul{gap:10px}.dash{padding:12px}.dash-stats{grid-template-columns:1fr 1fr}.dash-bottom{grid-template-columns:1fr}.ai-chip{position:relative;width:100%;margin-top:14px}section{padding:40px 0}.features,.services,.pricing{grid-template-columns:1fr}.spouse-list{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.price-card.pro{transform:none}.footer-grid{display:grid}}
+    @media(max-width:420px){.wrap{width:min(94%,var(--max))}h1{font-size:42px}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <nav class="nav">
+      <a href="/" class="brand"><span class="brand-mark"></span><span class="brand-name">Pixel<span>Up</span></span></a>
+      <div class="menu"><a href="#dashboard">Dashboard</a><a href="#spazi-sposi">Area sposi</a><a href="#guadagna">Servizi</a><a href="#ai">AI</a><a href="#prezzi">Prezzi</a></div>
+      <div class="nav-actions"><a class="btn" href="/dashboard/">Accedi</a><a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp%20Wedding">Richiedi accesso</a></div>
+      <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel"><a href="#dashboard" onclick="toggleMobileMenu()">Dashboard</a><a href="#spazi-sposi" onclick="toggleMobileMenu()">Area sposi</a><a href="#guadagna" onclick="toggleMobileMenu()">Servizi</a><a href="#ai" onclick="toggleMobileMenu()">AI</a><a href="#prezzi" onclick="toggleMobileMenu()">Prezzi</a><a href="/dashboard/">Accedi</a><a href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp%20Wedding">Richiedi accesso</a></div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span>✓</span> PixelUp Wedding per wedding planner</div>
+        <h1>Gestisci i matrimoni. Offri nuovi servizi. Fai crescere il tuo lavoro.</h1>
+        <p class="hero-sub">Una dashboard professionale per organizzare sposi, fornitori, documenti, scadenze, timeline e attività. In più puoi proporre servizi digitali PixelUp ai tuoi clienti e creare nuove opportunità di guadagno.</p>
+        <div class="hero-actions"><a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp%20Wedding">Richiedi il tuo accesso gratuito</a><a class="btn" href="/dashboard/">Accedi alla dashboard</a></div>
+        <div class="hero-note"><span class="check">✓</span><span>L'accesso viene creato manualmente da PixelUp. Invia la richiesta: riceverai le credenziali entro 24 ore.</span></div>
+      </div>
+
+      <div class="dashboard-mock">
+        <div class="laptop">
+          <div class="screen">
+            <aside class="side"><div class="side-logo">PixelUp Wedding</div><ul><li>Home</li><li>Agenda</li><li>Scadenze</li><li>Fornitori</li><li>Documenti</li><li>Timeline</li><li>Experience</li></ul></aside>
+            <div class="dash"><div class="hello"><h3>Marco & Giulia</h3><div class="avatar"></div></div><div class="dash-stats"><div class="dash-stat"><small>Scadenze</small><strong>12</strong></div><div class="dash-stat"><small>Fornitori</small><strong>18</strong></div><div class="dash-stat"><small>Budget</small><strong>€24.850</strong></div><div class="dash-stat"><small>Checklist</small><strong>76%</strong></div></div><div class="dash-bottom"><div class="dash-card"><h4>Prossime scadenze</h4><div class="line-row"><span>Conferma catering</span><b>15 mag</b></div><div class="line-row"><span>Invio partecipazioni</span><b>20 mag</b></div><div class="line-row"><span>Prova menù</span><b>29 mag</b></div></div><div class="dash-card"><h4>Timeline evento</h4><div class="line-row"><span>Cerimonia</span><b>16:00</b></div><div class="line-row"><span>Aperitivo</span><b>18:00</b></div><div class="line-row"><span>Cena</span><b>20:00</b></div><div class="line-row"><span>Taglio torta</span><b>23:00</b></div></div></div></div>
+          </div>
+        </div>
+        <div class="ai-chip"><strong>✦ AI PixelUp PRO</strong><span>“Aggiungi saldo catering il 10 giugno e ricordami di scrivere agli sposi.”</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard">
+    <div class="wrap">
+      <div class="section-head"><h2>Una dashboard costruita per il lavoro del wedding planner</h2><p>Ogni matrimonio ha il suo spazio. Tutto ciò che serve per lavorare con ordine è raccolto in un'unica dashboard.</p></div>
+      <div class="features">
+        <article class="feature"><div class="ico">🏠</div><h3>Home matrimonio</h3><p>Nomi degli sposi, countdown, prossime attività e situazione generale del progetto.</p></article>
+        <article class="feature"><div class="ico">📅</div><h3>Agenda</h3><p>Appuntamenti, prove, incontri e attività da tenere sotto controllo.</p></article>
+        <article class="feature"><div class="ico">⏰</div><h3>Scadenze</h3><p>Pagamenti, conferme, consegne e promemoria importanti per ogni matrimonio.</p></article>
+        <article class="feature"><div class="ico">☑</div><h3>Checklist</h3><p>Segui tutte le attività e visualizza subito ciò che è stato completato.</p></article>
+        <article class="feature"><div class="ico">👥</div><h3>Fornitori</h3><p>Rubrica dedicata a location, catering, foto, musica, fiori e professionisti coinvolti.</p></article>
+        <article class="feature"><div class="ico">📁</div><h3>Documenti</h3><p>Organizza contratti, PDF, informazioni e materiali importanti dell'evento.</p></article>
+        <article class="feature"><div class="ico">🕒</div><h3>Timeline</h3><p>Costruisci il programma dettagliato della giornata e mantienilo aggiornato.</p></article>
+        <article class="feature"><div class="ico">📝</div><h3>Note</h3><p>Annotazioni operative, richieste degli sposi e informazioni utili sempre disponibili.</p></article>
+        <article class="feature"><div class="ico">💬</div><h3>Contatta sposi</h3><p>Centralizza i riferimenti dei clienti e velocizza le comunicazioni operative.</p></article>
+        <article class="feature"><div class="ico">🔗</div><h3>Link sposi</h3><p>Condividi con gli sposi solo le informazioni che vuoi rendere visibili.</p></article>
+        <article class="feature"><div class="ico">📊</div><h3>Report</h3><p>Riepiloghi ordinati da consultare o condividere quando serve.</p></article>
+        <article class="feature"><div class="ico">✨</div><h3>PixelUp Experience</h3><p>Proponi direttamente servizi digitali e wedding experience ai tuoi clienti.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="spazi-sposi">
+    <div class="wrap">
+      <div class="spouses"><div class="spouses-grid">
+        <div><div class="eyebrow" style="background:rgba(255,255,255,.12);color:#f2cf82;border-color:rgba(242,207,130,.28);"><span style="background:#f2cf82;color:#17241c;">✓</span> Esperienza anche per gli sposi</div><h2>Condividi uno spazio ordinato e professionale</h2><p>Il wedding planner può scegliere quali informazioni rendere visibili agli sposi, mantenendo private le sezioni operative della propria dashboard.</p><ul class="spouse-list"><li>Countdown matrimonio</li><li>Scadenze condivise</li><li>Documenti selezionati</li><li>Timeline visibile</li><li>Informazioni utili</li><li>Collegamenti e contatti</li></ul></div>
+        <div class="spouse-card"><h3>Area Marco & Giulia</h3><div class="mini-row"><span>Giorni al matrimonio</span><strong>84</strong></div><div class="mini-row"><span>Prossima scadenza</span><strong>Conferma catering</strong></div><div class="mini-row"><span>Timeline</span><strong>Aggiornata</strong></div><div class="mini-row"><span>Documenti condivisi</span><strong>6</strong></div></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section id="guadagna">
+    <div class="wrap"><div class="earn-grid">
+      <div class="earn-copy"><div class="eyebrow"><span>€</span> Non solo organizzazione</div><h2>Guadagna offrendo nuovi servizi ai tuoi sposi</h2><p>Dentro PixelUp Wedding trovi una sezione dedicata alle Experience. Puoi scegliere quali servizi proporre, preparare la proposta e offrire agli sposi un'esperienza più completa.</p><p>Gli sposi vedono il prezzo finale della proposta. Il professionista gestisce la propria offerta e il proprio margine senza mostrare il costo interno.</p><ul class="earn-list"><li>Scegli i servizi da proporre</li><li>Prepara una proposta ordinata e professionale</li><li>Inviala agli sposi dalla dashboard</li><li>Crea un margine sui servizi che vendi</li></ul><a class="btn primary" href="/pacchetti.html">Scopri Wedding Experience</a></div>
+      <div class="services"><div class="service"><strong>Pagina Wedding</strong><span>Pagina digitale personalizzata per invitati, RSVP, mappa, programma, lista regalo e informazioni.</span></div><div class="service"><strong>Wedding Photo QR</strong><span>QR dedicato per raccogliere foto e contenuti degli invitati durante l'evento.</span></div><div class="service"><strong>Video Guest Book QR</strong><span>Gli invitati possono lasciare video-messaggi e ricordi digitali agli sposi.</span></div><div class="service"><strong>Audio Guest Book</strong><span>Telefono dedicato per raccogliere messaggi vocali durante il matrimonio.</span></div><div class="service"><strong>Magic Mirror</strong><span>Esperienza fotografica da proporre agli sposi come servizio aggiuntivo.</span></div><div class="service"><strong>Altri servizi PixelUp</strong><span>Nuove Experience possono essere aggiunte e proposte direttamente dalla piattaforma.</span></div></div>
+    </div></div>
+  </section>
+
+  <section id="ai" class="ai-section">
+    <div class="wrap"><div class="ai-grid">
+      <div class="ai-panel"><h3>Assistente AI PixelUp</h3><p>Nel piano PRO l'AI è collegata alle sezioni reali della dashboard e può aiutarti ad aggiornare direttamente il progetto.</p><div class="ai-examples"><div class="ai-example">“Aggiungi il saldo del fotografo il 15 settembre.”</div><div class="ai-example">“Inserisci questo nuovo fornitore nella rubrica.”</div><div class="ai-example">“Aggiungi il taglio torta alle 23:00 nella timeline.”</div><div class="ai-example">“Ricordami di contattare gli sposi tra una settimana.”</div><div class="ai-example">“Aggiorna le note del progetto con queste informazioni.”</div></div></div>
+      <div class="ai-copy"><div class="eyebrow"><span>AI</span> Incluso nel piano PRO</div><h2>Parla con la dashboard. PixelUp ti aiuta ad aggiornarla.</h2><p>Invece di entrare ogni volta nelle singole sezioni, puoi chiedere all'assistente AI di aggiungere o aggiornare scadenze, contatti, timeline, note e altre informazioni operative.</p><p>L'obiettivo è ridurre il lavoro manuale e mantenere la dashboard aggiornata in modo più rapido.</p></div>
+    </div></div>
+  </section>
+
+  <section id="come-funziona">
+    <div class="wrap"><div class="section-head"><h2>Come iniziare</h2><p>Richiedi l'accesso e inizia a gestire i tuoi matrimoni con PixelUp Wedding.</p></div><div class="steps"><div class="step"><div class="step-num">1</div><div class="step-icon">✉</div><h3>Richiedi accesso</h3><p>Invia la richiesta tramite il pulsante dedicato.</p></div><div class="step"><div class="step-num">2</div><div class="step-icon">🔑</div><h3>Ricevi le credenziali</h3><p>PixelUp crea manualmente il tuo accesso entro 24 ore.</p></div><div class="step"><div class="step-num">3</div><div class="step-icon">💍</div><h3>Crea i matrimoni</h3><p>Inserisci clienti e progetti e inizia a usare la dashboard.</p></div><div class="step"><div class="step-num">4</div><div class="step-icon">✨</div><h3>Proponi servizi</h3><p>Usa PixelUp Experience per offrire nuovi servizi agli sposi.</p></div></div></div>
+  </section>
+
+  <section id="prezzi">
+    <div class="wrap"><div class="section-head"><h2>Scegli il piano più adatto</h2><p>Parti gratuitamente. Passa al PRO quando vuoi gestire matrimoni senza limiti e utilizzare l'assistente AI collegato alla dashboard.</p></div>
+      <div class="pricing">
+        <article class="price-card"><div class="price-head"><small>Per iniziare</small><h3>FREE</h3><div class="price">0 €</div></div><div class="price-body"><ul class="price-list"><li>Fino a 5 matrimoni attivi</li><li>Dashboard Wedding</li><li>Agenda, scadenze e checklist</li><li>Fornitori e documenti</li><li>Timeline e note</li><li>Link sposi</li><li>Accesso a PixelUp Experience</li><li>Assistenza base</li></ul><a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20FREE%20PixelUp%20Wedding">Richiedi accesso FREE</a></div></article>
+        <article class="price-card pro"><div class="price-head"><small>Per professionisti</small><h3>PRO</h3><div class="price">59 € <span>/ anno</span></div></div><div class="price-body"><ul class="price-list"><li>Matrimoni attivi illimitati</li><li>Tutte le funzioni della dashboard</li><li class="ai">Assistente AI collegato alla dashboard</li><li class="ai">AI per scadenze, contatti, timeline, note e altre sezioni</li><li>Accesso a PixelUp Experience</li><li>Gestione professionale continuativa</li><li>Assistenza dedicata</li></ul><a class="btn gold" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PRO%20PixelUp%20Wedding">Richiedi accesso PRO</a></div></article>
+      </div>
+      <div class="access-box">Gli accessi PixelUp Wedding vengono creati manualmente. Dopo la richiesta, PixelUp prepara il tuo account e invia le credenziali entro 24 ore.</div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap"><div class="cta-card"><h2>Porta il tuo lavoro wedding dentro PixelUp</h2><p>Organizza meglio i matrimoni, crea un'esperienza più professionale per gli sposi e aggiungi nuovi servizi alla tua offerta.</p><div class="cta-actions"><a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp%20Wedding">Richiedi il tuo accesso</a><a class="btn gold" href="/dashboard/">Accedi alla dashboard</a></div></div></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid"><a href="/" class="brand"><span class="brand-mark"></span><span><span class="brand-name">Pixel<span>Up</span></span><span style="display:block;color:rgba(255,255,255,.70);font-size:12px;margin-top:4px;">Soluzioni digitali per wedding ed eventi</span></span></a><div class="footer-links"><a href="/termini-e-condizioni.html">Termini e Condizioni</a><a href="/privacy-policy.html">Privacy Policy</a><a href="/assistenza.html">Assistenza</a></div><div class="copyright">© 2026 PixelUp. Tutti i diritti riservati.</div></div>
+</footer>
+
+<script>
+  function toggleMobileMenu(){const panel=document.getElementById("mobilePanel");if(!panel)return;panel.classList.toggle("show");}
+</script>
+</body>
+</html>
