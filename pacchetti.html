@@ -1,542 +1,909 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PixelUp Wedding Experience</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>PixelUp Wedding Experience — Servizi da proporre agli sposi</title>
+  <meta name="description" content="PixelUp Wedding Experience: servizi digitali e wedding experience che la wedding planner può proporre agli sposi direttamente dalla dashboard PixelUp." />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root{
+      --bg:#f4ebdd;
+      --cream:#fbf4e8;
+      --cream2:#fffaf2;
+      --panel:#fffdf8;
+      --ink:#263122;
+      --muted:#746b60;
+      --green:#0f3b2e;
+      --green2:#174f3d;
+      --gold:#b58a3b;
+      --gold2:#d7b56d;
+      --line:#e8ddca;
+      --shadow:0 18px 45px rgba(36,28,16,.11);
+      --soft:0 10px 25px rgba(36,28,16,.07);
+      --max:1180px;
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f8f5f1;
-      color: #1d1d1d;
-      line-height: 1.6;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.5;
+      overflow-x:hidden;
     }
 
-    img {
-      width: 100%;
-      display: block;
-    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .wrap{width:min(var(--max),92%);margin:0 auto}
 
-    .container {
-      width: min(1180px, 92%);
-      margin: 0 auto;
+    .topbar{
+      position:sticky;top:0;z-index:60;
+      background:rgba(244,235,221,.95);
+      border-bottom:1px solid rgba(181,138,59,.18);
+      backdrop-filter:blur(14px);
     }
-
-    /* HERO */
-    .hero {
-      padding: 70px 0 50px;
+    .nav{
+      min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px;
     }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.15fr;
-      gap: 40px;
-      align-items: center;
+    .brand{display:flex;align-items:center;gap:12px;min-width:max-content}
+    .brand-mark{
+      width:42px;height:42px;border-radius:12px;position:relative;
+      background:linear-gradient(135deg,var(--green) 0 48%,transparent 48%),
+                 linear-gradient(45deg,var(--gold) 0 50%,var(--green2) 50%);
+      box-shadow:0 8px 20px rgba(15,59,46,.16)
     }
-
-    .brand {
-      font-size: 56px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      margin-bottom: 10px;
+    .brand-mark::after{
+      content:"P";position:absolute;inset:0;display:grid;place-items:center;color:white;
+      font-family:Georgia,serif;font-size:24px;font-weight:700
     }
-
-    .brand span {
-      background: linear-gradient(90deg, #6a48b8, #d13f91);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .brand-name{
+      font-family:Georgia,"Times New Roman",serif;font-size:30px;
+      color:var(--green);line-height:1;letter-spacing:-.8px
     }
+    .brand-name span{color:var(--gold)}
 
-    .subtitle {
-      letter-spacing: 8px;
-      font-size: 17px;
-      margin-bottom: 28px;
+    .menu{display:flex;align-items:center;gap:20px;font-size:14px;font-weight:700;color:#293128}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+
+    .btn{
+      min-height:46px;padding:0 20px;border-radius:10px;border:1px solid var(--line);
+      background:white;color:var(--green);font-weight:800;font-size:14px;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 4px 14px rgba(20,30,24,.04);transition:.18s ease;cursor:pointer
     }
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--soft)}
+    .btn.primary{background:linear-gradient(135deg,var(--green),#06281f);color:white;border-color:var(--green)}
+    .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1d251f;border-color:var(--gold)}
+    .btn.small{min-height:40px;padding:0 14px;font-size:12px}
+    .mobile-menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--green);font-size:22px}
+    .mobile-panel{display:none}
 
-    .hero h1 {
-      font-size: 44px;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      color: #555;
-      max-width: 580px;
-    }
-
-    .hero-image {
-      border-radius: 22px;
-      overflow: hidden;
-      min-height: 420px;
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:76px 0 68px;
       background:
-        linear-gradient(rgba(0,0,0,.08), rgba(0,0,0,.08)),
-        url("wedding-couple.png") center/cover no-repeat;
+        radial-gradient(circle at 90% 10%,rgba(215,181,109,.25),transparent 28%),
+        linear-gradient(180deg,#fff9ef 0%,#f7eddf 100%);
+      border-bottom:1px solid rgba(181,138,59,.18)
+    }
+    .hero-grid{display:grid;grid-template-columns:1.03fr .97fr;gap:52px;align-items:center}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(181,138,59,.28);background:rgba(255,255,255,.68);
+      color:var(--green);font-size:13px;font-weight:800;margin-bottom:20px
+    }
+    .eyebrow span{
+      width:21px;height:21px;border-radius:50%;display:grid;place-items:center;
+      background:var(--green);color:white;font-size:11px
+    }
+    h1{
+      font-family:Georgia,"Times New Roman",serif;
+      color:var(--green);font-size:clamp(47px,6vw,78px);
+      line-height:.99;letter-spacing:-2.4px;font-weight:500;margin-bottom:20px
+    }
+    .hero-sub{font-size:19px;color:#414a42;line-height:1.58;max-width:690px;margin-bottom:26px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-trust{
+      display:flex;gap:10px;align-items:flex-start;margin-top:20px;
+      color:#5a625a;font-size:14px;max-width:650px
+    }
+    .check{
+      flex:0 0 auto;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;
+      background:white;border:1px solid rgba(181,138,59,.35);color:var(--gold);font-weight:900
     }
 
-    /* SERVICES */
-    .services {
-      padding: 35px 0 45px;
+    .hero-visual{position:relative;min-height:480px}
+    .hero-photo{
+      position:absolute;inset:0 34px 60px 0;border-radius:30px;overflow:hidden;
+      background:
+        linear-gradient(180deg,rgba(9,40,31,.08),rgba(9,40,31,.42)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=84") center/cover;
+      box-shadow:var(--shadow)
+    }
+    .hero-photo-caption{
+      position:absolute;left:24px;right:24px;bottom:24px;color:white
+    }
+    .hero-photo-caption small{
+      display:block;color:#f5d795;font-weight:900;text-transform:uppercase;
+      letter-spacing:1px;margin-bottom:5px
+    }
+    .hero-photo-caption strong{font-family:Georgia,serif;font-size:28px;font-weight:500}
+    .profit-card{
+      position:absolute;right:0;bottom:0;width:275px;padding:18px;border-radius:20px;
+      background:rgba(255,253,248,.97);border:1px solid rgba(181,138,59,.32);
+      box-shadow:0 18px 38px rgba(36,28,16,.18);z-index:3
+    }
+    .profit-card small{display:block;color:var(--gold);font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:900}
+    .profit-card strong{display:block;font-family:Georgia,serif;color:var(--green);font-size:25px;font-weight:500;margin:4px 0}
+    .profit-card p{font-size:12px;color:var(--muted)}
+
+    section{padding:54px 0}
+    .section-head{text-align:center;margin-bottom:31px}
+    .section-head h2{
+      font-family:Georgia,"Times New Roman",serif;font-size:clamp(33px,4vw,48px);
+      color:var(--green);font-weight:500;line-height:1.06
+    }
+    .section-head p{max-width:820px;margin:12px auto 0;color:var(--muted);font-size:17px}
+
+    .how{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:18px
+    }
+    .how-card{
+      background:rgba(255,253,248,.90);border:1px solid var(--line);border-radius:20px;
+      padding:22px;box-shadow:var(--soft)
+    }
+    .how-num{
+      width:34px;height:34px;border-radius:50%;background:var(--green);color:white;
+      display:grid;place-items:center;font-weight:900;margin-bottom:14px
+    }
+    .how-card h3{font-family:Georgia,serif;color:var(--green);font-size:20px;font-weight:500;margin-bottom:6px}
+    .how-card p{font-size:13px;color:var(--muted)}
+
+    .catalog-section{
+      background:rgba(255,255,255,.24);
+      border-top:1px solid rgba(181,138,59,.10);
+      border-bottom:1px solid rgba(181,138,59,.10)
+    }
+    .catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .experience{
+      background:rgba(255,253,248,.96);border:1px solid var(--line);border-radius:23px;
+      overflow:hidden;box-shadow:var(--soft);display:flex;flex-direction:column;min-height:100%
+    }
+    .experience.featured{border:2px solid rgba(181,138,59,.58)}
+    .experience-media{
+      height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,#d8d2c3,#aab398)
+    }
+    .experience-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .experience-type{
+      position:absolute;top:13px;left:13px;background:rgba(15,59,46,.92);color:white;
+      padding:6px 10px;border-radius:999px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.7px
+    }
+    .experience-body{padding:20px;display:flex;flex-direction:column;flex:1}
+    .experience h3{font-family:Georgia,serif;color:var(--green);font-size:25px;font-weight:500;margin-bottom:6px}
+    .experience .short{color:var(--muted);font-size:13px;line-height:1.48;margin-bottom:13px}
+    .include-list{list-style:none;display:grid;gap:7px;margin-bottom:16px}
+    .include-list li{font-size:12px;color:#39433a;display:flex;gap:7px;align-items:flex-start}
+    .include-list li::before{
+      content:"✓";flex:0 0 auto;width:17px;height:17px;border-radius:50%;
+      display:grid;place-items:center;background:var(--green);color:white;font-size:9px;margin-top:1px
     }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
+    .price-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;margin-bottom:14px
+    }
+    .price-box{
+      padding:11px 12px;border-radius:14px;background:rgba(77,90,58,.07);
+      border:1px solid rgba(77,90,58,.08);font-size:10px;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.5px
+    }
+    .price-box strong{
+      display:block;color:var(--green);font-family:Georgia,serif;font-size:22px;
+      text-transform:none;letter-spacing:0;margin-top:3px;font-weight:500
+    }
+    .price-box.profit{background:rgba(181,138,59,.12)}
+    .price-box.profit strong{color:#8c682a}
+    .options{display:grid;gap:7px;margin-bottom:14px}
+    .option{
+      display:flex;justify-content:space-between;gap:10px;padding:10px 11px;border-radius:12px;
+      background:#f7eddf;font-size:11px;color:#485047
+    }
+    .option b{color:var(--green)}
+    .card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .card-actions .btn{width:100%}
+
+    .partner-strip{
+      margin-top:24px;padding:18px 20px;border-radius:18px;
+      background:linear-gradient(135deg,var(--green),#06281f);color:white;
+      display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center
+    }
+    .partner-strip .ico{
+      width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+      background:rgba(255,255,255,.10);border:1px solid rgba(215,181,109,.48);color:#f2cf82;font-weight:900
+    }
+    .partner-strip strong{display:block;font-family:Georgia,serif;font-size:20px;font-weight:500}
+    .partner-strip span{display:block;color:rgba(255,255,255,.75);font-size:12px;margin-top:3px}
+
+    .new-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .new-card{
+      position:relative;overflow:hidden;min-height:300px;border-radius:22px;
+      border:1px solid rgba(255,255,255,.18);box-shadow:var(--soft);
+      background:linear-gradient(145deg,#153f32,#082b22);color:white;padding:24px
+    }
+    .new-card::after{
+      content:"";position:absolute;right:-45px;bottom:-55px;width:170px;height:170px;border-radius:50%;
+      background:rgba(215,181,109,.13)
+    }
+    .new-card .icon{font-size:34px;margin-bottom:18px}
+    .new-card small{
+      display:inline-block;color:#f2cf82;text-transform:uppercase;font-size:9px;font-weight:900;letter-spacing:.8px;margin-bottom:6px
+    }
+    .new-card h3{font-family:Georgia,serif;font-size:25px;font-weight:500;margin-bottom:8px}
+    .new-card p{color:rgba(255,255,255,.78);font-size:13px;line-height:1.5;margin-bottom:16px}
+    .new-card ul{padding-left:18px;color:rgba(255,255,255,.84);font-size:12px;display:grid;gap:5px}
+    .coming{
+      position:absolute;right:15px;top:15px;padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);
+      font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase
     }
 
-    .service-card {
-      background: #fff;
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 10px 35px rgba(0,0,0,.07);
+    .dashboard-box{
+      background:
+        radial-gradient(circle at 0 0,rgba(215,181,109,.15),transparent 28%),
+        linear-gradient(135deg,var(--green),#06271e);
+      color:white;border-radius:30px;padding:38px;box-shadow:0 22px 55px rgba(15,59,46,.18)
+    }
+    .dashboard-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center}
+    .dashboard-box h2{font-family:Georgia,serif;font-size:clamp(34px,4vw,50px);font-weight:500;line-height:1.05;margin-bottom:14px}
+    .dashboard-box p{color:rgba(255,255,255,.80);font-size:16px;margin-bottom:18px}
+    .dashboard-list{list-style:none;display:grid;gap:9px}
+    .dashboard-list li{display:flex;gap:8px;align-items:flex-start;color:rgba(255,255,255,.88);font-size:13px}
+    .dashboard-list li::before{
+      content:"✓";width:18px;height:18px;border-radius:50%;display:grid;place-items:center;
+      background:var(--gold2);color:#1c251f;font-size:10px;font-weight:900;flex:0 0 auto
+    }
+    .proposal{
+      background:rgba(255,255,255,.95);color:var(--ink);border-radius:23px;padding:22px;
+      box-shadow:0 18px 38px rgba(0,0,0,.14)
+    }
+    .proposal h3{font-family:Georgia,serif;color:var(--green);font-size:24px;font-weight:500;margin-bottom:12px}
+    .proposal-row{
+      padding:10px 0;border-bottom:1px solid #eadfce;display:flex;justify-content:space-between;gap:10px;font-size:12px
+    }
+    .proposal-row:last-of-type{border-bottom:0}
+    .proposal-row b{color:var(--green)}
+    .proposal-total{
+      margin-top:14px;padding:13px;border-radius:13px;background:#f7eddf;
+      display:flex;justify-content:space-between;gap:10px;color:#604f2f;font-size:13px;font-weight:800
     }
 
-    .service-image {
-      height: 390px;
-      background-size: cover;
-      background-position: center;
+    .cta{
+      background:linear-gradient(135deg,var(--green),#06271e);
+      color:white
     }
+    .cta-card{text-align:center;max-width:850px;margin:0 auto}
+    .cta-card h2{font-family:Georgia,serif;font-size:clamp(36px,4.5vw,53px);font-weight:500;line-height:1.05;margin-bottom:12px}
+    .cta-card p{color:rgba(255,255,255,.78);max-width:700px;margin:0 auto 23px;font-size:16px}
+    .cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .cta .btn.primary{background:white;color:var(--green);border-color:white}
 
-    .mirror {
-      background-image: url("magic-mirror.png");
+    .footer{
+      background:linear-gradient(135deg,var(--green),#06271e);
+      color:white;padding:28px 0;border-top:1px solid rgba(255,255,255,.10)
     }
+    .footer-grid{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
+    .footer .brand-name{color:white;font-size:27px}
+    .footer .brand-name span{color:#e2bf78}
+    .footer-links{display:flex;gap:22px;flex-wrap:wrap;color:rgba(255,255,255,.82);font-size:13px}
+    .copyright{font-size:12px;color:rgba(255,255,255,.70)}
 
-    .audio {
-      background-image: url("audio-guest-book.png");
+    /* Modal contatto */
+    .contact-choice-modal{
+      position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+      padding:20px;background:rgba(5,25,19,.66);backdrop-filter:blur(7px)
     }
-
-    .service-content {
-      padding: 28px;
-      text-align: center;
+    .contact-choice-modal.show{display:flex}
+    .contact-choice-card{
+      width:min(520px,100%);background:#fffaf2;border:1px solid rgba(181,138,59,.35);
+      border-radius:24px;padding:26px;box-shadow:0 26px 70px rgba(0,0,0,.28);position:relative
     }
-
-    .service-content h2 {
-      font-size: 28px;
-      margin-bottom: 8px;
+    .contact-choice-close{
+      position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;
+      border:1px solid #e8ddca;background:white;color:#0f3b2e;font-size:21px;cursor:pointer
     }
-
-    .service-content p {
-      color: #666;
-      margin-bottom: 22px;
+    .contact-choice-card small{display:block;color:#b58a3b;text-transform:uppercase;letter-spacing:.9px;font-size:11px;font-weight:900;margin-bottom:8px}
+    .contact-choice-card h3{font-family:Georgia,serif;color:#0f3b2e;font-size:30px;font-weight:500;line-height:1.08;margin:0 40px 10px 0}
+    .contact-choice-card p{color:#6f675d;font-size:14px;margin-bottom:18px}
+    .contact-choice-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .contact-choice-btn{
+      min-height:52px;border-radius:12px;border:1px solid #e8ddca;display:flex;
+      align-items:center;justify-content:center;gap:9px;font-weight:900
     }
+    .contact-choice-btn.whatsapp{background:#25D366;color:#082b18;border-color:#25D366}
+    .contact-choice-btn.email{background:linear-gradient(135deg,#0f3b2e,#06281f);color:white;border-color:#0f3b2e}
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      text-align: left;
+    @media(max-width:1040px){
+      .hero-grid,.dashboard-grid{grid-template-columns:1fr}
+      .hero-visual{min-height:450px}
+      .catalog,.new-grid{grid-template-columns:1fr 1fr}
+      .how{grid-template-columns:1fr 1fr}
     }
-
-    .feature {
-      background: #faf7f4;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
+    @media(max-width:760px){
+      .nav{min-height:66px}.brand-name{font-size:25px}.menu,.nav-actions{display:none}.mobile-menu-btn{display:grid;place-items:center}
+      .mobile-panel{display:none;border-top:1px solid var(--line);padding:12px 0 18px}
+      .mobile-panel.show{display:grid;gap:10px}
+      .mobile-panel a{min-height:42px;display:flex;align-items:center;border:1px solid var(--line);background:white;border-radius:12px;padding:0 14px;font-weight:700;color:var(--green)}
+      .hero{padding:48px 0 44px}.hero-sub{font-size:17px}.hero-actions .btn{width:100%}
+      .hero-visual{min-height:390px}.hero-photo{right:0;bottom:70px}.profit-card{width:250px}
+      .catalog,.new-grid,.how{grid-template-columns:1fr}
+      .partner-strip{grid-template-columns:auto 1fr}.partner-strip .btn{grid-column:1/-1}
+      .dashboard-box{padding:26px 20px}
+      section{padding:42px 0}
+      .footer-grid{display:grid}
     }
-
-    /* PACCHETTI */
-    .packages-section {
-      padding: 65px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .section-title h2 {
-      font-size: 40px;
-      margin-bottom: 8px;
-    }
-
-    .section-title p {
-      color: #666;
-      font-size: 18px;
-    }
-
-    .packages {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .package {
-      background: #fff;
-      border-radius: 18px;
-      padding: 28px 24px;
-      position: relative;
-      box-shadow: 0 10px 35px rgba(0,0,0,.06);
-      transition: transform .2s ease;
-    }
-
-    .package:hover {
-      transform: translateY(-4px);
-    }
-
-    .package.popular {
-      background: linear-gradient(180deg, #fff 0%, #f9edf3 100%);
-      border: 2px solid #c64e87;
-    }
-
-    .badge {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #c64e87;
-      color: #fff;
-      font-size: 12px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .package h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      font-size: 40px;
-      font-weight: 800;
-      margin-bottom: 18px;
-    }
-
-    .package ul {
-      list-style: none;
-    }
-
-    .package li {
-      margin: 11px 0;
-      font-size: 14px;
-    }
-
-    .package li::before {
-      content: "✓";
-      margin-right: 9px;
-      font-weight: bold;
-      color: #8a3f68;
-    }
-
-    /* CTA */
-    .cta {
-      padding: 70px 0 90px;
-      text-align: center;
-    }
-
-    .cta-box {
-      background: #1d1d1d;
-      color: #fff;
-      padding: 52px 30px;
-      border-radius: 28px;
-    }
-
-    .cta h2 {
-      font-size: 38px;
-      margin-bottom: 12px;
-    }
-
-    .cta p {
-      color: #d8d8d8;
-      font-size: 18px;
-      margin-bottom: 28px;
-    }
-
-    .whatsapp-btn {
-      display: inline-block;
-      background: #25d366;
-      color: #fff;
-      text-decoration: none;
-      padding: 17px 28px;
-      border-radius: 999px;
-      font-size: 18px;
-      font-weight: 700;
-      transition: transform .2s ease, opacity .2s ease;
-    }
-
-    .whatsapp-btn:hover {
-      transform: scale(1.03);
-      opacity: .92;
-    }
-
-    .info-bar {
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      font-size: 14px;
-    }
-
-    .info-item {
-      padding: 14px;
-      background: rgba(255,255,255,.08);
-      border-radius: 12px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      font-size: 13px;
-      color: #777;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid,
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .packages {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .info-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .brand {
-        font-size: 46px;
-      }
-
-      .hero h1 {
-        font-size: 38px;
-      }
-    }
-
-    @media (max-width: 620px) {
-      .hero {
-        padding-top: 40px;
-      }
-
-      .packages,
-      .info-bar,
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .brand {
-        font-size: 38px;
-      }
-
-      .subtitle {
-        letter-spacing: 5px;
-        font-size: 13px;
-      }
-
-      .hero h1 {
-        font-size: 34px;
-      }
-
-      .service-image {
-        height: 280px;
-      }
-
-      .section-title h2 {
-        font-size: 32px;
-      }
+    @media(max-width:480px){
+      h1{font-size:42px}
+      .hero-visual{min-height:340px}.profit-card{width:230px}
+      .experience-media{height:195px}
+      .card-actions{grid-template-columns:1fr}
+      .contact-choice-buttons{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
 
-  <section class="hero">
-    <div class="container hero-grid">
-
-      <div>
-        <div class="brand">PIXEL<span>UP</span></div>
-        <div class="subtitle">WEDDING EXPERIENCE</div>
-
-        <h1>Rendi il tuo matrimonio ancora più speciale.</h1>
-
-        <p>
-          Esperienze uniche, ricordi autentici ed emozioni
-          da rivivere anche dopo il grande giorno.
-        </p>
-      </div>
-
-      <div class="hero-image"></div>
-
-    </div>
-  </section>
-
-  <section class="services">
-    <div class="container services-grid">
-
-      <div class="service-card">
-        <div class="service-image mirror"></div>
-
-        <div class="service-content">
-          <h2>Magic Mirror</h2>
-
-          <p>
-            Foto divertenti, personalizzate e condivisibili
-            direttamente con gli invitati.
-          </p>
-
-          <div class="features">
-            <div class="feature">📸 Foto digitali illimitate</div>
-            <div class="feature">✏️ Grafica personalizzata</div>
-            <div class="feature">📱 Condivisione tramite QR</div>
-            <div class="feature">🎭 Accessori divertenti</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-image audio"></div>
-
-        <div class="service-content">
-          <h2>Audio Guest Book</h2>
-
-          <p>
-            Le voci delle persone che ami, per rivivere
-            le emozioni del matrimonio anche negli anni.
-          </p>
-
-          <div class="features">
-            <div class="feature">🎙 Messaggio di benvenuto</div>
-            <div class="feature">❤️ Registrazioni degli invitati</div>
-            <div class="feature">⬇️ Consegna dei file audio</div>
-            <div class="feature">☎️ Telefono vintage</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="packages-section">
-    <div class="container">
-
-      <div class="section-title">
-        <h2>Scegli la tua esperienza</h2>
-        <p>Prezzi lancio PixelUp Wedding Experience</p>
-      </div>
-
-      <div class="packages">
-
-        <div class="package">
-          <h3>Magic Mirror</h3>
-          <div class="price">349 €</div>
-
-          <ul>
-            <li>3 ore di servizio</li>
-            <li>Foto digitali illimitate</li>
-            <li>Grafica personalizzata</li>
-            <li>Condivisione tramite QR</li>
-            <li>Accessori per le foto</li>
-            <li>Installazione e ritiro</li>
-          </ul>
-        </div>
-
-        <div class="package popular">
-          <div class="badge">IL PIÙ SCELTO</div>
-
-          <h3>Pacchetto LOVE</h3>
-          <div class="price">449 €</div>
-
-          <ul>
-            <li>Magic Mirror 3 ore</li>
-            <li>Audio Guest Book</li>
-            <li>Foto digitali illimitate</li>
-            <li>Messaggi audio degli invitati</li>
-            <li>Grafica personalizzata</li>
-            <li>Installazione e ritiro</li>
-          </ul>
-        </div>
-
-        <div class="package">
-          <h3>Audio Guest Book</h3>
-          <div class="price">149 €</div>
-
-          <ul>
-            <li>Telefono vintage</li>
-            <li>Messaggio di benvenuto</li>
-            <li>Registrazioni durante l'evento</li>
-            <li>Consegna di tutti i file audio</li>
-            <li>Installazione e ritiro</li>
-          </ul>
-        </div>
-
-        <div class="package">
-          <h3>Pacchetto LOVE PLUS</h3>
-          <div class="price">549 €</div>
-
-          <ul>
-            <li>Magic Mirror 5 ore</li>
-            <li>Audio Guest Book</li>
-            <li>Foto digitali illimitate</li>
-            <li>Grafica personalizzata</li>
-            <li>Tutti i messaggi audio</li>
-            <li>Installazione e ritiro</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <div class="container">
-
-      <div class="cta-box">
-
-        <h2>La tua data è disponibile?</h2>
-
-        <p>
-          Scrivici su WhatsApp e richiedi la disponibilità
-          per il giorno del tuo matrimonio.
-        </p>
-
-        <a
-          class="whatsapp-btn"
-          target="_blank"
-          href="https://wa.me/393519780804?text=Ciao%2C%20vorrei%20richiedere%20la%20disponibilit%C3%A0%20per%20PixelUp%20Wedding%20Experience.%0A%0AData%20del%20matrimonio%3A%20%0ALocation%3A%20%0APacchetto%20di%20interesse%3A%20"
-        >
-          💬 RICHIEDI DISPONIBILITÀ
+  <header class="topbar">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="/" class="brand">
+          <span class="brand-mark"></span>
+          <span class="brand-name">Pixel<span>Up</span></span>
         </a>
 
-        <div class="info-bar">
+        <div class="menu">
+          <a href="#come-funziona">Come funziona</a>
+          <a href="#catalogo">Experience</a>
+          <a href="#nuove">Nuove idee</a>
+          <a href="#dashboard">Dashboard</a>
+        </div>
 
-          <div class="info-item">
-            🚚 Trasporto incluso<br>
-            entro 40 km da Pozzo d'Adda
+        <div class="nav-actions">
+          <a class="btn" href="/wedding.html">PixelUp Wedding</a>
+          <a class="btn primary" href="/dashboard/">Accedi</a>
+        </div>
+
+        <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+
+      <div class="mobile-panel" id="mobilePanel">
+        <a href="#come-funziona" onclick="toggleMobileMenu()">Come funziona</a>
+        <a href="#catalogo" onclick="toggleMobileMenu()">Experience</a>
+        <a href="#nuove" onclick="toggleMobileMenu()">Nuove idee</a>
+        <a href="#dashboard" onclick="toggleMobileMenu()">Dashboard</a>
+        <a href="/wedding.html">PixelUp Wedding</a>
+        <a href="/dashboard/">Accedi</a>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap hero-grid">
+
+        <div>
+          <div class="eyebrow"><span>€</span> PixelUp Wedding Experience</div>
+
+          <h1>Più servizi per i tuoi sposi. Più valore per te.</h1>
+
+          <p class="hero-sub">
+            Un catalogo di servizi digitali ed Experience che la wedding planner può proporre
+            direttamente dalla dashboard PixelUp. Tu scegli il servizio, prepari la proposta
+            e mantieni un margine su ogni vendita.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#catalogo">Scopri le Experience</a>
+            <a class="btn gold" href="/dashboard/">Accedi e crea una proposta</a>
           </div>
 
-          <div class="info-item">
-            🛠 Servizio professionale<br>
-            montaggio e assistenza
+          <div class="hero-trust">
+            <span class="check">✓</span>
+            <span>
+              Prezzo sposi e guadagno Partner sono separati: nella dashboard il margine resta visibile
+              solo alla wedding planner, mentre agli sposi arriva la proposta con il prezzo finale.
+            </span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-photo">
+            <div class="hero-photo-caption">
+              <small>Wedding Experience</small>
+              <strong>Servizi da aggiungere al matrimonio</strong>
+            </div>
           </div>
 
-          <div class="info-item">
-            📅 Disponibilità limitata<br>
-            prenota la tua data
+          <div class="profit-card">
+            <small>Dentro la dashboard</small>
+            <strong>Guadagni su ogni vendita</strong>
+            <p>Scegli il servizio, controlla il tuo margine e invia la proposta agli sposi.</p>
           </div>
+        </div>
 
-          <div class="info-item">
-            📍 Oltre 40 km<br>
-            supplemento su preventivo
+      </div>
+    </section>
+
+
+    <section id="come-funziona">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Come funziona per la wedding planner</h2>
+          <p>PixelUp Experience è integrato nella Dashboard Wedding e trasforma servizi aggiuntivi in una nuova opportunità commerciale.</p>
+        </div>
+
+        <div class="how">
+          <article class="how-card"><div class="how-num">1</div><h3>Scegli l'Experience</h3><p>Apri il catalogo e guarda caratteristiche, prezzo sposi e guadagno Partner.</p></article>
+          <article class="how-card"><div class="how-num">2</div><h3>Prepara la proposta</h3><p>Seleziona il servizio più adatto al matrimonio che stai organizzando.</p></article>
+          <article class="how-card"><div class="how-num">3</div><h3>Inviala agli sposi</h3><p>Gli sposi ricevono una proposta ordinata con immagine, dettagli e prezzo finale.</p></article>
+          <article class="how-card"><div class="how-num">4</div><h3>Ottieni il tuo margine</h3><p>Il prezzo Partner rimane interno alla dashboard e non viene mostrato agli sposi.</p></article>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section id="catalogo" class="catalog-section">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Experience già disponibili nella dashboard</h2>
+          <p>Questi prezzi sono allineati al catalogo PixelUp Wedding attualmente presente nella dashboard.</p>
+        </div>
+
+        <div class="catalog">
+
+          <article class="experience">
+            <div class="experience-media">
+              <span class="experience-type">Digitale</span>
+              <img src="assets/wedding-page.png" alt="Wedding Page PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Wedding Page</h3>
+              <p class="short">Il matrimonio in un unico link elegante e personalizzato.</p>
+              <ul class="include-list">
+                <li>Design personalizzato</li>
+                <li>RSVP invitati</li>
+                <li>Location e mappa</li>
+                <li>Programma e menù</li>
+                <li>Lista regalo e contatti</li>
+                <li>Foto e informazioni utili</li>
+              </ul>
+              <div class="price-grid">
+                <div class="price-box">Prezzo sposi<strong>79 €</strong></div>
+                <div class="price-box profit">Guadagno Partner<strong>24 €</strong></div>
+              </div>
+              <div class="card-actions">
+                <a class="btn small" href="/wedding.html">Dettagli Wedding</a>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="experience">
+            <div class="experience-media">
+              <span class="experience-type">Digitale</span>
+              <img src="assets/photo-qr.png" alt="Photo QR PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Photo QR</h3>
+              <p class="short">Le foto degli invitati raccolte senza installare nessuna app.</p>
+              <ul class="include-list">
+                <li>QR personalizzato</li>
+                <li>Accesso da smartphone</li>
+                <li>Raccolta foto invitati</li>
+                <li>Gallery privata</li>
+                <li>Consegna digitale</li>
+              </ul>
+              <div class="price-grid">
+                <div class="price-box">Prezzo sposi<strong>39 €</strong></div>
+                <div class="price-box profit">Guadagno Partner<strong>10 €</strong></div>
+              </div>
+              <div class="card-actions">
+                <button class="btn small" type="button" onclick="openExperienceContact('Photo QR')">Richiedi info</button>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="experience">
+            <div class="experience-media">
+              <span class="experience-type">Digitale</span>
+              <img src="assets/video-guest-book.png" alt="Video Guest Book QR PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Video Guest Book QR</h3>
+              <p class="short">Messaggi video autentici degli invitati, raccolti con un semplice QR.</p>
+              <ul class="include-list">
+                <li>QR personalizzato</li>
+                <li>Registrazione da telefono</li>
+                <li>Nessuna app richiesta</li>
+                <li>Gallery video privata</li>
+                <li>Consegna digitale</li>
+              </ul>
+              <div class="price-grid">
+                <div class="price-box">Prezzo sposi<strong>59 €</strong></div>
+                <div class="price-box profit">Guadagno Partner<strong>15 €</strong></div>
+              </div>
+              <div class="card-actions">
+                <button class="btn small" type="button" onclick="openExperienceContact('Video Guest Book QR')">Richiedi info</button>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="experience">
+            <div class="experience-media">
+              <span class="experience-type">Experience</span>
+              <img src="assets/audio-guest-book.png" alt="Audio Guest Book PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Audio Guest Book</h3>
+              <p class="short">Le voci del matrimonio da riascoltare per sempre.</p>
+              <ul class="include-list">
+                <li>Telefono Audio Guest Book</li>
+                <li>Istruzioni per gli invitati</li>
+                <li>Raccolta messaggi vocali</li>
+                <li>File audio digitali</li>
+                <li>Preparazione del servizio</li>
+              </ul>
+              <div class="price-grid">
+                <div class="price-box">Prezzo sposi<strong>399 €</strong></div>
+                <div class="price-box profit">Guadagno Partner<strong>80 €</strong></div>
+              </div>
+              <div class="card-actions">
+                <button class="btn small" type="button" onclick="openExperienceContact('Audio Guest Book')">Richiedi info</button>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="experience featured">
+            <div class="experience-media">
+              <span class="experience-type">Experience</span>
+              <img src="assets/magic-mirror.png" alt="Magic Mirror PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Magic Mirror</h3>
+              <p class="short">Un photobooth elegante e interattivo che diventa parte del ricevimento.</p>
+              <ul class="include-list">
+                <li>Magic Mirror</li>
+                <li>Grafica personalizzata</li>
+                <li>Accessori secondo pacchetto</li>
+                <li>Condivisione digitale</li>
+                <li>Disponibilità verificata per data e location</li>
+              </ul>
+
+              <div class="options">
+                <div class="option"><span>3 ore · sposi <b>359 €</b></span><span>tu guadagni <b>70 €</b></span></div>
+                <div class="option"><span>6 ore · sposi <b>499 €</b></span><span>tu guadagni <b>100 €</b></span></div>
+              </div>
+
+              <div class="card-actions">
+                <button class="btn small" type="button" onclick="openExperienceContact('Magic Mirror')">Verifica disponibilità</button>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+
+          <article class="experience featured">
+            <div class="experience-media">
+              <span class="experience-type">Pacchetto</span>
+              <img src="assets/digital-wedding-pack.png" alt="Digital Wedding Pack PixelUp" loading="lazy">
+            </div>
+            <div class="experience-body">
+              <h3>Digital Wedding Pack</h3>
+              <p class="short">Wedding Page + Photo QR + Video Guest Book QR in un'unica proposta.</p>
+              <ul class="include-list">
+                <li>Wedding Page completa</li>
+                <li>RSVP e informazioni matrimonio</li>
+                <li>Photo QR</li>
+                <li>Video Guest Book QR</li>
+                <li>Un'unica gestione PixelUp</li>
+              </ul>
+              <div class="price-grid">
+                <div class="price-box">Prezzo sposi<strong>149 €</strong></div>
+                <div class="price-box profit">Guadagno Partner<strong>40 €</strong></div>
+              </div>
+              <div class="card-actions">
+                <button class="btn small" type="button" onclick="openExperienceContact('Digital Wedding Pack')">Richiedi info</button>
+                <a class="btn primary small" href="/dashboard/">Proponilo</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="partner-strip">
+          <div class="ico">€</div>
+          <div>
+            <strong>Il margine è riservato alla wedding planner</strong>
+            <span>Agli sposi viene mostrato il prezzo finale della proposta, non il prezzo Partner interno.</span>
           </div>
+          <a class="btn gold small" href="/dashboard/">Apri la dashboard</a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section id="nuove">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Nuove Wedding Experience da aggiungere</h2>
+          <p>Idee coerenti con PixelUp che possiamo inserire successivamente anche nel catalogo della dashboard. Prezzo sposi e margine Partner vanno ancora definiti.</p>
+        </div>
+
+        <div class="new-grid">
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">🪑</div>
+            <small>Wedding Digital</small>
+            <h3>Tableau de Mariage</h3>
+            <p>Un tableau elegante e personalizzato per aiutare gli invitati a trovare il proprio tavolo, con possibilità di versione digitale tramite QR.</p>
+            <ul>
+              <li>Grafica coordinata al matrimonio</li>
+              <li>Elenco tavoli e invitati</li>
+              <li>Versione stampabile</li>
+              <li>Versione QR / digitale opzionale</li>
+            </ul>
+          </article>
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">✨</div>
+            <small>Welcome Experience</small>
+            <h3>Welcome Sign + QR</h3>
+            <p>Cartello di benvenuto coordinato al matrimonio con QR che collega gli invitati alla Wedding Page, gallery o guest book.</p>
+            <ul>
+              <li>Grafica personalizzata</li>
+              <li>QR dedicato</li>
+              <li>Collegamento a Wedding Page</li>
+              <li>File pronto per stampa</li>
+            </ul>
+          </article>
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">🍽️</div>
+            <small>Wedding Digital</small>
+            <h3>Menù Digitale QR</h3>
+            <p>Menù elegante consultabile dal telefono, utile anche per indicare allergeni, varianti e informazioni del ricevimento.</p>
+            <ul>
+              <li>QR personalizzato</li>
+              <li>Menù mobile</li>
+              <li>Allergeni e varianti</li>
+              <li>Grafica coordinata</li>
+            </ul>
+          </article>
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">💌</div>
+            <small>Prima del matrimonio</small>
+            <h3>Save the Date Digitale</h3>
+            <p>Una mini pagina o invito digitale da condividere prima delle partecipazioni ufficiali.</p>
+            <ul>
+              <li>Grafica personalizzata</li>
+              <li>Link condivisibile</li>
+              <li>Countdown</li>
+              <li>Data e location</li>
+            </ul>
+          </article>
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">🗓️</div>
+            <small>Durante il matrimonio</small>
+            <h3>Wedding Timeline QR</h3>
+            <p>Programma della giornata consultabile dagli invitati tramite QR, con orari e momenti principali.</p>
+            <ul>
+              <li>Cerimonia</li>
+              <li>Aperitivo e cena</li>
+              <li>Taglio torta</li>
+              <li>Musica e momenti speciali</li>
+            </ul>
+          </article>
+
+          <article class="new-card">
+            <span class="coming">Da inserire</span>
+            <div class="icon">❤️</div>
+            <small>Dopo il matrimonio</small>
+            <h3>Wedding Memories</h3>
+            <p>Una pagina privata post-evento dove raccogliere foto, video e messaggi più belli da conservare e condividere.</p>
+            <ul>
+              <li>Gallery privata</li>
+              <li>Foto degli invitati</li>
+              <li>Video messaggi</li>
+              <li>Link ricordo per gli sposi</li>
+            </ul>
+          </article>
 
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    © 2026 PixelUp Wedding Experience
+
+    <section id="dashboard">
+      <div class="wrap">
+
+        <div class="dashboard-box">
+          <div class="dashboard-grid">
+
+            <div>
+              <div class="eyebrow" style="background:rgba(255,255,255,.10);color:#f2cf82;border-color:rgba(242,207,130,.28)">
+                <span style="background:#f2cf82;color:#1b251f">✓</span>
+                Integrato nella Dashboard Wedding
+              </div>
+
+              <h2>La wedding planner gestisce tutto da un unico punto.</h2>
+
+              <p>
+                Dentro PixelUp Wedding non trovi solo il catalogo: puoi aprire i dettagli,
+                vedere il tuo guadagno, preparare la proposta e inviarla direttamente agli sposi.
+              </p>
+
+              <ul class="dashboard-list">
+                <li>Prezzo sposi e margine Partner separati</li>
+                <li>Dettagli completi di ogni Experience</li>
+                <li>Proposte salvate nel progetto matrimonio</li>
+                <li>Invio della proposta agli sposi</li>
+                <li>Stato delle proposte e riepilogo</li>
+              </ul>
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+                <a class="btn gold" href="/dashboard/">Accedi alla Dashboard</a>
+                <a class="btn" href="/wedding.html">Scopri PixelUp Wedding</a>
+              </div>
+            </div>
+
+            <div class="proposal">
+              <h3>Esempio proposta</h3>
+              <div class="proposal-row"><span>Wedding Page</span><b>79 €</b></div>
+              <div class="proposal-row"><span>Photo QR</span><b>39 €</b></div>
+              <div class="proposal-row"><span>Video Guest Book QR</span><b>59 €</b></div>
+              <div class="proposal-total"><span>Totale sposi</span><span>177 €</span></div>
+              <div class="proposal-total" style="background:rgba(77,90,58,.09);color:var(--green)"><span>Guadagno Partner</span><span>49 €</span></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cta">
+      <div class="wrap">
+        <div class="cta-card">
+          <h2>Trasforma ogni matrimonio in più opportunità.</h2>
+          <p>
+            Accedi alla dashboard, scegli le Experience più adatte ai tuoi sposi
+            e crea una proposta professionale in pochi passaggi.
+          </p>
+          <div class="cta-actions">
+            <a class="btn primary" href="/dashboard/">Accedi alla Dashboard</a>
+            <button class="btn gold" type="button" onclick="openExperienceContact('PixelUp Wedding Experience')">Chiedi informazioni</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <div class="contact-choice-modal" id="contactChoiceModal" aria-hidden="true">
+    <div class="contact-choice-card" role="dialog" aria-modal="true">
+      <button class="contact-choice-close" type="button" onclick="closeContactChoice()" aria-label="Chiudi">×</button>
+      <small>PixelUp Wedding Experience</small>
+      <h3 id="contactChoiceTitle">Come preferisci contattarci?</h3>
+      <p>Scegli WhatsApp oppure email. Il messaggio sarà già preparato con il servizio di interesse.</p>
+      <div class="contact-choice-buttons">
+        <a class="contact-choice-btn whatsapp" id="contactChoiceWhatsApp" href="#" target="_blank" rel="noopener noreferrer">☏ WhatsApp</a>
+        <a class="contact-choice-btn email" id="contactChoiceEmail" href="#">✉ Email</a>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <a href="/" class="brand">
+        <span class="brand-mark"></span>
+        <span>
+          <span class="brand-name">Pixel<span>Up</span></span>
+          <span style="display:block;color:rgba(255,255,255,.70);font-size:12px;margin-top:4px">Wedding Experience</span>
+        </span>
+      </a>
+
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/wedding.html">PixelUp Wedding</a>
+        <a href="/termini-e-condizioni.html">Termini e Condizioni</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+      </div>
+
+      <div class="copyright">© 2026 PixelUp. Tutti i diritti riservati.</div>
+    </div>
   </footer>
+
+
+  <script>
+    const PIXELUP_WHATSAPP="393519780804";
+
+    function toggleMobileMenu(){
+      const panel=document.getElementById("mobilePanel");
+      if(panel) panel.classList.toggle("show");
+    }
+
+    function openExperienceContact(service){
+      const modal=document.getElementById("contactChoiceModal");
+      const title=document.getElementById("contactChoiceTitle");
+      const wa=document.getElementById("contactChoiceWhatsApp");
+      const email=document.getElementById("contactChoiceEmail");
+
+      title.textContent="Informazioni · "+service;
+
+      const message =
+`Ciao PixelUp,
+
+sono interessata/o a: ${service}
+
+Nome:
+Sono: Wedding Planner / Sposi / Altro
+Data matrimonio:
+Location:
+Informazioni richieste:
+
+Grazie.`;
+
+      wa.href="https://wa.me/"+PIXELUP_WHATSAPP+"?text="+encodeURIComponent(message);
+      email.href="mailto:info@pixelup.it?subject="+encodeURIComponent("PixelUp Wedding Experience · "+service)+"&body="+encodeURIComponent(message);
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+    }
+
+    function closeContactChoice(){
+      const modal=document.getElementById("contactChoiceModal");
+      if(!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    document.addEventListener("click",e=>{
+      const modal=document.getElementById("contactChoiceModal");
+      if(modal && e.target===modal) closeContactChoice();
+    });
+
+    document.addEventListener("keydown",e=>{
+      if(e.key==="Escape") closeContactChoice();
+    });
+  </script>
 
 </body>
 </html>
