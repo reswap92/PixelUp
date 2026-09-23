@@ -5691,10 +5691,34 @@
   function renderTodayStrip(){
     const openTasks=(data.agenda||[]).length+(data.deadlines||[]).filter(x=>Number(x.paid||0)<Number(x.total||0)).length;
     const checklist=(data.checklist||[]).filter(x=>!x.done).length;
-    const future=(data.deadlines||[]).filter(x=>x.date && new Date(x.date+"T23:59:59")>=new Date()).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
-    const el1=document.getElementById("todayOpenTasks"), el2=document.getElementById("todayChecklist"), el3=document.getElementById("todayNextDeadline");
-    if(el1)el1.textContent=String(openTasks); if(el2)el2.textContent=String(checklist);
-    if(el3)el3.textContent=future[0]?.date?new Date(future[0].date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"short"}):"—";
+
+    // "Prossima scadenza" deve considerare soltanto le scadenze ancora da saldare.
+    // Una scadenza completamente pagata viene esclusa automaticamente.
+    const future=(data.deadlines||[])
+      .filter(x=>{
+        if(!x.date) return false;
+
+        const total=Math.max(Number(x.total)||0,0);
+        const paid=Math.max(Number(x.paid)||0,0);
+        const isStillToPay=paid<total;
+        const isTodayOrFuture=new Date(x.date+"T23:59:59")>=new Date();
+
+        return isStillToPay && isTodayOrFuture;
+      })
+      .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+
+    const el1=document.getElementById("todayOpenTasks"),
+          el2=document.getElementById("todayChecklist"),
+          el3=document.getElementById("todayNextDeadline");
+
+    if(el1)el1.textContent=String(openTasks);
+    if(el2)el2.textContent=String(checklist);
+
+    if(el3){
+      el3.textContent=future[0]?.date
+        ? new Date(future[0].date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"short"})
+        : "—";
+    }
   }
 
   function buildProjectSummary() {
