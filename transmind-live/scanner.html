@@ -431,7 +431,7 @@
         scannerBox.style.display =
           "block";
 
-        await startScanner();
+
 
       }
 
@@ -456,7 +456,21 @@
 
     }
   );
+  
+document
+  .getElementById("startCameraButton")
+  .addEventListener(
+    "click",
+    async () => {
 
+      document
+        .getElementById("startCameraButton")
+        .style.display = "none";
+
+      await startScanner();
+
+    }
+  );
 
   async function startScanner() {
 
