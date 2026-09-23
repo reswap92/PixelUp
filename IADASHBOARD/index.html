@@ -1466,6 +1466,64 @@
 }
 .experience-menu-title{font-size:14px;font-weight:800;letter-spacing:1px}
 .experience-menu-sub{font-family:Arial,sans-serif;font-size:10px;opacity:.84;text-transform:none;letter-spacing:.3px}
+
+.spouse-visibility-menu-btn{
+  min-height:64px !important;
+  background:linear-gradient(135deg,#fffaf2 0%,#f5ead8 100%) !important;
+  color:var(--green-dark) !important;
+  border:1.5px solid rgba(177,145,85,.68) !important;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  box-shadow:0 8px 20px rgba(60,45,28,.07) !important;
+}
+.spouse-visibility-menu-title{
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.spouse-visibility-menu-sub{
+  font-family:Arial,sans-serif;
+  font-size:10px;
+  text-transform:none;
+  letter-spacing:.2px;
+  color:var(--muted);
+}
+
+.visibility-bulk-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:12px 0 14px;
+}
+.visibility-bulk-btn{
+  min-height:42px;
+  border-radius:13px;
+  border:1px solid rgba(177,145,85,.42);
+  background:#fffdf8;
+  color:var(--green-dark);
+  font:700 12px Arial,sans-serif;
+}
+.visibility-bulk-btn.hide-all{
+  background:rgba(138,61,44,.08);
+  color:#8a3d2c;
+  border-color:rgba(138,61,44,.28);
+}
+.visibility-summary{
+  margin:0 0 12px;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(77,90,58,.08);
+  border:1px solid rgba(77,90,58,.14);
+  color:var(--green-dark);
+  font:12px/1.45 Arial,sans-serif;
+}
+@media(max-width:390px){
+  .visibility-bulk-actions{grid-template-columns:1fr}
+}
+
 .language-menu-btn{display:flex;align-items:center;justify-content:space-between;padding:0 16px}
 .project-settings-action{margin-top:4px}
 
@@ -1537,6 +1595,12 @@
     </button>
     <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
       Progetti archiviati
+    </button>
+
+    <div class="menu-group-label">SPOSI</div>
+    <button class="project-main-btn spouse-visibility-menu-btn" type="button" onclick="toggleProjectMenu(); toggleVisibilitySettings();">
+      <span class="spouse-visibility-menu-title">VISIBILITÀ SPOSI</span>
+      <span class="spouse-visibility-menu-sub">Scegli cosa possono vedere nel loro link</span>
     </button>
 
     <div class="menu-group-label">STRUMENTI</div>
@@ -2029,6 +2093,15 @@
     <div class="report-info-card">
       <strong>Controllo link sposi</strong>
       Da qui scegli quali sezioni devono comparire nel link sposi. I dati interni restano sempre visibili solo alla wedding planner.
+    </div>
+
+    <div class="visibility-bulk-actions">
+      <button class="visibility-bulk-btn" type="button" onclick="setAllSpouseVisibility(true)">✓ Mostra tutto</button>
+      <button class="visibility-bulk-btn hide-all" type="button" onclick="setAllSpouseVisibility(false)">× Nascondi tutto</button>
+    </div>
+
+    <div class="visibility-summary" id="visibilitySummary">
+      Scegli cosa mostrare agli sposi.
     </div>
 
     <div class="visibility-grid" id="visibilitySettingsList"></div>
@@ -5393,7 +5466,7 @@
       ["overview", "Info matrimonio", "Nome evento, data e informazioni principali."],
       ["budget", "Budget e pagamenti", "Mostra agli sposi il riepilogo economico. Consigliato spento."],
       ["deadlines", "Scadenze", "Mostra solo le scadenze segnate come visibili agli sposi."],
-      ["suppliers", "Rubrica evento", "Mostra la rubrica evento agli sposi."],
+      ["suppliers", "Fornitori / Rubrica evento", "Mostra agli sposi i fornitori e i contatti presenti nella rubrica evento."],
       ["agenda", "Agenda", "Mostra solo gli appuntamenti segnati come visibili agli sposi."],
       ["documents", "Documenti", "Mostra solo documenti e PDF segnati come visibili agli sposi."],
       ["checklist", "Checklist", "Mostra solo attività segnate come visibili agli sposi."],
@@ -5427,6 +5500,16 @@
         </div>
       `;
     }).join("");
+
+    const summary = document.getElementById("visibilitySummary");
+    if (summary) {
+      const labels = getVisibilityLabels();
+      const visibleCount = labels.filter(([key]) => data.visibility[key] === true).length;
+      const hiddenCount = labels.length - visibleCount;
+      summary.innerHTML =
+        `<strong>${visibleCount}</strong> sezioni visibili agli sposi · ` +
+        `<strong>${hiddenCount}</strong> sezioni nascoste`;
+    }
   }
 
   function toggleVisibilityKey(key) {
@@ -5436,6 +5519,20 @@
     };
 
     data.visibility[key] = !data.visibility[key];
+    renderVisibilitySettings();
+    saveData();
+  }
+
+  function setAllSpouseVisibility(visible) {
+    data.visibility = {
+      ...defaultData.visibility,
+      ...(data.visibility || {})
+    };
+
+    getVisibilityLabels().forEach(([key]) => {
+      data.visibility[key] = visible === true;
+    });
+
     renderVisibilitySettings();
     saveData();
   }
