@@ -205,6 +205,48 @@
       }
 .nav{min-height:66px}.brand-name{font-size:25px}.menu,.nav-actions{display:none}.mobile-menu-btn{display:grid;place-items:center}.mobile-panel{display:none;border-top:1px solid var(--line);padding:12px 0 18px}.mobile-panel.show{display:grid;gap:10px}.mobile-panel a{min-height:42px;display:flex;align-items:center;border:1px solid var(--line);background:white;border-radius:12px;padding:0 14px;font-weight:700;color:var(--green)}.hero{padding:46px 0 42px}.hero-sub{font-size:17px}.hero-actions .btn{width:100%}.device-stage{min-height:390px}.laptop{position:relative;width:100%;right:auto;top:auto;min-height:300px;padding:13px;border-width:7px}.screen{grid-template-columns:85px 1fr;min-height:265px}.side{padding:13px 9px;font-size:10px}.side ul{gap:10px}.dash{padding:12px}.dash-stats{grid-template-columns:1fr 1fr}.dash-bottom{grid-template-columns:1fr}.phone{width:165px;right:0;bottom:-6px}.phone-screen{min-height:300px}.phone-img{height:110px}.phone-count{grid-template-columns:repeat(2,1fr)}section{padding:38px 0}.solution{grid-template-columns:1fr;text-align:left}.custom-dashboard{padding:24px 18px;border-radius:24px}.custom-list,.custom-mini-grid{grid-template-columns:1fr}.custom-price-card{width:100%}.features{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.price-note{border-radius:18px}.footer-grid{display:grid}}
     @media(max-width:420px){.wrap{width:min(94%,var(--max))}h1{font-size:43px}.feature{min-height:96px}.phone{display:none}.device-stage{min-height:auto}}
+  
+    /* Scelta contatto PixelUp */
+    .contact-choice-modal{
+      position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+      padding:20px;background:rgba(5,25,19,.66);backdrop-filter:blur(7px)
+    }
+    .contact-choice-modal.show{display:flex}
+    .contact-choice-card{
+      width:min(520px,100%);background:#fffaf2;border:1px solid rgba(181,138,59,.35);
+      border-radius:24px;padding:26px;box-shadow:0 26px 70px rgba(0,0,0,.28);position:relative
+    }
+    .contact-choice-close{
+      position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;
+      border:1px solid #e8ddca;background:white;color:#0f3b2e;font-size:21px;cursor:pointer
+    }
+    .contact-choice-card small{
+      display:block;color:#b58a3b;text-transform:uppercase;letter-spacing:.9px;
+      font-size:11px;font-weight:900;margin-bottom:8px
+    }
+    .contact-choice-card h3{
+      font-family:Georgia,"Times New Roman",serif;color:#0f3b2e;
+      font-size:30px;font-weight:500;line-height:1.08;margin:0 40px 10px 0
+    }
+    .contact-choice-card p{color:#6f675d;font-size:14px;margin-bottom:18px}
+    .contact-choice-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .contact-choice-btn{
+      min-height:52px;border-radius:12px;border:1px solid #e8ddca;display:flex;
+      align-items:center;justify-content:center;gap:9px;font-weight:900;cursor:pointer;
+      text-decoration:none
+    }
+    .contact-choice-btn.whatsapp{background:#25D366;color:#082b18;border-color:#25D366}
+    .contact-choice-btn.email{background:linear-gradient(135deg,#0f3b2e,#06281f);color:white;border-color:#0f3b2e}
+    .contact-choice-preview{
+      margin-top:14px;padding:12px 14px;border-radius:12px;background:#f7ecd9;
+      color:#4b554d;font-size:12px;line-height:1.5;border:1px solid rgba(181,138,59,.18)
+    }
+    @media(max-width:560px){
+      .contact-choice-buttons{grid-template-columns:1fr}
+      .contact-choice-card{padding:22px 18px}
+      .contact-choice-card h3{font-size:26px}
+    }
+
   </style>
 </head>
 
@@ -234,7 +276,7 @@
 </div>
         <div class="nav-actions">
           <a class="btn" href="/dashboard/">Accedi</a>
-          <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp">Richiedi accesso</a>
+          <a class="btn primary" href="#" onclick="openContactChoice('dashboard');return false;">Richiedi accesso</a>
         </div>
         <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()">☰</button>
       </nav>
@@ -251,7 +293,7 @@
   <a href="#contatti" onclick="toggleMobileMenu()">Contatti</a>
   <a href="/dashboard/">Accedi</a>
 
-  <a href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp">
+  <a href="#" onclick="openContactChoice('dashboard');return false;">
     Richiedi accesso
   </a>
 
@@ -431,7 +473,7 @@
             </div>
             <div class="price-actions">
               <a class="btn primary" href="/wedding.html">Scopri PixelUp Wedding</a>
-              <a class="btn" href="mailto:info@pixelup.it?subject=Richiesta%20accesso%20PixelUp%20Wedding">Richiedi accesso</a>
+              <a class="btn" href="#" onclick="openContactChoice('wedding');return false;">Richiedi accesso</a>
             </div>
           </div>
 
@@ -466,7 +508,7 @@
             </div>
             <div class="price-actions">
               <a class="btn primary" href="/ecosistema.html">Scopri gli ecosistemi</a>
-              <a class="btn" href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">Raccontaci la tua idea</a>
+              <a class="btn" href="#" onclick="openContactChoice('ecosystem');return false;">Raccontaci la tua idea</a>
             </div>
           </div>
 
@@ -504,11 +546,133 @@
     </section>
   </main>
 
+  
+  <div class="contact-choice-modal" id="contactChoiceModal" aria-hidden="true">
+    <div class="contact-choice-card" role="dialog" aria-modal="true" aria-labelledby="contactChoiceTitle">
+      <button class="contact-choice-close" type="button" onclick="closeContactChoice()" aria-label="Chiudi">×</button>
+      <small>Contatta PixelUp</small>
+      <h3 id="contactChoiceTitle">Come preferisci contattarci?</h3>
+      <p id="contactChoiceText">Scegli WhatsApp oppure email. Il messaggio sarà già preparato in base alla richiesta.</p>
+
+      <div class="contact-choice-buttons">
+        <a class="contact-choice-btn whatsapp" id="contactChoiceWhatsApp" href="#" target="_blank" rel="noopener noreferrer">☏ WhatsApp</a>
+        <a class="contact-choice-btn email" id="contactChoiceEmail" href="#">✉ Email</a>
+      </div>
+
+      <div class="contact-choice-preview" id="contactChoicePreview"></div>
+    </div>
+  </div>
+
+
   <footer class="footer"><div class="wrap footer-grid"><a href="#top" class="brand"><span class="brand-mark"></span><span><span class="brand-name">Pixel<span>Up</span></span><span style="display:block;color:rgba(255,255,255,.70);font-size:12px;margin-top:4px;">Soluzioni digitali per wedding, eventi e attività</span></span></a><div class="footer-links"><a href="/termini-e-condizioni.html">Termini e Condizioni</a><a href="/privacy-policy.html">Privacy Policy</a><a href="/assistenza.html">Assistenza</a></div><div class="copyright">© 2026 PixelUp. Tutti i diritti riservati.</div></div></footer>
 
   <script>
     function toggleMobileMenu(){const panel=document.getElementById("mobilePanel");if(!panel)return;panel.classList.toggle("show");}
     const contactForm=document.getElementById("contactForm");if(contactForm){contactForm.addEventListener("submit",function(event){event.preventDefault();const name=document.getElementById("contactName").value.trim();const email=document.getElementById("contactEmail").value.trim();const type=document.getElementById("contactType").value;const message=document.getElementById("contactMessage").value.trim();const subject=encodeURIComponent("Richiesta PixelUp - "+type);const body=encodeURIComponent("Ciao PixelUp,\\n\\nvorrei richiedere informazioni.\\n\\nNome: "+name+"\\nEmail: "+email+"\\nTipo richiesta: "+type+"\\n\\nMessaggio:\\n"+message+"\\n\\nGrazie.");window.location.href="mailto:info@pixelup.it?subject="+subject+"&body="+body;});}
   </script>
+<script>
+
+    const PIXELUP_WHATSAPP = "393519780804";
+
+    const pixelUpContactMessages = {
+      dashboard: {
+        title: "Richiedi i codici di accesso",
+        text: "Per l'accesso alla dashboard PixelUp.",
+        subject: "Richiesta codici accesso Dashboard PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei richiedere i codici di accesso alla dashboard.\n\nNome:\nAttività / ruolo:\nSoluzione o piano interessato:\n\nGrazie."
+      },
+      wedding: {
+        title: "Richiedi accesso PixelUp Wedding",
+        text: "Per iniziare a usare la Dashboard Wedding.",
+        subject: "Richiesta accesso PixelUp Wedding",
+        message: "Ciao PixelUp,\n\nvorrei richiedere l'accesso a PixelUp Wedding.\n\nNome:\nAttività / ruolo:\nNumero indicativo di matrimoni gestiti:\nPiano interessato: FREE / PRO\n\nGrazie."
+      },
+      wedding_free: {
+        title: "Richiedi accesso FREE",
+        text: "Fino a 5 matrimoni attivi.",
+        subject: "Richiesta accesso FREE PixelUp Wedding",
+        message: "Ciao PixelUp,\n\nvorrei richiedere i codici di accesso FREE a PixelUp Wedding.\n\nNome:\nAttività / ruolo:\nNumero indicativo di matrimoni gestiti:\n\nGrazie."
+      },
+      wedding_pro: {
+        title: "Richiedi accesso PRO",
+        text: "Matrimoni illimitati e AI integrata.",
+        subject: "Richiesta accesso PRO PixelUp Wedding",
+        message: "Ciao PixelUp,\n\nvorrei informazioni e accesso al piano PRO PixelUp Wedding da 59 € all'anno, con matrimoni illimitati e AI integrata.\n\nNome:\nAttività / ruolo:\n\nGrazie."
+      },
+      event: {
+        title: "Crea il tuo evento digitale",
+        text: "Pagina evento, QR, iscrizioni o ticketing.",
+        subject: "Richiesta Evento Digitale PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei creare un evento digitale.\n\nNome / attività:\nTipo di evento:\nData evento:\nNumero partecipanti previsto:\nCosa mi serve: pagina evento / QR / iscrizioni / ticketing / pagamenti / check-in / altro\n\nGrazie."
+      },
+      event_page: {
+        title: "Richiedi una pagina evento",
+        text: "Per una pagina digitale con QR e informazioni dell'evento.",
+        subject: "Richiesta Pagina Evento PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei creare una pagina evento.\n\nNome / attività:\nTipo di evento:\nData evento:\nNumero partecipanti previsto:\nFunzioni desiderate:\n\nGrazie."
+      },
+      event_digital: {
+        title: "Crea un Evento Digitale",
+        text: "Pagina avanzata con QR, video, RSVP e funzioni personalizzate.",
+        subject: "Richiesta Evento Digitale PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei creare un Evento Digitale PixelUp.\n\nNome / attività:\nTipo di evento:\nData evento:\nNumero partecipanti previsto:\nFunzioni desiderate: QR / video / RSVP / Maps / altre\n\nGrazie."
+      },
+      ticketing: {
+        title: "Richiedi preventivo Ticketing",
+        text: "Pagamenti, ticket, QR univoci, scanner e pannello organizzatore.",
+        subject: "Richiesta Ticketing Evento PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei un preventivo per un evento con ticketing.\n\nNome / attività:\nTipo di evento:\nData evento:\nNumero partecipanti previsto:\nPrezzo del biglietto:\nMetodi di pagamento desiderati:\nServe scanner/check-in: sì / no\n\nGrazie."
+      },
+      ecosystem: {
+        title: "Richiedi il tuo ecosistema digitale",
+        text: "Per una piattaforma costruita intorno alla tua attività.",
+        subject: "Richiesta Ecosistema Digitale PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei creare un ecosistema digitale personalizzato per la mia attività.\n\nNome:\nAttività / settore:\nNumero di persone che lo useranno:\nCosa vorrei gestire: clienti / utenti / agenda / scadenze / documenti / team / pagamenti / report / AI / altro\nDescrizione breve di come lavoro oggi:\n\nGrazie."
+      },
+      generic: {
+        title: "Contatta PixelUp",
+        text: "Scegli come preferisci scriverci.",
+        subject: "Richiesta informazioni PixelUp",
+        message: "Ciao PixelUp,\n\nvorrei ricevere informazioni sulle vostre soluzioni.\n\nNome:\nAttività / settore:\nCosa vorrei creare o gestire:\n\nGrazie."
+      }
+    };
+
+    function openContactChoice(type){
+      const data = pixelUpContactMessages[type] || pixelUpContactMessages.generic;
+      const modal = document.getElementById("contactChoiceModal");
+      const wa = document.getElementById("contactChoiceWhatsApp");
+      const email = document.getElementById("contactChoiceEmail");
+      const title = document.getElementById("contactChoiceTitle");
+      const text = document.getElementById("contactChoiceText");
+      const preview = document.getElementById("contactChoicePreview");
+
+      title.textContent = data.title;
+      text.textContent = data.text;
+      preview.textContent = data.message.replace(/\n+/g," ").trim();
+
+      wa.href = "https://wa.me/" + PIXELUP_WHATSAPP + "?text=" + encodeURIComponent(data.message);
+      email.href = "mailto:info@pixelup.it?subject=" + encodeURIComponent(data.subject) + "&body=" + encodeURIComponent(data.message);
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+    }
+
+    function closeContactChoice(){
+      const modal = document.getElementById("contactChoiceModal");
+      if(!modal) return;
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    document.addEventListener("click", function(e){
+      const modal = document.getElementById("contactChoiceModal");
+      if(modal && e.target === modal) closeContactChoice();
+    });
+
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape") closeContactChoice();
+    });
+
+</script>
 </body>
 </html>
