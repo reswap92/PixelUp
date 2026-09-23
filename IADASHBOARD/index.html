@@ -5536,7 +5536,22 @@
     { id:"digital-pack", name:"Digital Wedding Pack", short:"Il pacchetto digitale completo per gli sposi.", description:"Wedding Page + Photo QR + Video Guest Book QR in un’unica proposta.", retail:149, partner:109, type:"pacchetto", image:"https://i.etsystatic.com/38186152/r/il/2aa181/7663794442/il_794xN.7663794442_lfjz.jpg", how:"Un unico pacchetto riunisce pagina matrimonio e raccolta dei ricordi degli invitati. È la proposta digitale più semplice da vendere e può essere erogata in tutta Italia.", includes:["Wedding Page","RSVP e informazioni matrimonio","Photo QR","Video Guest Book QR","Un’unica gestione PixelUp"] }
   ];
 
-  function toggleExperience(){ openSingleSection("experienceSection"); renderExperience(); }
+  function toggleExperience(){
+    if (!currentEventId) {
+      alert("Per usare PixelUp Experience devi prima aprire un matrimonio.\n\nScegli il progetto su cui vuoi creare la proposta.");
+
+      const menu = document.getElementById("projectMenu");
+      if (menu && !menu.classList.contains("show")) {
+        menu.classList.add("show");
+      }
+
+      showProjectsList();
+      return;
+    }
+
+    openSingleSection("experienceSection");
+    renderExperience();
+  }
   function renderExperience(){
     const catalog=document.getElementById("experienceCatalog");
     if(catalog) catalog.innerHTML=PIXELUP_CATALOG.map(x=>`<div class="experience-card"><div class="experience-card-media ${x.image?'':'no-image'}"><span class="service-type">${escapeAIHtml(x.type)}</span>${x.image?`<img src="${escapeAIHtml(x.image)}" alt="${escapeAIHtml(x.name)}" loading="lazy">`:``}</div><div class="experience-card-body"><h3>${escapeAIHtml(x.name)}</h3><p>${escapeAIHtml(x.short||x.description)}</p><div class="experience-price"><div>Prezzo sposi<strong>${euro(x.retail)}</strong></div><div>Guadagno Partner<strong>${euro(x.retail-x.partner)}</strong></div></div><div class="experience-actions"><button onclick="previewExperience('${x.id}')">ⓘ Dettagli</button><button class="primary" onclick="sendExperienceProposal('${x.id}')">✈ Invia proposta</button></div></div></div>`).join("");
@@ -8044,4 +8059,3 @@
 
   window.addEventListener("DOMContentLoaded",()=>setTimeout(translateStaticUI,250));
 </script>
-  
