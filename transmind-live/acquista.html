@@ -80,7 +80,7 @@
 
     .ticket-choice {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
       margin-bottom: 28px;
     }
@@ -287,8 +287,7 @@
 
     <div class="notice">
       Scegli il biglietto e il metodo di pagamento.
-      <strong>PayPal è disponibile per il pagamento online.</strong>
-      Carta, Klarna e bonifico saranno completati nelle prossime fasi di configurazione.
+      <strong>Carta, Klarna, PayPal e bonifico sono disponibili.</strong>
     </div>
 
 
@@ -315,6 +314,18 @@
         <small>
           Acquistabile esclusivamente tramite un codice
           prenotazione Persona Trans valido.
+        </small>
+      </div>
+
+      <div
+        id="bundleOption"
+        class="ticket-option"
+        onclick="selectTicket('bundle')"
+      >
+        <strong>Trans + Accompagnatore</strong>
+        <span class="price">€280</span>
+        <small>
+          Un unico pagamento, due biglietti e due QR distinti.
         </small>
       </div>
 
@@ -371,6 +382,61 @@
       </div>
 
 
+      <div id="bundleBox" class="hidden">
+
+        <div class="notice" style="margin-bottom:18px;">
+          <strong>Dati accompagnatore</strong><br>
+          L'accompagnatore riceverà il proprio biglietto e il proprio QR
+          all'indirizzo email indicato.
+        </div>
+
+        <div>
+          <label for="companionName">Nome accompagnatore *</label>
+          <input id="companionName" type="text">
+        </div>
+
+        <div style="margin-top:18px;">
+          <label for="companionSurname">Cognome accompagnatore *</label>
+          <input id="companionSurname" type="text">
+        </div>
+
+        <div style="margin-top:18px;">
+          <label for="companionEmail">Email accompagnatore *</label>
+          <input id="companionEmail" type="email">
+        </div>
+
+        <div class="consent-box" style="margin-top:18px;">
+          <div class="consent-title">Consenso foto e video accompagnatore</div>
+
+          <div class="consent-text">
+            L'accompagnatore può scegliere liberamente se autorizzare o meno
+            la realizzazione, l'utilizzo e la divulgazione di foto e video
+            in cui potrebbe comparire.
+            <br><br>
+            Prima di scegliere può consultare la
+            <a href="privacy-foto-video.html" target="_blank" rel="noopener noreferrer"
+               style="color:#f3c490;text-decoration:underline;">
+              breve informativa privacy per foto e video
+            </a>.
+            Nessuna opzione è preselezionata.
+          </div>
+
+          <div class="consent-options">
+            <label>
+              <input type="radio" name="companionMediaConsent" value="yes">
+              Sì, acconsento
+            </label>
+
+            <label>
+              <input type="radio" name="companionMediaConsent" value="no">
+              No, non acconsento
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+
       <div class="consent-box">
         <div class="consent-title">Consenso foto e video</div>
 
@@ -405,10 +471,10 @@
 
       <div class="payment-box">
         <div class="payment-title">Metodo di pagamento</div>
-        <div class="payment-subtitle">Scegli come desideri pagare. PayPal è disponibile; Carta, Klarna e bonifico sono ancora in fase di configurazione.</div>
+        <div class="payment-subtitle">Scegli come desideri pagare.</div>
         <div class="payment-options">
           <label class="payment-option"><input type="radio" name="paymentMethod" value="stripe_card"><span class="payment-icon">💳</span><span><span class="payment-name">Carta di credito o debito</span><span class="payment-note">Visa, Mastercard e carte supportate · tramite Stripe</span></span></label>
-          <label class="payment-option"><input type="radio" name="paymentMethod" value="klarna"><span class="payment-icon">K</span><span><span class="payment-name">Klarna</span><span class="payment-note">Pagamento tramite Klarna · attivazione in corso</span></span></label>
+          <label class="payment-option"><input type="radio" name="paymentMethod" value="klarna"><span class="payment-icon">K</span><span><span class="payment-name">Klarna</span><span class="payment-note">Pagamento tramite Klarna</span></span></label>
           <label class="payment-option"><input type="radio" name="paymentMethod" value="paypal"><span class="payment-icon">P</span><span><span class="payment-name">PayPal</span><span class="payment-note">Pagamento online con PayPal</span></span></label>
           <label class="payment-option"><input type="radio" name="paymentMethod" value="bank_transfer"><span class="payment-icon">🏦</span><span><span class="payment-name">Bonifico bancario</span><span class="payment-note">Wise · visualizza i dati per il bonifico</span></span></label>
         </div>
@@ -496,38 +562,43 @@
     const companion =
       document.getElementById("companionOption");
 
+    const bundle =
+      document.getElementById("bundleOption");
+
     const referenceBox =
       document.getElementById("referenceBox");
 
     const referenceInput =
       document.getElementById("referenceCode");
 
+    const bundleBox =
+      document.getElementById("bundleBox");
+
+    const companionName =
+      document.getElementById("companionName");
+
+    const companionSurname =
+      document.getElementById("companionSurname");
+
+    const companionEmail =
+      document.getElementById("companionEmail");
+
     document.getElementById("ticketType").value = type;
 
+    trans.classList.toggle("active", type === "trans");
+    companion.classList.toggle("active", type === "companion");
+    bundle.classList.toggle("active", type === "bundle");
 
-    if (type === "trans") {
+    const isCompanion = type === "companion";
+    const isBundle = type === "bundle";
 
-      trans.classList.add("active");
+    referenceBox.classList.toggle("hidden", !isCompanion);
+    referenceInput.required = isCompanion;
 
-      companion.classList.remove("active");
-
-      referenceBox.classList.add("hidden");
-
-      referenceInput.required = false;
-
-    }
-
-    else {
-
-      companion.classList.add("active");
-
-      trans.classList.remove("active");
-
-      referenceBox.classList.remove("hidden");
-
-      referenceInput.required = true;
-
-    }
+    bundleBox.classList.toggle("hidden", !isBundle);
+    companionName.required = isBundle;
+    companionSurname.required = isBundle;
+    companionEmail.required = isBundle;
 
   };
 
@@ -594,12 +665,45 @@
             ? clean(document.getElementById("referenceCode").value).toUpperCase()
             : "";
 
+        const companionName =
+          type === "bundle"
+            ? clean(document.getElementById("companionName").value)
+            : "";
+
+        const companionSurname =
+          type === "bundle"
+            ? clean(document.getElementById("companionSurname").value)
+            : "";
+
+        const companionEmail =
+          type === "bundle"
+            ? clean(document.getElementById("companionEmail").value).toLowerCase()
+            : "";
+
+        const companionMediaConsent =
+          type === "bundle"
+            ? (
+                document.querySelector(
+                  'input[name="companionMediaConsent"]:checked'
+                )?.value || "not_selected"
+              )
+            : "not_selected";
+
         if (!paymentMethod) {
           throw new Error("Seleziona un metodo di pagamento.");
         }
 
         if (type === "companion" && !referenceCode) {
           throw new Error("Inserisci il codice prenotazione Persona Trans.");
+        }
+
+        if (
+          type === "bundle" &&
+          (!companionName || !companionSurname || !companionEmail)
+        ) {
+          throw new Error(
+            "Compila nome, cognome ed email dell'accompagnatore."
+          );
         }
 
         const payload = {
@@ -610,7 +714,11 @@
           phone,
           mediaConsent,
           referenceCode,
-          paymentMethod
+          paymentMethod,
+          companionName,
+          companionSurname,
+          companionEmail,
+          companionMediaConsent
         };
 
         if (paymentMethod === "paypal") {
@@ -658,7 +766,49 @@
         }
 
         if (paymentMethod === "bank_transfer") {
-          throw new Error("Il pagamento tramite bonifico non è ancora attivo.");
+          button.textContent = "REGISTRAZIONE BONIFICO...";
+
+          const response = await fetch(
+            "https://europe-west1-backtag-16de3.cloudfunctions.net/createTransmindBankTransfer",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok || !data.ok) {
+            throw new Error(
+              data.error || "Impossibile registrare la prenotazione."
+            );
+          }
+
+          document.getElementById("bookingForm").style.display = "none";
+
+          const result =
+            document.getElementById("result");
+
+          result.style.display = "block";
+
+          document.getElementById("resultCode").textContent =
+            (data.bookingCodes || [data.bookingCode])
+              .filter(Boolean)
+              .join(" · ");
+
+          document.getElementById("resultText").innerHTML =
+            "Prenotazione in attesa di pagamento.<br><br>" +
+            "Effettua il bonifico di <strong>€" +
+            Number(data.amount).toFixed(2).replace(".", ",") +
+            "</strong> a:<br>" +
+            "Intestatario: <strong>" + data.bank.holder + "</strong><br>" +
+            "IBAN: <strong>" + data.bank.iban + "</strong><br>" +
+            "Banca: <strong>" + data.bank.provider + "</strong><br><br>" +
+            "Inserisci come causale il primo codice prenotazione mostrato sopra.<br><br>" +
+            "Il biglietto e il QR verranno inviati via email solo dopo la conferma dell'accredito.";
+
+          return;
         }
 
         throw new Error("Metodo di pagamento non valido.");
