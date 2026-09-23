@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>TRANSMIND LIVE - Check-in</title>
+  <title>TRANSMIND LIVE - Biglietto elettronico</title>
 
   <style>
     * {
@@ -13,499 +13,158 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, #1b1b1b 0%, #0c0c0c 45%, #050505 100%);
-      color: #ffffff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff7ef;
+      background:
+        radial-gradient(circle at 75% 15%, rgba(214,153,93,.22), transparent 32%),
+        linear-gradient(145deg, #0d0907 0%, #211710 50%, #0a0706 100%);
     }
 
     .card {
       width: 100%;
-      max-width: 520px;
-      background: rgba(18, 18, 18, 0.96);
-      border: 1px solid #3a3a3a;
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-    }
-
-    .logo {
+      max-width: 540px;
+      padding: 34px 28px;
+      border-radius: 24px;
+      border: 1px solid rgba(229,179,127,.28);
+      background: rgba(13,9,7,.94);
+      box-shadow: 0 30px 90px rgba(0,0,0,.45);
       text-align: center;
-      margin-bottom: 25px;
     }
 
-    .logo h1 {
-      margin: 0;
-      font-size: 30px;
-      letter-spacing: 2px;
-    }
-
-    .logo p {
-      margin: 8px 0 0;
-      color: #bdbdbd;
-      font-size: 14px;
-    }
-
-    .status {
-      display: none;
-      text-align: center;
-      padding: 22px;
-      border-radius: 18px;
-      margin-bottom: 22px;
-    }
-
-    .status.valid {
-      display: block;
-      background: #11391f;
-      border: 2px solid #32c66b;
-    }
-
-    .status.used {
-      display: block;
-      background: #4a3010;
-      border: 2px solid #f2a93b;
-    }
-
-    .status.error {
-      display: block;
-      background: #481818;
-      border: 2px solid #e45858;
-    }
-
-    .status h2 {
-      margin: 0 0 8px;
-      font-size: 26px;
-    }
-
-    .status p {
-      margin: 0;
-      color: #e0e0e0;
-    }
-
-    .details {
-      display: none;
-      background: #111111;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .row {
+    .brand {
+      font-size: 12px;
+      letter-spacing: .28em;
+      color: #e5b37f;
       margin-bottom: 14px;
     }
 
-    .row:last-child {
-      margin-bottom: 0;
+    h1 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 38px;
+      font-weight: 500;
     }
 
-    .label {
-      font-size: 12px;
-      color: #9a9a9a;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
+    .subtitle {
+      color: #d9cec5;
+      line-height: 1.55;
+      margin-bottom: 26px;
     }
 
-    .value {
+    .ticket-box {
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(229,179,127,.08);
+      border: 1px solid rgba(229,179,127,.25);
+      margin-bottom: 22px;
+    }
+
+    .ticket-box strong {
+      display: block;
+      color: #f3c490;
       font-size: 18px;
-      font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    .login-box {
-      margin-top: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px 15px;
-      margin-bottom: 12px;
-      border-radius: 12px;
-      border: 1px solid #444;
-      background: #0c0c0c;
-      color: #fff;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      background: #c9a84c;
-      color: #101010;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .small {
-      margin-top: 14px;
-      text-align: center;
-      color: #8c8c8c;
+    .code-label {
+      margin-top: 22px;
       font-size: 12px;
+      color: #bfae9f;
+      text-transform: uppercase;
+      letter-spacing: .10em;
+    }
+
+    .code {
+      margin-top: 7px;
+      font-size: 24px;
+      font-weight: 800;
+      color: #f5c995;
+      letter-spacing: .05em;
+      word-break: break-word;
+    }
+
+    .info {
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      color: #d9cec5;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #9f8e80;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .code {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+  <main class="card">
 
-    <div class="logo">
-      <h1>TRANSMIND LIVE</h1>
-      <p>Check-in evento • 23-24 ottobre 2027</p>
+    <div class="brand">TRANSMIND LIVE</div>
+
+    <h1>Biglietto elettronico</h1>
+
+    <div class="subtitle">
+      23-24 ottobre 2027 · TeCa - Teatro Cassanese<br>
+      Cassano d'Adda (MI)
     </div>
 
-    <div id="status" class="status">
-      <h2 id="statusTitle"></h2>
-      <p id="statusText"></p>
-    </div>
+    <div class="ticket-box">
+      <strong>Mostra il tuo QR allo staff all'ingresso</strong>
 
-    <div id="details" class="details">
+      La scansione e la convalida del biglietto vengono effettuate
+      esclusivamente dal personale autorizzato TRANSMIND LIVE.
 
-      <div class="row">
-        <div class="label">Nome</div>
-        <div id="fullName" class="value">-</div>
+      <div id="bookingArea" style="display:none;">
+        <div class="code-label">Codice prenotazione</div>
+        <div id="bookingCode" class="code"></div>
       </div>
-
-      <div class="row">
-        <div class="label">Biglietto</div>
-        <div id="ticketLabel" class="value">-</div>
-      </div>
-
-      <div class="row">
-        <div class="label">Codice prenotazione</div>
-        <div id="bookingCode" class="value">-</div>
-      </div>
-
     </div>
 
-    <div id="loginBox" class="login-box">
-
-      <input
-        id="email"
-        type="email"
-        placeholder="Email operatore"
-        autocomplete="username"
-      />
-
-      <input
-        id="password"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      />
-
-      <button id="loginButton" onclick="loginOperator()">
-        ACCEDI E VERIFICA BIGLIETTO
-      </button>
-
+    <div class="info">
+      Non devi effettuare nessuna operazione da questa pagina.<br>
+      Conserva il biglietto ricevuto via email e presenta il QR code allo staff.
     </div>
 
-    <div class="small">
-      Accesso riservato allo staff TRANSMIND LIVE
+    <div class="footer">
+      Il QR può essere utilizzato una sola volta per il check-in.
     </div>
 
-  </div>
+  </main>
 
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const booking = (params.get("booking") || "").trim();
 
-  <script type="module">
-
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-
-    import {
-      getAuth,
-      signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-
-
- const firebaseConfig = {
-  apiKey: "AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",
-  authDomain: "backtag-16de3.firebaseapp.com",
-  projectId: "backtag-16de3",
-  storageBucket: "backtag-16de3.firebasestorage.app",
-  messagingSenderId: "415455463905",
-  appId: "1:415455463905:web:abd5e58bdeaaf6e3b9eaa0"
-};
-
-
-    const app =
-      initializeApp(firebaseConfig);
-
-    const auth =
-      getAuth(app);
-
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-    const qrToken =
-      params.get("token") || "";
-
-
-    const statusBox =
-      document.getElementById("status");
-
-    const statusTitle =
-      document.getElementById("statusTitle");
-
-    const statusText =
-      document.getElementById("statusText");
-
-    const details =
-      document.getElementById("details");
-
-    const fullName =
-      document.getElementById("fullName");
-
-    const ticketLabel =
-      document.getElementById("ticketLabel");
-
-    const bookingCode =
-      document.getElementById("bookingCode");
-
-    const loginBox =
-      document.getElementById("loginBox");
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-
-    function showStatus(
-      type,
-      title,
-      text
-    ) {
-
-      statusBox.className =
-        "status " + type;
-
-      statusTitle.textContent =
-        title;
-
-      statusText.textContent =
-        text;
-
+    if (booking) {
+      document.getElementById("bookingCode").textContent = booking;
+      document.getElementById("bookingArea").style.display = "block";
     }
-
-
-    function showBooking(data) {
-
-      details.style.display =
-        "block";
-
-      fullName.textContent =
-        `${data.name || ""} ${data.surname || ""}`.trim();
-
-      ticketLabel.textContent =
-        data.ticketLabel || "-";
-
-      bookingCode.textContent =
-        data.bookingCode || "-";
-
-    }
-
-
-    async function verifyTicket(idToken) {
-
-      if (!qrToken) {
-
-        showStatus(
-          "error",
-          "QR NON VALIDO",
-          "Nel link non è presente alcun token."
-        );
-
-        return;
-      }
-
-
-      try {
-
-        const response =
-          await fetch(
-            "https://europe-west1-backtag-16de3.cloudfunctions.net/transmindCheckIn",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-
-                "Authorization":
-                  `Bearer ${idToken}`
-              },
-
-              body:
-                JSON.stringify({
-                  token: qrToken
-                })
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          data.alreadyUsed === true
-        ) {
-
-          showStatus(
-            "used",
-            "GIÀ UTILIZZATO",
-            "Questo biglietto risulta già convalidato."
-          );
-
-          showBooking(data);
-
-          loginBox.style.display =
-            "none";
-
-          return;
-        }
-
-
-        if (
-          response.ok &&
-          data.valid === true
-        ) {
-
-          showStatus(
-            "valid",
-            "BIGLIETTO VALIDO",
-            "Ingresso registrato correttamente."
-          );
-
-          showBooking(data);
-
-          loginBox.style.display =
-            "none";
-
-          return;
-        }
-
-
-        showStatus(
-          "error",
-          "BIGLIETTO NON VALIDO",
-          data.error ||
-          "Non è stato possibile verificare il biglietto."
-        );
-
-      }
-
-      catch (error) {
-
-        console.error(error);
-
-        showStatus(
-          "error",
-          "ERRORE",
-          "Impossibile contattare il sistema di check-in."
-        );
-
-      }
-
-    }
-
-
-    window.loginOperator =
-      async function () {
-
-        const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
-
-        const password =
-          document
-            .getElementById("password")
-            .value;
-
-
-        if (
-          !email ||
-          !password
-        ) {
-
-          showStatus(
-            "error",
-            "DATI MANCANTI",
-            "Inserisci email e password operatore."
-          );
-
-          return;
-        }
-
-
-        loginButton.disabled =
-          true;
-
-        loginButton.textContent =
-          "VERIFICA IN CORSO...";
-
-
-        try {
-
-          const credential =
-            await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
-
-          const idToken =
-            await credential
-              .user
-              .getIdToken();
-
-          await verifyTicket(
-            idToken
-          );
-
-        }
-
-        catch (error) {
-
-          console.error(error);
-
-          showStatus(
-            "error",
-            "ACCESSO NEGATO",
-            "Email o password operatore non corretti."
-          );
-
-        }
-
-        finally {
-
-          loginButton.disabled =
-            false;
-
-          loginButton.textContent =
-            "ACCEDI E VERIFICA BIGLIETTO";
-
-        }
-
-      };
-
   </script>
 
 </body>
