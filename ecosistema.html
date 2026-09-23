@@ -1,0 +1,1127 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>PixelUp — Crea il tuo ecosistema digitale</title>
+  <meta name="description" content="Crea con PixelUp una piattaforma digitale su misura per la tua attività: clienti, utenti, documenti, agenda, scadenze, team, pagamenti, report e AI in un unico ecosistema." />
+
+  <style>
+    :root{
+      --bg:#fffaf2;
+      --cream:#fbf4e8;
+      --panel:#ffffff;
+      --ink:#213024;
+      --muted:#6f675d;
+      --green:#0f3b2e;
+      --green2:#174f3d;
+      --gold:#b58a3b;
+      --gold2:#d7b56d;
+      --line:#e8ddca;
+      --shadow:0 18px 45px rgba(36,28,16,.10);
+      --soft:0 10px 25px rgba(36,28,16,.07);
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 8% 4%,rgba(215,181,109,.18),transparent 28%),
+        radial-gradient(circle at 95% 12%,rgba(15,59,46,.08),transparent 32%),
+        linear-gradient(180deg,#fffdf8 0%,#fbf4e8 48%,#fffaf2 100%);
+      color:var(--ink);
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    .wrap{width:min(var(--max),92%);margin:0 auto}
+
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,253,248,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{display:flex;align-items:center;gap:12px;min-width:max-content}
+    .brand-mark{
+      width:42px;height:42px;border-radius:12px;
+      background:linear-gradient(135deg,var(--green) 0 48%,transparent 48%),linear-gradient(45deg,var(--gold) 0 50%,var(--green2) 50%);
+      position:relative;
+      box-shadow:0 8px 20px rgba(15,59,46,.16)
+    }
+    .brand-mark::after{
+      content:"P";
+      position:absolute;inset:0;display:grid;place-items:center;
+      color:white;font-family:Georgia,serif;font-size:24px;font-weight:700
+    }
+    .brand-name{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:30px;color:var(--green);line-height:1;letter-spacing:-.8px
+    }
+    .brand-name span{color:var(--gold)}
+
+    .menu{display:flex;align-items:center;gap:20px;color:#252b27;font-size:14px;font-weight:600}
+    .nav-actions{display:flex;align-items:center;gap:12px}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      min-height:46px;border-radius:10px;padding:0 22px;
+      border:1px solid var(--line);background:white;color:var(--green);
+      font-weight:700;font-size:14px;transition:.18s ease;
+      box-shadow:0 4px 14px rgba(20,30,24,.04);cursor:pointer;white-space:nowrap
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--soft)}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--green),#06281f);
+      color:white;border-color:rgba(15,59,46,.9)
+    }
+    .btn.gold{
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#1d221e;border-color:rgba(181,138,59,.7)
+    }
+
+    .mobile-menu-btn{
+      display:none;width:44px;height:44px;border:1px solid var(--line);
+      border-radius:12px;background:white;color:var(--green);font-size:22px
+    }
+    .mobile-panel{display:none}
+
+    .hero{
+      position:relative;
+      padding:74px 0 68px;
+      border-bottom:1px solid var(--line);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;right:-90px;top:10px;
+      width:330px;height:330px;opacity:.18;
+      background:
+        radial-gradient(circle at 50% 50%,transparent 0 38%,var(--gold) 39% 40%,transparent 41%),
+        radial-gradient(circle at 35% 35%,transparent 0 22%,var(--green) 23% 24%,transparent 25%);
+      border-radius:50%;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      gap:54px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;
+      padding:8px 12px;
+      border:1px solid rgba(181,138,59,.24);
+      border-radius:999px;
+      color:var(--green);
+      background:rgba(255,255,255,.70);
+      font-size:13px;font-weight:700;margin-bottom:22px
+    }
+    .eyebrow span{
+      width:20px;height:20px;border-radius:50%;
+      display:grid;place-items:center;
+      color:white;background:var(--green);font-size:11px
+    }
+
+    h1{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(46px,6vw,78px);
+      line-height:.98;
+      letter-spacing:-2.5px;
+      color:var(--green);
+      margin-bottom:22px
+    }
+
+    .hero-sub{
+      color:#3d453f;
+      font-size:19px;
+      line-height:1.6;
+      max-width:680px;
+      margin-bottom:28px;
+    }
+
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .hero-note{
+      margin-top:20px;color:#596157;font-size:14px;
+      display:flex;gap:10px;align-items:flex-start;
+      max-width:640px;
+    }
+    .check{
+      width:25px;height:25px;border-radius:50%;
+      display:grid;place-items:center;
+      background:white;border:1px solid rgba(181,138,59,.35);
+      color:var(--gold);font-weight:900;flex:0 0 auto
+    }
+
+    .ecosystem-stage{position:relative;min-height:490px}
+    .platform{
+      position:absolute;inset:8px 0 64px 24px;
+      border:10px solid #121816;
+      border-radius:28px;
+      background:#0c251e;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      padding:16px;
+    }
+    .platform-screen{
+      min-height:360px;
+      border-radius:14px;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:120px 1fr;
+      background:#f8f4ed;
+    }
+    .side{
+      background:linear-gradient(180deg,#103b2d,#06231b);
+      color:white;padding:18px 14px;font-size:12px
+    }
+    .side-logo{font-family:Georgia,serif;color:#f6d797;font-size:19px;margin-bottom:18px}
+    .side ul{list-style:none;display:grid;gap:12px;color:rgba(255,255,255,.88)}
+    .main-dash{padding:18px}
+    .main-dash h3{font-family:Georgia,serif;color:var(--green);font-size:22px;font-weight:500;margin-bottom:16px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+    .stat,.panel{
+      background:white;border:1px solid #eadfce;border-radius:14px;
+      padding:13px;box-shadow:0 5px 14px rgba(0,0,0,.04)
+    }
+    .stat small{display:block;color:var(--muted);font-size:10px}
+    .stat strong{display:block;color:var(--green);font-size:18px;margin-top:4px}
+    .dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .panel h4{font-size:14px;color:var(--green);margin-bottom:8px}
+    .row{
+      display:flex;justify-content:space-between;gap:10px;
+      border-top:1px solid #eee2d1;padding:8px 0;
+      font-size:11px;color:#596257
+    }
+
+    .ai-float{
+      position:absolute;right:0;bottom:0;
+      width:280px;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--gold),var(--gold2));
+      color:#1d241f;
+      padding:17px;
+      box-shadow:0 18px 38px rgba(181,138,59,.25);
+      z-index:4;
+    }
+    .ai-float strong{display:block;font-size:14px;margin-bottom:5px}
+    .ai-float span{font-size:12px;line-height:1.45}
+
+    section{padding:54px 0}
+    .section-head{text-align:center;margin-bottom:30px}
+    .section-head h2{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(32px,4vw,48px);
+      color:var(--green);
+      font-weight:500;
+      line-height:1.05;
+      letter-spacing:-.8px
+    }
+    .section-head p{
+      max-width:840px;
+      margin:12px auto 0;
+      color:var(--muted);
+      font-size:17px
+    }
+
+    .statement{
+      background:linear-gradient(135deg,var(--green),#06271e);
+      color:white;
+      border-radius:28px;
+      padding:36px;
+      text-align:center;
+      box-shadow:0 22px 55px rgba(15,59,46,.18);
+    }
+    .statement strong{
+      display:block;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(30px,4vw,48px);
+      font-weight:500;
+      line-height:1.08;
+      margin-bottom:12px;
+    }
+    .statement p{
+      max-width:840px;
+      margin:0 auto;
+      color:rgba(255,255,255,.82);
+      font-size:16px;
+    }
+
+    .sectors{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+
+    .sector{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:var(--soft);
+      min-height:210px;
+    }
+    .sector .ico{
+      width:48px;height:48px;border-radius:14px;
+      display:grid;place-items:center;
+      background:#f7ecd9;
+      border:1px solid rgba(181,138,59,.22);
+      font-size:24px;margin-bottom:14px
+    }
+    .sector h3{
+      font-family:Georgia,serif;
+      color:var(--green);
+      font-size:21px;
+      font-weight:500;
+      margin-bottom:7px
+    }
+    .sector p{color:#4b554d;font-size:13px;line-height:1.5}
+
+    .modules{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+    .module{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:17px;
+      padding:18px;
+      box-shadow:0 7px 18px rgba(0,0,0,.035);
+      min-height:140px;
+    }
+    .module .ico{font-size:25px;margin-bottom:10px}
+    .module strong{
+      display:block;
+      color:var(--green);
+      font-size:15px;
+      margin-bottom:5px
+    }
+    .module span{color:var(--muted);font-size:12px;line-height:1.45}
+
+    .nursery{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(215,181,109,.16),transparent 30%),
+        linear-gradient(135deg,var(--green),#06271e);
+      color:white;
+      border-radius:30px;
+      padding:38px;
+      box-shadow:0 22px 55px rgba(15,59,46,.18)
+    }
+
+    .nursery-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:36px;
+      align-items:center
+    }
+
+    .nursery h2{
+      font-family:Georgia,serif;
+      font-size:clamp(34px,4vw,50px);
+      font-weight:500;
+      line-height:1.05;
+      margin-bottom:14px
+    }
+    .nursery p{color:rgba(255,255,255,.82);font-size:16px;margin-bottom:18px}
+    .nursery-list{
+      list-style:none;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px
+    }
+    .nursery-list li{
+      display:flex;gap:8px;align-items:flex-start;
+      color:rgba(255,255,255,.88);font-size:13px
+    }
+    .nursery-list li::before{
+      content:"✓";
+      width:18px;height:18px;border-radius:50%;
+      background:var(--gold2);color:#17241c;
+      display:inline-grid;place-items:center;
+      font-size:11px;font-weight:900;flex:0 0 auto
+    }
+
+    .nursery-card{
+      background:rgba(255,255,255,.95);
+      color:var(--ink);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 18px 38px rgba(0,0,0,.14)
+    }
+    .nursery-card h3{
+      font-family:Georgia,serif;
+      color:var(--green);
+      font-size:25px;
+      font-weight:500;
+      margin-bottom:10px
+    }
+    .nursery-row{
+      padding:11px 0;border-bottom:1px solid #eadfce;
+      display:flex;justify-content:space-between;gap:10px;
+      font-size:13px
+    }
+    .nursery-row:last-child{border-bottom:0}
+    .nursery-row strong{color:var(--green)}
+
+    .ai-section{
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.25));
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line)
+    }
+
+    .ai-grid{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:30px;
+      align-items:center
+    }
+
+    .ai-copy h2{
+      font-family:Georgia,serif;
+      font-size:clamp(34px,4vw,50px);
+      color:var(--green);
+      font-weight:500;
+      line-height:1.05;
+      margin-bottom:14px
+    }
+    .ai-copy p{color:#4b554d;font-size:16px;margin-bottom:16px}
+
+    .ai-panel{
+      border-radius:26px;
+      background:linear-gradient(135deg,#0f3b2e,#06281f);
+      color:white;
+      padding:30px;
+      box-shadow:0 20px 45px rgba(15,59,46,.20);
+      position:relative;
+      overflow:hidden
+    }
+    .ai-panel::after{
+      content:"AI";
+      position:absolute;right:-12px;bottom:-28px;
+      font-size:130px;font-weight:900;line-height:1;
+      color:rgba(255,255,255,.045)
+    }
+    .ai-panel h3{
+      font-family:Georgia,serif;
+      color:#f2cf82;
+      font-size:30px;
+      font-weight:500;
+      margin-bottom:10px
+    }
+    .ai-panel p{color:rgba(255,255,255,.82);margin-bottom:16px}
+    .ai-example{
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:13px;
+      padding:11px 13px;
+      font-size:13px;
+      margin-bottom:9px
+    }
+
+    .process{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px
+    }
+    .step{text-align:center}
+    .step-num{
+      width:38px;height:38px;margin:0 auto 12px;
+      border-radius:50%;background:var(--green);
+      color:white;display:grid;place-items:center;font-weight:900
+    }
+    .step-icon{
+      width:78px;height:78px;border-radius:50%;
+      margin:0 auto 12px;background:white;
+      border:1px solid var(--line);
+      display:grid;place-items:center;
+      font-size:32px;color:var(--gold);box-shadow:var(--soft)
+    }
+    .step h3{color:var(--green);font-size:15px;margin-bottom:6px}
+    .step p{color:var(--muted);font-size:13px;line-height:1.4}
+
+    .quote-box{
+      max-width:900px;
+      margin:0 auto;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      overflow:hidden
+    }
+    .quote-head{
+      background:linear-gradient(135deg,var(--green),#072820);
+      color:white;
+      padding:28px;
+      text-align:center
+    }
+    .quote-head small{
+      display:block;
+      text-transform:uppercase;
+      letter-spacing:.9px;
+      font-size:11px;
+      color:#f2cf82;
+      margin-bottom:6px
+    }
+    .quote-head h3{
+      font-family:Georgia,serif;
+      font-size:31px;
+      font-weight:500
+    }
+    .quote-body{padding:28px}
+    .quote-body p{
+      color:#4b554d;
+      text-align:center;
+      max-width:720px;
+      margin:0 auto 22px;
+      font-size:15px
+    }
+    .quote-tags{
+      display:flex;flex-wrap:wrap;gap:9px;justify-content:center;
+      margin-bottom:24px
+    }
+    .tag{
+      padding:8px 12px;border-radius:999px;
+      background:#f7ecd9;border:1px solid rgba(181,138,59,.22);
+      color:var(--green);font-size:12px;font-weight:700
+    }
+    .quote-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+    .cta{
+      background:
+        radial-gradient(circle at 0% 0%,rgba(215,181,109,.16),transparent 30%),
+        linear-gradient(135deg,var(--green),#06271e);
+      color:white
+    }
+    .cta-card{text-align:center;max-width:900px;margin:0 auto}
+    .cta-card h2{
+      font-family:Georgia,serif;
+      font-size:clamp(36px,4.5vw,54px);
+      font-weight:500;
+      line-height:1.05;
+      margin-bottom:14px
+    }
+    .cta-card p{
+      color:rgba(255,255,255,.80);
+      font-size:16px;max-width:720px;margin:0 auto 24px
+    }
+    .cta-actions{
+      display:flex;justify-content:center;gap:12px;flex-wrap:wrap
+    }
+    .cta .btn.primary{background:white;color:var(--green);border-color:white}
+
+    .footer{
+      background:linear-gradient(135deg,var(--green),#06271e);
+      color:white;padding:28px 0;
+      border-top:1px solid rgba(255,255,255,.10)
+    }
+    .footer-grid{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:22px;flex-wrap:wrap
+    }
+    .footer .brand-name{color:white;font-size:27px}
+    .footer .brand-name span{color:#e2bf78}
+    .footer-links{
+      display:flex;flex-wrap:wrap;gap:24px;
+      font-size:14px;color:rgba(255,255,255,.86)
+    }
+    .copyright{color:rgba(255,255,255,.75);font-size:13px}
+
+    @media(max-width:1040px){
+      .hero-grid,.nursery-grid,.ai-grid{grid-template-columns:1fr}
+      .ecosystem-stage{min-height:450px}
+      .sectors,.modules{grid-template-columns:repeat(2,1fr)}
+      .process{grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:760px){
+      .nav{min-height:66px}
+      .brand-name{font-size:25px}
+      .menu,.nav-actions{display:none}
+      .mobile-menu-btn{display:grid;place-items:center}
+      .mobile-panel{
+        display:none;border-top:1px solid var(--line);
+        padding:12px 0 18px
+      }
+      .mobile-panel.show{display:grid;gap:10px}
+      .mobile-panel a{
+        min-height:42px;display:flex;align-items:center;
+        border:1px solid var(--line);background:white;
+        border-radius:12px;padding:0 14px;
+        font-weight:700;color:var(--green)
+      }
+
+      .hero{padding:46px 0 44px}
+      .hero-sub{font-size:17px}
+      .hero-actions .btn{width:100%}
+      .ecosystem-stage{min-height:390px}
+      .platform{
+        position:relative;
+        inset:auto;
+        width:100%;
+        min-height:310px;
+        padding:12px;
+        border-width:7px
+      }
+      .platform-screen{grid-template-columns:85px 1fr;min-height:270px}
+      .side{padding:12px 8px;font-size:10px}
+      .main-dash{padding:12px}
+      .stats{grid-template-columns:1fr 1fr}
+      .dash-bottom{grid-template-columns:1fr}
+      .ai-float{
+        position:relative;
+        width:100%;
+        margin-top:14px
+      }
+
+      .sectors,.modules{grid-template-columns:1fr}
+      .nursery-list{grid-template-columns:1fr}
+      .process{grid-template-columns:1fr}
+      section{padding:40px 0}
+      .footer-grid{display:grid}
+    }
+
+    @media(max-width:420px){
+      h1{font-size:42px}
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <nav class="nav">
+
+        <a href="/" class="brand">
+          <span class="brand-mark"></span>
+          <span class="brand-name">Pixel<span>Up</span></span>
+        </a>
+
+        <div class="menu">
+          <a href="#settori">Per chi è</a>
+          <a href="#moduli">Cosa possiamo creare</a>
+          <a href="#ai">AI</a>
+          <a href="#come-funziona">Come funziona</a>
+          <a href="#preventivo">Preventivo</a>
+        </div>
+
+        <div class="nav-actions">
+          <a class="btn" href="/">PixelUp</a>
+          <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">
+            Raccontaci la tua idea
+          </a>
+        </div>
+
+        <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()">☰</button>
+      </nav>
+
+      <div class="mobile-panel" id="mobilePanel">
+        <a href="#settori" onclick="toggleMobileMenu()">Per chi è</a>
+        <a href="#moduli" onclick="toggleMobileMenu()">Cosa possiamo creare</a>
+        <a href="#ai" onclick="toggleMobileMenu()">AI</a>
+        <a href="#come-funziona" onclick="toggleMobileMenu()">Come funziona</a>
+        <a href="#preventivo" onclick="toggleMobileMenu()">Preventivo</a>
+        <a href="/">Torna a PixelUp</a>
+        <a href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">Raccontaci la tua idea</a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap hero-grid">
+
+        <div>
+          <div class="eyebrow">
+            <span>+</span>
+            PixelUp su misura
+          </div>
+
+          <h1>Crea il tuo ecosistema digitale.</h1>
+
+          <p class="hero-sub">
+            Una piattaforma costruita intorno al tuo lavoro.
+            Clienti, utenti, appuntamenti, documenti, scadenze, team, pagamenti,
+            report e strumenti operativi raccolti in un'unica dashboard personalizzata.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">
+              Raccontaci cosa vuoi gestire
+            </a>
+            <a class="btn" href="#settori">Guarda gli esempi</a>
+          </div>
+
+          <div class="hero-note">
+            <span class="check">✓</span>
+            <span>
+              Non devi adattare il tuo lavoro a un software già fatto:
+              possiamo adattare PixelUp al tuo modo di lavorare.
+            </span>
+          </div>
+        </div>
+
+
+        <div class="ecosystem-stage">
+
+          <div class="platform">
+            <div class="platform-screen">
+
+              <aside class="side">
+                <div class="side-logo">La tua piattaforma</div>
+                <ul>
+                  <li>Dashboard</li>
+                  <li>Clienti</li>
+                  <li>Agenda</li>
+                  <li>Scadenze</li>
+                  <li>Documenti</li>
+                  <li>Team</li>
+                  <li>Report</li>
+                </ul>
+              </aside>
+
+              <div class="main-dash">
+                <h3>Buongiorno, Martina</h3>
+
+                <div class="stats">
+                  <div class="stat"><small>Clienti</small><strong>48</strong></div>
+                  <div class="stat"><small>Scadenze</small><strong>12</strong></div>
+                  <div class="stat"><small>Attività oggi</small><strong>7</strong></div>
+                  <div class="stat"><small>Documenti</small><strong>126</strong></div>
+                </div>
+
+                <div class="dash-bottom">
+                  <div class="panel">
+                    <h4>Prossime attività</h4>
+                    <div class="row"><span>Contatta cliente</span><b>10:30</b></div>
+                    <div class="row"><span>Consegna documento</span><b>14:00</b></div>
+                    <div class="row"><span>Riunione team</span><b>16:30</b></div>
+                  </div>
+
+                  <div class="panel">
+                    <h4>Stato lavoro</h4>
+                    <div class="row"><span>Da fare</span><b>8</b></div>
+                    <div class="row"><span>In corso</span><b>12</b></div>
+                    <div class="row"><span>Completati</span><b>34</b></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-float">
+            <strong>✦ AI collegata al tuo ecosistema</strong>
+            <span>“Aggiungi una scadenza venerdì e assegna il compito a Giulia.”</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section>
+      <div class="wrap">
+        <div class="statement">
+          <strong>Non adattare il tuo lavoro al software. Adattiamo PixelUp al tuo lavoro.</strong>
+          <p>
+            Partiamo dalle attività che svolgi ogni giorno e costruiamo solo le sezioni,
+            i flussi e gli strumenti che servono davvero alla tua organizzazione.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="settori">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Può adattarsi a attività molto diverse</h2>
+          <p>
+            PixelUp non è legato a un solo settore. La piattaforma può essere configurata
+            intorno alle persone, ai progetti e ai processi che vuoi gestire.
+          </p>
+        </div>
+
+        <div class="sectors">
+
+          <article class="sector">
+            <div class="ico">🧸</div>
+            <h3>Asili e strutture educative</h3>
+            <p>
+              Bambini, famiglie, presenze, documenti, turni delle operatrici,
+              comunicazioni interne, attività e scadenze.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">📁</div>
+            <h3>Studi professionali</h3>
+            <p>
+              Clienti, pratiche, appuntamenti, documenti, note operative,
+              follow-up e scadenze.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">🏋️</div>
+            <h3>Palestre, coach e PT</h3>
+            <p>
+              Clienti, programmi, appuntamenti, progressi, schede,
+              pagamenti e comunicazioni.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">🏢</div>
+            <h3>Piccole aziende</h3>
+            <p>
+              Clienti, commesse, attività, team, procedure,
+              documenti, scadenze e report.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">🎯</div>
+            <h3>Agenzie</h3>
+            <p>
+              Progetti, clienti, collaboratori, file, attività,
+              approvazioni e consegne.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">🤝</div>
+            <h3>Associazioni</h3>
+            <p>
+              Soci, eventi, quote, documenti, attività,
+              comunicazioni e organizzazione interna.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">🧑‍💼</div>
+            <h3>Professionisti</h3>
+            <p>
+              CRM semplice, agenda, clienti, documenti,
+              note, promemoria e follow-up.
+            </p>
+          </article>
+
+          <article class="sector">
+            <div class="ico">⚙️</div>
+            <h3>La tua attività</h3>
+            <p>
+              Se il tuo lavoro ha persone, processi, documenti o scadenze,
+              possiamo progettare un ecosistema dedicato.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section id="moduli">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Cosa possiamo costruire dentro la tua piattaforma</h2>
+          <p>
+            La dashboard può essere composta da moduli diversi in base alle tue necessità.
+          </p>
+        </div>
+
+        <div class="modules">
+
+          <div class="module"><div class="ico">👥</div><strong>Clienti / Utenti</strong><span>Anagrafiche, profili, informazioni e storico.</span></div>
+          <div class="module"><div class="ico">📅</div><strong>Agenda</strong><span>Appuntamenti, riunioni, attività e calendario.</span></div>
+          <div class="module"><div class="ico">⏰</div><strong>Scadenze</strong><span>Promemoria, consegne, rinnovi e attività future.</span></div>
+          <div class="module"><div class="ico">📁</div><strong>Documenti</strong><span>File, PDF, contratti e materiale operativo.</span></div>
+
+          <div class="module"><div class="ico">💳</div><strong>Pagamenti</strong><span>Stato pagamenti, scadenze e informazioni economiche.</span></div>
+          <div class="module"><div class="ico">👨‍👩‍👧‍👦</div><strong>Team</strong><span>Operatori, collaboratori, ruoli e responsabilità.</span></div>
+          <div class="module"><div class="ico">☑</div><strong>Checklist</strong><span>Procedure, attività da completare e controllo avanzamento.</span></div>
+          <div class="module"><div class="ico">📊</div><strong>Report</strong><span>Riepiloghi, dati e informazioni utili per l'attività.</span></div>
+
+          <div class="module"><div class="ico">🔗</div><strong>Area cliente</strong><span>Una parte condivisibile con clienti, utenti o famiglie.</span></div>
+          <div class="module"><div class="ico">🔔</div><strong>Notifiche</strong><span>Promemoria e comunicazioni operative.</span></div>
+          <div class="module"><div class="ico">✉</div><strong>Comunicazioni</strong><span>Contatti, messaggi e flussi informativi.</span></div>
+          <div class="module"><div class="ico">✨</div><strong>Moduli personalizzati</strong><span>Sezioni costruite appositamente per il tuo lavoro.</span></div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section>
+      <div class="wrap">
+        <div class="nursery">
+
+          <div class="nursery-grid">
+
+            <div>
+              <div class="eyebrow" style="background:rgba(255,255,255,.12);color:#f2cf82;border-color:rgba(242,207,130,.28);">
+                <span style="background:#f2cf82;color:#17241c;">✓</span>
+                Un esempio concreto
+              </div>
+
+              <h2>Come potrebbe funzionare per un asilo nido</h2>
+
+              <p>
+                Un asilo potrebbe avere una piattaforma unica per coordinare famiglie,
+                bambini, operatrici, documenti e attività quotidiane senza utilizzare
+                strumenti separati.
+              </p>
+
+              <ul class="nursery-list">
+                <li>Schede bambini</li>
+                <li>Contatti famiglie</li>
+                <li>Presenze</li>
+                <li>Turni operatrici</li>
+                <li>Documenti</li>
+                <li>Scadenze</li>
+                <li>Comunicazioni</li>
+                <li>Attività interne</li>
+              </ul>
+            </div>
+
+            <div class="nursery-card">
+              <h3>Dashboard Asilo</h3>
+              <div class="nursery-row"><span>Bambini presenti oggi</span><strong>31</strong></div>
+              <div class="nursery-row"><span>Operatrici in turno</span><strong>6</strong></div>
+              <div class="nursery-row"><span>Documenti da aggiornare</span><strong>4</strong></div>
+              <div class="nursery-row"><span>Comunicazioni famiglie</span><strong>7</strong></div>
+              <div class="nursery-row"><span>Prossima scadenza</span><strong>15 ottobre</strong></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <section id="ai" class="ai-section">
+      <div class="wrap">
+
+        <div class="ai-grid">
+
+          <div class="ai-copy">
+            <div class="eyebrow">
+              <span>AI</span>
+              Intelligenza artificiale integrata
+            </div>
+
+            <h2>L'AI può lavorare direttamente dentro il tuo ecosistema.</h2>
+
+            <p>
+              L'assistente AI può essere collegato alle vere sezioni della piattaforma,
+              così non rimane una semplice chat separata.
+            </p>
+
+            <p>
+              Può aiutarti ad aggiungere o aggiornare dati, scadenze, contatti,
+              note, attività e altre informazioni operative in base alla configurazione
+              del tuo progetto.
+            </p>
+          </div>
+
+          <div class="ai-panel">
+            <h3>AI PixelUp</h3>
+            <p>Esempi di richieste che potrebbero aggiornare direttamente la dashboard:</p>
+
+            <div class="ai-example">“Aggiungi una scadenza per venerdì.”</div>
+            <div class="ai-example">“Inserisci questa nuova famiglia.”</div>
+            <div class="ai-example">“Segna che Marco ha consegnato il documento.”</div>
+            <div class="ai-example">“Ricordami di contattare questo cliente tra una settimana.”</div>
+            <div class="ai-example">“Aggiungi questa nota al progetto.”</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section id="come-funziona">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Come nasce il tuo ecosistema</h2>
+          <p>
+            Non partiamo da un pacchetto standard. Partiamo da ciò che fai ogni giorno.
+          </p>
+        </div>
+
+        <div class="process">
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-icon">💬</div>
+            <h3>Ci racconti il tuo lavoro</h3>
+            <p>Persone, attività, problemi e strumenti che usi oggi.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-icon">🧩</div>
+            <h3>Scegliamo i moduli</h3>
+            <p>Definiamo ciò che serve davvero alla tua attività.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-icon">⚙️</div>
+            <h3>Costruiamo la piattaforma</h3>
+            <p>Dashboard, sezioni e flussi vengono adattati al progetto.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-icon">🚀</div>
+            <h3>Inizi a usarla</h3>
+            <p>Ricevi accessi e strumenti pronti per il tuo lavoro.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section id="preventivo">
+      <div class="wrap">
+
+        <div class="section-head">
+          <h2>Ogni ecosistema è diverso</h2>
+          <p>
+            Per questo il prezzo viene definito in base alle funzioni, agli utenti,
+            all'automazione e al livello di personalizzazione richiesto.
+          </p>
+        </div>
+
+        <div class="quote-box">
+          <div class="quote-head">
+            <small>Progetto personalizzato</small>
+            <h3>Preventivo su misura</h3>
+          </div>
+
+          <div class="quote-body">
+            <p>
+              Raccontaci cosa vuoi gestire. Valutiamo insieme la struttura più adatta
+              e prepariamo una proposta per la tua attività.
+            </p>
+
+            <div class="quote-tags">
+              <span class="tag">Dashboard</span>
+              <span class="tag">Clienti / utenti</span>
+              <span class="tag">Documenti</span>
+              <span class="tag">Agenda</span>
+              <span class="tag">Team</span>
+              <span class="tag">AI</span>
+              <span class="tag">Automazioni</span>
+              <span class="tag">Moduli personalizzati</span>
+            </div>
+
+            <div class="quote-actions">
+              <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">
+                Richiedi il tuo ecosistema
+              </a>
+
+              <a class="btn" href="mailto:info@pixelup.it?subject=Vorrei%20raccontarvi%20la%20mia%20attivita%20-%20PixelUp">
+                Raccontaci la tua attività
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="cta">
+      <div class="wrap">
+        <div class="cta-card">
+
+          <h2>Hai un modo di lavorare tutto tuo?</h2>
+
+          <p>
+            Costruiamo una piattaforma che segua il tuo processo invece di costringerti
+            a cambiare il modo in cui lavori.
+          </p>
+
+          <div class="cta-actions">
+            <a class="btn primary" href="mailto:info@pixelup.it?subject=Richiesta%20ecosistema%20digitale%20PixelUp">
+              Parliamo del tuo progetto
+            </a>
+
+            <a class="btn gold" href="/">Torna a PixelUp</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+
+      <a href="/" class="brand">
+        <span class="brand-mark"></span>
+        <span>
+          <span class="brand-name">Pixel<span>Up</span></span>
+          <span style="display:block;color:rgba(255,255,255,.70);font-size:12px;margin-top:4px;">
+            Ecosistemi digitali su misura
+          </span>
+        </span>
+      </a>
+
+      <div class="footer-links">
+        <a href="/termini-e-condizioni.html">Termini e Condizioni</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <a href="/assistenza.html">Assistenza</a>
+      </div>
+
+      <div class="copyright">© 2026 PixelUp. Tutti i diritti riservati.</div>
+
+    </div>
+  </footer>
+
+
+  <script>
+    function toggleMobileMenu(){
+      const panel=document.getElementById("mobilePanel");
+      if(!panel)return;
+      panel.classList.toggle("show");
+    }
+  </script>
+
+</body>
+</html>
