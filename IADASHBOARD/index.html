@@ -1442,6 +1442,15 @@
 .lang-select{border:1px solid var(--border);background:#fffaf2;color:var(--green-dark);border-radius:999px;padding:7px 10px;font:700 10px Arial,sans-serif;letter-spacing:.3px;max-width:48%}
 .lang-label{font:700 9px Arial,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 @media(max-width:420px){.language-tools{padding:7px 8px;gap:5px}.lang-select{padding:7px 7px;font-size:9px}}
+
+.spouse-visibility-project-action{
+  border-color:rgba(177,145,85,.72) !important;
+  background:linear-gradient(135deg,rgba(255,252,246,.98),rgba(245,234,216,.96)) !important;
+}
+.spouse-visibility-project-action span:first-child{
+  color:var(--gold);
+}
+
 </style>
 
 <style>
@@ -1467,30 +1476,6 @@
 .experience-menu-title{font-size:14px;font-weight:800;letter-spacing:1px}
 .experience-menu-sub{font-family:Arial,sans-serif;font-size:10px;opacity:.84;text-transform:none;letter-spacing:.3px}
 
-.spouse-visibility-menu-btn{
-  min-height:64px !important;
-  background:linear-gradient(135deg,#fffaf2 0%,#f5ead8 100%) !important;
-  color:var(--green-dark) !important;
-  border:1.5px solid rgba(177,145,85,.68) !important;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  box-shadow:0 8px 20px rgba(60,45,28,.07) !important;
-}
-.spouse-visibility-menu-title{
-  font-size:14px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-.spouse-visibility-menu-sub{
-  font-family:Arial,sans-serif;
-  font-size:10px;
-  text-transform:none;
-  letter-spacing:.2px;
-  color:var(--muted);
-}
 
 .visibility-bulk-actions{
   display:grid;
@@ -1595,12 +1580,6 @@
     </button>
     <button class="project-main-btn secondary" type="button" onclick="showArchivedProjects()">
       Progetti archiviati
-    </button>
-
-    <div class="menu-group-label">SPOSI</div>
-    <button class="project-main-btn spouse-visibility-menu-btn" type="button" onclick="toggleProjectMenu(); toggleVisibilitySettings();">
-      <span class="spouse-visibility-menu-title">VISIBILITÀ SPOSI</span>
-      <span class="spouse-visibility-menu-sub">Scegli cosa possono vedere nel loro link</span>
     </button>
 
     <div class="menu-group-label">STRUMENTI</div>
@@ -2167,6 +2146,11 @@
       <button class="secondary-action project-settings-action" type="button" onclick="editEventInfo()">
         <span>⚙</span>
         <span>Modifica Progetto</span>
+      </button>
+
+      <button class="secondary-action project-settings-action spouse-visibility-project-action" type="button" onclick="toggleVisibilitySettings()">
+        <span>👁</span>
+        <span>Visibilità sposi</span>
       </button>
 
 
@@ -5457,6 +5441,11 @@
 
 
   function toggleVisibilitySettings() {
+    if (!currentEventId) {
+      alert("Apri prima un matrimonio per modificare la visibilità degli sposi.");
+      return;
+    }
+
     openSingleSection("visibilitySection");
     renderVisibilitySettings();
   }
@@ -8055,3 +8044,4 @@
 
   window.addEventListener("DOMContentLoaded",()=>setTimeout(translateStaticUI,250));
 </script>
+  
