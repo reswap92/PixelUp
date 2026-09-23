@@ -247,7 +247,7 @@
     .coming{
       position:absolute;right:15px;top:15px;padding:6px 10px;border-radius:999px;
       background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);
-      font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase
+      font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;cursor:pointer
     }
 
     .dashboard-box{
@@ -367,7 +367,7 @@
         <div class="menu">
           <a href="#come-funziona">Come funziona</a>
           <a href="#catalogo">Experience</a>
-          <a href="#nuove">Nuove idee</a>
+          <a href="#nuove">Altre Experience</a>
           <a href="#dashboard">Dashboard</a>
         </div>
 
@@ -382,7 +382,7 @@
       <div class="mobile-panel" id="mobilePanel">
         <a href="#come-funziona" onclick="toggleMobileMenu()">Come funziona</a>
         <a href="#catalogo" onclick="toggleMobileMenu()">Experience</a>
-        <a href="#nuove" onclick="toggleMobileMenu()">Nuove idee</a>
+        <a href="#nuove" onclick="toggleMobileMenu()">Altre Experience</a>
         <a href="#dashboard" onclick="toggleMobileMenu()">Dashboard</a>
         <a href="/wedding.html">PixelUp Wedding</a>
         <a href="/dashboard/">Accedi</a>
@@ -652,14 +652,14 @@
       <div class="wrap">
 
         <div class="section-head">
-          <h2>Nuove Wedding Experience da aggiungere</h2>
-          <p>Idee coerenti con PixelUp che possiamo inserire successivamente anche nel catalogo della dashboard. Prezzo sposi e margine Partner vanno ancora definiti.</p>
+          <h2>Altre Wedding Experience</h2>
+          <p>Altre esperienze e servizi che puoi proporre agli sposi. Per disponibilità, personalizzazione e prezzo, contattaci direttamente.</p>
         </div>
 
         <div class="new-grid">
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://reveriesetbois.fr/img/upload/ct/12843/SAL-PLA-030-2-.jpg') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Tableau de Mariage')">Contattaci</span>
             <div class="icon">🪑</div>
             <small>Wedding Digital</small>
             <h3>Tableau de Mariage</h3>
@@ -670,10 +670,13 @@
               <li>Versione stampabile</li>
               <li>Versione QR / digitale opzionale</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Tableau de Mariage')">Contattaci</button>
+            </div>
           </article>
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://i.etsystatic.com/6709614/r/il/9ba0e0/3439223815/il_fullxfull.3439223815_r4u5.jpg') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Welcome Sign + QR')">Contattaci</span>
             <div class="icon">✨</div>
             <small>Welcome Experience</small>
             <h3>Welcome Sign + QR</h3>
@@ -684,10 +687,13 @@
               <li>Collegamento a Wedding Page</li>
               <li>File pronto per stampa</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Welcome Sign + QR')">Contattaci</button>
+            </div>
           </article>
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://i.etsystatic.com/8071833/r/il/f12253/4731940474/il_1080xN.4731940474_g3gj.jpg') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Menù Digitale QR')">Contattaci</span>
             <div class="icon">🍽️</div>
             <small>Wedding Digital</small>
             <h3>Menù Digitale QR</h3>
@@ -698,10 +704,13 @@
               <li>Allergeni e varianti</li>
               <li>Grafica coordinata</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Menù Digitale QR')">Contattaci</button>
+            </div>
           </article>
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://i.etsystatic.com/26385624/r/il/3054a8/7059867828/il_500x500.7059867828_4i5d.jpg') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Save the Date Digitale')">Contattaci</span>
             <div class="icon">💌</div>
             <small>Prima del matrimonio</small>
             <h3>Save the Date Digitale</h3>
@@ -712,10 +721,13 @@
               <li>Countdown</li>
               <li>Data e location</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Save the Date Digitale')">Contattaci</button>
+            </div>
           </article>
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://i.etsystatic.com/38186152/r/il/2aa181/7663794442/il_794xN.7663794442_lfjz.jpg') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Wedding Timeline QR')">Contattaci</span>
             <div class="icon">🗓️</div>
             <small>Durante il matrimonio</small>
             <h3>Wedding Timeline QR</h3>
@@ -726,10 +738,13 @@
               <li>Taglio torta</li>
               <li>Musica e momenti speciali</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Wedding Timeline QR')">Contattaci</button>
+            </div>
           </article>
 
           <article class="new-card" style="background:linear-gradient(145deg,rgba(8,43,34,.74),rgba(8,43,34,.90)),url('https://invitepix.com/_next/image?q=90&url=https%3A%2F%2Fstorefront-images.invitepix.com%2Flanding%2Fhero%2Fmain-hero-mobile.webp%3Fv%3D4&w=3840') center/cover;">
-            <span class="coming">Da inserire</span>
+            <span class="coming" onclick="openExperienceContact('Wedding Memories')">Contattaci</span>
             <div class="icon">❤️</div>
             <small>Dopo il matrimonio</small>
             <h3>Wedding Memories</h3>
@@ -740,6 +755,9 @@
               <li>Video messaggi</li>
               <li>Link ricordo per gli sposi</li>
             </ul>
+            <div style="margin-top:18px;position:relative;z-index:2;">
+              <button class="btn gold small" type="button" onclick="openExperienceContact('Wedding Memories')">Contattaci</button>
+            </div>
           </article>
 
         </div>
