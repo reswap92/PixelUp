@@ -4,30 +4,176 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d0907">
+
 <title>TRANSMIND LIVE</title>
+
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#0d0907}
-body{display:flex;justify-content:center}
-.poster{position:relative;width:100%;max-width:1080px;line-height:0}
-.poster img{display:block;width:100%;height:auto}
-.buy-hotspot{
- position:absolute;
- left:10%;
- width:80%;
- top:72%;
- height:7%;
- display:block;
- cursor:pointer;
- z-index:999;
+*{
+  box-sizing:border-box;
 }
-.buy-hotspot:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#0d0907;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#fff;
+}
+
+.page{
+  width:100%;
+  max-width:1080px;
+}
+
+/* LOCANDINA */
+.poster{
+  position:relative;
+  width:100%;
+  line-height:0;
+}
+
+.poster img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* AREA CLICCABILE ACQUISTA */
+.buy-hotspot{
+  position:absolute;
+  left:10%;
+  width:80%;
+  top:72%;
+  height:7%;
+  display:block;
+  cursor:pointer;
+  z-index:999;
+}
+
+.buy-hotspot:focus-visible{
+  outline:3px solid #fff;
+  outline-offset:3px;
+}
+
+/* VIDEO */
+.video-section{
+  padding:35px 18px 50px;
+  background:#0d0907;
+  text-align:center;
+}
+
+.video-section h2{
+  margin:0 0 10px;
+  font-size:28px;
+  line-height:1.2;
+  color:#fff;
+}
+
+.video-section p{
+  margin:0 auto 22px;
+  max-width:700px;
+  font-size:16px;
+  line-height:1.5;
+  color:#cfc6c0;
+}
+
+.video-wrapper{
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  border-radius:16px;
+  overflow:hidden;
+  background:#000;
+  box-shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+.video-wrapper video{
+  display:block;
+  width:100%;
+  height:auto;
+  background:#000;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+  .video-section{
+    padding:28px 12px 40px;
+  }
+
+  .video-section h2{
+    font-size:23px;
+  }
+
+  .video-section p{
+    font-size:14px;
+  }
+
+  .video-wrapper{
+    border-radius:10px;
+  }
+}
 </style>
+
 </head>
+
 <body>
-<main class="poster">
-<img src="assets/transmind-live-locandina.jpg" alt="Locandina TRANSMIND LIVE">
-<a class="buy-hotspot" href="acquista.html" aria-label="Acquista biglietti TRANSMIND LIVE"></a>
+
+<main class="page">
+
+  <!-- LOCANDINA -->
+  <div class="poster">
+
+    <img
+      src="assets/transmind-live-locandina.jpg"
+      alt="Locandina TRANSMIND LIVE"
+    >
+
+    <a
+      class="buy-hotspot"
+      href="acquista.html"
+      aria-label="Acquista biglietti TRANSMIND LIVE">
+    </a>
+
+  </div>
+
+
+  <!-- VIDEO -->
+  <section class="video-section">
+
+    <h2>Scopri TRANSMIND LIVE</h2>
+
+    <p>
+      Guarda il video e scopri l’esperienza TRANSMIND LIVE
+      con Edward Montis.
+    </p>
+
+    <div class="video-wrapper">
+
+      <video
+        controls
+        playsinline
+        preload="metadata"
+        poster="assets/transmind-live-locandina.jpg">
+
+        <source
+          src="assets/transmind-live-video.mp4"
+          type="video/mp4">
+
+        Il tuo browser non supporta la riproduzione video.
+
+      </video>
+
+    </div>
+
+  </section>
+
 </main>
+
 </body>
 </html>
