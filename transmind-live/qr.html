@@ -30,39 +30,9 @@ body{
   max-width:1080px;
 }
 
-/* LOCANDINA */
-.poster{
-  position:relative;
-  width:100%;
-  line-height:0;
-}
-
-.poster img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-
-/* AREA CLICCABILE ACQUISTA */
-.buy-hotspot{
-  position:absolute;
-  left:10%;
-  width:80%;
-  top:72%;
-  height:7%;
-  display:block;
-  cursor:pointer;
-  z-index:999;
-}
-
-.buy-hotspot:focus-visible{
-  outline:3px solid #fff;
-  outline-offset:3px;
-}
-
 /* VIDEO */
 .video-section{
-  padding:35px 18px 50px;
+  padding:35px 18px 45px;
   background:#0d0907;
   text-align:center;
 }
@@ -99,11 +69,41 @@ body{
   background:#000;
 }
 
+/* LOCANDINA */
+.poster{
+  position:relative;
+  width:100%;
+  line-height:0;
+}
+
+.poster img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* AREA CLICCABILE ACQUISTA */
+.buy-hotspot{
+  position:absolute;
+  left:10%;
+  width:80%;
+  top:72%;
+  height:7%;
+  display:block;
+  cursor:pointer;
+  z-index:999;
+}
+
+.buy-hotspot:focus-visible{
+  outline:3px solid #fff;
+  outline-offset:3px;
+}
+
 /* MOBILE */
 @media(max-width:600px){
 
   .video-section{
-    padding:28px 12px 40px;
+    padding:25px 12px 35px;
   }
 
   .video-section h2{
@@ -126,24 +126,7 @@ body{
 
 <main class="page">
 
-  <!-- LOCANDINA -->
-  <div class="poster">
-
-    <img
-      src="assets/transmind-live-locandina.jpg"
-      alt="Locandina TRANSMIND LIVE"
-    >
-
-    <a
-      class="buy-hotspot"
-      href="acquista.html"
-      aria-label="Acquista biglietti TRANSMIND LIVE">
-    </a>
-
-  </div>
-
-
-  <!-- VIDEO -->
+  <!-- VIDEO PRIMA -->
   <section class="video-section">
 
     <h2>Scopri TRANSMIND LIVE</h2>
@@ -155,23 +138,40 @@ body{
 
     <div class="video-wrapper">
 
-     <video
-  controls
-  playsinline
-  preload="metadata"
-  poster="assets/transmind-video-cover.jpg">
+      <video
+        controls
+        playsinline
+        preload="auto"
+        onloadedmetadata="this.currentTime=0.1;">
 
-  <source
-    src="assets/transmind-live-video.mp4"
-    type="video/mp4">
+        <source
+          src="assets/transmind-live-video.mp4#t=0.1"
+          type="video/mp4">
 
-  Il tuo browser non supporta la riproduzione video.
+        Il tuo browser non supporta la riproduzione video.
 
-</video>
+      </video>
 
     </div>
 
   </section>
+
+
+  <!-- PROGRAMMA / LOCANDINA DOPO -->
+  <div class="poster">
+
+    <img
+      src="assets/transmind-live-locandina.jpg"
+      alt="Programma TRANSMIND LIVE"
+    >
+
+    <a
+      class="buy-hotspot"
+      href="acquista.html"
+      aria-label="Acquista biglietti TRANSMIND LIVE">
+    </a>
+
+  </div>
 
 </main>
 
