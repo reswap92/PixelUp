@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PixelUp Photo QR — Admin</title>
+<meta name="theme-color" content="#0f3b2e">
+<style>
+:root{--bg:#f4ebdd;--cream:#fffaf2;--panel:#fffdf8;--ink:#213024;--muted:#6f675d;--green:#0f3b2e;--green2:#174f3d;--gold:#b58a3b;--gold2:#d7b56d;--line:#e8ddca;--danger:#8a3d2c;--soft:0 10px 25px rgba(36,28,16,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#f4ebdd,#fffaf2);color:var(--ink)}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{width:min(1120px,92%);margin:auto}.top{position:sticky;top:0;z-index:20;background:rgba(244,235,221,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(181,138,59,.18)}.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px}.mark{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--green) 0 48%,transparent 48%),linear-gradient(45deg,var(--gold) 0 50%,var(--green2) 50%);position:relative}.mark:after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:white;font:700 25px Georgia}.brand b{font:500 28px Georgia;color:var(--green)}.brand b span{color:var(--gold)}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:white;color:var(--green);font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.primary{background:linear-gradient(135deg,var(--green),#06281f);color:white;border-color:var(--green)}.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1d221e;border-color:var(--gold)}.btn.danger{background:#fff7f4;color:var(--danger);border-color:rgba(138,61,44,.25)}
+main{padding:34px 0 70px}.hero{background:radial-gradient(circle at 85% 0%,rgba(215,181,109,.18),transparent 28%),linear-gradient(135deg,var(--green),#06271e);color:white;border-radius:28px;padding:28px;margin-bottom:24px}.hero small{letter-spacing:1px;color:#f2cf82;font-weight:900}.hero h1{font:500 clamp(32px,5vw,54px)/1.02 Georgia;margin:8px 0 10px}.hero p{color:rgba(255,255,255,.82);max-width:800px}.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}.card{background:rgba(255,253,248,.94);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--soft)}.card h2{font:500 27px Georgia;color:var(--green);margin:0 0 7px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px;line-height:1.45}.field{margin-bottom:13px}.field label{display:block;color:var(--green);font-weight:800;font-size:12px;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:#fffdf8;border-radius:12px;padding:12px 13px;color:var(--ink);outline:none}.field textarea{min-height:90px;resize:vertical}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{border:1px solid rgba(181,138,59,.22);background:#fff8e9;border-radius:14px;padding:12px 14px;color:#6d5b39;font-size:12px;line-height:1.45;margin:12px 0}.toolbar,.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.events{display:grid;gap:12px}.event{border:1px solid var(--line);border-radius:18px;padding:15px;background:white}.event-top{display:flex;justify-content:space-between;gap:12px}.event h3{font:500 21px Georgia;color:var(--green);margin:0 0 4px}.event p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.badge{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:999px;background:rgba(77,90,58,.10);border:1px solid rgba(77,90,58,.18);color:var(--green);font-weight:800;font-size:11px}.badge.off{background:#fff4f1;color:var(--danger);border-color:rgba(138,61,44,.18)}.actions .btn{min-height:38px;font-size:12px;padding:0 12px}.empty{text-align:center;padding:26px 10px;color:var(--muted);font-size:13px}.hide{display:none!important}.login{max-width:480px;margin:70px auto 0}.qrbox{display:none;margin-top:14px;padding:14px;border:1px dashed rgba(181,138,59,.5);border-radius:16px;background:#fffaf2}.qrbox.show{display:block}#qrWrap{display:grid;place-items:center;width:max-content;max-width:100%;padding:10px;background:white;border-radius:12px}.linkline{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;word-break:break-all;color:#48524b;margin-top:7px}.linklabel{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--gold);font-weight:900;margin-top:13px}.gallery-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.media{position:relative;border-radius:15px;overflow:hidden;background:#eee;aspect-ratio:1;border:1px solid var(--line)}.media img,.media video{width:100%;height:100%;object-fit:cover}.media-info{position:absolute;left:0;right:0;bottom:0;padding:8px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.72));color:white;font-size:10px}.media-del{position:absolute;top:7px;right:7px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(255,255,255,.94);color:var(--danger)}.setup-warning{border:1px solid rgba(138,61,44,.22);background:#fff6f2;color:#7b4437;border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.45;margin-top:12px}.emailchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.emailchip{padding:5px 8px;border-radius:999px;background:#f7ecd9;border:1px solid rgba(181,138,59,.18);font-size:10px;color:#6d5b39}
+@media(max-width:850px){.grid{grid-template-columns:1fr}}@media(max-width:620px){.row2{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.brand b{font-size:24px}.hero{padding:22px;border-radius:22px}.event-top{display:grid}.actions .btn{flex:1 1 145px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><div class="brand"><span class="mark"></span><b>Pixel<span>Up</span></b></div><button id="logoutBtn" class="btn hide">Esci</button></div></header>
+<main class="wrap">
+<section id="loginView" class="login card">
+<h2>Accesso Photo QR</h2><p class="sub">Area privata PixelUp. Accedi con l'account Firebase Authentication autorizzato come amministratore.</p>
+<div class="field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="info@pixelup.it"></div>
+<div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+<button id="loginBtn" class="btn primary" style="width:100%">Accedi</button><div id="loginStatus" class="sub" style="margin-top:10px"></div>
+<div class="setup-warning">Per sicurezza l'account deve avere anche un documento <b>photoAdmins/{UID}</b> in Firestore. Gli sposi autenticati non possono entrare in questo pannello.</div>
+</section>
+
+<div id="appView" class="hide">
+<section class="hero"><small>PIXELUP PHOTO QR</small><h1>Crea il Photo Event e consegna due accessi.</h1><p>Il QR/link invitati serve solo per caricare. Il link galleria sposi usa accesso via email con magic link ed è separato dal pannello amministratore.</p></section>
+<div class="grid">
+<section class="card">
+<h2>Nuovo Photo Event</h2><p class="sub">Crea spazio upload + galleria privata sposi con un solo passaggio.</p>
+<div class="field"><label>Nomi sposi / evento</label><input id="eventName" placeholder="Cristina & Lorenzo"></div>
+<div class="row2"><div class="field"><label>Data matrimonio</label><input id="eventDate" type="date"></div><div class="field"><label>Durata spazio</label><select id="durationDays"><option value="30">30 giorni</option><option value="90">3 mesi</option><option value="180" selected>6 mesi</option><option value="365">1 anno</option></select></div></div>
+<div class="field"><label>Email autorizzate galleria sposi</label><input id="galleryEmails" type="text" placeholder="sposi@email.it oppure email1@email.it, email2@email.it"><div class="sub" style="margin:6px 0 0">Puoi inserire 1 o 2 email separate da virgola. Riceveranno un magic link per entrare nella galleria.</div></div>
+<div class="field"><label>Messaggio invitati</label><textarea id="welcomeText">Scansiona il QR e condividi con noi le foto e i video più belli di questa giornata.</textarea></div>
+<div class="notice">Il pannello admin resta solo tuo. Gli invitati non vedono la galleria. Gli sposi entrano in <b>photo-gallery.html</b> solo con una delle email autorizzate.</div>
+<button id="createBtn" class="btn primary" style="width:100%">+ Crea Photo Event</button><div id="createStatus" class="sub" style="margin-top:10px"></div>
+
+<div id="qrBox" class="qrbox">
+<strong style="color:var(--green)">Evento creato</strong>
+<div id="qrWrap" style="margin-top:10px"></div>
+<div class="linklabel">Link invitati / QR</div><div id="publicLink" class="linkline"></div>
+<div class="linklabel">Link privato sposi</div><div id="galleryLink" class="linkline"></div>
+<div class="linklabel">Email autorizzate</div><div id="createdEmails" class="emailchips"></div>
+<div class="toolbar"><button id="copyUploadBtn" class="btn">Copia link invitati</button><button id="downloadQrBtn" class="btn gold">Scarica QR PNG</button><button id="copyGalleryBtn" class="btn">Copia link sposi</button><a id="openGalleryBtn" class="btn" target="_blank" rel="noopener">Apri galleria</a></div>
+</div>
+</section>
+
+<section class="card"><div class="gallery-head"><div><h2>I tuoi Photo Event</h2><p class="sub" style="margin:0">Gestisci upload, accessi e gallerie.</p></div><button id="refreshBtn" class="btn">Aggiorna</button></div><div id="eventsList" class="events"><div class="empty">Caricamento...</div></div></section>
+</div>
+
+<section id="gallerySection" class="card hide" style="margin-top:22px"><div class="gallery-head"><div><h2 id="galleryTitle">Galleria</h2><p id="galleryMeta" class="sub" style="margin:0"></p></div><button id="closeGalleryBtn" class="btn">Chiudi</button></div><div id="galleryGrid" class="gallery-grid"></div></section>
+</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import{getFirestore,collection,doc,setDoc,getDocs,getDoc,deleteDoc,query,orderBy,serverTimestamp,Timestamp,writeBatch}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import{getStorage,ref as storageRef,deleteObject,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+const firebaseConfig={apiKey:"AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",authDomain:"backtag-16de3.firebaseapp.com",projectId:"backtag-16de3",storageBucket:"backtag-16de3.firebasestorage.app",messagingSenderId:"415455463905",appId:"1:415455463905:web:abd5e58bdeaaf6e3b9eaa0",measurementId:"G-6565LXTZW7"};
+const app=initializeApp(firebaseConfig),db=getFirestore(app),storage=getStorage(app),auth=getAuth(app),$=id=>document.getElementById(id);
+let lastUploadUrl="",lastGalleryUrl="",lastQrName="pixelup-photo-qr.png",isVerifiedAdmin=false;
+
+function slugify(t){return String(t||"").toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"evento"}
+function randomCode(n=10){const c="abcdefghjkmnpqrstuvwxyz23456789",b=new Uint8Array(n);crypto.getRandomValues(b);return Array.from(b,x=>c[x%c.length]).join("")}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function uploadUrl(id){return location.origin+"/photo-event.html?id="+encodeURIComponent(id)}
+function galleryUrl(id){return location.origin+"/photo-gallery.html?event="+encodeURIComponent(id)}
+function dateText(ts){try{return ts?.toDate().toLocaleDateString("it-IT")||""}catch{return""}}
+function parseEmails(value){return [...new Set(String(value||"").split(/[,;\n]+/).map(x=>x.trim().toLowerCase()).filter(Boolean))].slice(0,2)}
+function validEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)}
+async function copyText(text,label="Link copiato."){try{await navigator.clipboard.writeText(text);alert(label)}catch{prompt("Copia:",text)}}
+
+$("loginBtn").onclick=async()=>{const e=$("loginEmail").value.trim(),p=$("loginPassword").value;$("loginStatus").textContent="Accesso in corso...";try{await signInWithEmailAndPassword(auth,e,p)}catch(err){console.error(err);$("loginStatus").textContent="Accesso non riuscito. Controlla email/password e Firebase Authentication."}};
+$("logoutBtn").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+  isVerifiedAdmin=false;
+  if(!user){$("loginView").classList.remove("hide");$("appView").classList.add("hide");$("logoutBtn").classList.add("hide");return}
+  try{
+    const adminSnap=await getDoc(doc(db,"photoAdmins",user.uid));
+    if(!adminSnap.exists()){await signOut(auth);$("loginStatus").textContent="Account autenticato ma non autorizzato come Photo Admin. Crea in Firestore photoAdmins/"+user.uid;return}
+    isVerifiedAdmin=true;$("loginView").classList.add("hide");$("appView").classList.remove("hide");$("logoutBtn").classList.remove("hide");await loadEvents();
+  }catch(err){console.error(err);await signOut(auth);$("loginStatus").textContent="Impossibile verificare il ruolo admin. Controlla le Rules photoAdmins."}
+});
+
+$("createBtn").onclick=async()=>{
+  if(!isVerifiedAdmin)return alert("Accesso admin non verificato.");
+  const name=$("eventName").value.trim(),eventDate=$("eventDate").value,welcomeText=$("welcomeText").value.trim(),days=Number($("durationDays").value||180),emails=parseEmails($("galleryEmails").value);
+  if(!name){$("createStatus").textContent="Inserisci i nomi degli sposi.";return}
+  if(!emails.length||emails.some(e=>!validEmail(e))){$("createStatus").textContent="Inserisci almeno una email valida per la galleria sposi.";return}
+  const id=slugify(name)+"-"+randomCode(10),expires=new Date(Date.now()+days*86400000);
+  $("createStatus").textContent="Creazione evento...";
+  try{
+    const batch=writeBatch(db);
+    batch.set(doc(db,"photoEvents",id),{coupleNames:name,eventDate,welcomeText:welcomeText||"Condividi con noi i tuoi ricordi.",active:true,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),expiresAt:Timestamp.fromDate(expires),version:2});
+    batch.set(doc(db,"photoGalleryAccess",id),{emails,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    await batch.commit();
+
+    lastUploadUrl=uploadUrl(id);lastGalleryUrl=galleryUrl(id);lastQrName="pixelup-"+slugify(name)+"-qr.png";
+    $("publicLink").textContent=lastUploadUrl;$("galleryLink").textContent=lastGalleryUrl;$("openGalleryBtn").href=lastGalleryUrl;$("createdEmails").innerHTML=emails.map(e=>`<span class="emailchip">${esc(e)}</span>`).join("");
+    $("qrWrap").innerHTML="";new QRCode($("qrWrap"),{text:lastUploadUrl,width:220,height:220,colorDark:"#0f3b2e",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.H});$("qrBox").classList.add("show");$("createStatus").textContent="Evento e accesso sposi creati correttamente.";$("eventName").value="";$("galleryEmails").value="";await loadEvents();
+  }catch(err){console.error(err);$("createStatus").textContent="Errore creazione. Controlla Photo Admin, Firestore Rules e Authentication."}
+};
+
+$("copyUploadBtn").onclick=()=>lastUploadUrl&&copyText(lastUploadUrl,"Link invitati copiato.");
+$("copyGalleryBtn").onclick=()=>lastGalleryUrl&&copyText(lastGalleryUrl,"Link galleria sposi copiato.");
+$("downloadQrBtn").onclick=()=>{const c=$("qrWrap").querySelector("canvas"),i=$("qrWrap").querySelector("img"),url=c?c.toDataURL("image/png"):i?.src;if(!url)return;const a=document.createElement("a");a.href=url;a.download=lastQrName;a.click()};
+$("refreshBtn").onclick=loadEvents;$("closeGalleryBtn").onclick=()=>$("gallerySection").classList.add("hide");
+
+async function loadEvents(){
+  $("eventsList").innerHTML='<div class="empty">Caricamento...</div>';
+  try{
+    let snap;try{snap=await getDocs(query(collection(db,"photoEvents"),orderBy("createdAt","desc")))}catch{snap=await getDocs(collection(db,"photoEvents"))}
+    if(!snap.docs.length){$("eventsList").innerHTML='<div class="empty">Nessun Photo Event creato.</div>';return}
+    const rows=await Promise.all(snap.docs.map(async d=>{let emails=[];try{const a=await getDoc(doc(db,"photoGalleryAccess",d.id));if(a.exists())emails=Array.isArray(a.data().emails)?a.data().emails:[]}catch(e){console.warn(e)}return{d,x:d.data(),emails}}));
+    $("eventsList").innerHTML=rows.map(({d,x,emails})=>{const active=x.active!==false&&(!x.expiresAt||x.expiresAt.toDate()>new Date()),u=uploadUrl(d.id),g=galleryUrl(d.id);return`<article class="event"><div class="event-top"><div><h3>${esc(x.coupleNames||d.id)}</h3><p>${x.eventDate?"Matrimonio: "+esc(x.eventDate)+" · ":""}Scadenza: ${esc(dateText(x.expiresAt))}</p><div class="emailchips">${emails.length?emails.map(e=>`<span class="emailchip">${esc(e)}</span>`).join(""):'<span class="emailchip">Nessuna email sposi</span>'}</div></div><span class="badge ${active?"":"off"}">${active?"Attivo":"Disattivato"}</span></div><div class="linklabel">Invitati</div><div class="linkline">${esc(u)}</div><div class="linklabel">Sposi</div><div class="linkline">${esc(g)}</div><div class="actions"><button class="btn" data-act="gallery" data-id="${d.id}">Galleria admin</button><button class="btn" data-act="copy-upload" data-link="${esc(u)}">Copia invitati</button><button class="btn" data-act="copy-gallery" data-link="${esc(g)}">Copia sposi</button><a class="btn" href="${esc(g)}" target="_blank" rel="noopener">Apri sposi</a><button class="btn" data-act="emails" data-id="${d.id}" data-emails="${esc(emails.join(','))}">Modifica email</button><button class="btn" data-act="toggle" data-id="${d.id}" data-active="${x.active!==false}">${x.active!==false?"Disattiva":"Riattiva"}</button><button class="btn danger" data-act="delete" data-id="${d.id}" data-name="${esc(x.coupleNames||d.id)}">Elimina</button></div></article>`}).join("");
+    $("eventsList").querySelectorAll("button").forEach(b=>b.onclick=async()=>{const a=b.dataset.act;if(a==="gallery")return openGallery(b.dataset.id);if(a==="copy-upload")return copyText(b.dataset.link,"Link invitati copiato.");if(a==="copy-gallery")return copyText(b.dataset.link,"Link sposi copiato.");if(a==="emails")return editEmails(b.dataset.id,b.dataset.emails);if(a==="toggle")return toggleEvent(b.dataset.id,b.dataset.active==="true");if(a==="delete")return deleteEvent(b.dataset.id,b.dataset.name)});
+  }catch(e){console.error(e);$("eventsList").innerHTML='<div class="empty" style="color:#8a3d2c">Errore caricamento eventi. Controlla Rules e ruolo Photo Admin.</div>'}
+}
+
+async function editEmails(id,current){const value=prompt("Email autorizzate galleria (separate da virgola):",current||"");if(value===null)return;const emails=parseEmails(value);if(!emails.length||emails.some(e=>!validEmail(e)))return alert("Inserisci almeno una email valida.");await setDoc(doc(db,"photoGalleryAccess",id),{emails,updatedAt:serverTimestamp()},{merge:true});await loadEvents();alert("Email galleria aggiornate.")}
+async function toggleEvent(id,isActive){await setDoc(doc(db,"photoEvents",id),{active:!isActive,updatedAt:serverTimestamp()},{merge:true});await loadEvents()}
+
+async function openGallery(id){
+  const ev=await getDoc(doc(db,"photoEvents",id)),x=ev.exists()?ev.data():{};$("galleryTitle").textContent="Galleria — "+(x.coupleNames||id);$("galleryMeta").textContent="Contenuti ricevuti dagli invitati.";$("gallerySection").classList.remove("hide");$("galleryGrid").innerHTML='<div class="empty">Caricamento...</div>';
+  try{
+    let s;try{s=await getDocs(query(collection(db,"photoEvents",id,"uploads"),orderBy("createdAt","desc")))}catch{s=await getDocs(collection(db,"photoEvents",id,"uploads"))}
+    if(!s.docs.length){$("galleryGrid").innerHTML='<div class="empty">Ancora nessuna foto o video.</div>';return}
+    const mediaRows=await Promise.all(s.docs.map(async d=>{const m=d.data();let src="";try{src=await getDownloadURL(storageRef(storage,m.storagePath))}catch(e){console.warn("URL non disponibile",e)}return{d,m,src}}));
+    $("galleryGrid").innerHTML=mediaRows.map(({d,m,src})=>{const video=String(m.contentType||"").startsWith("video/");return`<div class="media">${src?(video?`<video src="${esc(src)}" controls preload="metadata"></video>`:`<img src="${esc(src)}" alt="Foto matrimonio" loading="lazy">`):'<div class="empty">File non disponibile</div>'}<div class="media-info">${esc(m.guestName||"Invitato")}</div><button class="media-del" data-upload="${d.id}" data-path="${esc(m.storagePath||"")}">×</button></div>`}).join("");
+    $("galleryGrid").querySelectorAll("[data-upload]").forEach(b=>b.onclick=async()=>{if(!confirm("Eliminare questo contenuto?"))return;try{if(b.dataset.path)await deleteObject(storageRef(storage,b.dataset.path))}catch(e){console.warn(e)}await deleteDoc(doc(db,"photoEvents",id,"uploads",b.dataset.upload));await openGallery(id)});
+  }catch(e){console.error(e);$("galleryGrid").innerHTML='<div class="empty" style="color:#8a3d2c">Errore galleria.</div>'}
+  setTimeout(()=>$("gallerySection").scrollIntoView({behavior:"smooth"}),50)
+}
+
+async function deleteEvent(id,name){
+  if(!confirm('Eliminare definitivamente “'+name+'” e tutti i contenuti?'))return;
+  try{const s=await getDocs(collection(db,"photoEvents",id,"uploads"));for(const d of s.docs){const m=d.data();try{if(m.storagePath)await deleteObject(storageRef(storage,m.storagePath))}catch(e){console.warn(e)}await deleteDoc(d.ref)}await deleteDoc(doc(db,"photoGalleryAccess",id));await deleteDoc(doc(db,"photoEvents",id));$("gallerySection").classList.add("hide");await loadEvents()}catch(e){console.error(e);alert("Errore eliminazione.")}
+}
+</script>
+</body>
+</html>
