@@ -2652,10 +2652,25 @@
   });
   let dashboardLanguage = localStorage.getItem("pixelup_dashboard_language") || "it";
   const ORIGINAL_TEXT = new WeakMap();
+  let lastTranslatedLanguage = null;
+  let translateTimer = null;
+  function scheduleTranslateUI(delay=40){
+    clearTimeout(translateTimer);
+    translateTimer=setTimeout(()=>{
+      translateTimer=null;
+      translateStaticUI();
+    },delay);
+  }
   function uiT(text, lang=dashboardLanguage){ return lang==='it' ? text : (PIXELUP_I18N[lang]?.[text] || text); }
   function translateStaticUI(){
     document.documentElement.lang=dashboardLanguage;
     const root=document.querySelector('main.app'); if(!root)return;
+    // In italiano il DOM viene già renderizzato in italiano: evita di scandire migliaia di nodi ad ogni aggiornamento.
+    if(dashboardLanguage==='it' && lastTranslatedLanguage!=='en' && lastTranslatedLanguage!=='fr'){
+      lastTranslatedLanguage='it';
+      refreshMenuLanguage();
+      return;
+    }
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     let n; while(n=walker.nextNode()){
       if(!n.parentElement || ['SCRIPT','STYLE'].includes(n.parentElement.tagName)) continue;
@@ -2668,6 +2683,7 @@
     const ds=document.getElementById('dashboardLanguageSelect'); if(ds)ds.value=dashboardLanguage;
     const ss=document.getElementById('spousesLanguageSelect'); if(ss)ss.value=data?.spousesLanguage||'it';
     refreshMenuLanguage();
+    lastTranslatedLanguage=dashboardLanguage;
     const attrMap=[
       ["projectNotesInput","placeholder","Scrivi qui note interne, preferenze degli sposi, dettagli importanti o promemoria del progetto..."],
       ["aiInput","placeholder","Scrivi o detta cosa vuoi fare…"]
@@ -2679,11 +2695,9 @@
     dashboardLanguage=lang;
     localStorage.setItem('pixelup_dashboard_language',lang);
     renderAll();
-    translateStaticUI();
     refreshMenuLanguage();
-    // Ripassa la traduzione dopo eventuali render dinamici della dashboard.
-    setTimeout(translateStaticUI, 50);
-    setTimeout(translateStaticUI, 250);
+    // Una sola traduzione differita: evita 3-4 scansioni complete del DOM consecutive.
+    scheduleTranslateUI(60);
   }
   function refreshMenuLanguage(){
     const labels={it:"IT ▾",en:"EN ▾",fr:"FR ▾"};
@@ -2707,7 +2721,7 @@
   function spouseT(text){ const l=data?.spousesLanguage||'it'; return l==='it'?text:(SPOUSE_TEXT[l]?.[text]||PIXELUP_I18N[l]?.[text]||text); }
 
   function renderSummary() {
-    setTimeout(translateStaticUI,0);
+    // La traduzione viene schedulata una sola volta da renderAll().
     const projectTitle = document.getElementById("projectTitle");
     const projectMonogram = document.getElementById("projectMonogram");
 
@@ -8132,7 +8146,16 @@
     renderExperience();
     updateAIProjectStrip();
     updateCountdown();
-    setTimeout(translateStaticUI, 0);
+    scheduleTranslateUI(50);
+  }
+
+  let firebaseRenderTimer = null;
+  function scheduleFirebaseRender(){
+    clearTimeout(firebaseRenderTimer);
+    firebaseRenderTimer=setTimeout(()=>{
+      firebaseRenderTimer=null;
+      renderAll();
+    },80);
   }
 
   if (eventRef) {
@@ -8188,7 +8211,7 @@
       }
 
       firebaseReady = true;
-      renderAll();
+      scheduleFirebaseRender();
     });
   } else {
     firebaseReady = false;
@@ -8409,5 +8432,5 @@
   window.location.href = "/dasgboardemo/accedi.html";
 };
 
-  window.addEventListener("DOMContentLoaded",()=>setTimeout(translateStaticUI,250));
+  window.addEventListener("DOMContentLoaded",()=>scheduleTranslateUI(250));
 </script>
