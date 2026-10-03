@@ -2234,6 +2234,22 @@
     </section>
   </div>
 
+
+<div id="pixelUpProModal" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(20,24,18,.72);align-items:center;justify-content:center;padding:18px">
+  <div style="width:min(460px,100%);background:#fff;border-radius:22px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.28);font-family:Arial,sans-serif;position:relative">
+    <button type="button" onclick="closePixelUpProModal()" style="position:absolute;right:14px;top:12px;border:0;background:transparent;font-size:28px;cursor:pointer">×</button>
+    <div style="font-size:12px;font-weight:800;letter-spacing:.12em;color:#8a6d2f;margin-bottom:8px">PIXELUP PRO</div>
+    <h2 style="margin:0 34px 8px 0;color:#34402c">Pixel AI è incluso in PixelUp Pro</h2>
+    <p style="color:#62685d;line-height:1.5">Il tuo assistente AI integrato nella dashboard, con matrimoni illimitati.</p>
+    <div style="background:#f4f3ed;border-radius:16px;padding:16px;margin:16px 0">
+      <strong style="font-size:26px;color:#34402c">59 € / anno</strong>
+      <div style="margin-top:10px;line-height:1.8;color:#454b40">✓ Pixel AI integrata nella dashboard<br>✓ Matrimoni illimitati<br>✓ PixelUp Experience sempre disponibile</div>
+    </div>
+    <div id="paypal-button-container-P-3JX14941BJ003294SNLATSSA"></div>
+    <div id="pixelUpProStatus" style="font-size:13px;color:#62685d;margin-top:10px;text-align:center"></div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="module">
@@ -2279,7 +2295,27 @@
   const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
   const loggedRole = String(localStorage.getItem("pixelup_role") || "cliente").trim().toLowerCase();
   const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
-  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 0);
+  const PIXELUP_PRO_PLAN_ID = "P-3JX14941BJ003294SNLATSSA";
+  const PIXELUP_PAYPAL_CLIENT_ID = "Af9_Axhg9ncsuTlpPqrk75Q4J0diJivqFwkJZhoIp4JjaGMubk23V9ukol8bfs0XdkNnY_Dpin5jmSrG";
+  let pixelUpEntitlement = { plan: "free", status: "FREE" };
+
+  function isPixelUpPro(){
+    return String(pixelUpEntitlement.plan||"").toLowerCase()==="pro" && String(pixelUpEntitlement.status||"").toUpperCase()==="ACTIVE";
+  }
+
+  async function loadPixelUpEntitlement(){
+    try{
+      const entitlementId = encodeURIComponent(loggedEmail).replaceAll("%","_");
+      const snap = await getDoc(doc(db,"pixelupEntitlements",entitlementId));
+      pixelUpEntitlement = snap.exists() ? {plan:"free",status:"FREE",...snap.data()} : {plan:"free",status:"FREE"};
+    }catch(err){
+      console.warn("Entitlement PixelUp non disponibile:",err);
+      pixelUpEntitlement = {plan:"free",status:"FREE"};
+    }
+    return pixelUpEntitlement;
+  }
+
+  function currentProjectLimit(){ return isPixelUpPro() ? Infinity : 5; }
 
   if (!hasAccess || !loggedEmail) {
     window.location.href = "/dasgboardemo/accedi.html";
@@ -4422,11 +4458,10 @@
   async function createNewProject() {
     const existingProjects = await countUserProjects();
 
-    if (existingProjects >= maxProjects) {
-      alert(
-        "Hai raggiunto il limite massimo di " + maxProjects + " progetto/i attivi per questo account.\n\n" +
-        "Elimina un progetto o passa a un piano superiore."
-      );
+    await loadPixelUpEntitlement();
+    const projectLimit = currentProjectLimit();
+    if (existingProjects >= projectLimit) {
+      openPixelUpProModal("Hai raggiunto il limite di 5 matrimoni del piano Free.");
       return;
     }
 
@@ -6749,11 +6784,18 @@
       : `Progetto attivo: <strong>nessun progetto</strong>`;
   }
 
-  function togglePixelUpAI() {
+  async function togglePixelUpAI() {
     const overlay = document.getElementById("pixelUpAIOverlay");
     if (!overlay) return;
 
     const opening = !overlay.classList.contains("show");
+    if(opening){
+      await loadPixelUpEntitlement();
+      if(!isPixelUpPro()){
+        openPixelUpProModal("Pixel AI è disponibile con PixelUp Pro.");
+        return;
+      }
+    }
 
     if (opening && !currentEventId) {
       alert("Apri o crea un progetto prima di usare PixelUp Assistente.");
@@ -8152,6 +8194,8 @@
   }
 
   window.togglePixelUpAI = togglePixelUpAI;
+  window.openPixelUpProModal = openPixelUpProModal;
+  window.closePixelUpProModal = closePixelUpProModal;
   window.useAIExample = useAIExample;
   window.sendAICommand = sendAICommand;
   window.confirmAIAction = confirmAIAction;
@@ -8167,6 +8211,72 @@
   window.clearProjectNotes = clearProjectNotes;
   window.addDeadline = addDeadline;
   window.editSupplier = editSupplier;
+
+  let paypalSdkPromise = null;
+  function loadPayPalSubscriptionSdk(){
+    if(window.paypal) return Promise.resolve(window.paypal);
+    if(paypalSdkPromise) return paypalSdkPromise;
+    paypalSdkPromise = new Promise((resolve,reject)=>{
+      const script=document.createElement("script");
+      script.src=`https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PIXELUP_PAYPAL_CLIENT_ID)}&vault=true&intent=subscription`;
+      script.dataset.sdkIntegrationSource="button-factory";
+      script.onload=()=>resolve(window.paypal);
+      script.onerror=reject;
+      document.head.appendChild(script);
+    });
+    return paypalSdkPromise;
+  }
+
+  async function registerPendingPayPalSubscription(subscriptionID){
+    const status=document.getElementById("pixelUpProStatus");
+    try{
+      await setDoc(doc(db,"paypalSubscriptionRequests",subscriptionID),{
+        ownerEmail:loggedEmail,
+        subscriptionId:subscriptionID,
+        planId:PIXELUP_PRO_PLAN_ID,
+        status:"PENDING_VERIFICATION",
+        createdAt:new Date().toISOString()
+      },{merge:true});
+      if(status) status.textContent="Pagamento ricevuto. Verifica dell’abbonamento in corso.";
+    }catch(err){
+      console.warn("Registrazione richiesta PayPal:",err);
+      if(status) status.textContent="Abbonamento creato su PayPal. ID: "+subscriptionID+". La verifica Pro deve essere completata dal server.";
+    }
+  }
+
+  async function renderPixelUpPayPalButton(){
+    const container=document.getElementById("paypal-button-container-P-3JX14941BJ003294SNLATSSA");
+    if(!container || container.dataset.rendered==="1") return;
+    const paypal=await loadPayPalSubscriptionSdk();
+    if(!paypal) return;
+    container.dataset.rendered="1";
+    paypal.Buttons({
+      style:{shape:"rect",color:"gold",layout:"vertical",label:"subscribe"},
+      createSubscription:(data,actions)=>actions.subscription.create({plan_id:PIXELUP_PRO_PLAN_ID}),
+      onApprove:async data=>{
+        await registerPendingPayPalSubscription(data.subscriptionID);
+        alert("Abbonamento PixelUp Pro creato correttamente. Ora viene verificato e associato al tuo account.");
+      },
+      onError:err=>{
+        console.error("PayPal subscription error",err);
+        const status=document.getElementById("pixelUpProStatus");
+        if(status) status.textContent="Non è stato possibile completare PayPal. Riprova.";
+      }
+    }).render(container);
+  }
+
+  function openPixelUpProModal(message=""){
+    const modal=document.getElementById("pixelUpProModal");
+    const status=document.getElementById("pixelUpProStatus");
+    if(status) status.textContent=message;
+    if(modal){modal.style.display="flex";modal.setAttribute("aria-hidden","false");}
+    renderPixelUpPayPalButton().catch(err=>console.error(err));
+  }
+  function closePixelUpProModal(){
+    const modal=document.getElementById("pixelUpProModal");
+    if(modal){modal.style.display="none";modal.setAttribute("aria-hidden","true");}
+  }
+
   window.addSupplier = addSupplier;
   window.deleteSupplier = deleteSupplier;
   window.toggleProjectMenu = toggleProjectMenu;
