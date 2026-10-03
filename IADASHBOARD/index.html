@@ -1451,6 +1451,21 @@
   color:var(--gold);
 }
 
+
+/* PixelUp FREE / PRO + Prossima scadenza */
+.today-strip-single{grid-template-columns:1fr!important}
+.today-deadline-btn{width:100%;cursor:pointer;font:inherit}
+.today-deadline-btn span{display:block;margin-top:4px;font:9px Arial,sans-serif;color:var(--muted)}
+.pro-overlay{display:none;position:fixed;inset:0;z-index:900;background:rgba(31,39,27,.62);backdrop-filter:blur(5px);padding:16px;align-items:center;justify-content:center}
+.pro-overlay.show{display:flex}
+.pro-card{width:min(100%,460px);background:#fffaf2;border:1px solid rgba(177,145,85,.48);border-radius:24px;padding:22px;box-shadow:0 28px 70px rgba(0,0,0,.28);font-family:Arial,sans-serif}
+.pro-card h2{margin:0 0 8px;color:var(--green-dark);font:400 27px Georgia,serif}
+.pro-card p{color:var(--muted);font-size:13px;line-height:1.5}
+.pro-card ul{padding-left:20px;color:var(--green-dark);font-size:13px;line-height:1.8}
+.pro-price{font-size:28px;font-weight:800;color:var(--green-dark);margin:14px 0}.pro-price small{font-size:12px;font-weight:400;color:var(--muted)}
+.pro-actions{display:grid;gap:8px;margin-top:14px}.pro-actions button{border:0;border-radius:14px;padding:13px;font-weight:800;cursor:pointer}.pro-buy{background:var(--green);color:white}.pro-close{background:#eee7dc;color:var(--green-dark)}
+.pro-note{font-size:10px!important;margin-top:10px!important}
+
 </style>
 
 <style>
@@ -1651,10 +1666,10 @@
 
     <section class="content">
 
-      <div class="today-strip" id="todayStrip">
-        <div class="today-item"><small>Attività aperte</small><strong id="todayOpenTasks">0</strong></div>
-        <div class="today-item"><small>Prossima scadenza</small><strong id="todayNextDeadline">—</strong></div>
-        <div class="today-item"><small>Da completare</small><strong id="todayChecklist">0</strong></div>
+      <div class="today-strip today-strip-single" id="todayStrip">
+        <button class="today-item today-deadline-btn" type="button" onclick="showNextDeadlineDetails()">
+          <small>Prossima scadenza</small><strong id="todayNextDeadline">—</strong><span>Tocca per vedere i dettagli</span>
+        </button>
       </div>
 
       <div class="section-title">
@@ -2182,6 +2197,18 @@
   </article>
 </div>
 
+  <div class="pro-overlay" id="pixelUpProOverlay" aria-hidden="true" onclick="if(event.target===this) closePixelUpPro()">
+    <section class="pro-card" role="dialog" aria-modal="true" aria-labelledby="pixelUpProTitle">
+      <h2 id="pixelUpProTitle">Passa a PixelUp Pro</h2>
+      <p>Sblocca la versione completa della dashboard Wedding Planner.</p>
+      <ul><li>Pixel AI integrata nella dashboard</li><li>Matrimoni illimitati</li><li>Rinnovo annuale automatico</li></ul>
+      <div class="pro-price">€59 <small>/ anno</small></div>
+      <div id="paypalProContainer"></div>
+      <div class="pro-actions"><button class="pro-buy" id="paypalProFallback" type="button" onclick="startPixelUpProCheckout()">Attiva con PayPal</button><button class="pro-close" type="button" onclick="closePixelUpPro()">Non ora</button></div>
+      <p class="pro-note" id="proCheckoutNote">L'attivazione PRO viene riconosciuta solo dopo la conferma dell'abbonamento.</p>
+    </section>
+  </div>
+
   <!-- PIXELUP ASSISTENTE INTELLIGENTE -->
   <div class="ai-overlay" id="pixelUpAIOverlay" aria-hidden="true">
     <section class="ai-panel" role="dialog" aria-modal="true" aria-labelledby="pixelUpAITitle">
@@ -2279,7 +2306,49 @@
   const loggedEmail = String(localStorage.getItem("pixelup_email") || "").trim().toLowerCase();
   const loggedRole = String(localStorage.getItem("pixelup_role") || "cliente").trim().toLowerCase();
   const loggedCode = String(localStorage.getItem("pixelup_code") || "").trim().toUpperCase();
-  const maxProjects = Number(localStorage.getItem("pixelup_maxProjects") || 0);
+  const FREE_MAX_PROJECTS = 5;
+  let pixelUpPlan = "free";
+  let pixelUpSubscription = null;
+  const PAYPAL_PRO = { clientId: "", planId: "" }; // inserire valori LIVE PayPal
+
+  function isPixelUpPro(){ return pixelUpPlan === "pro" || loggedRole === "admin"; }
+
+  async function refreshPixelUpPlan(){
+    if(loggedRole === "admin"){ pixelUpPlan="pro"; return true; }
+    try{
+      const qSub=query(collection(db,"pixelupSubscriptions"),where("ownerEmail","==",loggedEmail));
+      const snap=await getDocs(qSub);
+      const active=snap.docs.map(d=>({id:d.id,...d.data()})).find(x=>String(x.status||"").toUpperCase()==="ACTIVE" && String(x.provider||"paypal").toLowerCase()==="paypal");
+      pixelUpSubscription=active||null; pixelUpPlan=active?"pro":"free";
+    }catch(err){ console.warn("Verifica piano PRO non disponibile:",err); pixelUpPlan="free"; }
+    return isPixelUpPro();
+  }
+
+  function openPixelUpPro(){ const el=document.getElementById("pixelUpProOverlay"); if(el){el.classList.add("show");el.setAttribute("aria-hidden","false");} renderPayPalProButton(); }
+  function closePixelUpPro(){ const el=document.getElementById("pixelUpProOverlay"); if(el){el.classList.remove("show");el.setAttribute("aria-hidden","true");} }
+  function startPixelUpProCheckout(){
+    if(!PAYPAL_PRO.clientId || !PAYPAL_PRO.planId){ alert("Il collegamento PayPal PRO deve ancora essere completato con Client ID e Plan ID LIVE."); return; }
+    renderPayPalProButton(true);
+  }
+  function renderPayPalProButton(force=false){
+    const note=document.getElementById("proCheckoutNote");
+    if(!PAYPAL_PRO.clientId || !PAYPAL_PRO.planId){ if(note) note.textContent="PayPal è predisposto: mancano Client ID e Plan ID LIVE per attivare il checkout reale."; return; }
+    if(window.paypal?.Buttons){ mountPayPalPro(); return; }
+    if(document.getElementById("pixelupPayPalSdk")) return;
+    const sc=document.createElement("script"); sc.id="pixelupPayPalSdk"; sc.src=`https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_PRO.clientId)}&vault=true&intent=subscription`; sc.onload=mountPayPalPro; document.head.appendChild(sc);
+  }
+  function mountPayPalPro(){
+    const box=document.getElementById("paypalProContainer"); if(!box || box.dataset.mounted==="1" || !window.paypal?.Buttons) return; box.dataset.mounted="1"; document.getElementById("paypalProFallback")?.remove();
+    window.paypal.Buttons({
+      style:{shape:"rect",label:"subscribe"},
+      createSubscription:(data,actions)=>actions.subscription.create({plan_id:PAYPAL_PRO.planId}),
+      onApprove:async data=>{
+        await setDoc(doc(db,"pixelupSubscriptions",loggedEmail.replace(/[^a-z0-9]/gi,"_")),{ownerEmail:loggedEmail,provider:"paypal",subscriptionId:data.subscriptionID,status:"PENDING_VERIFICATION",updatedAt:new Date().toISOString()},{merge:true});
+        alert("Abbonamento ricevuto. PixelUp Pro si attiverà dopo la verifica PayPal lato server."); closePixelUpPro();
+      },
+      onError:err=>{console.error("PayPal PRO:",err);alert("PayPal non ha completato l'operazione. Riprova.");}
+    }).render("#paypalProContainer");
+  }
 
   if (!hasAccess || !loggedEmail) {
     window.location.href = "/dasgboardemo/accedi.html";
@@ -4411,13 +4480,11 @@
   }
 
   async function createNewProject() {
+    await refreshPixelUpPlan();
     const existingProjects = await countUserProjects();
 
-    if (existingProjects >= maxProjects) {
-      alert(
-        "Hai raggiunto il limite massimo di " + maxProjects + " progetto/i attivi per questo account.\n\n" +
-        "Elimina un progetto o passa a un piano superiore."
-      );
+    if (!isPixelUpPro() && existingProjects >= FREE_MAX_PROJECTS) {
+      openPixelUpPro();
       return;
     }
 
@@ -5867,37 +5934,28 @@
     openSingleSection("backupSection");
   }
 
-  function renderTodayStrip(){
-    const openTasks=(data.agenda||[]).length+(data.deadlines||[]).filter(x=>Number(x.paid||0)<Number(x.total||0)).length;
-    const checklist=(data.checklist||[]).filter(x=>!x.done).length;
-
-    // "Prossima scadenza" deve considerare soltanto le scadenze ancora da saldare.
-    // Una scadenza completamente pagata viene esclusa automaticamente.
-    const future=(data.deadlines||[])
+  function getNextOpenDeadline(){
+    return (data.deadlines||[])
       .filter(x=>{
         if(!x.date) return false;
-
-        const total=Math.max(Number(x.total)||0,0);
-        const paid=Math.max(Number(x.paid)||0,0);
-        const isStillToPay=paid<total;
-        const isTodayOrFuture=new Date(x.date+"T23:59:59")>=new Date();
-
-        return isStillToPay && isTodayOrFuture;
+        const total=Math.max(Number(x.total)||0,0), paid=Math.max(Number(x.paid)||0,0);
+        return paid<total && new Date(x.date+"T23:59:59")>=new Date();
       })
-      .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      .sort((a,b)=>String(a.date).localeCompare(String(b.date)))[0] || null;
+  }
 
-    const el1=document.getElementById("todayOpenTasks"),
-          el2=document.getElementById("todayChecklist"),
-          el3=document.getElementById("todayNextDeadline");
+  function renderTodayStrip(){
+    const item=getNextOpenDeadline();
+    const el=document.getElementById("todayNextDeadline");
+    if(el) el.textContent=item?.date ? new Date(item.date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"short"}) : "Nessuna";
+  }
 
-    if(el1)el1.textContent=String(openTasks);
-    if(el2)el2.textContent=String(checklist);
-
-    if(el3){
-      el3.textContent=future[0]?.date
-        ? new Date(future[0].date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"short"})
-        : "—";
-    }
+  function showNextDeadlineDetails(){
+    const item=getNextOpenDeadline();
+    if(!item){ alert("Non risultano prossime scadenze ancora da saldare."); return; }
+    const remaining=Math.max((Number(item.total)||0)-(Number(item.paid)||0),0);
+    const dateLabel=new Date(item.date+"T12:00:00").toLocaleDateString("it-IT",{day:"2-digit",month:"long",year:"numeric"});
+    alert(`PROSSIMA SCADENZA\n\n${item.name||"Scadenza"}${item.supplier?"\nFornitore: "+item.supplier:""}\nData: ${dateLabel}\nDa saldare: ${euro(remaining)}${item.notes?"\nNote: "+item.notes:""}`);
   }
 
   function buildProjectSummary() {
@@ -6738,11 +6796,16 @@
       : `Progetto attivo: <strong>nessun progetto</strong>`;
   }
 
-  function togglePixelUpAI() {
+  async function togglePixelUpAI() {
     const overlay = document.getElementById("pixelUpAIOverlay");
     if (!overlay) return;
 
     const opening = !overlay.classList.contains("show");
+
+    if (opening) {
+      await refreshPixelUpPlan();
+      if (!isPixelUpPro()) { openPixelUpPro(); return; }
+    }
 
     if (opening && !currentEventId) {
       alert("Apri o crea un progetto prima di usare PixelUp Assistente.");
@@ -8140,6 +8203,10 @@
     );
   }
 
+  window.showNextDeadlineDetails = showNextDeadlineDetails;
+  window.openPixelUpPro = openPixelUpPro;
+  window.closePixelUpPro = closePixelUpPro;
+  window.startPixelUpProCheckout = startPixelUpProCheckout;
   window.togglePixelUpAI = togglePixelUpAI;
   window.useAIExample = useAIExample;
   window.sendAICommand = sendAICommand;
