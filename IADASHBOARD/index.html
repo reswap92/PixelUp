@@ -5669,7 +5669,7 @@
   }
   function closeExperienceModal(){const modal=document.getElementById("experienceModal");if(modal){modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}}
   const PIXELUP_PAYMENT = {
-    iban: "DA_INSERIRE",
+    iban: "IT31O0200832974001868475837",
     ibanHolder: "PixelUp",
     paypal: "DA_INSERIRE"
   };
@@ -5854,8 +5854,34 @@
     const totalLine=allPriced
       ? `\n\n${lang==='fr'?'TOTAL':lang==='en'?'TOTAL':'TOTALE'}: ${euro(items.reduce((a,x)=>a+x.selectedRetail,0))}`
       : "";
+
+    const digitalIds=new Set(["wedding-page","photo-qr","video-guestbook","digital-pack"]);
+    const hasDigital=items.some(x=>digitalIds.has(x.id));
+    const hasNonDigital=items.some(x=>!digitalIds.has(x.id));
+    const paymentLines=[];
+
+    if(hasDigital){
+      paymentLines.push(
+        `PRODOTTI DIGITALI\n`+
+        `Pagamento del 100% entro 72 ore dalla conferma.\n`+
+        `Il servizio verrà generato entro 5 giorni lavorativi dal ricevimento del pagamento.`
+      );
+    }
+
+    if(hasNonDigital){
+      paymentLines.push(
+        `SERVIZI NON DIGITALI\n`+
+        `Acconto del 20% entro 48 ore dalla conferma.\n`+
+        `Saldo restante entro 24 ore prima dell'evento.`
+      );
+    }
+
+    const paymentBlock=paymentLines.length
+      ? `\n\n────────────\n\nMODALITÀ DI PAGAMENTO\n${paymentLines.join("\n\n")}\n\nIBAN: ${PIXELUP_PAYMENT.iban}`
+      : "";
+
     return `PIXELUP WEDDING EXPERIENCE\n${data.projectName||spouseT("Proposta matrimonio")}\n\n`+
-      `${blocks}${totalLine}\n\n`+
+      `${blocks}${totalLine}${paymentBlock}\n\n`+
       `${spouseT("Per procedere rispondi a questo messaggio confermando il servizio di tuo interesse. La Wedding Planner inoltrerà la richiesta a PixelUp per la gestione del servizio.")}`;
   }
 
