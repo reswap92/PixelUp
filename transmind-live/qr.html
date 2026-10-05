@@ -99,6 +99,73 @@ body{
   outline-offset:3px;
 }
 
+
+/* RECENSIONI */
+.reviews-section{
+  padding:50px 18px 55px;
+  background:#0d0907;
+  text-align:center;
+}
+
+.reviews-section h2{
+  margin:0 0 10px;
+  font-size:28px;
+  color:#fff;
+}
+
+.reviews-section .reviews-subtitle{
+  margin:0 0 28px;
+  color:#cfc6c0;
+  font-size:15px;
+}
+
+.reviews-track{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding:5px 5px 20px;
+  -webkit-overflow-scrolling:touch;
+}
+
+.review-card{
+  flex:0 0 85%;
+  max-width:600px;
+  scroll-snap-align:center;
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(218,170,107,.35);
+  box-shadow:0 12px 35px rgba(0,0,0,.40);
+}
+
+.review-card img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.instagram-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:25px;
+  padding:15px 24px;
+  border-radius:30px;
+  text-decoration:none;
+  color:#0d0907;
+  background:#d9a96b;
+  font-size:15px;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+.instagram-btn:hover{
+  transform:translateY(-2px);
+  background:#e7ba80;
+}
+
+
 /* MOBILE */
 @media(max-width:600px){
 
@@ -116,6 +183,24 @@ body{
 
   .video-wrapper{
     border-radius:10px;
+  }
+
+  .reviews-section{
+    padding:38px 12px 45px;
+  }
+
+  .reviews-section h2{
+    font-size:23px;
+  }
+
+  .review-card{
+    flex-basis:92%;
+    border-radius:12px;
+  }
+
+  .instagram-btn{
+    width:100%;
+    max-width:420px;
   }
 }
 </style>
@@ -172,6 +257,51 @@ body{
     </a>
 
   </div>
+
+
+  <!-- RECENSIONI -->
+  <section class="reviews-section">
+
+    <h2>Cosa dicono di Edward</h2>
+
+    <p class="reviews-subtitle">
+      Esperienze e testimonianze di chi ha già intrapreso un percorso con Edward Montis.
+    </p>
+
+    <div class="reviews-track">
+
+      <div class="review-card">
+        <img src="assets/30607.jpg" alt="Recensione Edward Montis 1">
+      </div>
+
+      <div class="review-card">
+        <img src="assets/30608.jpg" alt="Recensione Edward Montis 2">
+      </div>
+
+      <div class="review-card">
+        <img src="assets/30609.jpg" alt="Recensione Edward Montis 3">
+      </div>
+
+      <div class="review-card">
+        <img src="assets/30610.jpg" alt="Recensione Edward Montis 4">
+      </div>
+
+      <div class="review-card">
+        <img src="assets/30611.jpg" alt="Recensione Edward Montis 5">
+      </div>
+
+    </div>
+
+
+    <a
+      class="instagram-btn"
+      href="https://www.instagram.com/transcoach_edwardmontis/"
+      target="_blank"
+      rel="noopener noreferrer">
+      Vedi altre recensioni su Instagram
+    </a>
+
+  </section>
 
 </main>
 
