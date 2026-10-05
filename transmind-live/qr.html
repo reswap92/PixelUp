@@ -102,67 +102,136 @@ body{
 
 /* RECENSIONI */
 .reviews-section{
-  padding:50px 18px 55px;
-  background:#0d0907;
+  padding:55px 22px 60px;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(217,169,107,.10),
+      transparent 35%
+    ),
+    #0d0907;
   text-align:center;
 }
 
 .reviews-section h2{
   margin:0 0 10px;
-  font-size:28px;
+  font-size:30px;
+  line-height:1.2;
   color:#fff;
 }
 
-.reviews-section .reviews-subtitle{
-  margin:0 0 28px;
+.reviews-subtitle{
+  margin:0 auto 32px;
+  max-width:650px;
   color:#cfc6c0;
   font-size:15px;
+  line-height:1.6;
 }
 
-.reviews-track{
-  display:flex;
+.reviews-grid{
+  width:100%;
+  max-width:950px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
   gap:18px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  padding:5px 5px 20px;
-  -webkit-overflow-scrolling:touch;
 }
 
 .review-card{
-  flex:0 0 85%;
-  max-width:600px;
-  scroll-snap-align:center;
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-  border:1px solid rgba(218,170,107,.35);
-  box-shadow:0 12px 35px rgba(0,0,0,.40);
+  position:relative;
+  padding:26px 24px 24px;
+  border-radius:18px;
+  text-align:left;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(33,23,16,.96),
+      rgba(17,12,9,.98)
+    );
+
+  border:1px solid rgba(217,169,107,.30);
+
+  box-shadow:
+    0 16px 40px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.03);
 }
 
-.review-card img{
-  display:block;
+.review-card:last-child{
+  grid-column:1 / -1;
+  max-width:700px;
   width:100%;
-  height:auto;
+  margin:0 auto;
+}
+
+.review-quote{
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:42px;
+  line-height:1;
+  color:#d9a96b;
+  opacity:.75;
+  margin-bottom:5px;
+}
+
+.review-stars{
+  margin-bottom:14px;
+  color:#e6b873;
+  font-size:17px;
+  letter-spacing:3px;
+}
+
+.review-text{
+  margin:0;
+  color:#f1e9e3;
+  font-size:16px;
+  line-height:1.7;
+}
+
+.review-author{
+  margin-top:20px;
+  padding-top:15px;
+  border-top:1px solid rgba(217,169,107,.18);
+  color:#d9a96b;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
 }
 
 .instagram-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  margin-top:25px;
-  padding:15px 24px;
+  min-height:50px;
+  margin-top:32px;
+  padding:15px 28px;
+
+  border:1px solid rgba(255,255,255,.12);
   border-radius:30px;
+
   text-decoration:none;
+
   color:#0d0907;
-  background:#d9a96b;
+  background:
+    linear-gradient(
+      135deg,
+      #c99556,
+      #e7bd84
+    );
+
   font-size:15px;
   font-weight:700;
-  transition:.2s ease;
+
+  box-shadow:0 10px 30px rgba(0,0,0,.30);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
 .instagram-btn:hover{
   transform:translateY(-2px);
-  background:#e7ba80;
+  box-shadow:0 14px 35px rgba(0,0,0,.40);
 }
 
 
@@ -186,21 +255,53 @@ body{
   }
 
   .reviews-section{
-    padding:38px 12px 45px;
+    padding:42px 14px 48px;
   }
 
   .reviews-section h2{
-    font-size:23px;
+    font-size:25px;
+  }
+
+  .reviews-subtitle{
+    font-size:14px;
+    margin-bottom:25px;
+  }
+
+  .reviews-grid{
+    grid-template-columns:1fr;
+    gap:14px;
   }
 
   .review-card{
-    flex-basis:92%;
-    border-radius:12px;
+    padding:22px 18px 20px;
+    border-radius:15px;
+  }
+
+  .review-card:last-child{
+    grid-column:auto;
+  }
+
+  .review-quote{
+    font-size:36px;
+  }
+
+  .review-stars{
+    font-size:15px;
+  }
+
+  .review-text{
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  .review-author{
+    font-size:12px;
   }
 
   .instagram-btn{
     width:100%;
     max-width:420px;
+    margin-top:27px;
   }
 }
 </style>
@@ -265,37 +366,138 @@ body{
     <h2>Cosa dicono di Edward</h2>
 
     <p class="reviews-subtitle">
-      Esperienze e testimonianze di chi ha già intrapreso un percorso con Edward Montis.
+      Alcune testimonianze di chi ha già intrapreso
+      un percorso con Edward Montis.
     </p>
 
-    <div class="reviews-track">
 
-      <div class="review-card">
-        <img src="assets/30607.jpg" alt="Recensione Edward Montis 1">
-      </div>
+    <div class="reviews-grid">
 
-      <div class="review-card">
-        <img src="assets/30608.jpg" alt="Recensione Edward Montis 2">
-      </div>
+      <!-- RECENSIONE 1 -->
+      <article class="review-card">
 
-      <div class="review-card">
-        <img src="assets/30609.jpg" alt="Recensione Edward Montis 3">
-      </div>
+        <div class="review-quote">“</div>
 
-      <div class="review-card">
-        <img src="assets/30610.jpg" alt="Recensione Edward Montis 4">
-      </div>
+        <div class="review-stars">
+          ★★★★★
+        </div>
 
-      <div class="review-card">
-        <img src="assets/30611.jpg" alt="Recensione Edward Montis 5">
-      </div>
+        <p class="review-text">
+          Da quando sono con te coach, non so cosa sia successo,
+          ma questo programma dovrebbe essere da prassi.
+          È come se ad un certo punto sono io il comando della vita,
+          e me ne sto sbattendo altamente del giudizio degli altri!
+        </p>
+
+        <div class="review-author">
+          Testimonianza cliente
+        </div>
+
+      </article>
+
+
+      <!-- RECENSIONE 2 -->
+      <article class="review-card">
+
+        <div class="review-quote">“</div>
+
+        <div class="review-stars">
+          ★★★★★
+        </div>
+
+        <p class="review-text">
+          Ciao coach! Ti ringrazio perché grazie a te sono riuscita
+          a superare questa paura del giudizio!
+          Cosa che non sono riuscita a fare con altri professionisti!
+          Grazie ancora!! 🥹🥹
+        </p>
+
+        <div class="review-author">
+          Testimonianza cliente
+        </div>
+
+      </article>
+
+
+      <!-- RECENSIONE 3 -->
+      <article class="review-card">
+
+        <div class="review-quote">“</div>
+
+        <div class="review-stars">
+          ★★★★★
+        </div>
+
+        <p class="review-text">
+          Ciao Edward! Voglio ringraziarti di questo percorso,
+          perché mi hai davvero svoltato,
+          non ho visto niente di simile!
+          Grazie grazie 🙏🙏
+        </p>
+
+        <div class="review-author">
+          Testimonianza cliente
+        </div>
+
+      </article>
+
+
+      <!-- RECENSIONE 4 -->
+      <article class="review-card">
+
+        <div class="review-quote">“</div>
+
+        <div class="review-stars">
+          ★★★★★
+        </div>
+
+        <p class="review-text">
+          Mi hai cambiato la vita.
+          La visione delle cose.
+          Non lo aveva fatto nemmeno il mio psicoterapeuta.
+          Grazie davvero, ci dovrebbero essere persone come te. 🥹
+        </p>
+
+        <div class="review-author">
+          Testimonianza cliente
+        </div>
+
+      </article>
+
+
+      <!-- RECENSIONE 5 -->
+      <article class="review-card">
+
+        <div class="review-quote">“</div>
+
+        <div class="review-stars">
+          ★★★★★
+        </div>
+
+        <p class="review-text">
+          Buonasera coach, ti scrivo a quest’ora che sono uscito
+          dal lavoro, ho pensato molto al nostro percorso...
+          devo dire che sono stupito del mio cambiamento.
+          Quello che fai tu non si trova da nessuna parte.
+          Sono davvero fiero di averti trovato! 🥹🥹
+          <br><br>
+          Sblocca più menti possibili,
+          abbiamo bisogno di persone come te! 💪
+        </p>
+
+        <div class="review-author">
+          Testimonianza cliente
+        </div>
+
+      </article>
 
     </div>
 
 
+    <!-- LINK INSTAGRAM -->
     <a
       class="instagram-btn"
-      href="https://www.instagram.com/transcoach_edwardmontis/"
+      href="INSERISCI-QUI-LINK-INSTAGRAM"
       target="_blank"
       rel="noopener noreferrer">
       Vedi altre recensioni su Instagram
