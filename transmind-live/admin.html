@@ -57,24 +57,25 @@
 <div id="guestModal" class="modal-backdrop hidden">
   <div class="modal-card">
     <div class="modal-head">
-      <div><div class="brand">INVITO GRATUITO</div><h2>Crea biglietto ospite</h2><div class="muted">Il biglietto sarà nominale e inviato via email.</div></div>
+      <div><div class="brand">INVITO GRATUITO</div><h2>Crea biglietto ospite</h2><div class="muted">Il biglietto sarà nominale, salvato in dashboard e scaricato automaticamente.</div></div>
       <button id="closeGuestModal" class="modal-close" type="button">×</button>
     </div>
     <form id="guestForm">
       <label for="guestName">Nome</label><input id="guestName" type="text" required>
       <label for="guestSurname">Cognome</label><input id="guestSurname" type="text" required>
-      <label for="guestEmail">Email</label><input id="guestEmail" type="email" required>
+      <label for="guestEmail">Email (facoltativa)</label><input id="guestEmail" type="email" placeholder="Facoltativa">
       <div class="guest-note">Biglietto <strong>OSPITE</strong> a costo zero. Nessun codice prenotazione visibile: solo nominativo, OSPITE e QR code.</div>
-      <button id="guestSubmitButton" class="btn btn-primary" type="submit">GENERA E INVIA BIGLIETTO</button>
+      <button id="guestSubmitButton" class="btn btn-primary" type="submit">GENERA E SCARICA BIGLIETTO</button>
       <div id="guestError" class="error hidden"></div>
     </form>
   </div>
 </div>
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";import{getFirestore,collection,getDocs,query,orderBy}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";import{getFirestore,collection,getDocs,query,orderBy,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import QRCode from"https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm";
 const firebaseConfig={apiKey:"AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",authDomain:"backtag-16de3.firebaseapp.com",projectId:"backtag-16de3",storageBucket:"backtag-16de3.firebasestorage.app",messagingSenderId:"415455463905",appId:"1:415455463905:web:abd5e58bdeaaf6e3b9eaa0"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);const loginView=document.getElementById("loginView"),adminView=document.getElementById("adminView"),loginForm=document.getElementById("loginForm"),loginButton=document.getElementById("loginButton"),loginError=document.getElementById("loginError"),rows=document.getElementById("bookingRows"),emptyState=document.getElementById("emptyState");let bookings=[],filteredBookings=[];
-const CREATE_GUEST_URL="https://europe-west1-backtag-16de3.cloudfunctions.net/createTransmindGuestTicket";const guestModal=document.getElementById("guestModal"),guestForm=document.getElementById("guestForm"),guestSubmitButton=document.getElementById("guestSubmitButton"),guestError=document.getElementById("guestError");
+const guestModal=document.getElementById("guestModal"),guestForm=document.getElementById("guestForm"),guestSubmitButton=document.getElementById("guestSubmitButton"),guestError=document.getElementById("guestError");
 loginForm.addEventListener("submit",async e=>{e.preventDefault();loginError.classList.add("hidden");loginButton.disabled=true;loginButton.textContent="ACCESSO...";try{await signInWithEmailAndPassword(auth,document.getElementById("loginEmail").value.trim(),document.getElementById("loginPassword").value)}catch(error){console.error(error);loginError.textContent="Accesso non riuscito. Controlla email e password.";loginError.classList.remove("hidden")}finally{loginButton.disabled=false;loginButton.textContent="ACCEDI"}});
 document.getElementById("logoutButton").addEventListener("click",()=>signOut(auth));document.getElementById("reloadButton").addEventListener("click",loadBookings);document.getElementById("exportButton").addEventListener("click",exportCsv);["searchInput","typeFilter","consentFilter","paymentFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",applyFilters));
 document.getElementById("createGuestButton").addEventListener("click",()=>{guestError.classList.add("hidden");guestModal.classList.remove("hidden");setTimeout(()=>document.getElementById("guestName").focus(),50)});document.getElementById("closeGuestModal").addEventListener("click",()=>{if(!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});guestModal.addEventListener("click",e=>{if(e.target===guestModal&&!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});
@@ -84,7 +85,147 @@ function updateStats(){const total=bookings.length,trans=bookings.filter(b=>b.ti
 function applyFilters(){const term=searchInput.value.trim().toLowerCase(),type=typeFilter.value,consent=consentFilter.value,payment=paymentFilter.value;filteredBookings=bookings.filter(b=>{const hay=[b.bookingCode,b.name,b.surname,b.email,b.phone,b.linkedTransCode,b.companionCode].filter(Boolean).join(" ").toLowerCase(),mc=b.mediaConsent||"not_selected";return(!term||hay.includes(term))&&(type==="all"||b.ticketType===type)&&(consent==="all"||mc===consent)&&(payment==="all"||b.paymentStatus===payment)});renderRows()}
 function renderRows(){rows.innerHTML="";emptyState.classList.toggle("hidden",filteredBookings.length!==0);resultCount.textContent=`${filteredBookings.length} ${filteredBookings.length===1?"risultato":"risultati"}`;filteredBookings.forEach(b=>{const tr=document.createElement("tr");let typeLabel="Persona Trans",typeClass="type-trans";if(b.ticketType==="companion"){typeLabel="Accompagnatore";typeClass="type-comp"}else if(b.ticketType==="guest"){typeLabel="Ospite";typeClass="type-guest"}let linked="Nessun accompagnatore";if(b.ticketType==="companion")linked=b.linkedTransCode?`Trans: ${esc(b.linkedTransCode)}`:"—";else if(b.ticketType==="guest")linked="Invito gratuito";else linked=b.companionCode?`Accomp.: ${esc(b.companionCode)}`:(b.companionPendingCode?`Accomp. in attesa: ${esc(b.companionPendingCode)}`:"Nessun accompagnatore");const canConfirm=b.paymentMethod==="bank_transfer"&&b.paymentStatus==="pending",action=canConfirm?`<button class="btn btn-confirm confirm-bank" data-code="${esc(b.bookingCode||"")}">CONFERMA BONIFICO</button>`:"—",visibleCode=b.ticketType==="guest"?"—":esc(b.bookingCode||b.id||"");tr.innerHTML=`<td><span class="code">${visibleCode}</span></td><td><span class="name">${esc(`${b.name||""} ${b.surname||""}`.trim())}</span></td><td><span class="badge ${typeClass}">${typeLabel}</span></td><td><strong>€${Number(b.price||0).toFixed(0)}</strong></td><td>${esc(b.email||"—")}<span class="small">${esc(b.phone||"—")}</span></td><td>${consentBadge(b.mediaConsent)}</td><td>${linked}</td><td>${paymentBadge(b.paymentStatus)}</td><td>${action}</td><td>${formatDate(b.createdAt)}</td>`;rows.appendChild(tr)});document.querySelectorAll(".confirm-bank").forEach(btn=>btn.addEventListener("click",()=>confirmBankTransfer(btn)))}
 function consentBadge(v){if(v==="yes")return'<span class="badge yes">✓ Sì</span>';if(v==="no")return'<span class="badge no">✕ No</span>';return'<span class="badge neutral">Non indicato</span>'}function paymentBadge(v){if(v==="paid")return'<span class="badge yes">Pagato</span>';if(v==="pending")return'<span class="badge no">Bonifico in attesa</span>';if(v==="free")return'<span class="badge yes">Gratuito</span>';if(v==="test_no_payment")return'<span class="badge neutral">Test / no pagamento</span>';return`<span class="badge neutral">${esc(v||"Non indicato")}</span>`}
-guestForm.addEventListener("submit",async e=>{e.preventDefault();guestError.classList.add("hidden");const name=document.getElementById("guestName").value.trim(),surname=document.getElementById("guestSurname").value.trim(),email=document.getElementById("guestEmail").value.trim();if(!name||!surname||!email){guestError.textContent="Compila nome, cognome ed email.";guestError.classList.remove("hidden");return}guestSubmitButton.disabled=true;guestSubmitButton.textContent="CREAZIONE IN CORSO...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch(CREATE_GUEST_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({name,surname,email})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile creare il biglietto ospite.");guestModal.classList.add("hidden");guestForm.reset();alert("Biglietto OSPITE creato e inviato via email.");await loadBookings()}catch(error){console.error(error);guestError.textContent=error.message||"Errore durante la creazione dell'ospite.";guestError.classList.remove("hidden")}finally{guestSubmitButton.disabled=false;guestSubmitButton.textContent="GENERA E INVIA BIGLIETTO"}});
+
+function generateGuestToken(){
+  const bytes=new Uint8Array(24);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function loadTicketImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>reject(new Error("Impossibile caricare la grafica del biglietto."));
+    img.src=src;
+  });
+}
+
+async function generateGuestTicketBlob(name,surname,checkInToken){
+  const canvas=document.createElement("canvas");
+  canvas.width=1536;
+  canvas.height=1024;
+
+  const ctx=canvas.getContext("2d");
+  const background=await loadTicketImage("./transmind-ticket-template.png");
+  ctx.drawImage(background,0,0,1536,1024);
+
+  ctx.fillStyle="#111111";
+  ctx.textBaseline="alphabetic";
+  ctx.font="bold 30px Arial";
+  ctx.fillText(`${name||""} ${surname||""}`.trim().toUpperCase(),425,657);
+
+  ctx.font="bold 27px Arial";
+  ctx.fillText("OSPITE",425,731);
+
+  const qrUrl="https://pixelup.it/transmind-live/checkin.html?token="+encodeURIComponent(checkInToken);
+  const qrDataUrl=await QRCode.toDataURL(qrUrl,{
+    width:500,
+    margin:1,
+    errorCorrectionLevel:"H"
+  });
+
+  const qrImage=await loadTicketImage(qrDataUrl);
+  ctx.drawImage(qrImage,912,637,165,165);
+
+  return await new Promise((resolve,reject)=>{
+    canvas.toBlob(
+      blob=>blob?resolve(blob):reject(new Error("Impossibile generare il PNG del biglietto.")),
+      "image/png"
+    );
+  });
+}
+
+function downloadGuestTicket(blob,name,surname){
+  const safeName=`${name}-${surname}`
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9_-]/g,"-")
+    .replace(/-+/g,"-");
+
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=`TRANSMIND-OSPITE-${safeName}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+guestForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  guestError.classList.add("hidden");
+
+  const name=document.getElementById("guestName").value.trim();
+  const surname=document.getElementById("guestSurname").value.trim();
+  const email=document.getElementById("guestEmail").value.trim().toLowerCase();
+
+  if(!name||!surname){
+    guestError.textContent="Compila nome e cognome.";
+    guestError.classList.remove("hidden");
+    return;
+  }
+
+  guestSubmitButton.disabled=true;
+  guestSubmitButton.textContent="CREAZIONE IN CORSO...";
+
+  try{
+    const user=auth.currentUser;
+    if(!user)throw new Error("Sessione amministratore non valida.");
+
+    const checkInToken=generateGuestToken();
+    const ticketBlob=await generateGuestTicketBlob(name,surname,checkInToken);
+
+    await addDoc(collection(db,"transmindBookings"),{
+      name,
+      surname,
+      email:email||null,
+      phone:"",
+      ticketType:"guest",
+      ticketLabel:"Ospite",
+      price:0,
+      status:"confirmed",
+      paymentStatus:"free",
+      paymentMethod:"guest",
+      mediaConsent:"not_selected",
+      linkedTransCode:null,
+      companionUsed:null,
+      companionCode:null,
+      checkInToken,
+      checkedIn:false,
+      createdBy:user.email||user.uid||null,
+      createdAt:serverTimestamp()
+    });
+
+    downloadGuestTicket(ticketBlob,name,surname);
+
+    guestModal.classList.add("hidden");
+    guestForm.reset();
+    alert("OSPITE creato. Il biglietto PNG è stato scaricato.");
+    await loadBookings();
+
+  }catch(error){
+    console.error(error);
+
+    let message=error.message||"Errore durante la creazione dell'ospite.";
+
+    if(
+      String(error.code||"").includes("permission-denied") ||
+      message.toLowerCase().includes("permission")
+    ){
+      message="Firestore non consente ancora la creazione dell'ospite dall'admin. Le funzioni esistenti non sono state toccate.";
+    }
+
+    guestError.textContent=message;
+    guestError.classList.remove("hidden");
+
+  }finally{
+    guestSubmitButton.disabled=false;
+    guestSubmitButton.textContent="GENERA E SCARICA BIGLIETTO";
+  }
+});
+
 async function confirmBankTransfer(button){const bookingCode=button.dataset.code;if(!bookingCode)return;const ok=confirm(`Confermi che il bonifico per ${bookingCode} è stato ricevuto?\n\nDopo la conferma verranno inviati automaticamente biglietto e QR via email.`);if(!ok)return;button.disabled=true;const oldText=button.textContent;button.textContent="CONFERMA...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch("https://europe-west1-backtag-16de3.cloudfunctions.net/confirmTransmindBankTransfer",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({bookingCode})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile confermare il bonifico.");alert(data.alreadyConfirmed?"Bonifico già confermato.":"Bonifico confermato. Biglietto/i e QR inviati via email.");await loadBookings()}catch(error){console.error(error);alert(error.message||"Errore durante la conferma del bonifico.");button.disabled=false;button.textContent=oldText}}function formatDate(ts){if(!ts)return"—";try{const d=ts.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}catch{return"—"}}
 function exportCsv(){if(!filteredBookings.length){alert("Non ci sono prenotazioni da esportare.");return}const headers=["Codice","Nome","Cognome","Tipo","Prezzo","Email","Telefono","Consenso foto/video","Codice Trans collegato","Codice accompagnatore","Pagamento","Stato","Data"],data=filteredBookings.map(b=>[(b.ticketType==="guest"?"":(b.bookingCode||b.id||"")),b.name||"",b.surname||"",b.ticketLabel||b.ticketType||"",b.price||"",b.email||"",b.phone||"",b.mediaConsent||"not_selected",b.linkedTransCode||"",b.companionCode||"",b.paymentStatus||"",b.status||"",formatDate(b.createdAt)]),csv=[headers,...data].map(r=>r.map(csvEsc).join(";")).join("\n"),blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`transmind-prenotazioni-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url)}
 function csvEsc(v){return`"${String(v??"").replace(/"/g,'""')}"`}function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
