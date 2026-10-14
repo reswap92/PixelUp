@@ -629,11 +629,11 @@ body{
 </main>
 
 
+
 <script>
 
 /* =========================================================
-   TRANSMIND - AVVIO VIDEO DIRETTO
-   Ripristino senza controllo Firebase visualizzazioni
+   TRANSMIND - CONTROLLO LIMITE VISUALIZZAZIONI VIDEO
    ========================================================= */
 
 const video =
@@ -648,23 +648,69 @@ const startOverlay =
 const startButton =
   document.getElementById("videoStartButton");
 
+const limitMessage =
+  document.getElementById("videoLimitMessage");
+
+const videoWrapper =
+  document.getElementById("videoWrapper");
+
+let viewRegistered = false;
+
+const VIDEO_VIEW_FUNCTION =
+  "https://europe-west1-backtag-16de3.cloudfunctions.net/registerTransmindVideoView";
+
 startButton.addEventListener(
   "click",
   async function(){
+
+    if(viewRegistered){
+      return;
+    }
 
     startButton.disabled = true;
     startButton.textContent = "Caricamento...";
 
     try{
 
+      const response =
+        await fetch(
+          VIDEO_VIEW_FUNCTION,
+          {
+            method:"POST"
+          }
+        );
+
+      if(!response.ok){
+        throw new Error(
+          "Errore controllo visualizzazioni"
+        );
+      }
+
+      const data =
+        await response.json();
+
+      if(data.allowed !== true){
+
+        startOverlay.style.display = "none";
+        videoWrapper.style.display = "none";
+        limitMessage.style.display = "block";
+
+        return;
+      }
+
+      viewRegistered = true;
+
       const realVideoUrl =
         videoSource.getAttribute("data-src");
 
       if(!realVideoUrl){
-        throw new Error("Percorso video non trovato.");
+        throw new Error(
+          "Percorso video non trovato."
+        );
       }
 
       if(!videoSource.getAttribute("src")){
+
         videoSource.setAttribute(
           "src",
           realVideoUrl
@@ -677,16 +723,14 @@ startButton.addEventListener(
 
       try{
         await video.play();
-      }
-      catch(playError){
+      }catch(playError){
         console.log(
-          "Premere Play manualmente.",
+          "Avvio manuale richiesto.",
           playError
         );
       }
 
-    }
-    catch(error){
+    }catch(error){
 
       console.error(
         "Errore video TRANSMIND:",
@@ -697,7 +741,7 @@ startButton.addEventListener(
       startButton.textContent = "▶ Riprova";
 
       alert(
-        "Impossibile caricare il video. Controlla che il file video sia presente nella cartella assets."
+        "Impossibile avviare il video. Riprova tra qualche secondo."
       );
     }
 
@@ -705,6 +749,7 @@ startButton.addEventListener(
 );
 
 </script>
+
 
 </body>
 </html>
