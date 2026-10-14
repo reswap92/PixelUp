@@ -72,71 +72,6 @@ body{
   object-fit:contain;
 }
 
-/* PULSANTE AVVIO VIDEO */
-.video-start-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.25),
-      rgba(0,0,0,.65)
-    );
-  z-index:5;
-}
-
-.video-start-btn{
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:30px;
-  padding:16px 28px;
-  cursor:pointer;
-
-  color:#0d0907;
-
-  background:
-    linear-gradient(
-      135deg,
-      #c99556,
-      #e7bd84
-    );
-
-  font-size:16px;
-  font-weight:700;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.45);
-}
-
-.video-start-btn:disabled{
-  opacity:.7;
-  cursor:default;
-}
-
-/* MESSAGGIO LIMITE */
-.video-limit-message{
-  display:none;
-  padding:35px 20px;
-  text-align:center;
-  background:#15100c;
-  border:1px solid rgba(217,169,107,.30);
-}
-
-.video-limit-message strong{
-  display:block;
-  margin-bottom:8px;
-  color:#d9a96b;
-  font-size:20px;
-}
-
-.video-limit-message span{
-  color:#cfc6c0;
-  font-size:14px;
-  line-height:1.5;
-}
-
 /* LOCANDINA */
 .poster{
   position:relative;
@@ -323,11 +258,6 @@ body{
     border-radius:10px;
   }
 
-  .video-start-btn{
-    padding:14px 22px;
-    font-size:15px;
-  }
-
   .reviews-section{
     padding:42px 14px 48px;
   }
@@ -386,7 +316,7 @@ body{
 
 <main class="page">
 
-  <!-- VIDEO PRIMA -->
+  <!-- VIDEO: RIPRODUZIONE DIRETTA, SENZA CONTROLLO FIREBASE -->
   <section class="video-section">
 
     <h2>Scopri TRANSMIND LIVE</h2>
@@ -396,66 +326,19 @@ body{
       con Edward Montis.
     </p>
 
-    <div
-      class="video-wrapper"
-      id="videoWrapper"
-    >
-
+    <div class="video-wrapper" id="videoWrapper">
       <video
         id="transmindVideo"
         controls
         playsinline
-        preload="none">
-
-        <!--
-        IMPORTANTE:
-        data-src NON scarica il video.
-        Il file viene caricato solamente dopo
-        l'autorizzazione di Firebase.
-        -->
+        preload="metadata"
+      >
         <source
-          id="transmindVideoSource"
-          data-src="assets/transmind-live-video.mp4#t=0.1"
-          type="video/mp4">
-
+          src="assets/transmind-live-video.mp4#t=0.1"
+          type="video/mp4"
+        >
         Il tuo browser non supporta la riproduzione video.
-
       </video>
-
-
-      <!-- PULSANTE GUARDA VIDEO -->
-      <div
-        class="video-start-overlay"
-        id="videoStartOverlay">
-
-        <button
-          class="video-start-btn"
-          id="videoStartButton"
-          type="button">
-
-          ▶ Guarda il video
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- MESSAGGIO DOPO 10.000 VISUALIZZAZIONI -->
-    <div
-      class="video-limit-message"
-      id="videoLimitMessage">
-
-      <strong>
-        Video non più disponibile
-      </strong>
-
-      <span>
-        È stato raggiunto il limite massimo
-        di visualizzazioni previsto.
-      </span>
-
     </div>
 
   </section>
@@ -630,125 +513,6 @@ body{
 
 
 
-<script>
-
-/* =========================================================
-   TRANSMIND - CONTROLLO LIMITE VISUALIZZAZIONI VIDEO
-   ========================================================= */
-
-const video =
-  document.getElementById("transmindVideo");
-
-const videoSource =
-  document.getElementById("transmindVideoSource");
-
-const startOverlay =
-  document.getElementById("videoStartOverlay");
-
-const startButton =
-  document.getElementById("videoStartButton");
-
-const limitMessage =
-  document.getElementById("videoLimitMessage");
-
-const videoWrapper =
-  document.getElementById("videoWrapper");
-
-let viewRegistered = false;
-
-const VIDEO_VIEW_FUNCTION =
-  "https://europe-west1-backtag-16de3.cloudfunctions.net/registerTransmindVideoView";
-
-startButton.addEventListener(
-  "click",
-  async function(){
-
-    if(viewRegistered){
-      return;
-    }
-
-    startButton.disabled = true;
-    startButton.textContent = "Caricamento...";
-
-    try{
-
-      const response =
-        await fetch(
-          VIDEO_VIEW_FUNCTION,
-          {
-            method:"POST"
-          }
-        );
-
-      if(!response.ok){
-        throw new Error(
-          "Errore controllo visualizzazioni"
-        );
-      }
-
-      const data =
-        await response.json();
-
-      if(data.allowed !== true){
-
-        startOverlay.style.display = "none";
-        videoWrapper.style.display = "none";
-        limitMessage.style.display = "block";
-
-        return;
-      }
-
-      viewRegistered = true;
-
-      const realVideoUrl =
-        videoSource.getAttribute("data-src");
-
-      if(!realVideoUrl){
-        throw new Error(
-          "Percorso video non trovato."
-        );
-      }
-
-      if(!videoSource.getAttribute("src")){
-
-        videoSource.setAttribute(
-          "src",
-          realVideoUrl
-        );
-
-        video.load();
-      }
-
-      startOverlay.style.display = "none";
-
-      try{
-        await video.play();
-      }catch(playError){
-        console.log(
-          "Avvio manuale richiesto.",
-          playError
-        );
-      }
-
-    }catch(error){
-
-      console.error(
-        "Errore video TRANSMIND:",
-        error
-      );
-
-      startButton.disabled = false;
-      startButton.textContent = "▶ Riprova";
-
-      alert(
-        "Impossibile avviare il video. Riprova tra qualche secondo."
-      );
-    }
-
-  }
-);
-
-</script>
 
 
 </body>
