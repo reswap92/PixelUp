@@ -632,7 +632,8 @@ body{
 <script>
 
 /* =========================================================
-   TRANSMIND - CONTROLLO LIMITE VISUALIZZAZIONI VIDEO
+   TRANSMIND - AVVIO VIDEO DIRETTO
+   Ripristino senza controllo Firebase visualizzazioni
    ========================================================= */
 
 const video =
@@ -647,154 +648,45 @@ const startOverlay =
 const startButton =
   document.getElementById("videoStartButton");
 
-const limitMessage =
-  document.getElementById("videoLimitMessage");
-
-const videoWrapper =
-  document.getElementById("videoWrapper");
-
-
-/*
-Evita di contare due volte
-nella stessa apertura della pagina.
-*/
-let viewRegistered = false;
-
-
-/*
-URL FUNZIONE FIREBASE
-*/
-const VIDEO_VIEW_FUNCTION =
-  "https://europe-west1-backtag-16de3.cloudfunctions.net/registerTransmindVideoView";
-
-
 startButton.addEventListener(
   "click",
   async function(){
 
-    if(viewRegistered){
-      return;
-    }
-
     startButton.disabled = true;
-    startButton.textContent =
-      "Caricamento...";
-
+    startButton.textContent = "Caricamento...";
 
     try{
 
-      /*
-      Chiede a Firebase se il video
-      può essere ancora visualizzato.
-      */
-
-      const response =
-        await fetch(
-          VIDEO_VIEW_FUNCTION,
-          {
-            method:"POST"
-          }
-        );
-
-
-      if(!response.ok){
-
-        throw new Error(
-          "Errore controllo visualizzazioni"
-        );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      /*
-      LIMITE RAGGIUNTO
-      */
-      if(data.allowed !== true){
-
-        startOverlay.style.display =
-          "none";
-
-        videoWrapper.style.display =
-          "none";
-
-        limitMessage.style.display =
-          "block";
-
-        return;
-
-      }
-
-
-      /*
-      VISUALIZZAZIONE AUTORIZZATA
-      */
-
-      viewRegistered = true;
-
-
-      /*
-      Soltanto adesso viene aggiunto
-      il vero URL del video.
-      */
-
       const realVideoUrl =
-        videoSource.getAttribute(
-          "data-src"
+        videoSource.getAttribute("data-src");
+
+      if(!realVideoUrl){
+        throw new Error("Percorso video non trovato.");
+      }
+
+      if(!videoSource.getAttribute("src")){
+        videoSource.setAttribute(
+          "src",
+          realVideoUrl
         );
 
-      videoSource.setAttribute(
-        "src",
-        realVideoUrl
-      );
+        video.load();
+      }
 
-
-      /*
-      Carica il file video.
-      */
-
-      video.load();
-
-
-      /*
-      Nasconde il pulsante iniziale.
-      */
-
-      startOverlay.style.display =
-        "none";
-
-
-      /*
-      Avvia il video.
-      */
+      startOverlay.style.display = "none";
 
       try{
-
         await video.play();
-
-      }catch(playError){
-
-        /*
-        Alcuni browser possono impedire
-        l'avvio automatico.
-
-        In quel caso il video rimane
-        comunque disponibile e l'utente
-        può premere Play.
-        */
-
+      }
+      catch(playError){
         console.log(
-          "Avvio manuale richiesto.",
+          "Premere Play manualmente.",
           playError
         );
-
       }
 
-
-    }catch(error){
+    }
+    catch(error){
 
       console.error(
         "Errore video TRANSMIND:",
@@ -802,14 +694,11 @@ startButton.addEventListener(
       );
 
       startButton.disabled = false;
-
-      startButton.textContent =
-        "▶ Riprova";
+      startButton.textContent = "▶ Riprova";
 
       alert(
-        "Impossibile avviare il video. Riprova tra qualche secondo."
+        "Impossibile caricare il video. Controlla che il file video sia presente nella cartella assets."
       );
-
     }
 
   }
