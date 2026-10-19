@@ -15,6 +15,23 @@
     .filters{display:grid;grid-template-columns:minmax(260px,2fr) 1fr 1fr 1fr;gap:10px;margin-bottom:14px;background:rgba(18,12,9,.82);border:1px solid var(--line);border-radius:16px;padding:13px}.filters input,.filters select{min-height:44px}.table-card{overflow:hidden;background:rgba(18,12,9,.9);border:1px solid var(--line);border-radius:18px}.table-scroll{overflow-x:auto} table{width:100%;border-collapse:collapse;min-width:1180px} th,td{padding:13px 12px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px} th{color:var(--gold2);background:rgba(229,179,127,.07);font-size:12px;white-space:nowrap}.code{font-weight:800;color:var(--gold2);white-space:nowrap}.name{font-weight:700}.small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;white-space:nowrap}.yes{background:rgba(75,181,111,.14);color:var(--ok);border:1px solid rgba(75,181,111,.28)}.no{background:rgba(225,100,100,.13);color:var(--no);border:1px solid rgba(225,100,100,.25)}.neutral{background:rgba(255,255,255,.07);color:#d7c9bc;border:1px solid rgba(255,255,255,.12)}.type-trans{background:rgba(229,179,127,.13);color:#ffd6aa;border:1px solid rgba(229,179,127,.28)}.type-comp{background:rgba(159,181,232,.13);color:#c9d7ff;border:1px solid rgba(159,181,232,.25)}.type-guest{background:rgba(139,211,166,.13);color:#bdf0cf;border:1px solid rgba(139,211,166,.28)}
     .modal-backdrop{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.78);backdrop-filter:blur(7px)}.modal-card{width:min(520px,100%);padding:28px;border-radius:22px;background:#15100c;border:1px solid rgba(229,179,127,.28);box-shadow:0 30px 100px rgba(0,0,0,.65)}.modal-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:18px}.modal-head h2{margin:0 0 7px;font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:500}.modal-close{width:42px;height:42px;min-width:42px;border-radius:50%;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:white;cursor:pointer;font-size:20px}.guest-note{margin:18px 0 0;padding:12px 14px;border-radius:12px;background:rgba(229,179,127,.07);border:1px solid rgba(229,179,127,.16);color:#d9c9bb;font-size:13px;line-height:1.5}.table-footer{display:flex;justify-content:space-between;gap:12px;padding:13px 15px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.025)}.empty{padding:34px;text-align:center;color:var(--muted)}
     @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:1fr 1fr}} @media(max-width:650px){.admin{padding:20px 12px 40px}.topbar{flex-direction:column}.top-actions{justify-content:flex-start}.stats{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr}h1{font-size:31px}}
+
+    /* CONTATTI PREACQUISTO - stessa palette Transmind Live */
+    .leads-section{margin-top:28px}
+    .leads-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+    .leads-head h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:500;margin:0 0 7px;color:#fff7ef}
+    .leads-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.55;max-width:780px}
+    .lead-stats{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin:15px 0}
+    .lead-stat{background:rgba(18,12,9,.9);border:1px solid var(--line);border-radius:16px;padding:16px}
+    .lead-stat span{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+    .lead-stat strong{font-size:26px;color:var(--gold2)}
+    .lead-filters{display:grid;grid-template-columns:minmax(220px,2fr) 1fr 1fr;gap:10px;margin:12px 0 14px;background:rgba(18,12,9,.82);border:1px solid var(--line);border-radius:16px;padding:13px}
+    .lead-filters input,.lead-filters select{min-height:44px}
+    .lead-note{color:var(--muted);font-size:12px;line-height:1.6;margin:10px 0 0}
+    .lead-state{padding:12px 15px;color:#d9cec5;font-size:13px;border-radius:12px;margin-bottom:10px;background:rgba(229,179,127,.08);border:1px solid var(--line)}
+    .lead-link{display:inline-block;color:var(--gold2);text-decoration:underline;text-underline-offset:3px;margin:4px 9px 4px 0}
+    @media(max-width:1100px){.lead-stats{grid-template-columns:repeat(3,1fr)}.lead-filters{grid-template-columns:1fr 1fr}}
+    @media(max-width:650px){.leads-head{align-items:flex-start}.lead-stats{grid-template-columns:1fr 1fr}.lead-filters{grid-template-columns:1fr}.leads-head h2{font-size:26px}}
   </style>
 </head>
 <body>
@@ -52,6 +69,45 @@
     <select id="paymentFilter"><option value="all">Tutti i pagamenti</option><option value="paid">Pagato</option><option value="pending">Bonifico in attesa</option><option value="free">Ospite gratuito</option><option value="test_no_payment">Test / nessun pagamento</option></select>
   </section>
   <section class="table-card"><div class="table-scroll"><table><thead><tr><th>Codice</th><th>Nominativo</th><th>Tipo</th><th>Prezzo</th><th>Contatti</th><th>Consenso foto/video</th><th>Collegamento</th><th>Pagamento</th><th>Azione</th><th>Data</th></tr></thead><tbody id="bookingRows"></tbody></table><div id="emptyState" class="empty hidden">Nessuna prenotazione trovata.</div></div><div class="table-footer"><span id="resultCount">0 risultati</span><span>I dati vengono letti da Firestore</span></div></section>
+
+  <!-- LEADS: lettura da Firestore, non sostituisce la tabella prenotazioni -->
+  <section id="transmindLeadsPanel" class="leads-section" aria-labelledby="leadsTitle">
+    <div class="leads-head">
+      <div><div class="brand">CONTATTI TRANSMIND LIVE</div>
+        <h2 id="leadsTitle">Richieste prima dell’acquisto</h2>
+        <p>Chi ha compilato preacquisto.html. Lo stato è calcolato confrontando email, nome e cognome con le prenotazioni; non è un aggiornamento automatico permanente sul contatto.</p>
+      </div>
+      <button id="exportLeadsButton" class="btn btn-secondary" type="button">↓ Esporta contatti CSV</button>
+    </div>
+    <div class="lead-stats" aria-label="Riepilogo contatti">
+      <div class="lead-stat"><span>MODULI RICEVUTI</span><strong id="leadCountAll">0</strong></div>
+      <div class="lead-stat"><span>SENZA ACQUISTO</span><strong id="leadCountNone">0</strong></div>
+      <div class="lead-stat"><span>BONIFICO IN ATTESA</span><strong id="leadCountPending">0</strong></div>
+      <div class="lead-stat"><span>BIGLIETTO PAGATO</span><strong id="leadCountPaid">0</strong></div>
+      <div class="lead-stat"><span>RICONTATTABILI SENZA ACQUISTO</span><strong id="leadCountContact">0</strong></div>
+    </div>
+    <div id="leadLoadState" class="lead-state" role="status" aria-live="polite">Caricamento contatti...</div>
+    <div class="lead-filters">
+      <input type="search" id="leadSearch" placeholder="Cerca nome, email o telefono..." aria-label="Cerca contatti">
+      <select id="leadStatusFilter" aria-label="Filtra stato acquisto">
+        <option value="all">Tutti gli stati</option><option value="none">Senza acquisto</option>
+        <option value="pending">Bonifico in attesa</option><option value="paid">Biglietto pagato</option>
+        <option value="test">Prenotazione di prova</option><option value="free">Ospite gratuito</option>
+        <option value="other">Stato da verificare</option>
+      </select>
+      <select id="leadMarketingFilter" aria-label="Filtra consenso promozionale">
+        <option value="all">Tutti i consensi</option><option value="yes">Ricontatto autorizzato</option>
+        <option value="no">Ricontatto NON autorizzato</option><option value="contactable">Ricontattabili senza acquisto</option>
+      </select>
+    </div>
+    <section class="table-card"><div class="table-scroll"><table>
+      <thead><tr><th>Data richiesta</th><th>Nominativo</th><th>Contatti</th><th>Stato acquisto</th><th>Consenso al ricontatto</th><th>Prenotazione</th><th>Contatta</th></tr></thead>
+      <tbody id="leadRows"></tbody>
+    </table><div id="leadEmpty" class="empty hidden">Nessun contatto trovato.</div></div>
+    <div class="table-footer"><span id="leadResultCount">0 risultati</span><span>Leads: Firestore · transmindLeads</span></div>
+    </section>
+    <p class="lead-note">Il consenso al ricontatto promozionale è distinto dalla presa visione della privacy. Usa i contatti per comunicazioni promozionali soltanto se il consenso risulta “Sì”. La corrispondenza tra richiesta e biglietto si basa sugli stessi nome, cognome ed email: se cambiano, lo stato può richiedere una verifica manuale.</p>
+  </section>
 </main>
 
 <div id="guestModal" class="modal-backdrop hidden">
@@ -77,14 +133,150 @@ const firebaseConfig={apiKey:"AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc",authDomai
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);const loginView=document.getElementById("loginView"),adminView=document.getElementById("adminView"),loginForm=document.getElementById("loginForm"),loginButton=document.getElementById("loginButton"),loginError=document.getElementById("loginError"),rows=document.getElementById("bookingRows"),emptyState=document.getElementById("emptyState");let bookings=[],filteredBookings=[];
 const guestModal=document.getElementById("guestModal"),guestForm=document.getElementById("guestForm"),guestSubmitButton=document.getElementById("guestSubmitButton"),guestError=document.getElementById("guestError");
 loginForm.addEventListener("submit",async e=>{e.preventDefault();loginError.classList.add("hidden");loginButton.disabled=true;loginButton.textContent="ACCESSO...";try{await signInWithEmailAndPassword(auth,document.getElementById("loginEmail").value.trim(),document.getElementById("loginPassword").value)}catch(error){console.error(error);loginError.textContent="Accesso non riuscito. Controlla email e password.";loginError.classList.remove("hidden")}finally{loginButton.disabled=false;loginButton.textContent="ACCEDI"}});
-document.getElementById("logoutButton").addEventListener("click",()=>signOut(auth));document.getElementById("reloadButton").addEventListener("click",loadBookings);document.getElementById("exportButton").addEventListener("click",exportCsv);["searchInput","typeFilter","consentFilter","paymentFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",applyFilters));
+document.getElementById("logoutButton").addEventListener("click",()=>signOut(auth));document.getElementById("reloadButton").addEventListener("click",loadAll);document.getElementById("exportButton").addEventListener("click",exportCsv);["searchInput","typeFilter","consentFilter","paymentFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",applyFilters));
 document.getElementById("createGuestButton").addEventListener("click",()=>{guestError.classList.add("hidden");guestModal.classList.remove("hidden");setTimeout(()=>document.getElementById("guestName").focus(),50)});document.getElementById("closeGuestModal").addEventListener("click",()=>{if(!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});guestModal.addEventListener("click",e=>{if(e.target===guestModal&&!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});
-onAuthStateChanged(auth,async user=>{if(user){loginView.classList.add("hidden");adminView.classList.remove("hidden");document.getElementById("adminUser").textContent=`Accesso: ${user.email}`;await loadBookings()}else{adminView.classList.add("hidden");loginView.classList.remove("hidden");bookings=[];filteredBookings=[]}});
+onAuthStateChanged(auth,async user=>{if(user){loginView.classList.add("hidden");adminView.classList.remove("hidden");document.getElementById("adminUser").textContent=`Accesso: ${user.email}`;await loadAll()}else{adminView.classList.add("hidden");loginView.classList.remove("hidden");bookings=[];filteredBookings=[];leads=[];filteredLeads=[];leadsLoaded=false;resetLeadsPanel()}});
 async function loadBookings(){document.getElementById("reloadButton").textContent="Caricamento...";try{const q=query(collection(db,"transmindBookings"),orderBy("createdAt","desc"));const snap=await getDocs(q);bookings=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();applyFilters()}catch(error){console.error(error);alert("Errore nel caricamento delle prenotazioni.")}finally{document.getElementById("reloadButton").textContent="↻ Aggiorna"}}
 function updateStats(){const total=bookings.length,trans=bookings.filter(b=>b.ticketType==="trans").length,comp=bookings.filter(b=>b.ticketType==="companion").length,guest=bookings.filter(b=>b.ticketType==="guest").length,yes=bookings.filter(b=>b.mediaConsent==="yes").length,no=bookings.filter(b=>b.mediaConsent==="no").length,value=bookings.reduce((s,b)=>s+Number(b.price||0),0);statTotal.textContent=total;statTrans.textContent=trans;statComp.textContent=comp;document.getElementById("statGuest").textContent=guest;statConsentYes.textContent=yes;statConsentNo.textContent=no;statValue.textContent=new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value)}
 function applyFilters(){const term=searchInput.value.trim().toLowerCase(),type=typeFilter.value,consent=consentFilter.value,payment=paymentFilter.value;filteredBookings=bookings.filter(b=>{const hay=[b.bookingCode,b.name,b.surname,b.email,b.phone,b.linkedTransCode,b.companionCode].filter(Boolean).join(" ").toLowerCase(),mc=b.mediaConsent||"not_selected";return(!term||hay.includes(term))&&(type==="all"||b.ticketType===type)&&(consent==="all"||mc===consent)&&(payment==="all"||b.paymentStatus===payment)});renderRows()}
 function renderRows(){rows.innerHTML="";emptyState.classList.toggle("hidden",filteredBookings.length!==0);resultCount.textContent=`${filteredBookings.length} ${filteredBookings.length===1?"risultato":"risultati"}`;filteredBookings.forEach(b=>{const tr=document.createElement("tr");let typeLabel="Persona Trans",typeClass="type-trans";if(b.ticketType==="companion"){typeLabel="Accompagnatore";typeClass="type-comp"}else if(b.ticketType==="guest"){typeLabel="Ospite";typeClass="type-guest"}let linked="Nessun accompagnatore";if(b.ticketType==="companion")linked=b.linkedTransCode?`Trans: ${esc(b.linkedTransCode)}`:"—";else if(b.ticketType==="guest")linked="Invito gratuito";else linked=b.companionCode?`Accomp.: ${esc(b.companionCode)}`:(b.companionPendingCode?`Accomp. in attesa: ${esc(b.companionPendingCode)}`:"Nessun accompagnatore");const canConfirm=b.paymentMethod==="bank_transfer"&&b.paymentStatus==="pending",action=canConfirm?`<button class="btn btn-confirm confirm-bank" data-code="${esc(b.bookingCode||"")}">CONFERMA BONIFICO</button>`:"—",visibleCode=b.ticketType==="guest"?"—":esc(b.bookingCode||b.id||"");tr.innerHTML=`<td><span class="code">${visibleCode}</span></td><td><span class="name">${esc(`${b.name||""} ${b.surname||""}`.trim())}</span></td><td><span class="badge ${typeClass}">${typeLabel}</span></td><td><strong>€${Number(b.price||0).toFixed(0)}</strong></td><td>${esc(b.email||"—")}<span class="small">${esc(b.phone||"—")}</span></td><td>${consentBadge(b.mediaConsent)}</td><td>${linked}</td><td>${paymentBadge(b.paymentStatus)}</td><td>${action}</td><td>${formatDate(b.createdAt)}</td>`;rows.appendChild(tr)});document.querySelectorAll(".confirm-bank").forEach(btn=>btn.addEventListener("click",()=>confirmBankTransfer(btn)))}
 function consentBadge(v){if(v==="yes")return'<span class="badge yes">✓ Sì</span>';if(v==="no")return'<span class="badge no">✕ No</span>';return'<span class="badge neutral">Non indicato</span>'}function paymentBadge(v){if(v==="paid")return'<span class="badge yes">Pagato</span>';if(v==="pending")return'<span class="badge no">Bonifico in attesa</span>';if(v==="free")return'<span class="badge yes">Gratuito</span>';if(v==="test_no_payment")return'<span class="badge neutral">Test / no pagamento</span>';return`<span class="badge neutral">${esc(v||"Non indicato")}</span>`}
+
+
+/* =================== CONTATTI PREACQUISTO =================== */
+let leads=[], filteredLeads=[], leadsLoaded=false;
+
+function resetLeadsPanel(){
+  document.getElementById("leadRows").innerHTML="";
+  document.getElementById("leadLoadState").textContent="Accesso richiesto per consultare i contatti.";
+  document.getElementById("leadLoadState").classList.remove("hidden");
+  ["leadCountAll","leadCountNone","leadCountPending","leadCountPaid","leadCountContact"].forEach(id=>document.getElementById(id).textContent="0");
+  document.getElementById("leadResultCount").textContent="0 risultati";
+}
+
+async function loadAll(){
+  // Il riepilogo dei contatti dipende anche dallo stato aggiornato delle prenotazioni.
+  await loadBookings();
+  await loadLeads();
+}
+
+async function loadLeads(){
+  const state=document.getElementById("leadLoadState");
+  state.textContent="Caricamento dei contatti in corso...";
+  state.classList.remove("hidden");
+  try{
+    const data=await getDocs(query(collection(db,"transmindLeads"),orderBy("createdAt","desc")));
+    leads=data.docs.map(d=>({id:d.id,...d.data()}));
+    leadsLoaded=true;
+    state.classList.add("hidden");
+    applyLeadFilters();
+  }catch(error){
+    console.error("Errore lettura transmindLeads:",error);
+    leads=[];filteredLeads=[];leadsLoaded=false;
+    resetLeadsPanel();
+    state.textContent=String(error.code||"").includes("permission-denied")
+      ? "Accesso ai contatti negato: occorre autorizzare questo amministratore in Firestore (transmindAdmins/UID, active = true) e pubblicare la regola di lettura. Le prenotazioni non sono state modificate."
+      : "Non è stato possibile caricare i contatti. Controlla la connessione e riprova.";
+  }
+}
+
+function leadNormalize(v){
+  return String(v??"").trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").toLowerCase();
+}
+function leadAssociatedBookings(lead){
+  const email=leadNormalize(lead.email), name=leadNormalize(lead.name), surname=leadNormalize(lead.surname);
+  if(!email||!name||!surname)return [];
+  return bookings.filter(b=>leadNormalize(b.email)===email&&leadNormalize(b.name)===name&&leadNormalize(b.surname)===surname);
+}
+function leadPurchaseState(lead){
+  const connected=leadAssociatedBookings(lead);
+  // Uno stesso contatto può aver compilato più moduli ed acquistato più biglietti.
+  const paid=connected.find(b=>b.paymentStatus==="paid"&&b.status==="confirmed");
+  if(paid)return {key:"paid",label:"Biglietto pagato",booking:paid,connected};
+  const pending=connected.find(b=>b.paymentStatus==="pending"||b.status==="pending_payment");
+  if(pending)return {key:"pending",label:"Bonifico in attesa",booking:pending,connected};
+  const test=connected.find(b=>b.paymentStatus==="test_no_payment");
+  if(test)return {key:"test",label:"Test / senza pagamento",booking:test,connected};
+  const free=connected.find(b=>b.paymentStatus==="free");
+  if(free)return {key:"free",label:"Ospite gratuito",booking:free,connected};
+  if(connected.length)return {key:"other",label:"Stato da verificare",booking:connected[0],connected};
+  return {key:"none",label:"Nessun acquisto registrato",booking:null,connected:[]};
+}
+function leadStatusBadge(key,label){
+  const type=key==="paid"?"yes":key==="none"?"no":key==="pending"?"type-trans":"neutral";
+  return `<span class="badge ${type}">${esc(label)}</span>`;
+}
+function applyLeadFilters(){
+  if(!leadsLoaded)return;
+  const term=document.getElementById("leadSearch").value.trim().toLowerCase();
+  const status=document.getElementById("leadStatusFilter").value;
+  const consent=document.getElementById("leadMarketingFilter").value;
+  const all=leads.map(lead=>({...lead,purchase:leadPurchaseState(lead)}));
+  filteredLeads=all.filter(lead=>{
+    const hay=[lead.name,lead.surname,lead.email,lead.phone,lead.purchase.booking?.bookingCode].filter(Boolean).join(" ").toLowerCase();
+    const matchTerm=!term||hay.includes(term);
+    const matchStatus=status==="all"||lead.purchase.key===status;
+    const isYes=lead.marketingConsent===true;
+    const matchConsent=consent==="all"||(consent==="yes"&&isYes)||(consent==="no"&&!isYes)||(consent==="contactable"&&isYes&&lead.purchase.key==="none");
+    return matchTerm&&matchStatus&&matchConsent;
+  });
+  document.getElementById("leadCountAll").textContent=String(all.length);
+  document.getElementById("leadCountNone").textContent=String(all.filter(l=>l.purchase.key==="none").length);
+  document.getElementById("leadCountPending").textContent=String(all.filter(l=>l.purchase.key==="pending").length);
+  document.getElementById("leadCountPaid").textContent=String(all.filter(l=>l.purchase.key==="paid").length);
+  document.getElementById("leadCountContact").textContent=String(all.filter(l=>l.purchase.key==="none"&&l.marketingConsent===true).length);
+  renderLeads();
+}
+function renderLeads(){
+  const tbody=document.getElementById("leadRows");
+  tbody.innerHTML="";
+  document.getElementById("leadEmpty").classList.toggle("hidden",filteredLeads.length!==0);
+  document.getElementById("leadResultCount").textContent=`${filteredLeads.length} ${filteredLeads.length===1?"risultato":"risultati"}`;
+  filteredLeads.forEach(lead=>{
+    const tr=document.createElement("tr");
+    const isYes=lead.marketingConsent===true;
+    const p=lead.purchase;
+    const email=String(lead.email||"");
+    const phone=String(lead.phone||"");
+    // Non mostrare scorciatoie di ricontatto promozionale senza consenso.
+    const links=isYes
+      ? `<a class="lead-link" href="mailto:${encodeURIComponent(email)}">Email</a>`+(phone?`<a class="lead-link" href="tel:${esc(phone.replace(/[^+0-9]/g,""))}">Chiama</a>`:"")
+      : `<span class="small">Nessun consenso promozionale</span>`;
+    const bookingInfo=p.booking
+      ? `<span class="code">${esc(p.booking.bookingCode||p.booking.id||"—")}</span><span class="small">${esc(p.booking.ticketLabel||p.booking.ticketType||"")}</span>`:"—";
+    tr.innerHTML=`<td>${esc(formatDate(lead.createdAt))}</td>`+
+      `<td><span class="name">${esc((lead.name||"")+" "+(lead.surname||""))}</span></td>`+
+      `<td>${esc(email)}<span class="small">${esc(phone||"Telefono non fornito")}</span></td>`+
+      `<td>${leadStatusBadge(p.key,p.label)}</td>`+
+      `<td>${isYes?'<span class="badge yes">✓ Sì</span>':'<span class="badge no">✕ No</span>'}</td>`+
+      `<td>${bookingInfo}</td><td>${links}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function leadCsvField(value){
+  let raw=String(value??"");
+  // Evita interpretazioni come formule nei fogli di calcolo.
+  if(/^[\s]*[=+@-]/.test(raw))raw="'"+raw;
+  return '"'+raw.replace(/"/g,'""')+'"';
+}
+function exportLeadsCsv(){
+  if(!leadsLoaded){alert("I contatti non sono stati caricati.");return;}
+  if(!filteredLeads.length){alert("Non ci sono contatti da esportare con questi filtri.");return;}
+  const cols=["Data richiesta","Nome","Cognome","Email","Telefono","Stato acquisto","Codice prenotazione","Consenso ricontatto promozionale","Privacy presa visione","Origine"];
+  const data=filteredLeads.map(l=>[
+    formatDate(l.createdAt),l.name||"",l.surname||"",l.email||"",l.phone||"",
+    l.purchase.label,l.purchase.booking?.bookingCode||"",l.marketingConsent===true?"Sì":"No",
+    l.privacyAccepted===true?"Sì":"No",l.source||""
+  ]);
+  const csv=[cols,...data].map(row=>row.map(leadCsvField).join(";")).join("\r\n");
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=`transmind-contatti-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+["leadSearch","leadStatusFilter","leadMarketingFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="leadSearch"?"input":"change",applyLeadFilters));
+document.getElementById("exportLeadsButton").addEventListener("click",exportLeadsCsv);
 
 function generateGuestToken(){
   const bytes=new Uint8Array(24);
@@ -203,7 +395,7 @@ guestForm.addEventListener("submit",async e=>{
     guestModal.classList.add("hidden");
     guestForm.reset();
     alert("OSPITE creato. Il biglietto PNG è stato scaricato.");
-    await loadBookings();
+    await loadAll();
 
   }catch(error){
     console.error(error);
@@ -226,7 +418,7 @@ guestForm.addEventListener("submit",async e=>{
   }
 });
 
-async function confirmBankTransfer(button){const bookingCode=button.dataset.code;if(!bookingCode)return;const ok=confirm(`Confermi che il bonifico per ${bookingCode} è stato ricevuto?\n\nDopo la conferma verranno inviati automaticamente biglietto e QR via email.`);if(!ok)return;button.disabled=true;const oldText=button.textContent;button.textContent="CONFERMA...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch("https://europe-west1-backtag-16de3.cloudfunctions.net/confirmTransmindBankTransfer",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({bookingCode})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile confermare il bonifico.");alert(data.alreadyConfirmed?"Bonifico già confermato.":"Bonifico confermato. Biglietto/i e QR inviati via email.");await loadBookings()}catch(error){console.error(error);alert(error.message||"Errore durante la conferma del bonifico.");button.disabled=false;button.textContent=oldText}}function formatDate(ts){if(!ts)return"—";try{const d=ts.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}catch{return"—"}}
+async function confirmBankTransfer(button){const bookingCode=button.dataset.code;if(!bookingCode)return;const ok=confirm(`Confermi che il bonifico per ${bookingCode} è stato ricevuto?\n\nDopo la conferma verranno inviati automaticamente biglietto e QR via email.`);if(!ok)return;button.disabled=true;const oldText=button.textContent;button.textContent="CONFERMA...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch("https://europe-west1-backtag-16de3.cloudfunctions.net/confirmTransmindBankTransfer",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({bookingCode})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile confermare il bonifico.");alert(data.alreadyConfirmed?"Bonifico già confermato.":"Bonifico confermato. Biglietto/i e QR inviati via email.");await loadAll()}catch(error){console.error(error);alert(error.message||"Errore durante la conferma del bonifico.");button.disabled=false;button.textContent=oldText}}function formatDate(ts){if(!ts)return"—";try{const d=ts.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}catch{return"—"}}
 function exportCsv(){if(!filteredBookings.length){alert("Non ci sono prenotazioni da esportare.");return}const headers=["Codice","Nome","Cognome","Tipo","Prezzo","Email","Telefono","Consenso foto/video","Codice Trans collegato","Codice accompagnatore","Pagamento","Stato","Data"],data=filteredBookings.map(b=>[(b.ticketType==="guest"?"":(b.bookingCode||b.id||"")),b.name||"",b.surname||"",b.ticketLabel||b.ticketType||"",b.price||"",b.email||"",b.phone||"",b.mediaConsent||"not_selected",b.linkedTransCode||"",b.companionCode||"",b.paymentStatus||"",b.status||"",formatDate(b.createdAt)]),csv=[headers,...data].map(r=>r.map(csvEsc).join(";")).join("\n"),blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`transmind-prenotazioni-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url)}
 function csvEsc(v){return`"${String(v??"").replace(/"/g,'""')}"`}function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
 </script>
