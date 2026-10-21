@@ -31,6 +31,31 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3,blockquote{font-family:'Playfair Di
 @media(max-width:760px){.wrap{width:calc(100% - 36px)}.topbar .wrap{min-height:68px}.wordmark{font-size:17px}.topbar .top-cta{display:none}.menu-btn{display:block}.nav{display:none;position:absolute;right:16px;left:16px;top:67px;flex-direction:column;align-items:stretch;gap:0;background:#211a16;border:1px solid var(--line);box-shadow:0 18px 44px #000b;padding:10px 21px}.nav.open{display:flex}.nav a{padding:13px 6px;border-bottom:1px solid var(--warm)}.hero{padding:110px 0 80px;min-height:unset}.hero-grid{grid-template-columns:1fr;gap:56px}.hero h1{font-size:clamp(61px,13.3vw,94px)}.hero h2{font-size:27px}.hero-kicker{font-size:10px}.hero .portrait-holder{width:min(78%,400px)}.hero-cta .btn{width:100%}.section{padding:73px 0 80px}.section h2{font-size:clamp(32px,7.5vw,48px)}.split,.topic,.bio,.faq-grid{grid-template-columns:1fr;gap:37px}.recog{grid-template-columns:1fr 1fr}.rec-card,.rec-card:nth-child(-n+2){grid-column:span 1}.topics{gap:55px;margin-top:52px}.topic:nth-child(even) .topic-visual{order:0}.topic-visual{aspect-ratio:5/4.5;max-height:380px}.program,.ticket-grid{grid-template-columns:1fr}.review-grid{grid-template-columns:1fr 1fr}.bio-portrait{position:relative;top:0;max-width:400px;margin:0 auto}.venue-info{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr;gap:35px}.footer-grid>div:first-child{grid-column:span 2}.footer-bottom{align-items:flex-start;flex-direction:column}.closing{padding:85px 0 110px}}
 @media(max-width:520px){body{font-size:15px}.recog{grid-template-columns:1fr}.rec-card,.rec-card:nth-child(-n+2){grid-column:1}.rec-card{min-height:0}.review-grid{grid-template-columns:1fr}.day{padding:25px}.ticket{padding:28px}.venue-info{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}.closing .btn{width:100%}.hero .portrait-holder{width:86%}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.foil{animation:none}.btn,.ticket,.rec-card{transition:none}}
+
+/* FIX FOTO EDWARD: la foto rimane RITAGLIATA all'interno della cornice. */
+.hero .portrait-holder {
+  max-width: 390px;
+  padding: 0;
+}
+/* Elimina l'arco esterno sfalsato che compariva dietro alla foto. */
+.hero .portrait-holder::before { content: none; }
+.hero .portrait-holder .portrait-body {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 48% 48% 6px 6px;
+  border: 1px solid var(--gold);
+  background: var(--brown);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .34);
+}
+.hero .portrait-holder .portrait-body img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+.hero .portrait-holder .portrait-badge { bottom: -12px; }
 </style>
 </head>
 <body>
