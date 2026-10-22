@@ -87,6 +87,28 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3,blockquote{font-family:'Playfair Di
   .agenda-content p{font-size:12px}
   .program .day .hours{font-size:18px}
 }
+
+/* CORREZIONE SOLO PRIMA FOTO EDWARD: immagine gia sagomata ad arco.
+   Disattiva la seconda cornice CSS e lascia la sagoma originale della foto. */
+.hero .portrait-holder { padding: 0; }
+.hero .portrait-holder::before { content: none; display: none; }
+.hero .portrait-holder .portrait-body {
+  aspect-ratio: auto;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hero .portrait-holder .portrait-body img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  object-fit: contain !important;
+}
+.hero .portrait-holder .portrait-fallback { display: none; }
 </style>
 </head>
 <body>
