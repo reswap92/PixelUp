@@ -1,0 +1,15 @@
+{
+  "id": "/life/",
+  "name": "PixelUp Life",
+  "short_name": "PixelUp Life",
+  "description": "La tua dashboard privata: casa, lavoro, turni, scadenze e budget",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf4e8",
+  "theme_color": "#4d5a3a",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
