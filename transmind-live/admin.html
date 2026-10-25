@@ -32,6 +32,28 @@
     .lead-link{display:inline-block;color:var(--gold2);text-decoration:underline;text-underline-offset:3px;margin:4px 9px 4px 0}
     @media(max-width:1100px){.lead-stats{grid-template-columns:repeat(3,1fr)}.lead-filters{grid-template-columns:1fr 1fr}}
     @media(max-width:650px){.leads-head{align-items:flex-start}.lead-stats{grid-template-columns:1fr 1fr}.lead-filters{grid-template-columns:1fr}.leads-head h2{font-size:26px}}
+
+    /* ===== RIEPILOGO INCASSI E BONIFICI (solo visualizzazione) ===== */
+    .finance-area{margin:0 0 24px}
+    .finance-head{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:24px 0 14px}
+    .finance-head h2{font-family:Georgia,"Times New Roman",serif;font-size:29px;font-weight:500;margin:0 0 6px}
+    .finance-head p{font-size:13px;line-height:1.55;color:var(--muted);margin:0;max-width:850px}
+    .finance-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+    .finance-card{background:rgba(18,12,9,.93);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+    .finance-card.highlight{border-color:rgba(139,211,166,.38);background:rgba(22,43,29,.30)}
+    .finance-card.warning{border-color:rgba(241,175,111,.45);background:rgba(89,53,20,.18)}
+    .finance-card .k{font-size:12px;color:#d8cbbd;font-weight:700;letter-spacing:.02em}
+    .finance-card .v{margin:9px 0 6px;font-size:clamp(23px,2.7vw,33px);line-height:1.1;font-weight:800;color:var(--gold2)}
+    .finance-card.highlight .v{color:var(--ok)}
+    .finance-card small{display:block;font-size:11px;line-height:1.5;color:#b7a99b}
+    .bank-area{margin:0 0 25px}
+    .bank-table{min-width:780px}
+    .bank-note{padding:13px 17px;border:1px solid rgba(229,179,127,.22);border-radius:12px;background:rgba(229,179,127,.07);color:#e8d8c8;font-size:12px;line-height:1.65;margin:0 0 12px}
+    .bank-inline{white-space:nowrap}
+    .bank-amount{font-size:16px;color:var(--gold2);font-weight:800}
+    .bank-status{color:#f3c490;font-size:12px;font-weight:700}
+    @media(max-width:1100px){.finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:650px){.finance-head h2{font-size:26px}.finance-grid{gap:9px}.finance-card{padding:14px}.finance-card .v{font-size:24px}}
   </style>
 </head>
 <body>
@@ -60,8 +82,29 @@
     <div class="stat"><div class="k">OSPITI</div><div id="statGuest" class="v">0</div></div>
     <div class="stat"><div class="k">CONSENSO FOTO SÌ</div><div id="statConsentYes" class="v">0</div></div>
     <div class="stat"><div class="k">CONSENSO FOTO NO</div><div id="statConsentNo" class="v">0</div></div>
-    <div class="stat"><div class="k">VALORE PRENOTAZIONI</div><div id="statValue" class="v">€0</div></div>
+    <div class="stat"><div class="k">VALORE BIGLIETTI</div><div id="statValue" class="v">€0</div></div>
   </section>
+  <!-- Nuovo riepilogo economico: non modifica registrazioni né pagamenti -->
+  <section class="finance-area" aria-labelledby="financeTitle">
+    <div class="finance-head">
+      <div><div class="brand">CONTROLLO ECONOMICO</div><h2 id="financeTitle">Incassi e pagamenti</h2>
+      <p>Gli incassi confermati comprendono soltanto i biglietti segnati come pagati. I bonifici in attesa non sono conteggiati come incassati.</p></div>
+    </div>
+    <div class="finance-grid">
+      <div class="finance-card highlight"><div class="k">INCASSATO CONFERMATO</div><div id="statCollected" class="v">€0</div><small>Biglietti con pagamento confermato, tutti i metodi.</small></div>
+      <div class="finance-card warning"><div class="k">BONIFICI IN ATTESA</div><div id="statPendingBank" class="v">€0</div><small>Importi prenotati, non ancora verificati su Wise.</small></div>
+      <div class="finance-card"><div class="k">BONIFICI DA VERIFICARE</div><div id="statPendingCount" class="v">0</div><small>Operazioni distinte: il pacchetto da due biglietti conta una sola volta.</small></div>
+      <div class="finance-card"><div class="k">BIGLIETTI PAGATI</div><div id="statPaidTickets" class="v">0</div><small>Numero di biglietti pagati, non numero di transazioni.</small></div>
+    </div>
+  </section>
+
+  <!-- Elenco mirato: un bonifico di coppia compare una sola volta -->
+  <section class="bank-area" aria-labelledby="pendingBanksTitle">
+    <div class="finance-head"><div><div class="brand">DA CONTROLLARE SU WISE</div><h2 id="pendingBanksTitle">Bonifici da confermare</h2><p>Edward verifica l'accredito direttamente sul conto e poi conferma qui. La conferma invia automaticamente il biglietto e il QR via email.</p></div></div>
+    <p class="bank-note"><strong>Importante:</strong> la semplice prenotazione non prova che il bonifico sia arrivato. Conferma soltanto dopo aver trovato l'accredito nel conto Wise, controllando importo e causale.</p>
+    <div class="table-card"><div class="table-scroll"><table class="bank-table"><thead><tr><th>Codice / causale</th><th>Intestatario prenotazione</th><th>Biglietti</th><th>Importo atteso</th><th>Data</th><th>Azione</th></tr></thead><tbody id="pendingBankRows"></tbody></table><div id="pendingBankEmpty" class="empty">Nessun bonifico in attesa di conferma.</div></div><div class="table-footer"><span id="pendingBankResultCount">0 bonifici in attesa</span><span>Conferma manuale dopo verifica Wise</span></div></div>
+  </section>
+
   <section class="filters">
     <input id="searchInput" type="search" placeholder="Cerca nome, cognome, email, telefono o codice...">
     <select id="typeFilter"><option value="all">Tutti i biglietti</option><option value="trans">Persona Trans</option><option value="companion">Accompagnatore</option><option value="guest">Ospite</option></select>
@@ -137,7 +180,69 @@ document.getElementById("logoutButton").addEventListener("click",()=>signOut(aut
 document.getElementById("createGuestButton").addEventListener("click",()=>{guestError.classList.add("hidden");guestModal.classList.remove("hidden");setTimeout(()=>document.getElementById("guestName").focus(),50)});document.getElementById("closeGuestModal").addEventListener("click",()=>{if(!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});guestModal.addEventListener("click",e=>{if(e.target===guestModal&&!guestSubmitButton.disabled){guestModal.classList.add("hidden");guestForm.reset();guestError.classList.add("hidden")}});
 onAuthStateChanged(auth,async user=>{if(user){loginView.classList.add("hidden");adminView.classList.remove("hidden");document.getElementById("adminUser").textContent=`Accesso: ${user.email}`;await loadAll()}else{adminView.classList.add("hidden");loginView.classList.remove("hidden");bookings=[];filteredBookings=[];leads=[];filteredLeads=[];leadsLoaded=false;resetLeadsPanel()}});
 async function loadBookings(){document.getElementById("reloadButton").textContent="Caricamento...";try{const q=query(collection(db,"transmindBookings"),orderBy("createdAt","desc"));const snap=await getDocs(q);bookings=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();applyFilters()}catch(error){console.error(error);alert("Errore nel caricamento delle prenotazioni.")}finally{document.getElementById("reloadButton").textContent="↻ Aggiorna"}}
-function updateStats(){const total=bookings.length,trans=bookings.filter(b=>b.ticketType==="trans").length,comp=bookings.filter(b=>b.ticketType==="companion").length,guest=bookings.filter(b=>b.ticketType==="guest").length,yes=bookings.filter(b=>b.mediaConsent==="yes").length,no=bookings.filter(b=>b.mediaConsent==="no").length,value=bookings.reduce((s,b)=>s+Number(b.price||0),0);statTotal.textContent=total;statTrans.textContent=trans;statComp.textContent=comp;document.getElementById("statGuest").textContent=guest;statConsentYes.textContent=yes;statConsentNo.textContent=no;statValue.textContent=new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value)}
+// Statistiche calcolate soltanto sullo stato delle prenotazioni salvate.
+// I bonifici pending NON diventano incasso fino alla conferma manuale.
+function moneyValue(b){const n=Number(b?.price??0);return Number.isFinite(n)?n:0;}
+function moneyFormat(n){return new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n);}
+function paidBookings(){return bookings.filter(b=>b.paymentStatus==="paid"&&b.status==="confirmed");}
+function pendingBankBookings(){return bookings.filter(b=>b.paymentMethod==="bank_transfer"&&b.paymentStatus==="pending");}
+function pendingBankGroups(){
+  const groups=new Map();
+  for(const b of pendingBankBookings()){
+    // Il bundle acquista 2 biglietti ma prevede UN bonifico (280 €).
+    const key=b.bankTransferGroupId?`group:${b.bankTransferGroupId}`:`single:${b.id||b.bookingCode}`;
+    if(!groups.has(key))groups.set(key,{items:[],total:0});
+    const group=groups.get(key);
+    group.items.push(b);
+    group.total+=moneyValue(b);
+  }
+  return Array.from(groups.values());
+}
+function updateStats(){
+  const paid=paidBookings();
+  const waiting=pendingBankBookings();
+  const received=paid.reduce((sum,b)=>sum+moneyValue(b),0);
+  const pending=waiting.reduce((sum,b)=>sum+moneyValue(b),0);
+  const fields={
+    statTotal:bookings.length,
+    statTrans:bookings.filter(b=>b.ticketType==="trans").length,
+    statComp:bookings.filter(b=>b.ticketType==="companion").length,
+    statGuest:bookings.filter(b=>b.ticketType==="guest").length,
+    statConsentYes:bookings.filter(b=>b.mediaConsent==="yes").length,
+    statConsentNo:bookings.filter(b=>b.mediaConsent==="no").length,
+    statPendingCount:pendingBankGroups().length,
+    statPaidTickets:paid.length
+  };
+  for(const [id,value]of Object.entries(fields))document.getElementById(id).textContent=String(value);
+  document.getElementById("statValue").textContent=moneyFormat(received+pending);
+  document.getElementById("statCollected").textContent=moneyFormat(received);
+  document.getElementById("statPendingBank").textContent=moneyFormat(pending);
+  renderPendingBanks();
+}
+function renderPendingBanks(){
+  const tbody=document.getElementById("pendingBankRows");
+  const groups=pendingBankGroups();
+  tbody.innerHTML="";
+  document.getElementById("pendingBankEmpty").classList.toggle("hidden",groups.length!==0);
+  document.getElementById("pendingBankResultCount").textContent=`${groups.length} ${groups.length===1?"bonifico in attesa":"bonifici in attesa"}`;
+  for(const group of groups){
+    const primary=group.items.find(b=>b.ticketType==="trans")||group.items[0];
+    const code=primary.bookingCode||primary.id||"";
+    const names=`${primary.name||""} ${primary.surname||""}`.trim();
+    const codes=group.items.map(b=>b.bookingCode).filter(Boolean).join(" · ");
+    const tr=document.createElement("tr");
+    // Dati Firestore sanitizzati prima di inserirli nell'HTML.
+    tr.innerHTML=`<td><strong class="code">${esc(code)}</strong><span class="small">${group.items.length>1?esc(codes):"Usa questo codice come causale"}</span></td>`+
+      `<td><span class="name">${esc(names)}</span><span class="small">${esc(primary.email||"")}</span></td>`+
+      `<td>${group.items.length} ${group.items.length===1?"biglietto":"biglietti"}</td>`+
+      `<td><strong class="bank-amount">${moneyFormat(group.total)}</strong><span class="small bank-status">In attesa</span></td>`+
+      `<td class="bank-inline">${esc(formatDate(primary.createdAt))}</td>`+
+      `<td><button type="button" class="btn btn-confirm confirm-bank" data-code="${esc(code)}">CONFERMA BONIFICO</button></td>`;
+    tbody.appendChild(tr);
+  }
+  tbody.querySelectorAll(".confirm-bank").forEach(btn=>btn.addEventListener("click",()=>confirmBankTransfer(btn)));
+}
+
 function applyFilters(){const term=searchInput.value.trim().toLowerCase(),type=typeFilter.value,consent=consentFilter.value,payment=paymentFilter.value;filteredBookings=bookings.filter(b=>{const hay=[b.bookingCode,b.name,b.surname,b.email,b.phone,b.linkedTransCode,b.companionCode].filter(Boolean).join(" ").toLowerCase(),mc=b.mediaConsent||"not_selected";return(!term||hay.includes(term))&&(type==="all"||b.ticketType===type)&&(consent==="all"||mc===consent)&&(payment==="all"||b.paymentStatus===payment)});renderRows()}
 function renderRows(){rows.innerHTML="";emptyState.classList.toggle("hidden",filteredBookings.length!==0);resultCount.textContent=`${filteredBookings.length} ${filteredBookings.length===1?"risultato":"risultati"}`;filteredBookings.forEach(b=>{const tr=document.createElement("tr");let typeLabel="Persona Trans",typeClass="type-trans";if(b.ticketType==="companion"){typeLabel="Accompagnatore";typeClass="type-comp"}else if(b.ticketType==="guest"){typeLabel="Ospite";typeClass="type-guest"}let linked="Nessun accompagnatore";if(b.ticketType==="companion")linked=b.linkedTransCode?`Trans: ${esc(b.linkedTransCode)}`:"—";else if(b.ticketType==="guest")linked="Invito gratuito";else linked=b.companionCode?`Accomp.: ${esc(b.companionCode)}`:(b.companionPendingCode?`Accomp. in attesa: ${esc(b.companionPendingCode)}`:"Nessun accompagnatore");const canConfirm=b.paymentMethod==="bank_transfer"&&b.paymentStatus==="pending",action=canConfirm?`<button class="btn btn-confirm confirm-bank" data-code="${esc(b.bookingCode||"")}">CONFERMA BONIFICO</button>`:"—",visibleCode=b.ticketType==="guest"?"—":esc(b.bookingCode||b.id||"");tr.innerHTML=`<td><span class="code">${visibleCode}</span></td><td><span class="name">${esc(`${b.name||""} ${b.surname||""}`.trim())}</span></td><td><span class="badge ${typeClass}">${typeLabel}</span></td><td><strong>€${Number(b.price||0).toFixed(0)}</strong></td><td>${esc(b.email||"—")}<span class="small">${esc(b.phone||"—")}</span></td><td>${consentBadge(b.mediaConsent)}</td><td>${linked}</td><td>${paymentBadge(b.paymentStatus)}</td><td>${action}</td><td>${formatDate(b.createdAt)}</td>`;rows.appendChild(tr)});document.querySelectorAll(".confirm-bank").forEach(btn=>btn.addEventListener("click",()=>confirmBankTransfer(btn)))}
 function consentBadge(v){if(v==="yes")return'<span class="badge yes">✓ Sì</span>';if(v==="no")return'<span class="badge no">✕ No</span>';return'<span class="badge neutral">Non indicato</span>'}function paymentBadge(v){if(v==="paid")return'<span class="badge yes">Pagato</span>';if(v==="pending")return'<span class="badge no">Bonifico in attesa</span>';if(v==="free")return'<span class="badge yes">Gratuito</span>';if(v==="test_no_payment")return'<span class="badge neutral">Test / no pagamento</span>';return`<span class="badge neutral">${esc(v||"Non indicato")}</span>`}
@@ -418,7 +523,7 @@ guestForm.addEventListener("submit",async e=>{
   }
 });
 
-async function confirmBankTransfer(button){const bookingCode=button.dataset.code;if(!bookingCode)return;const ok=confirm(`Confermi che il bonifico per ${bookingCode} è stato ricevuto?\n\nDopo la conferma verranno inviati automaticamente biglietto e QR via email.`);if(!ok)return;button.disabled=true;const oldText=button.textContent;button.textContent="CONFERMA...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch("https://europe-west1-backtag-16de3.cloudfunctions.net/confirmTransmindBankTransfer",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({bookingCode})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile confermare il bonifico.");alert(data.alreadyConfirmed?"Bonifico già confermato.":"Bonifico confermato. Biglietto/i e QR inviati via email.");await loadAll()}catch(error){console.error(error);alert(error.message||"Errore durante la conferma del bonifico.");button.disabled=false;button.textContent=oldText}}function formatDate(ts){if(!ts)return"—";try{const d=ts.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}catch{return"—"}}
+async function confirmBankTransfer(button){const bookingCode=button.dataset.code;if(!bookingCode)return;const current=bookings.find(b=>b.bookingCode===bookingCode);const related=current?.bankTransferGroupId?pendingBankBookings().filter(b=>b.bankTransferGroupId===current.bankTransferGroupId):current?[current]:[];const expectedAmount=related.reduce((sum,b)=>sum+moneyValue(b),0);const details=related.length>1?`Questa conferma riguarda ${related.length} biglietti.\n`:"";const ok=confirm(`Hai VERIFICATO su Wise che il bonifico sia stato effettivamente accreditato?\n\nCodice / causale: ${bookingCode}\nImporto atteso: ${moneyFormat(expectedAmount)}\n${details}\nDopo la conferma verranno inviati automaticamente biglietto e QR via email.\n\nConferma solo se l'accredito è realmente visibile sul conto.`);if(!ok)return;button.disabled=true;const oldText=button.textContent;button.textContent="CONFERMA...";try{const user=auth.currentUser;if(!user)throw new Error("Sessione amministratore non valida.");const idToken=await user.getIdToken();const response=await fetch("https://europe-west1-backtag-16de3.cloudfunctions.net/confirmTransmindBankTransfer",{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${idToken}`},body:JSON.stringify({bookingCode})});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||"Impossibile confermare il bonifico.");alert(data.alreadyConfirmed?"Bonifico già confermato.":"Bonifico confermato. Biglietto/i e QR inviati via email.");await loadAll()}catch(error){console.error(error);alert(error.message||"Errore durante la conferma del bonifico.");button.disabled=false;button.textContent=oldText}}function formatDate(ts){if(!ts)return"—";try{const d=ts.toDate?ts.toDate():new Date(ts);return new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d)}catch{return"—"}}
 function exportCsv(){if(!filteredBookings.length){alert("Non ci sono prenotazioni da esportare.");return}const headers=["Codice","Nome","Cognome","Tipo","Prezzo","Email","Telefono","Consenso foto/video","Codice Trans collegato","Codice accompagnatore","Pagamento","Stato","Data"],data=filteredBookings.map(b=>[(b.ticketType==="guest"?"":(b.bookingCode||b.id||"")),b.name||"",b.surname||"",b.ticketLabel||b.ticketType||"",b.price||"",b.email||"",b.phone||"",b.mediaConsent||"not_selected",b.linkedTransCode||"",b.companionCode||"",b.paymentStatus||"",b.status||"",formatDate(b.createdAt)]),csv=[headers,...data].map(r=>r.map(csvEsc).join(";")).join("\n"),blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`transmind-prenotazioni-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url)}
 function csvEsc(v){return`"${String(v??"").replace(/"/g,'""')}"`}function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
 </script>
