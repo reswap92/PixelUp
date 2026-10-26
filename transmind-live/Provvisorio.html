@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#090807">
+  <title>TRANSMIND LIVE | 23-24 Ottobre 2027</title>
+  <meta name="description" content="TRANSMIND LIVE - 23 e 24 ottobre 2027, Teatro Teca, Cassano d'Adda.">
+
+  <style>
+    * , *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; width: 100%; min-height: 100%; background: #090807; }
+    body { font-family: Arial, Helvetica, sans-serif; }
+    body.modal-open { overflow: hidden; }
+    .page { width: 100%; display: flex; justify-content: center; background: #090807; }
+    .poster-container { position: relative; width: 100%; max-width: 1024px; line-height: 0; overflow: hidden; }
+    .poster { display: block; width: 100%; height: auto; }
+
+    /* Pulsante trasparente sopra il pulsante già stampato sulla locandina.
+       Valori uguali all'index.html originale. */
+    .buy-button {
+      position: absolute;
+      left: 26%; top: 74.4%; width: 48%; height: 4.4%;
+      border: 0; background: transparent; padding: 0;
+      border-radius: 50px; z-index: 10; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .buy-button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+
+    /* POP-UP: è parte dell'index, non una nuova pagina. */
+    .modal-overlay[hidden] { display: none; }
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+      background: rgba(0, 0, 0, .82);
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    }
+    .modal {
+      --gold: #e8b681; --gold2: #f6d5aa;
+      position: relative; width: min(100%, 490px);
+      max-height: calc(100dvh - 24px); overflow: auto;
+      padding: 29px 27px 25px;
+      border: 1px solid rgba(232, 182, 129, .43);
+      border-radius: 17px;
+      background: radial-gradient(circle at 90% 0%, rgba(149, 89, 43, .20), transparent 52%),
+                  linear-gradient(158deg, #261a14, #100c0a 75%);
+      box-shadow: 0 28px 85px rgba(0,0,0,.7), 0 0 37px rgba(180,112,53,.12);
+      color: #fff6ee; line-height: 1.5;
+      scrollbar-width: thin;
+      scrollbar-color: #775034 transparent;
+    }
+    .modal-close {
+      position: absolute; top: 15px; right: 15px;
+      width: 34px; height: 34px; border: 1px solid rgba(232,182,129,.38);
+      border-radius: 50%; background: rgba(255,255,255,.035);
+      color: #f6d5aa; font-size: 24px; font-weight: 300;
+      display: grid; place-items: center; cursor: pointer;
+    }
+    .modal-kicker {
+      color: #e8b681; font-size: 10px; text-transform: uppercase;
+      letter-spacing: .24em; font-weight: 750; margin: 0 42px 9px 0;
+    }
+    .modal-title {
+      font: 400 clamp(30px, 6vw, 40px)/1.14 Georgia, "Times New Roman", serif;
+      letter-spacing: -.03em; margin: 0 38px 10px 0;
+      color: #fff6ee;
+    }
+    .modal-title em { color: #f6d5aa; font-weight: 400; }
+    .modal-desc { color: #cbbbaf; font-size: 13px; line-height: 1.65; margin: 0 0 22px; }
+    .modal-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+    .modal-field.full { grid-column: 1/-1; }
+    .modal-field label { display: block; color: #edddd0; font-size: 12px; font-weight: 680; margin-bottom: 6px; }
+    .modal-field label .required { color: #e8b681; }
+    .modal-field input {
+      display: block; width: 100%; min-width: 0; height: 46px; padding: 0 12px;
+      border: 1px solid rgba(238,205,171,.28); border-radius: 7px;
+      background: rgba(255,255,255,.045); color: #fffaf6;
+      font-size: 15px; font-family: inherit;
+    }
+    .modal-field input::placeholder { color: #908075; }
+    .modal-field input:focus { border-color: #e8b681; outline: 2px solid rgba(230,171,106,.20); }
+    .modal-hint { display: block; color: #aa988c; font-size: 10px; margin-top: 5px; }
+    .modal-consent {
+      display: grid; grid-template-columns: 19px 1fr;
+      align-items: start; gap: 10px; margin-top: 16px;
+      color: #d8c8ba; font-size: 11px; line-height: 1.55; cursor: pointer;
+    }
+    .modal-consent input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: #e4ad71; cursor: pointer; }
+    .modal-consent a { color: #f6d5aa; text-underline-offset: 3px; }
+    .modal-consent strong { color: #f7ead9; }
+    .modal-optional { color: #b6a08f; }
+    .modal-submit {
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      width: 100%; min-height: 51px; margin-top: 22px; border: 0; border-radius: 8px;
+      background: linear-gradient(110deg, #d5a16a, #f5d2a6 51%, #c78b53);
+      color: #23150c; font-size: 12px; font-weight: 850;
+      letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+      box-shadow: 0 10px 30px rgba(213,154,92,.15);
+    }
+    .modal-submit:hover:not(:disabled) { filter: brightness(1.06); }
+    .modal-submit:disabled { opacity: .65; cursor: wait; }
+    .modal-footnote { text-align: center; color: #a99b8f; font-size: 10px; margin: 11px 0 0; }
+    .modal-status {
+      display: none; margin-top: 14px; padding: 12px; border-radius: 6px;
+      background: #3a1c17; border: 1px solid #a36452;
+      color: #ffe8dc; font-size: 12px; line-height: 1.5;
+    }
+    .modal-status.show { display: block; }
+    .modal-honey {
+      position: absolute !important; width: 1px !important; height: 1px !important;
+      overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important;
+    }
+    .modal :focus-visible { outline: 2px solid #f6d5aa; outline-offset: 3px; }
+    @media (max-width: 530px) {
+      .modal { padding: 26px 19px 20px; border-radius: 14px; }
+      .modal-fields { grid-template-columns: 1fr; gap: 12px; }
+      .modal-field.full { grid-column: auto; }
+      .modal-desc { margin-bottom: 17px; }
+      .modal-field input { height: 44px; }
+      .modal-consent { margin-top: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="poster-container">
+      <img src="assets/transmind-live-poster.jpg" class="poster" alt="TRANSMIND LIVE - 23 e 24 ottobre 2027">
+
+      <!-- La zona cliccabile rimane dov'era: cambia solo il comportamento. -->
+      <button type="button" class="buy-button" id="openBuyModal"
+        aria-label="Acquista il tuo biglietto TRANSMIND LIVE"
+        aria-haspopup="dialog" aria-controls="buyModal"></button>
+
+      <!-- Questa parte del sito non cambia. -->
+      <div style="width:100%;clear:both;box-sizing:border-box;text-align:center;padding:35px 20px 50px;background:#0d0907;line-height:1.5;">
+        <p style="color:#d9cec5;font-size:15px;margin:0 0 20px;line-height:1.6;">
+          Stai visualizzando la locandina dal cellulare?<br>
+          Scopri tutti i dettagli dell'evento senza scansionare il QR Code.
+        </p>
+        <a href="qr.html" style="display:inline-block;padding:17px 35px;background:linear-gradient(135deg,#c99556,#e7bd84);color:#0d0907;border-radius:30px;font-size:16px;font-weight:700;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.35);">
+          ✨ SCOPRI L'EVENTO →
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modulo integrato nell'index.html. -->
+  <div class="modal-overlay" id="buyModal" hidden aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <button type="button" class="modal-close" id="closeBuyModal" aria-label="Chiudi il modulo">×</button>
+      <p class="modal-kicker">TRANSMIND LIVE · 23–24 OTTOBRE 2027</p>
+      <h1 class="modal-title" id="modalTitle">Prenota il tuo <em>posto.</em></h1>
+      <p class="modal-desc" id="modalDesc">Inserisci i tuoi dati per scegliere il biglietto e proseguire al pagamento.</p>
+
+      <form id="leadForm" autocomplete="on">
+        <div class="modal-fields">
+          <div class="modal-field">
+            <label for="leadName">Nome <span class="required" aria-hidden="true">*</span></label>
+            <input id="leadName" name="given-name" type="text" autocomplete="given-name" placeholder="Il tuo nome" maxlength="80" required>
+          </div>
+          <div class="modal-field">
+            <label for="leadSurname">Cognome <span class="required" aria-hidden="true">*</span></label>
+            <input id="leadSurname" name="family-name" type="text" autocomplete="family-name" placeholder="Il tuo cognome" maxlength="80" required>
+          </div>
+          <div class="modal-field full">
+            <label for="leadEmail">Indirizzo email <span class="required" aria-hidden="true">*</span></label>
+            <input id="leadEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@esempio.it" maxlength="200" required>
+          </div>
+          <div class="modal-field full">
+            <label for="leadPhone">Numero di telefono <span class="modal-optional">(facoltativo)</span></label>
+            <input id="leadPhone" name="tel" type="tel" autocomplete="tel" inputmode="tel" placeholder="+39 333 1234567" maxlength="30">
+            <small class="modal-hint">Il telefono non è obbligatorio.</small>
+          </div>
+        </div>
+
+        <div class="modal-honey" aria-hidden="true">
+          <label for="leadWebsite">Non compilare questo campo</label>
+          <input id="leadWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label class="modal-consent">
+          <input id="leadPrivacy" type="checkbox" required>
+          <span><strong>Ho letto l’<a href="privacy-contatti.html" target="_blank" rel="noopener noreferrer">informativa privacy</a></strong> per la raccolta dei dati e la gestione della mia richiesta. *</span>
+        </label>
+        <label class="modal-consent">
+          <input id="leadMarketing" type="checkbox">
+          <span><strong>Desidero essere ricontattato da TRANSMIND LIVE</strong> via email o telefono, se fornito, anche se non completo l'acquisto, per ricevere informazioni e comunicazioni promozionali sull'evento. <span class="modal-optional">(facoltativo)</span></span>
+        </label>
+
+        <button class="modal-submit" id="submitButton" type="submit">
+          <span id="btnLabel">Continua al checkout</span><span aria-hidden="true">→</span>
+        </button>
+        <p class="modal-footnote">Nessun pagamento in questo passaggio.</p>
+        <div class="modal-status" id="formStatus" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // Apertura/chiusura del pop-up, indipendente dal collegamento Firebase.
+    const modalOverlay = document.getElementById('buyModal');
+    const modalDialog = modalOverlay.querySelector('[role="dialog"]');
+    const openModalButton = document.getElementById('openBuyModal');
+    const closeModalButton = document.getElementById('closeBuyModal');
+    let focusBeforeModal = null;
+
+    function openBuyModal() {
+      focusBeforeModal = document.activeElement;
+      modalOverlay.hidden = false;
+      modalOverlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      document.getElementById('leadName').focus();
+    }
+    function closeBuyModal() {
+      modalOverlay.hidden = true;
+      modalOverlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      if (focusBeforeModal && typeof focusBeforeModal.focus === 'function') focusBeforeModal.focus();
+    }
+
+    openModalButton.addEventListener('click', openBuyModal);
+    closeModalButton.addEventListener('click', closeBuyModal);
+    modalOverlay.addEventListener('click', (event) => {
+      if (event.target === modalOverlay) closeBuyModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (modalOverlay.hidden) return;
+      if (event.key === 'Escape') { closeBuyModal(); return; }
+      if (event.key !== 'Tab') return;
+      const focusable = [...modalDialog.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href]')]
+        .filter(el => el.getClientRects().length && el.tabIndex !== -1);
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+  </script>
+
+  <script type="module">
+    // Identico progetto Firebase e identica raccolta di preacquisto.html.
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js';
+    import { getFirestore, addDoc, collection, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc',
+      authDomain: 'backtag-16de3.firebaseapp.com',
+      projectId: 'backtag-16de3',
+      storageBucket: 'backtag-16de3.firebasestorage.app',
+      messagingSenderId: '415455463905',
+      appId: '1:415455463905:web:abd5e58bdeaaf6e3b9eaa0'
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('leadForm');
+    const button = document.getElementById('submitButton');
+    const label = document.getElementById('btnLabel');
+    const status = document.getElementById('formStatus');
+    let sending = false;
+
+    const valueOf = id => document.getElementById(id).value.trim();
+    function showError(message) { status.textContent = message; status.classList.add('show'); }
+    function hideError() { status.textContent = ''; status.classList.remove('show'); }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (sending || !form.reportValidity()) return;
+      hideError();
+      // Il campo invisibile serve a filtrare invii automatici banali.
+      if (valueOf('leadWebsite')) return;
+
+      const name = valueOf('leadName');
+      const surname = valueOf('leadSurname');
+      const email = valueOf('leadEmail').toLowerCase();
+      const phone = valueOf('leadPhone');
+      const privacyAccepted = document.getElementById('leadPrivacy').checked;
+      const marketingConsent = document.getElementById('leadMarketing').checked;
+
+      if (!name || !surname || !email || !privacyAccepted) {
+        showError('Controlla i dati inseriti e conferma la presa visione della privacy.');
+        return;
+      }
+      if (name.length > 80 || surname.length > 80 || email.length > 200 || phone.length > 30) {
+        showError('Uno dei campi è troppo lungo.'); return;
+      }
+
+      sending = true;
+      button.disabled = true;
+      label.textContent = 'Salvataggio in corso…';
+      try {
+        // Preserva nomi di campi e source originali per compatibilità con admin esistente.
+        const result = await addDoc(collection(db, 'transmindLeads'), {
+          name, surname, email, phone,
+          privacyAccepted: true,
+          marketingConsent,
+          privacyVersion: '2026-10-19-v1',
+          source: 'preacquisto-transmind',
+          createdAt: serverTimestamp()
+        });
+        try { sessionStorage.setItem('transmindLeadId', result.id); } catch (_) { /* non essenziale */ }
+        // Lasciamo il checkout invariato finché non analizziamo acquista.html.
+        window.location.assign('acquista.html');
+      } catch (error) {
+        console.error('Impossibile registrare la richiesta:', error?.code || 'errore');
+        showError('Non siamo riusciti a registrare i tuoi dati. Controlla la connessione e riprova. Se il problema continua, contatta l’organizzazione.');
+        sending = false;
+        button.disabled = false;
+        label.textContent = 'Continua al checkout';
+      }
+    });
+  </script>
+</body>
+</html>
