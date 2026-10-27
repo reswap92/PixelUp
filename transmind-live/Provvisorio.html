@@ -221,6 +221,8 @@
     }
 
     openModalButton.addEventListener('click', openBuyModal);
+    // Eventuali vecchi link a preacquisto aprono direttamente il modulo.
+    if (location.hash === '#acquista') openBuyModal();
     closeModalButton.addEventListener('click', closeBuyModal);
     modalOverlay.addEventListener('click', (event) => {
       if (event.target === modalOverlay) closeBuyModal();
@@ -299,8 +301,18 @@
           source: 'preacquisto-transmind',
           createdAt: serverTimestamp()
         });
-        try { sessionStorage.setItem('transmindLeadId', result.id); } catch (_) { /* non essenziale */ }
-        // Lasciamo il checkout invariato finché non analizziamo acquista.html.
+        // Passaggio dati tra pagine sullo stesso sito, senza inserirli nell'URL.
+        // I dati restano temporaneamente nella sessione del browser, non in un cookie permanente.
+        try {
+          sessionStorage.setItem('transmindLeadId', result.id);
+          sessionStorage.setItem('transmindCheckoutPrefill', JSON.stringify({
+            name, surname, email, phone,
+            savedAt: Date.now()
+          }));
+        } catch (storageError) {
+          console.warn('Prefill non disponibile in questo browser.');
+          // Non blocchiamo un contatto già registrato: nel checkout potrà inserire i dati.
+        }
         window.location.assign('acquista.html');
       } catch (error) {
         console.error('Impossibile registrare la richiesta:', error?.code || 'errore');
