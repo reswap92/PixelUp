@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="PixelUp Life">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=life-v2">
+  <link rel="stylesheet" href="./styles.css?v=life-v4">
   <title>PixelUp Life · Casa e Lavoro</title>
 </head>
 <body>
@@ -73,8 +73,9 @@
         <div class="surface budget-card">
           <div class="card-header"><h2>Budget del mese</h2><span id="budgetMonth" class="subtle"></span></div>
           <div id="budgetRemaining" class="big-number">€ 0,00</div>
-          <div class="subtle">Stipendio previsto + entrate extra − spese registrate</div>
-          <div class="budget-breakdown"><span>Entrate <strong id="budgetIncome">€ 0</strong></span><span>Spese <strong id="budgetExpenses">€ 0</strong></span></div>
+          <div class="subtle">Entrate previste − pagamenti contabilizzati (RID e confermati)</div>
+          <div class="budget-breakdown"><span>Entrate <strong id="budgetIncome">€ 0</strong></span><span>Pagate / RID contabilizzati <strong id="budgetExpenses">€ 0</strong></span></div>
+          <div class="budget-followup"><span>Ancora da pagare nel mese <strong id="budgetPending">€ 0</strong></span><span>Residuo dopo le spese previste <strong id="budgetForecast">€ 0</strong></span></div>
         </div>
 
         <div class="group-heading">
@@ -91,10 +92,19 @@
           </section>
         </div>
 
-        <section class="surface overview-card work-overview" aria-labelledby="homeWorkTitle">
-          <div class="card-header"><div><div class="overline">VITA PROFESSIONALE</div><h2 id="homeWorkTitle">Lavoro · Prossimi impegni</h2></div><button id="viewAllWork" class="link-btn" type="button">Apri →</button></div>
-          <div id="homeWorkUpcoming" class="mini-list"></div>
-        </section>
+        <div class="group-heading work-home-heading">
+          <div><div class="overline">VITA PROFESSIONALE</div><h2>Da ricordare · Lavoro</h2></div>
+        </div>
+        <div class="summary-grid">
+          <section class="surface compact-card" aria-labelledby="homeWorkDeadlinesTitle">
+            <div class="compact-head"><h3 id="homeWorkDeadlinesTitle">🔔 Scadenze</h3><button id="viewAllWorkDeadlines" class="link-btn" type="button">Vedi tutte →</button></div>
+            <div id="homeWorkDeadlines" class="mini-list"></div>
+          </section>
+          <section class="surface compact-card" aria-labelledby="homeWorkAppointmentsTitle">
+            <div class="compact-head"><h3 id="homeWorkAppointmentsTitle">📅 Appuntamenti</h3><button id="viewAllWork" class="link-btn" type="button">Vedi tutti →</button></div>
+            <div id="homeWorkAppointments" class="mini-list"></div>
+          </section>
+        </div>
         <button id="quickAddButton" class="quick-btn" type="button">＋ Aggiungi un impegno</button>
       </div>
 
@@ -125,26 +135,46 @@
 
       <div id="workView" class="view">
         <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">VITA PROFESSIONALE</div><h1>Lavoro</h1></div></div>
-        <p class="section-intro">Appuntamenti, riunioni e turni lavorativi restano qui, separati dalla Casa.</p>
+        <p class="section-intro">Scadenze e appuntamenti di lavoro separati dalla Casa. I turni sono soltanto una foto, non eventi in agenda.</p>
         <div class="summary-grid section-summary">
+          <section class="surface compact-card" aria-labelledby="workDeadlinesTitle">
+            <div class="compact-head"><h3 id="workDeadlinesTitle">🔔 Scadenze</h3><button id="workOpenDeadlines" class="link-btn" type="button">Apri →</button></div>
+            <div id="workDeadlinesPreview" class="mini-list"></div>
+          </section>
           <section class="surface compact-card" aria-labelledby="workMeetingsTitle">
             <div class="compact-head"><h3 id="workMeetingsTitle">📅 Appuntamenti</h3><button id="workOpenMeetings" class="link-btn" type="button">Apri →</button></div>
             <div id="workMeetingsPreview" class="mini-list"></div>
           </section>
-          <section class="surface compact-card" aria-labelledby="workShiftsTitle">
-            <div class="compact-head"><h3 id="workShiftsTitle">▣ Turni</h3><button id="workOpenShifts" class="link-btn" type="button">Apri →</button></div>
-            <div id="workShiftsPreview" class="mini-list"></div>
-          </section>
         </div>
+        <button id="workOpenShifts" class="surface shift-photo-shortcut" type="button">
+          <span class="shift-shortcut-icon">🖼️</span>
+          <span class="shift-shortcut-text"><strong>Turni di lavoro</strong><small id="shiftPhotoStatus">Apri e carica la foto dei turni</small></span>
+          <span class="shift-shortcut-arrow">→</span>
+        </button>
         <nav class="tabs" id="workTabs" aria-label="Sezioni lavoro">
-          <button data-tab="shifts" class="active">Turni</button>
+          <button data-tab="workDeadlines" class="active">Scadenze</button>
           <button data-tab="meetings">Appuntamenti</button>
+          <button data-tab="shifts">Turni · Foto</button>
           <button data-tab="salary">Stipendio</button>
           <button data-tab="leave">Ferie</button>
         </nav>
-        <div id="workShiftActions" class="share-tools">
-          <button id="shareWeek" type="button" class="small-outline">↗ Condividi settimana su WhatsApp</button>
-          <button id="shareMonth" type="button" class="small-outline">Condividi mese</button>
+        <div id="shiftPhotoPanel" class="surface section-panel shift-photo-panel" hidden>
+          <div class="card-header"><div><h2>Foto dei turni</h2><p class="subtle section-hint">Carica una foto dal telefono. La ritroverai qui quando accedi, anche da un altro dispositivo.</p></div></div>
+          <input type="file" id="shiftPhotoInput" accept="image/jpeg,image/png,image/webp" hidden>
+          <div id="shiftPhotoEmpty" class="shift-photo-empty">
+            <div class="shift-photo-emoji">📷</div>
+            <p>Non hai ancora caricato una foto dei turni.</p>
+            <button id="shiftPhotoUpload" type="button" class="primary">＋ Carica foto dei turni</button>
+          </div>
+          <button id="shiftPhotoOpen" type="button" class="shift-photo-preview" aria-label="Ingrandisci foto dei turni" hidden>
+            <img id="shiftPhotoImage" alt="Foto del calendario dei turni caricata dall'utente">
+            <span>🔍 Tocca per ingrandire</span>
+          </button>
+          <div id="shiftPhotoActions" class="shift-photo-actions" hidden>
+            <button id="shiftPhotoReplace" class="small-outline" type="button">↻ Sostituisci foto</button>
+            <button id="shiftPhotoDelete" class="danger-outline" type="button">Elimina foto</button>
+          </div>
+          <p class="subtle shift-photo-notice">L'immagine viene compressa e salvata nel tuo spazio privato Firestore. La foto precedente viene sostituita, senza modificare gli altri impegni.</p>
         </div>
         <div id="salaryPanel" class="surface salary-panel" hidden>
           <div class="card-header"><h2>Stipendio previsto</h2><button class="add-sm" id="editSalary" type="button">Modifica</button></div>
@@ -185,7 +215,7 @@
             <option value="appointment">Casa · Appuntamento</option>
             <option value="expense">Casa · Spesa</option>
             <option value="task">Casa · Lista / attività</option>
-            <option value="shift">Lavoro · Turno</option>
+            <option value="workDeadline">Lavoro · Scadenza</option>
             <option value="meeting">Lavoro · Appuntamento / call</option>
             <option value="leave">Lavoro · Ferie / permesso</option>
             <option value="income">Lavoro · Entrata extra</option>
@@ -195,15 +225,26 @@
           <div id="formShift" class="form-row" hidden><label>Entrata<input id="itemStart" type="time"></label><label>Uscita<input id="itemEnd" type="time"></label></div>
           <label id="amountWrap">Importo (€)<input id="itemAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></label>
           <label id="recurrenceWrap">Ripetizione<select id="itemRepeat"><option value="none">Non ripetere</option><option value="monthly">Ogni mese</option><option value="yearly">Ogni anno</option></select></label>
+          <label id="paymentModeWrap">Modalità di pagamento
+            <select id="itemPaymentMode">
+              <option value="manual">Manuale — conta solo quando premi Pagato</option>
+              <option value="auto">Automatico / RID — conta dal giorno successivo</option>
+            </select>
+            <small class="payment-hint">L'app non verifica il tuo conto bancario. Il RID viene considerato pagato in base alla data.</small>
+          </label>
           <label id="includeBudgetWrap" class="checkbox-line"><input id="itemIncludeBudget" type="checkbox"> Conta questo importo nelle spese del budget</label>
           <label>Note (private)<textarea id="itemNotes" rows="2" maxlength="1000" placeholder="Facoltative"></textarea></label>
-          <label id="doneWrap" class="checkbox-line"><input id="itemDone" type="checkbox"> Già completato / pagato</label>
+          <label id="doneWrap" class="checkbox-line"><input id="itemDone" type="checkbox"> Già completato</label>
         </div>
         <div class="modal-actions"><button class="primary" id="saveItem" type="submit">Salva</button><button class="small-outline" id="cancelItem" type="button">Annulla</button></div>
       </form>
     </div>
   </div>
+  <div id="shiftPhotoLightbox" class="shift-photo-lightbox" role="dialog" aria-label="Foto dei turni ingrandita" aria-modal="true" hidden>
+    <button id="shiftPhotoClose" type="button" aria-label="Chiudi foto">×</button>
+    <img id="shiftPhotoZoomImage" alt="Foto dei turni ingrandita">
+  </div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=life-v2"></script>
+  <script type="module" src="./app.js?v=life-v4"></script>
 </body>
 </html>
