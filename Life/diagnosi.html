@@ -1,0 +1,74 @@
+
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+<title>Diagnosi PixelUp Life</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #faf5eb;
+  color: #344028;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+<h2>Diagnosi PixelUp Life V5</h2>
+<p>Controllo dei file JavaScript.</p>
+<pre id="result">Controllo in corso...</pre>
+
+<script type="module">
+const output = document.getElementById('result');
+output.textContent = '';
+
+const files = [
+  ['PixelUp app.js',
+   './app.js?v=diagnosi-' + Date.now()],
+  ['Firebase App',
+   'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'],
+  ['Firebase Auth',
+   'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js'],
+  ['Firebase Firestore',
+   'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js']
+];
+
+for (const [name, url] of files) {
+  output.textContent += '\n' + name + '\n';
+
+  try {
+    const response = await fetch(url, {
+      cache: 'no-store'
+    });
+
+    const content = await response.text();
+    const html = /^\s*(<!doctype|<html|<head)/i.test(content);
+
+    output.textContent +=
+      'HTTP: ' + response.status + '\n' +
+      'Tipo: ' + response.headers.get('content-type') + '\n' +
+      'Risultato: ' +
+      (html ? 'ERRORE: RICEVUTO HTML' :
+       response.ok ? 'File ricevuto' :
+       'ERRORE HTTP') + '\n';
+
+  } catch (error) {
+    output.textContent +=
+      'ERRORE: ' + error.message + '\n';
+  }
+}
+
+output.textContent += '\nControllo completato.';
+</script>
+</body>
+</html>
