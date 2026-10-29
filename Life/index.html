@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="PixelUp Life">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=life-v5">
+  <link rel="stylesheet" href="./styles.css?v=life-v5-login-fix-20261029">
   <title>PixelUp Life · Casa e Lavoro</title>
 </head>
 <body>
@@ -301,6 +301,60 @@
     <img id="shiftPhotoZoomImage" alt="Foto dei turni ingrandita">
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=life-v5"></script>
+  <!-- Avvio protetto: impedisce il ricaricamento del login se app.js non parte. -->
+  <script>
+    (function () {
+      const form = document.getElementById('loginForm');
+      const message = document.getElementById('loginError');
+      let status = 'loading';
+      let failure = '';
+
+      function showError(text) {
+        message.textContent = text;
+        message.hidden = false;
+      }
+
+      // Capture: interviene prima del normale submit se manca il programma.
+      form.addEventListener('submit', function (event) {
+        if (status !== 'ready') {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          showError(status === 'loading'
+            ? 'PixelUp Life si sta avviando. Riprova fra un momento.'
+            : 'Non posso avviare PixelUp Life: ' + failure);
+        }
+      }, true);
+
+      window.pixelupLifeBoot = {
+        ready: function () {
+          status = 'ready';
+          if (message.textContent.startsWith('PixelUp Life si sta avviando')) {
+            message.hidden = true;
+            message.textContent = '';
+          }
+        },
+        fail: function (error) {
+          status = 'failed';
+          failure = error && error.message ? error.message : String(error);
+          showError('Errore avvio PixelUp Life: ' + failure);
+          console.error('Avvio PixelUp Life V5:', error);
+        }
+      };
+
+      window.addEventListener('error', function (event) {
+        if (status !== 'ready' && status !== 'failed') {
+          window.pixelupLifeBoot.fail(new Error(event.message || 'Errore JavaScript'));
+        }
+      });
+    })();
+  </script>
+  <script type="module">
+    try {
+      await import('./app.js?v=life-v5-login-fix-20261029');
+      window.pixelupLifeBoot.ready();
+    } catch (error) {
+      window.pixelupLifeBoot.fail(error);
+    }
+  </script>
 </body>
 </html>
