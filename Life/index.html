@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="PixelUp Life">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=life-v4">
+  <link rel="stylesheet" href="./styles.css?v=life-v5">
   <title>PixelUp Life · Casa e Lavoro</title>
 </head>
 <body>
@@ -71,11 +71,14 @@
         </div>
 
         <div class="surface budget-card">
-          <div class="card-header"><h2>Budget del mese</h2><span id="budgetMonth" class="subtle"></span></div>
+          <div class="card-header"><h2>Budget del mese</h2><div class="month-switch"><button id="budgetPrev" type="button" aria-label="Mese precedente">‹</button><span id="budgetMonth" class="subtle"></span><button id="budgetNext" type="button" aria-label="Mese successivo">›</button></div></div>
           <div id="budgetRemaining" class="big-number">€ 0,00</div>
-          <div class="subtle">Entrate previste − pagamenti contabilizzati (RID e confermati)</div>
-          <div class="budget-breakdown"><span>Entrate <strong id="budgetIncome">€ 0</strong></span><span>Pagate / RID contabilizzati <strong id="budgetExpenses">€ 0</strong></span></div>
-          <div class="budget-followup"><span>Ancora da pagare nel mese <strong id="budgetPending">€ 0</strong></span><span>Residuo dopo le spese previste <strong id="budgetForecast">€ 0</strong></span></div>
+          <div class="subtle">Entrate ricevute − spese effettive. Non rappresenta il saldo in banca.</div>
+          <div class="budget-breakdown"><span>Entrate ricevute <strong id="budgetIncome">€ 0</strong></span><span>Spese contabilizzate <strong id="budgetExpenses">€ 0</strong></span></div>
+          <div class="budget-followup"><span>Ancora da pagare <strong id="budgetPending">€ 0</strong></span><span>Residuo previsto* <strong id="budgetForecast">€ 0</strong></span></div>
+          <div class="budget-followup"><span>Stipendio previsto, non ricevuto <strong id="budgetExpectedSalary">€ 0</strong></span><span>Spese settimanali registrate <strong id="budgetWeekly">€ 0</strong></span></div>
+          <p class="subtle">* Comprende lo stipendio previsto e le spese ancora da pagare. Non è il saldo reale del conto.</p>
+          <button id="openWeeklyFromHome" type="button" class="small-outline budget-weekly-link">🛒 Inserisci spese settimanali</button>
         </div>
 
         <div class="group-heading">
@@ -124,10 +127,28 @@
         <nav class="tabs" id="houseTabs" aria-label="Sezioni casa">
           <button data-tab="deadlines" class="active">Scadenze</button>
           <button data-tab="appointments">Appuntamenti</button>
-          <button data-tab="expenses">Spese</button>
+          <button data-tab="expenses">Pagamenti</button>
+          <button data-tab="weekly">Spese settimanali</button>
           <button data-tab="tasks">Liste</button>
         </nav>
-        <div class="section-panel surface">
+        <div id="weeklyPanel" class="surface section-panel weekly-panel" hidden>
+          <div class="card-header"><div><h2>Spese settimanali</h2><p class="subtle section-hint">Benzina, alimentari, Jay e tutte le altre spese effettive. Ogni inserimento viene conteggiato subito nel budget.</p></div></div>
+          <div class="month-switch weekly-month"><button type="button" id="weeklyPrev" aria-label="Mese precedente">‹</button><strong id="weeklyMonth"></strong><button type="button" id="weeklyNext" aria-label="Mese successivo">›</button></div>
+          <div class="weekly-tabs" id="weeklyTabs" aria-label="Settimane del mese"></div>
+          <div class="weekly-summary"><span>Spesa settimana <strong id="weeklyWeekTotal">€ 0</strong></span><span>Totale mese <strong id="weeklyMonthTotal">€ 0</strong></span></div>
+          <div id="weeklyCategoryCards" class="weekly-categories"></div>
+          <div class="weekly-custom">
+            <button id="weeklyNewCategory" type="button" class="small-outline">＋ Nuova categoria</button>
+            <form id="weeklyCategoryForm" class="weekly-new-category" hidden>
+              <label>Nome categoria<input id="weeklyCategoryName" maxlength="45" placeholder="Es. Pannolini, farmacia, auto" required></label>
+              <button type="submit" class="small-outline">Salva categoria</button>
+              <button id="weeklyCancelCategory" type="button" class="text-btn">Annulla</button>
+            </form>
+          </div>
+          <h3 class="weekly-entries-heading">Spese registrate questa settimana</h3>
+          <div id="weeklyEntries" class="rows"></div>
+        </div>
+        <div id="houseSectionPanel" class="section-panel surface">
           <div class="card-header"><div><h2 id="houseSectionTitle">Scadenze</h2><p id="houseSectionHint" class="subtle section-hint">Promemoria 48 ore prima</p></div><button class="add-sm" type="button" id="houseAddButton">＋ Aggiungi</button></div>
           <div id="houseItems" class="rows"></div>
         </div>
@@ -177,9 +198,22 @@
           <p class="subtle shift-photo-notice">L'immagine viene compressa e salvata nel tuo spazio privato Firestore. La foto precedente viene sostituita, senza modificare gli altri impegni.</p>
         </div>
         <div id="salaryPanel" class="surface salary-panel" hidden>
-          <div class="card-header"><h2>Stipendio previsto</h2><button class="add-sm" id="editSalary" type="button">Modifica</button></div>
-          <div id="salaryAmount" class="big-number">€ 0,00</div><p id="salaryNext" class="subtle">Accredito previsto l'ultimo giorno del mese</p>
-          <div class="salary-note">Il valore è una previsione inserita da te. Non è collegato al conto bancario.</div>
+          <div class="card-header"><h2>Stipendio</h2><button class="add-sm" id="editSalary" type="button">Impostazioni</button></div>
+          <div class="month-switch salary-month"><button type="button" id="salaryPrev" aria-label="Mese precedente">‹</button><strong id="salaryMonth"></strong><button type="button" id="salaryNextMonth" aria-label="Mese successivo">›</button></div>
+          <div class="subtle">Previsto per il mese</div><div id="salaryAmount" class="big-number">€ 0,00</div>
+          <p id="salaryNext" class="subtle"></p>
+          <p id="salaryStatus" class="salary-status"></p>
+          <div id="salaryManualDateWrap" class="salary-manual-date" hidden>
+            <label>Data prevista per questo mese<input id="salaryManualDate" type="date"></label>
+            <button id="salarySaveManualDate" type="button" class="small-outline">Salva data</button>
+          </div>
+          <form id="salaryReceiptForm" class="form-grid salary-receipt-form">
+            <label>Importo effettivo ricevuto (€)<input id="salaryActualAmount" type="number" min="0.01" step="0.01" inputmode="decimal" required></label>
+            <label>Data effettiva di accredito<input id="salaryActualDate" type="date" required></label>
+            <button type="submit" class="primary" id="salaryConfirm">✓ Conferma stipendio ricevuto</button>
+            <button type="button" class="danger-outline" id="salaryUndo" hidden>Annulla conferma di questo mese</button>
+          </form>
+          <div class="salary-note">La data prevista è un promemoria: lo stipendio entra nel budget effettivo solo dopo la conferma. Per anticiparlo a un giorno lavorativo, puoi saltare sabati e domeniche.</div>
           <div class="card-header salary-extra"><h2>Entrate extra</h2><button class="add-sm" type="button" id="incomeAdd">＋ Aggiungi</button></div><div id="incomeItems" class="rows"></div>
         </div>
         <div id="workSectionPanel" class="section-panel surface">
@@ -194,7 +228,17 @@
           <form id="settingsForm" class="form-grid">
             <label>Come vuoi essere chiamato?<input id="displayName" maxlength="60" placeholder="Il tuo nome" required></label>
             <label>Stipendio netto previsto (€)<input id="salaryInput" type="number" min="0" step="0.01" inputmode="decimal" required></label>
-            <div class="subtle">Pagamento previsto: ultimo giorno di ogni mese. Il budget usa lo stipendio previsto, non il saldo bancario.</div>
+            <label>Data prevista di accredito
+              <select id="salaryScheduleMode">
+                <option value="endOffset">Giorni prima della fine del mese</option>
+                <option value="fixed">Giorno fisso del mese</option>
+                <option value="manual">Data manuale, diversa ogni mese</option>
+              </select>
+            </label>
+            <label id="salaryOffsetWrap">Quanti giorni prima della fine del mese?<input id="salaryOffset" type="number" min="0" max="30" step="1" value="1"></label>
+            <label id="salaryFixedWrap" hidden>Giorno fisso del mese (1–31)<input id="salaryFixed" type="number" min="1" max="31" step="1" value="30"></label>
+            <label id="salaryWeekendWrap" class="checkbox-line"><input id="salaryWeekend" type="checkbox"> Se la data cade nel weekend, anticipala al venerdì</label>
+            <div class="subtle">Esempio: un giorno prima della fine di ottobre = 30 ottobre. Le festività bancarie non sono calcolate automaticamente. Lo stipendio si considera ricevuto solo dopo la tua conferma.</div>
             <button type="submit" class="primary">Salva impostazioni</button>
           </form>
         </div>
@@ -240,11 +284,23 @@
       </form>
     </div>
   </div>
+  <div id="weeklyModalBackdrop" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="weeklyModalTitle">
+      <div class="modal-top"><div><div class="overline">PIXELUP LIFE · SPESE</div><h2 id="weeklyModalTitle">Registra una spesa</h2></div><button id="weeklyCloseModal" type="button" class="close" aria-label="Chiudi">×</button></div>
+      <form id="weeklyEntryForm" class="form-grid">
+        <p id="weeklyModalCategory" class="subtle"></p>
+        <label>Importo pagato (€)<input id="weeklyAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="Es. 45,70" required></label>
+        <label>Data della spesa<input id="weeklyDate" type="date" required></label>
+        <label>Nota (facoltativa)<input id="weeklyNote" maxlength="140" placeholder="Es. Rifornimento auto"></label>
+        <div class="modal-actions"><button type="submit" id="weeklySave" class="primary">Salva spesa</button><button type="button" id="weeklyCancelModal" class="small-outline">Annulla</button></div>
+      </form>
+    </div>
+  </div>
   <div id="shiftPhotoLightbox" class="shift-photo-lightbox" role="dialog" aria-label="Foto dei turni ingrandita" aria-modal="true" hidden>
     <button id="shiftPhotoClose" type="button" aria-label="Chiudi foto">×</button>
     <img id="shiftPhotoZoomImage" alt="Foto dei turni ingrandita">
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=life-v4"></script>
+  <script type="module" src="./app.js?v=life-v5"></script>
 </body>
 </html>
