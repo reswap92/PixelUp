@@ -145,3 +145,34 @@ textarea{resize:vertical}
   .compact-head h3{font-size:15px}
 }
 @media(min-width:600px){.modal-backdrop{align-items:center}.modal{border-radius:23px}}
+
+/* PixelUp Life v3 — budget realmente contabilizzato */
+.budget-followup{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;color:var(--muted);font-size:11px;line-height:1.5}
+.budget-followup>span{padding:12px 10px;background:#f6f2e8;border-radius:12px}
+.budget-followup strong{display:block;color:var(--dark);font-size:15px;margin-top:6px}
+.payment-hint{display:block;color:var(--muted);font-weight:400;font-size:11px;line-height:1.45}
+.item-row .pay-btn{background:var(--green);color:white;border-color:var(--green);font-weight:700}
+.pill.warning{color:#9b422b;background:#fff0e5}
+@media(max-width:370px){.budget-followup{grid-template-columns:1fr}}
+
+/* PixelUp Life V4: agenda work identica a Casa + foto turni riservata */
+.work-home-heading{margin-top:24px}
+.shift-photo-shortcut{width:100%;display:flex;align-items:center;gap:12px;padding:14px 17px;text-align:left;margin:0 0 17px;color:var(--dark)}
+.shift-shortcut-icon{font-size:25px;flex:none}
+.shift-shortcut-text{display:grid;gap:3px;flex:1;min-width:0}
+.shift-shortcut-text strong{font:normal 18px Georgia,serif}
+.shift-shortcut-text small{font-size:11px;color:var(--muted);line-height:1.4}
+.shift-shortcut-arrow{color:var(--gold);font-size:24px}
+.shift-photo-panel{padding:18px}
+.shift-photo-empty{text-align:center;padding:25px 5px}
+.shift-photo-empty p{font-size:13px;color:var(--muted);line-height:1.5}
+.shift-photo-emoji{font-size:40px;margin-bottom:9px}
+.shift-photo-empty .primary{max-width:300px;margin-top:12px}
+.shift-photo-preview{width:100%;display:grid;gap:10px;text-align:center;padding:9px;margin:15px auto 12px;background:#fffdf8;border:1px solid var(--line);border-radius:14px;color:var(--green);font-size:12px}
+.shift-photo-preview img{display:block;width:100%;height:auto;max-height:65dvh;object-fit:contain;border-radius:10px}
+.shift-photo-preview span{font-weight:700;padding-bottom:4px}
+.shift-photo-actions{display:flex;flex-wrap:wrap;gap:9px;margin:11px 0}
+.shift-photo-notice{margin-top:15px}
+.shift-photo-lightbox{position:fixed;inset:0;z-index:130;background:rgba(20,24,17,.96);display:flex;align-items:center;justify-content:center;padding:65px 8px 20px;overflow:auto}
+.shift-photo-lightbox img{display:block;max-width:100%;max-height:calc(100dvh - 95px);object-fit:contain;touch-action:pinch-zoom}
+.shift-photo-lightbox #shiftPhotoClose{position:fixed;top:calc(12px + env(safe-area-inset-top));right:15px;border:1px solid #ffffff70;background:#fff;color:var(--dark);border-radius:50%;width:44px;height:44px;font-size:28px;z-index:131}
