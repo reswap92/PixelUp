@@ -9,13 +9,18 @@
   <meta name="apple-mobile-web-app-title" content="PixelUp Life">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=life-v2">
   <title>PixelUp Life · Casa e Lavoro</title>
 </head>
 <body>
   <div class="shell">
     <section id="loginScreen" class="login-shell" aria-labelledby="loginTitle">
-      <div class="login-brand"><div class="brand-mark">P<span>✦</span></div><div class="overline">IL TUO SPAZIO PRIVATO</div><h1 id="loginTitle">PixelUp Life</h1><p>Casa e lavoro, senza perdere di vista niente.</p></div>
+      <div class="login-brand">
+        <div class="brand-mark">P<span>✦</span></div>
+        <div class="overline">IL TUO SPAZIO PRIVATO</div>
+        <h1 id="loginTitle">PixelUp Life</h1>
+        <p>Casa e lavoro, senza perdere di vista niente.</p>
+      </div>
       <form id="loginForm" class="surface login-form">
         <h2>Accedi</h2>
         <p class="subtle">Usa l'account Firebase Authentication abilitato per PixelUp Life.</p>
@@ -35,42 +40,133 @@
         <button class="icon-btn plus-icon" id="newButton" aria-label="Aggiungi un elemento">＋</button>
       </header>
       <div class="banner" id="banner" role="status" hidden></div>
+
       <div id="homeView" class="view active">
-        <div class="welcome"><div class="overline" id="todayLabel">OGGI</div><h1 id="welcomeTitle">Ciao!</h1><p>Le cose importanti, tutte qui.</p></div>
-        <button id="nextButton" class="surface next-card" type="button"><div class="card-kicker"><span class="dot"></span> IL PROSSIMO IMPEGNO</div><div id="nextTitle" class="next-title">Nessun impegno registrato</div><div id="nextMeta" class="subtle">Inizia aggiungendo una scadenza o un turno.</div><div class="arrow">↗</div></button>
-        <div id="reminderAlert" class="reminder-alert" hidden></div>
-        <div class="two-cards">
-          <button id="homeHouse" class="category-card" type="button"><div class="category-icon">⌂</div><div class="category-name">Casa</div><div class="category-description">Scadenze, appuntamenti, spese e liste</div><span class="category-arrow">→</span></button>
-          <button id="homeWork" class="category-card" type="button"><div class="category-icon">▣</div><div class="category-name">Lavoro</div><div class="category-description">Turni, stipendio, call e ferie</div><span class="category-arrow">→</span></button>
+        <div class="welcome">
+          <div class="overline" id="todayLabel">OGGI</div>
+          <h1 id="welcomeTitle">Ciao!</h1>
+          <p>Le cose importanti, tutte qui.</p>
         </div>
-        <div class="surface budget-card"><div class="card-header"><h2>Budget del mese</h2><span id="budgetMonth" class="subtle"></span></div><div id="budgetRemaining" class="big-number">€ 0,00</div><div class="subtle">Stipendio previsto + entrate extra − spese registrate</div><div class="budget-breakdown"><span>Entrate <strong id="budgetIncome">€ 0</strong></span><span>Spese <strong id="budgetExpenses">€ 0</strong></span></div></div>
-        <div class="surface overview-card"><div class="card-header"><h2>Da ricordare</h2><button id="viewAllDeadline" class="link-btn" type="button">Vedi tutto →</button></div><div id="homeUpcoming" class="mini-list"></div></div>
+        <button id="nextButton" class="surface next-card" type="button">
+          <div class="card-kicker"><span class="dot"></span> IL PROSSIMO IMPEGNO</div>
+          <div id="nextTitle" class="next-title">Nessun impegno registrato</div>
+          <div id="nextMeta" class="subtle">Inizia aggiungendo una scadenza o un turno.</div>
+          <div class="arrow">↗</div>
+        </button>
+        <div id="reminderAlert" class="reminder-alert" hidden></div>
+
+        <div class="two-cards">
+          <button id="homeHouse" class="category-card" type="button">
+            <div class="category-icon">⌂</div>
+            <div class="category-name">Casa</div>
+            <div class="category-description">Scadenze, appuntamenti, spese e liste</div>
+            <span class="category-arrow">→</span>
+          </button>
+          <button id="homeWork" class="category-card" type="button">
+            <div class="category-icon">▣</div>
+            <div class="category-name">Lavoro</div>
+            <div class="category-description">Turni, appuntamenti, stipendio e ferie</div>
+            <span class="category-arrow">→</span>
+          </button>
+        </div>
+
+        <div class="surface budget-card">
+          <div class="card-header"><h2>Budget del mese</h2><span id="budgetMonth" class="subtle"></span></div>
+          <div id="budgetRemaining" class="big-number">€ 0,00</div>
+          <div class="subtle">Stipendio previsto + entrate extra − spese registrate</div>
+          <div class="budget-breakdown"><span>Entrate <strong id="budgetIncome">€ 0</strong></span><span>Spese <strong id="budgetExpenses">€ 0</strong></span></div>
+        </div>
+
+        <div class="group-heading">
+          <div><div class="overline">VITA PERSONALE</div><h2>Da ricordare · Casa</h2></div>
+        </div>
+        <div class="summary-grid">
+          <section class="surface compact-card" aria-labelledby="homeDeadlinesTitle">
+            <div class="compact-head"><h3 id="homeDeadlinesTitle">🔔 Scadenze</h3><button id="viewAllDeadline" type="button" class="link-btn">Vedi tutte →</button></div>
+            <div id="homeDeadlines" class="mini-list"></div>
+          </section>
+          <section class="surface compact-card" aria-labelledby="homeAppointmentsTitle">
+            <div class="compact-head"><h3 id="homeAppointmentsTitle">📅 Appuntamenti</h3><button id="viewAllAppointments" type="button" class="link-btn">Vedi tutti →</button></div>
+            <div id="homeAppointments" class="mini-list"></div>
+          </section>
+        </div>
+
+        <section class="surface overview-card work-overview" aria-labelledby="homeWorkTitle">
+          <div class="card-header"><div><div class="overline">VITA PROFESSIONALE</div><h2 id="homeWorkTitle">Lavoro · Prossimi impegni</h2></div><button id="viewAllWork" class="link-btn" type="button">Apri →</button></div>
+          <div id="homeWorkUpcoming" class="mini-list"></div>
+        </section>
         <button id="quickAddButton" class="quick-btn" type="button">＋ Aggiungi un impegno</button>
       </div>
 
       <div id="houseView" class="view">
-        <div class="view-heading"><button class="back-btn" type="button" data-nav="home">←</button><div><div class="overline">VITA PERSONALE</div><h1>Casa</h1></div></div>
-        <nav class="tabs" id="houseTabs" aria-label="Sezioni casa"><button data-tab="deadlines" class="active">Scadenze</button><button data-tab="appointments">Agenda</button><button data-tab="expenses">Spese</button><button data-tab="tasks">Liste</button></nav>
-        <div class="section-panel surface"><div class="card-header"><div><h2 id="houseSectionTitle">Scadenze</h2><p id="houseSectionHint" class="subtle section-hint">Promemoria 48 ore prima</p></div><button class="add-sm" type="button" id="houseAddButton">＋ Aggiungi</button></div><div id="houseItems" class="rows"></div></div>
+        <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">VITA PERSONALE</div><h1>Casa</h1></div></div>
+        <p class="section-intro">Solo i tuoi impegni personali. Gli appuntamenti di lavoro restano nella sezione Lavoro.</p>
+        <div class="summary-grid section-summary">
+          <section class="surface compact-card" aria-labelledby="houseDeadlineTitle">
+            <div class="compact-head"><h3 id="houseDeadlineTitle">🔔 Scadenze</h3><button id="houseOpenDeadline" class="link-btn" type="button">Apri →</button></div>
+            <div id="houseDeadlinesPreview" class="mini-list"></div>
+          </section>
+          <section class="surface compact-card" aria-labelledby="houseAppointmentsTitle">
+            <div class="compact-head"><h3 id="houseAppointmentsTitle">📅 Appuntamenti</h3><button id="houseOpenAppointments" class="link-btn" type="button">Apri →</button></div>
+            <div id="houseAppointmentsPreview" class="mini-list"></div>
+          </section>
+        </div>
+        <nav class="tabs" id="houseTabs" aria-label="Sezioni casa">
+          <button data-tab="deadlines" class="active">Scadenze</button>
+          <button data-tab="appointments">Appuntamenti</button>
+          <button data-tab="expenses">Spese</button>
+          <button data-tab="tasks">Liste</button>
+        </nav>
+        <div class="section-panel surface">
+          <div class="card-header"><div><h2 id="houseSectionTitle">Scadenze</h2><p id="houseSectionHint" class="subtle section-hint">Promemoria 48 ore prima</p></div><button class="add-sm" type="button" id="houseAddButton">＋ Aggiungi</button></div>
+          <div id="houseItems" class="rows"></div>
+        </div>
       </div>
 
       <div id="workView" class="view">
-        <div class="view-heading"><button class="back-btn" type="button" data-nav="home">←</button><div><div class="overline">VITA PROFESSIONALE</div><h1>Lavoro</h1></div></div>
-        <nav class="tabs" id="workTabs" aria-label="Sezioni lavoro"><button data-tab="shifts" class="active">Turni</button><button data-tab="salary">Stipendio</button><button data-tab="meetings">Call</button><button data-tab="leave">Ferie</button></nav>
-        <div id="workShiftActions" class="share-tools"><button id="shareWeek" type="button" class="small-outline">↗ Condividi settimana su WhatsApp</button><button id="shareMonth" type="button" class="small-outline">Condividi mese</button></div>
+        <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">VITA PROFESSIONALE</div><h1>Lavoro</h1></div></div>
+        <p class="section-intro">Appuntamenti, riunioni e turni lavorativi restano qui, separati dalla Casa.</p>
+        <div class="summary-grid section-summary">
+          <section class="surface compact-card" aria-labelledby="workMeetingsTitle">
+            <div class="compact-head"><h3 id="workMeetingsTitle">📅 Appuntamenti</h3><button id="workOpenMeetings" class="link-btn" type="button">Apri →</button></div>
+            <div id="workMeetingsPreview" class="mini-list"></div>
+          </section>
+          <section class="surface compact-card" aria-labelledby="workShiftsTitle">
+            <div class="compact-head"><h3 id="workShiftsTitle">▣ Turni</h3><button id="workOpenShifts" class="link-btn" type="button">Apri →</button></div>
+            <div id="workShiftsPreview" class="mini-list"></div>
+          </section>
+        </div>
+        <nav class="tabs" id="workTabs" aria-label="Sezioni lavoro">
+          <button data-tab="shifts" class="active">Turni</button>
+          <button data-tab="meetings">Appuntamenti</button>
+          <button data-tab="salary">Stipendio</button>
+          <button data-tab="leave">Ferie</button>
+        </nav>
+        <div id="workShiftActions" class="share-tools">
+          <button id="shareWeek" type="button" class="small-outline">↗ Condividi settimana su WhatsApp</button>
+          <button id="shareMonth" type="button" class="small-outline">Condividi mese</button>
+        </div>
         <div id="salaryPanel" class="surface salary-panel" hidden>
           <div class="card-header"><h2>Stipendio previsto</h2><button class="add-sm" id="editSalary" type="button">Modifica</button></div>
           <div id="salaryAmount" class="big-number">€ 0,00</div><p id="salaryNext" class="subtle">Accredito previsto l'ultimo giorno del mese</p>
           <div class="salary-note">Il valore è una previsione inserita da te. Non è collegato al conto bancario.</div>
           <div class="card-header salary-extra"><h2>Entrate extra</h2><button class="add-sm" type="button" id="incomeAdd">＋ Aggiungi</button></div><div id="incomeItems" class="rows"></div>
         </div>
-        <div id="workSectionPanel" class="section-panel surface"><div class="card-header"><div><h2 id="workSectionTitle">Turni di lavoro</h2><p id="workSectionHint" class="subtle section-hint">Condividi senza stipendio o note private</p></div><button class="add-sm" id="workAddButton" type="button">＋ Aggiungi</button></div><div id="workItems" class="rows"></div></div>
+        <div id="workSectionPanel" class="section-panel surface">
+          <div class="card-header"><div><h2 id="workSectionTitle">Turni di lavoro</h2><p id="workSectionHint" class="subtle section-hint">Condividi senza stipendio o note private</p></div><button class="add-sm" id="workAddButton" type="button">＋ Aggiungi</button></div>
+          <div id="workItems" class="rows"></div>
+        </div>
       </div>
 
       <div id="settingsView" class="view">
-        <div class="view-heading"><button class="back-btn" type="button" data-nav="home">←</button><div><div class="overline">ACCOUNT</div><h1>Impostazioni</h1></div></div>
+        <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">ACCOUNT</div><h1>Impostazioni</h1></div></div>
         <div class="surface section-panel">
-          <form id="settingsForm" class="form-grid"><label>Come vuoi essere chiamato?<input id="displayName" maxlength="60" placeholder="Vincenzo" required></label><label>Stipendio netto previsto (€)<input id="salaryInput" type="number" min="0" step="0.01" inputmode="decimal" required></label><div class="subtle">Pagamento previsto: ultimo giorno di ogni mese. Il budget usa lo stipendio previsto, non il saldo bancario.</div><button type="submit" class="primary">Salva impostazioni</button></form>
+          <form id="settingsForm" class="form-grid">
+            <label>Come vuoi essere chiamato?<input id="displayName" maxlength="60" placeholder="Il tuo nome" required></label>
+            <label>Stipendio netto previsto (€)<input id="salaryInput" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+            <div class="subtle">Pagamento previsto: ultimo giorno di ogni mese. Il budget usa lo stipendio previsto, non il saldo bancario.</div>
+            <button type="submit" class="primary">Salva impostazioni</button>
+          </form>
         </div>
         <div class="surface section-panel"><h2>Promemoria</h2><p class="subtle spacer-text">Ogni scadenza non completata viene segnalata nell'app nelle 48 ore precedenti. Le notifiche del browser sono possibili quando l'app è aperta. Per riceverle anche ad app chiusa servirà un servizio programmato.</p><button id="notificationsButton" class="small-outline" type="button">Attiva notifiche del browser</button></div>
         <div class="surface section-panel"><h2>Il tuo account</h2><p class="subtle" id="currentAccount"></p><button id="logoutButton" class="danger-outline" type="button">Esci</button></div>
@@ -80,10 +176,20 @@
   </div>
 
   <div id="modalBackdrop" class="modal-backdrop" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><div class="overline">PIXELUP LIFE</div><h2 id="modalTitle">Aggiungi</h2></div><button id="closeModal" class="close" aria-label="Chiudi">×</button></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-top"><div><div class="overline">PIXELUP LIFE</div><h2 id="modalTitle">Aggiungi</h2></div><button id="closeModal" class="close" type="button" aria-label="Chiudi">×</button></div>
       <form id="itemForm">
         <div class="form-grid">
-          <label>Sezione<select id="itemKind" required><option value="deadline">Casa · Scadenza</option><option value="appointment">Casa · Appuntamento</option><option value="expense">Casa · Spesa</option><option value="task">Casa · Lista / attività</option><option value="shift">Lavoro · Turno</option><option value="meeting">Lavoro · Call / appuntamento</option><option value="leave">Lavoro · Ferie / permesso</option><option value="income">Lavoro · Entrata extra</option></select></label>
+          <label>Sezione<select id="itemKind" required>
+            <option value="deadline">Casa · Scadenza</option>
+            <option value="appointment">Casa · Appuntamento</option>
+            <option value="expense">Casa · Spesa</option>
+            <option value="task">Casa · Lista / attività</option>
+            <option value="shift">Lavoro · Turno</option>
+            <option value="meeting">Lavoro · Appuntamento / call</option>
+            <option value="leave">Lavoro · Ferie / permesso</option>
+            <option value="income">Lavoro · Entrata extra</option>
+          </select></label>
           <label>Titolo<input id="itemTitle" required maxlength="140" placeholder="Es. Assicurazione auto"></label>
           <div id="formDate" class="form-row"><label>Data<input id="itemDate" type="date"></label><label id="timeWrap">Ora<input id="itemTime" type="time"></label></div>
           <div id="formShift" class="form-row" hidden><label>Entrata<input id="itemStart" type="time"></label><label>Uscita<input id="itemEnd" type="time"></label></div>
@@ -98,6 +204,6 @@
     </div>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=life-v2"></script>
 </body>
 </html>
