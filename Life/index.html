@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-title" content="PixelUp Life">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./styles.css?v=life-v5-login-fix-20261029">
-  <title>PixelUp Life · Casa e Lavoro</title>
+  <link rel="stylesheet" href="./styles.css?v=life-v53-20261030">
+  <title>PixelUp Life V5.3 · Casa, Lavoro e Risparmio</title>
 </head>
 <body>
   <div class="shell">
@@ -71,15 +71,30 @@
         </div>
 
         <div class="surface budget-card">
-          <div class="card-header"><h2>Budget del mese</h2><div class="month-switch"><button id="budgetPrev" type="button" aria-label="Mese precedente">‹</button><span id="budgetMonth" class="subtle"></span><button id="budgetNext" type="button" aria-label="Mese successivo">›</button></div></div>
+          <div class="card-header"><h2>Budget dello stipendio</h2><div class="month-switch"><button id="budgetPrev" type="button" aria-label="Ciclo precedente">‹</button><span id="budgetMonth" class="subtle"></span><button id="budgetNext" type="button" aria-label="Ciclo successivo">›</button></div></div>
+          <p id="budgetCycleTitle" class="cycle-title">In attesa del primo stipendio</p>
+          <p id="budgetCycleHint" class="subtle cycle-hint">Il ciclo inizia con la conferma dell'accredito.</p>
+          <div class="subtle">Disponibile dallo stipendio, al netto delle spese registrate</div>
           <div id="budgetRemaining" class="big-number">€ 0,00</div>
-          <div class="subtle">Entrate ricevute − spese effettive. Non rappresenta il saldo in banca.</div>
           <div class="budget-breakdown"><span>Entrate ricevute <strong id="budgetIncome">€ 0</strong></span><span>Spese contabilizzate <strong id="budgetExpenses">€ 0</strong></span></div>
           <div class="budget-followup"><span>Ancora da pagare <strong id="budgetPending">€ 0</strong></span><span>Residuo previsto* <strong id="budgetForecast">€ 0</strong></span></div>
-          <div class="budget-followup"><span>Stipendio previsto, non ricevuto <strong id="budgetExpectedSalary">€ 0</strong></span><span>Spese settimanali registrate <strong id="budgetWeekly">€ 0</strong></span></div>
-          <p class="subtle">* Comprende lo stipendio previsto e le spese ancora da pagare. Non è il saldo reale del conto.</p>
-          <button id="openWeeklyFromHome" type="button" class="small-outline budget-weekly-link">🛒 Inserisci spese settimanali</button>
+          <div class="budget-followup"><span>Stipendio di partenza <strong id="budgetExpectedSalary">€ 0</strong></span><span>Spese settimanali del ciclo <strong id="budgetWeekly">€ 0</strong></span></div>
+          <p class="subtle">* Il residuo previsto considera anche i pagamenti non ancora effettuati. Le somme non corrispondono al saldo bancario.</p>
+          <div class="cycle-history"><div><small>Avanzo degli ultimi 12 cicli chiusi</small><strong id="budgetHistoryTotal">€ 0</strong><small id="budgetHistoryCount">0 cicli completati</small></div></div>
+          <div class="cycle-actions"><button id="openSalaryFromHome" type="button" class="small-outline">✓ Conferma stipendio</button><button id="openWeeklyFromHome" type="button" class="small-outline">🛒 Registra spesa</button></div>
         </div>
+
+        <button id="openSavingsFromHome" class="surface savings-shortcut" type="button">
+          <span class="savings-shortcut-icon">🐷</span>
+          <span><strong>Il mio piano di risparmio</strong><small id="homeSavingsSummary">Crea un obiettivo da 3, 6, 9 o 12 mesi</small></span>
+          <span class="savings-shortcut-arrow">→</span>
+        </button>
+        <section class="surface section-panel analysis-home" aria-labelledby="analysisTitle">
+          <div class="card-header"><h2 id="analysisTitle">Dove finiscono i soldi?</h2><small id="analysisCycle" class="subtle">Ciclo attivo</small></div>
+          <div id="expenseAnalysisBars" class="expense-bars"></div>
+          <p id="expenseCycleCompare" class="subtle"></p>
+          <p class="subtle">Solo spese registrate. Non sono inclusi importi ancora da pagare.</p>
+        </section>
 
         <div class="group-heading">
           <div><div class="overline">VITA PERSONALE</div><h2>Da ricordare · Casa</h2></div>
@@ -111,6 +126,64 @@
         <button id="quickAddButton" class="quick-btn" type="button">＋ Aggiungi un impegno</button>
       </div>
 
+
+      <div id="savingsView" class="view">
+        <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">PIANO PERSONALE</div><h1>Il mio risparmio</h1></div></div>
+        <p class="section-intro">Un obiettivo che dura oltre il singolo stipendio. Il piano non azzera né altera il budget: registra solo i soldi che scegli di accantonare davvero.</p>
+
+        <section id="savingPlanEditor" class="surface section-panel">
+          <div class="card-header"><h2 id="savingPlanEditorTitle">Crea il tuo obiettivo</h2></div>
+          <form id="savingPlanForm" class="form-grid">
+            <label>Nome dell'obiettivo<input id="savingPlanName" maxlength="70" placeholder="Es. Fondo risparmio" value="Il mio salvadanaio" required></label>
+            <label>Quanto vuoi risparmiare (€)<input id="savingTarget" type="number" min="1" max="10000000" step="0.01" inputmode="decimal" placeholder="Es. 10000" required></label>
+            <div class="form-row"><label>Data inizio<input id="savingStart" type="date" required></label>
+              <label>Durata<select id="savingDuration"><option value="3">3 mesi</option><option value="6">6 mesi</option><option value="9">9 mesi</option><option value="12">12 mesi</option></select></label></div>
+            <p id="savingPlanPreview" class="saving-plan-preview subtle">Imposta cifra e durata per il piano.</p>
+            <button id="savingPlanSubmit" type="submit" class="primary">Crea piano risparmio</button>
+          </form>
+        </section>
+
+        <section id="savingActive" class="surface section-panel" hidden>
+          <div class="card-header"><div><div class="overline">OBIETTIVO ATTIVO</div><h2 id="savingActiveTitle">Il mio risparmio</h2></div><button id="savingEditPlan" type="button" class="add-sm">Modifica</button></div>
+          <p id="savingActiveDates" class="subtle"></p>
+          <div class="saving-stats"><div><small>Accantonato</small><strong id="savingActual">€ 0</strong></div><div><small>Mancano</small><strong id="savingMissing">€ 0</strong></div></div>
+          <div class="saving-progress" role="progressbar" aria-label="Progressi risparmio"><div id="savingProgressFill"></div></div>
+          <p id="savingProgressText" class="subtle"></p>
+          <div class="saving-target-row"><span>Media mensile <strong id="savingMonthlyTarget">€ 0</strong></span><span>Media settimanale <strong id="savingWeeklyTarget">€ 0</strong></span></div>
+          <p id="savingRecommended" class="saving-remaining-advice"></p>
+          <div class="saving-steps"><h3>Le mie settimane</h3><div id="savingWeekTabs" class="saving-week-tabs"></div><p id="savingWeekHint" class="subtle"></p></div>
+          <div class="saving-stats"><div><small>Già accantonato nella settimana</small><strong id="savingWeekActual">€ 0</strong></div><div><small>Traguardo indicativo</small><strong id="savingWeekTarget">€ 0</strong></div></div>
+          <form id="savingContributionForm" class="form-grid saving-form">
+            <h3 id="savingContributionTitle">Registra soldi messi da parte</h3>
+            <div class="form-row"><label>Importo reale (€)<input id="savingAmount" type="number" min="0.01" max="10000000" step="0.01" required></label><label>Data<input id="savingContributionDate" type="date" required></label></div>
+            <label>Nota (facoltativa)<input id="savingContributionNote" maxlength="140" placeholder="Es. Trasferiti sul conto risparmio"></label>
+            <div class="saving-form-actions"><button id="savingContributionSave" type="submit" class="primary">＋ Registra accantonamento</button><button id="savingContributionCancel" type="button" class="small-outline" hidden>Annulla modifica</button></div>
+          </form>
+          <div id="savingWeekEntries" class="rows"></div>
+          <div class="saving-month-chart"><h3>Andamento del piano</h3><div id="savingMonthlyBars" class="expense-bars"></div></div>
+          <button id="savingClosePlan" type="button" class="danger-outline">Chiudi obiettivo e archivia</button>
+        </section>
+
+        <section id="savingCoach" class="surface section-panel" hidden>
+          <div class="card-header"><div><div class="overline">CONSIGLI PRATICI</div><h2>Le sfide del risparmio</h2></div><span>💡</span></div>
+          <p class="subtle">Riduci spese superflue, non quelle per salute, alimentazione e famiglia. Le cifre sono stime modificabili: completare una sfida non aggiunge automaticamente denaro al salvadanaio.</p>
+          <p id="savingCoachTarget" class="saving-remaining-advice"></p>
+          <div id="savingCoachTips" class="coach-tips"></div>
+          <details class="coach-settings"><summary>Personalizza i prezzi delle abitudini</summary>
+            <form id="coachPricesForm" class="form-grid">
+              <label>Un pacchetto di sigarette (€)<input id="coachPriceSmoke" type="number" min="0" step="0.01" required></label>
+              <label>Un caffè al bar (€)<input id="coachPriceCoffee" type="number" min="0" step="0.01" required></label>
+              <label>Un acquisto non necessario (€)<input id="coachPriceImpulse" type="number" min="0" step="0.01" required></label>
+              <label>Uno snack/distributore (€)<input id="coachPriceSnack" type="number" min="0" step="0.01" required></label>
+              <label>Uno spreco alimentare evitabile (€)<input id="coachPriceWaste" type="number" min="0" step="0.01" required></label>
+              <button class="small-outline" type="submit">Salva i miei prezzi</button>
+            </form>
+          </details>
+          <p id="savingCoachTotal" class="saving-remaining-advice"></p>
+        </section>
+        <section class="surface section-panel"><div class="card-header"><h2>Storico e anno solare</h2></div><div id="savingYearSummary" class="saving-year-summary"></div><div id="savingPlanHistory" class="rows"></div></section>
+      </div>
+
       <div id="houseView" class="view">
         <div class="view-heading"><button class="back-btn" type="button" data-nav="home" aria-label="Torna alla home">←</button><div><div class="overline">VITA PERSONALE</div><h1>Casa</h1></div></div>
         <p class="section-intro">Solo i tuoi impegni personali. Gli appuntamenti di lavoro restano nella sezione Lavoro.</p>
@@ -132,10 +205,10 @@
           <button data-tab="tasks">Liste</button>
         </nav>
         <div id="weeklyPanel" class="surface section-panel weekly-panel" hidden>
-          <div class="card-header"><div><h2>Spese settimanali</h2><p class="subtle section-hint">Benzina, alimentari, Jay e tutte le altre spese effettive. Ogni inserimento viene conteggiato subito nel budget.</p></div></div>
-          <div class="month-switch weekly-month"><button type="button" id="weeklyPrev" aria-label="Mese precedente">‹</button><strong id="weeklyMonth"></strong><button type="button" id="weeklyNext" aria-label="Mese successivo">›</button></div>
+          <div class="card-header"><div><h2>Spese del ciclo stipendio</h2><p class="subtle section-hint">Benzina, alimentari, Jay e altre spese. Le settimane iniziano dalla data dello stipendio, non dal primo del mese.</p></div></div>
+          <div class="month-switch weekly-month"><button type="button" id="weeklyPrev" aria-label="Ciclo precedente">‹</button><strong id="weeklyMonth"></strong><button type="button" id="weeklyNext" aria-label="Ciclo successivo">›</button></div>
           <div class="weekly-tabs" id="weeklyTabs" aria-label="Settimane del mese"></div>
-          <div class="weekly-summary"><span>Spesa settimana <strong id="weeklyWeekTotal">€ 0</strong></span><span>Totale mese <strong id="weeklyMonthTotal">€ 0</strong></span></div>
+          <div class="weekly-summary"><span>Spesa settimana <strong id="weeklyWeekTotal">€ 0</strong></span><span>Totale ciclo <strong id="weeklyMonthTotal">€ 0</strong></span></div>
           <div id="weeklyCategoryCards" class="weekly-categories"></div>
           <div class="weekly-custom">
             <button id="weeklyNewCategory" type="button" class="small-outline">＋ Nuova categoria</button>
@@ -213,8 +286,10 @@
             <button type="submit" class="primary" id="salaryConfirm">✓ Conferma stipendio ricevuto</button>
             <button type="button" class="danger-outline" id="salaryUndo" hidden>Annulla conferma di questo mese</button>
           </form>
-          <div class="salary-note">La data prevista è un promemoria: lo stipendio entra nel budget effettivo solo dopo la conferma. Per anticiparlo a un giorno lavorativo, puoi saltare sabati e domeniche.</div>
-          <div class="card-header salary-extra"><h2>Entrate extra</h2><button class="add-sm" type="button" id="incomeAdd">＋ Aggiungi</button></div><div id="incomeItems" class="rows"></div>
+          <div class="salary-note">Quando confermi l'accredito, la data effettiva apre un nuovo ciclo. Le spese precedenti restano nello storico; le nuove partono da zero. La data prevista è soltanto un promemoria.</div>
+          <div class="card-header salary-extra"><h2>Le mie entrate extra</h2><button class="add-sm" type="button" id="incomeAdd">＋ Aggiungi</button></div><p id="incomeCycleLabel" class="subtle">Visualizza entrate previste o realmente incassate durante il ciclo stipendio selezionato.</p>
+          <div id="incomeSourceSummary" class="income-source-summary"></div>
+          <div id="incomeItems" class="rows"></div>
         </div>
         <div id="workSectionPanel" class="section-panel surface">
           <div class="card-header"><div><h2 id="workSectionTitle">Turni di lavoro</h2><p id="workSectionHint" class="subtle section-hint">Condividi senza stipendio o note private</p></div><button class="add-sm" id="workAddButton" type="button">＋ Aggiungi</button></div>
@@ -268,6 +343,10 @@
           <div id="formDate" class="form-row"><label>Data<input id="itemDate" type="date"></label><label id="timeWrap">Ora<input id="itemTime" type="time"></label></div>
           <div id="formShift" class="form-row" hidden><label>Entrata<input id="itemStart" type="time"></label><label>Uscita<input id="itemEnd" type="time"></label></div>
           <label id="amountWrap">Importo (€)<input id="itemAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></label>
+          <label id="incomeSourceWrap" hidden>Fonte entrata
+            <select id="itemIncomeSource"><option value="Secondo lavoro">Secondo lavoro</option><option value="Vinted">Vinted</option><option value="PixelUp">PixelUp</option><option value="Altro">Altro</option></select>
+          </label>
+          <label id="incomeReceivedWrap" class="checkbox-line" hidden><input id="itemIncomeReceived" type="checkbox"> Già incassata alla data indicata</label>
           <label id="recurrenceWrap">Ripetizione<select id="itemRepeat"><option value="none">Non ripetere</option><option value="monthly">Ogni mese</option><option value="yearly">Ogni anno</option></select></label>
           <label id="paymentModeWrap">Modalità di pagamento
             <select id="itemPaymentMode">
@@ -301,59 +380,24 @@
     <img id="shiftPhotoZoomImage" alt="Foto dei turni ingrandita">
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <!-- Avvio protetto: impedisce il ricaricamento del login se app.js non parte. -->
   <script>
-    (function () {
-      const form = document.getElementById('loginForm');
-      const message = document.getElementById('loginError');
-      let status = 'loading';
-      let failure = '';
-
-      function showError(text) {
-        message.textContent = text;
-        message.hidden = false;
-      }
-
-      // Capture: interviene prima del normale submit se manca il programma.
-      form.addEventListener('submit', function (event) {
-        if (status !== 'ready') {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          showError(status === 'loading'
-            ? 'PixelUp Life si sta avviando. Riprova fra un momento.'
-            : 'Non posso avviare PixelUp Life: ' + failure);
-        }
-      }, true);
-
-      window.pixelupLifeBoot = {
-        ready: function () {
-          status = 'ready';
-          if (message.textContent.startsWith('PixelUp Life si sta avviando')) {
-            message.hidden = true;
-            message.textContent = '';
-          }
-        },
-        fail: function (error) {
-          status = 'failed';
-          failure = error && error.message ? error.message : String(error);
-          showError('Errore avvio PixelUp Life: ' + failure);
-          console.error('Avvio PixelUp Life V5:', error);
-        }
-      };
-
-      window.addEventListener('error', function (event) {
-        if (status !== 'ready' && status !== 'failed') {
-          window.pixelupLifeBoot.fail(new Error(event.message || 'Errore JavaScript'));
-        }
-      });
-    })();
+    // Non lasciare ricaricare il form se il modulo non si avvia.
+    window.pixelupLifeReady=false;
+    document.getElementById('loginForm').addEventListener('submit',function(e){
+      if(window.pixelupLifeReady)return;
+      e.preventDefault();e.stopImmediatePropagation();
+      const error=document.getElementById('loginError');
+      error.hidden=false;error.textContent='PixelUp Life non si è avviata. Controlla che app.js V5.3 sia stato caricato.';
+    },true);
   </script>
   <script type="module">
-    try {
-      await import('./app.js?v=life-v5-login-fix-20261029');
-      window.pixelupLifeBoot.ready();
-    } catch (error) {
-      window.pixelupLifeBoot.fail(error);
+    try{
+      await import('./app.js?v=life-v53-20261030');
+      window.pixelupLifeReady=true;
+    }catch(error){
+      const box=document.getElementById('loginError');
+      box.hidden=false;box.textContent='Errore avvio: '+(error.message||String(error));
+      console.error('PixelUp Life V5.3:',error);
     }
   </script>
 </body>
