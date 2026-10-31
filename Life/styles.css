@@ -208,3 +208,71 @@ textarea{resize:vertical}
 @media(max-width:370px){.weekly-categories{gap:7px}.weekly-category-card{padding:9px}.budget-card .card-header{flex-wrap:wrap}.budget-card .card-header .month-switch{width:100%;justify-content:space-between}}
 
 .weekly-category-heading small{font-size:10px;color:var(--muted);font-weight:normal}
+
+/* PixelUp Life V5.2 — Cicli stipendio */
+.cycle-title{font:normal 20px Georgia,serif;color:var(--dark);margin:13px 0 6px;line-height:1.35}
+.cycle-hint{margin:0 0 16px}
+.cycle-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.cycle-actions button{white-space:normal;min-height:44px}
+.cycle-history{border-top:1px solid var(--line);margin-top:15px;padding-top:13px}
+.cycle-history div{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.cycle-history small{color:var(--muted);font-size:11px}
+.cycle-history strong{color:var(--dark);font:normal 19px Georgia,serif}
+.month-switch button:disabled{opacity:.25;cursor:not-allowed}
+.weekly-month strong{font-size:12px;line-height:1.4;min-width:0;text-align:center}
+@media(max-width:370px){.cycle-actions{grid-template-columns:1fr}}
+
+
+/* PixelUp Life V5.3 · Obiettivi e coach del risparmio */
+.savings-shortcut{width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:17px;margin:0 0 15px;color:var(--dark)}
+.savings-shortcut-icon{font-size:30px;background:#f1ecd9;padding:10px;border-radius:15px;flex:none}
+.savings-shortcut span:nth-child(2){flex:1;min-width:0}
+.savings-shortcut strong,.savings-shortcut small{display:block}
+.savings-shortcut strong{font:20px Georgia,serif}
+.savings-shortcut small{color:var(--muted);font-size:11px;line-height:1.4;margin-top:5px}
+.savings-shortcut-arrow{color:var(--gold);font-size:25px}
+.analysis-home{margin-bottom:20px}
+.expense-bars{display:grid;gap:12px;margin:16px 0}
+.expense-bar>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:6px}
+.expense-bar>div:first-child strong{font-size:12px;color:var(--dark)}
+.expense-track{height:9px;border-radius:10px;background:#ede4d5;overflow:hidden}
+.expense-track>div{height:100%;background:linear-gradient(90deg,#788563,#4d5a3a);border-radius:10px}
+.saving-plan-preview{border-left:3px solid #b19155;background:#f5efdf;padding:12px;border-radius:0 10px 10px 0;margin:0}
+.saving-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.saving-stats>div{background:#f4eedf;border-radius:13px;padding:13px;min-width:0}
+.saving-stats small,.saving-stats strong{display:block}
+.saving-stats small{font-size:11px;color:var(--muted);line-height:1.4}
+.saving-stats strong{font:23px Georgia,serif;color:var(--green);margin-top:8px}
+.saving-progress{background:#eae3d6;height:13px;border-radius:99px;overflow:hidden;margin:10px 0}
+.saving-progress>div{width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#8caa7d,#4f8158);transition:width .3s ease}
+.saving-target-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0;font-size:11px;color:var(--muted)}
+.saving-target-row span{padding:9px;border:1px solid var(--line);border-radius:11px;line-height:1.6}
+.saving-target-row strong{display:block;font-size:14px;color:var(--dark)}
+.saving-remaining-advice{padding:12px 13px;background:#edf1e6;border-radius:12px;color:#42603b;font-size:12px;line-height:1.55}
+.saving-steps{margin-top:20px}.saving-steps h3,.saving-month-chart h3{font-size:17px;color:var(--dark);margin-bottom:12px}
+.saving-week-tabs{display:flex;gap:7px;overflow:auto;padding-bottom:8px;scrollbar-width:thin}
+.saving-week-tabs button{flex:none;min-width:87px;border:1px solid #daceb8;border-radius:12px;padding:9px 7px;background:#fffbf4;color:#415038;font-weight:700;font-size:12px}
+.saving-week-tabs button.active{color:#fff;background:#4d5a3a;border-color:#4d5a3a}
+.saving-week-tabs small{display:block;font-size:10px;margin-top:5px;font-weight:400}
+.saving-form{border:1px solid #e7d8c3;background:#fffcf6;border-radius:15px;padding:13px;margin-top:14px}
+.saving-form h3{font-size:16px;color:var(--dark)}.saving-form-actions{display:flex;gap:8px;flex-wrap:wrap}
+.saving-form-actions .primary{flex:1;width:auto}.saving-month-chart{margin:22px 0}
+.coach-tips{display:grid;gap:11px;margin:16px 0}
+.coach-tip{display:flex;gap:13px;padding:13px;border:1px solid #ebdec9;background:#fffdf9;border-radius:14px}
+.coach-tip>.coach-icon{font-size:25px;width:31px;flex:none}
+.coach-tip>div:last-child{min-width:0;flex:1}
+.coach-tip strong{font-size:13px}.coach-tip p{font-size:11px;line-height:1.5;color:var(--muted);margin:5px 0}
+.coach-tip small{font-weight:700;color:var(--green);display:block;margin:6px 0}
+.coach-tip button{margin-top:7px}
+.coach-settings{border:1px solid var(--line);border-radius:12px;padding:12px}
+.coach-settings summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--green)}
+.coach-settings form{margin-top:15px}
+.saving-year-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+.saving-year-summary>div{border-radius:12px;background:#f2eedf;padding:13px}
+.saving-year-summary small,.saving-year-summary strong{display:block}
+.saving-year-summary small{font-size:11px;color:var(--muted)}
+.saving-year-summary strong{font:20px Georgia,serif;margin-top:8px}
+.income-source-summary{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.income-source-summary span{font-size:11px;padding:7px 9px;border-radius:10px;background:#f0eadc;color:var(--green)}
+.income-source-summary strong{white-space:nowrap}
+@media(max-width:390px){.saving-stats strong{font-size:20px}.saving-form-actions{display:grid}.saving-form-actions .primary{width:100%}}
