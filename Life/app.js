@@ -1495,3 +1495,90 @@ if('serviceWorker' in navigator&&location.protocol==='https:')
     `;
   };
 })();
+
+/* V5.4 — Entrate extra separate dal budget stipendio */
+
+const originalCycleBudgetSeparate = cycleBudget;
+
+cycleBudget = function (...args) {
+  const result = originalCycleBudgetSeparate(...args);
+
+  return {
+    ...result,
+    income: result.salary,
+    remaining: result.salary - result.expenses,
+    forecast:
+      result.salary - result.expenses - result.pending
+  };
+};
+
+const originalRenderSeparate = render;
+
+render = function (...args) {
+  originalRenderSeparate(...args);
+
+  if (!user) return;
+
+  const incomeLabel = $('budgetIncome')?.parentElement;
+
+  if (incomeLabel?.firstChild?.nodeType === 3) {
+    incomeLabel.firstChild.textContent =
+      'Stipendio UniCredit ';
+  }
+
+  const panel =
+    $('lifeIncomeV54') ||
+    document.querySelector('.home-income-panel');
+
+  if (!panel) return;
+
+  const values = cycleBudget(displayedCycle());
+  const spans = [...panel.querySelectorAll('span')];
+
+  const salary = spans.find(el =>
+    el.textContent.includes('Stipendio principale')
+  );
+
+  if (salary) {
+    salary.textContent = '💼 Stipendio · UniCredit';
+  }
+
+  const vinted = spans.find(el =>
+    el.textContent.trim() === '＋ Vinted'
+  );
+
+  if (vinted) {
+    vinted.textContent = '＋ Vinted · Revolut';
+  }
+
+  const total =
+    panel.querySelector('.home-income-total') ||
+    [...panel.querySelectorAll('div')].find(el =>
+      el.children.length === 2 &&
+      el.children[0].textContent.trim() ===
+        'Totale entrate' &&
+      el.children[1].tagName === 'STRONG'
+    );
+
+  if (total) {
+    total.children[0].textContent =
+      'Totale entrate extra separate';
+
+    total.children[1].textContent =
+      money(values.extra);
+  }
+
+  const note = [...panel.querySelectorAll('p')]
+    .find(el =>
+      el.textContent.includes('Le entrate extra')
+    );
+
+  if (note) {
+    note.textContent =
+      'Le entrate extra non aumentano il budget ' +
+      'dello stipendio. Per conoscere il saldo di ' +
+      'ogni conto occorre registrare anche le ' +
+      'uscite associate a quel conto.';
+  }
+};
+
