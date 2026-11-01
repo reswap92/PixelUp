@@ -1582,3 +1582,25 @@ render = function (...args) {
   }
 };
 
+
+/* PixelUp Life V5.5 — collegamento patrimonio */
+(() => {
+  const home = document.getElementById('homeView');
+  const savings = document.getElementById('openSavingsFromHome');
+  if (!home || document.getElementById('openPatrimonioV55')) return;
+
+  const link = document.createElement('a');
+  link.id = 'openPatrimonioV55';
+  link.href = './patrimonio.html';
+  link.className = 'surface';
+  link.style.cssText =
+    'display:block;text-decoration:none;color:#39462f;' +
+    'padding:20px;border-radius:18px;margin:15px 0;' +
+    'font-size:19px;font-family:Georgia,serif';
+
+  link.textContent = '📦 La mia attività Vinted e il patrimonio →';
+
+  if (savings) savings.insertAdjacentElement('afterend', link);
+  else home.appendChild(link);
+})();
+
