@@ -1,0 +1,587 @@
+
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PixelUp Life · Patrimonio</title>
+<style>
+:root{--g:#3e5030;--bg:#f7f3e8;--line:#ded6c4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#36422e;font:15px Arial,sans-serif}
+header{position:sticky;top:0;background:#fffdf7;padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);z-index:2}
+h1,h2{font-family:Georgia,serif;font-weight:normal}
+h1{font-size:24px;margin:0}
+h2{font-size:23px;margin:0 0 12px}
+main{max-width:760px;margin:auto;padding:15px 14px 45px}
+.card{background:#fffdf7;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:15px}
+.sub{color:#78766c;font-size:12px;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:#f1f0e7;padding:12px;border-radius:12px}
+.metric small{display:block;font-size:11px;color:#777;margin-bottom:8px}
+.metric strong{font:normal 21px Georgia,serif}
+.value{font:normal 35px Georgia,serif;color:var(--g);margin:10px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e8e1d5}
+.row:last-child{border:0}
+.row b{text-align:right}
+.row small{display:block;color:#777;font-size:11px;margin-top:4px}
+button{border:1px solid var(--line);background:white;color:var(--g);padding:11px;border-radius:11px;font-weight:bold;cursor:pointer}
+button.primary{background:var(--g);color:white}
+button.danger{color:#a04439}
+button:disabled{opacity:.5}
+input,select{display:block;width:100%;min-height:42px;padding:9px;border:1px solid #ccc3b2;border-radius:10px;font-size:15px;background:white}
+label{display:block;font-size:13px;font-weight:bold}
+label input,label select{margin-top:6px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.full{grid-column:1/-1}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px}
+.tabs button{white-space:nowrap}
+.tabs button.on{background:var(--g);color:white}
+.notice{background:#f0ede0;border-radius:12px;padding:12px;font-size:12px;line-height:1.6}
+.error{color:#a04439}
+.ok{color:#32714c}
+.back{color:var(--g);font-weight:bold;text-decoration:none}
+*[hidden]{display:none!important}
+@media(max-width:350px){.metric strong{font-size:17px}}
+</style>
+</head>
+<body>
+
+<header>
+<a class="back" href="./">← Life</a>
+<div>
+<h1>Patrimonio</h1>
+<div class="sub">Vinted · Revolut · Contanti</div>
+</div>
+<button id="out" hidden>Esci</button>
+</header>
+
+<main>
+<section id="login" class="card">
+<h2>Accedi a PixelUp Life</h2>
+<form id="loginForm">
+<label>Email<input id="email" type="email" required></label>
+<label style="margin-top:12px">Password
+<input id="pass" type="password" required></label>
+<button class="primary" style="width:100%;margin-top:14px">Accedi</button>
+<p id="loginMsg" class="error"></p>
+</form>
+</section>
+
+<div id="app" hidden>
+<div class="tabs">
+<button class="on" data-tab="vinted">📦 Vinted</button>
+<button data-tab="assets">💰 Patrimoni</button>
+<button data-tab="records">📋 Movimenti</button>
+<button data-tab="settings">⚙️ Saldi iniziali</button>
+</div>
+
+<section id="vinted" class="panel">
+<div class="card">
+<div class="sub">REVOLUT · CAPITALE ATTIVITÀ</div>
+<div class="value" id="revolutBalance">0,00 €</div>
+<p class="sub">Saldo stimato dai movimenti inseriti. Non è collegato alla banca.</p>
+<div class="grid">
+<div class="metric">
+<small>Merce ancora da vendere · costo</small>
+<strong id="stock">0,00 €</strong>
+</div>
+<div class="metric">
+<small>Obiettivo compenso mensile</small>
+<strong>500,00 €</strong>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Il mio secondo stipendio</h2>
+<label>Mese da analizzare
+<input id="month" type="month"></label>
+<div class="grid" style="margin-top:14px">
+<div class="metric"><small>Vendite incassate</small><strong id="sales">0,00 €</strong></div>
+<div class="metric"><small>Costi del venduto, commissioni e spese</small><strong id="costs">0,00 €</strong></div>
+<div class="metric"><small>Margine prima delle imposte</small><strong id="profit">0,00 €</strong></div>
+<div class="metric"><small>Compenso prelevato</small><strong id="payout">0,00 €</strong></div>
+</div>
+<p id="payoutTip" class="notice"></p>
+</div>
+</section>
+
+<section id="assets" class="panel" hidden>
+<div class="card">
+<h2>I miei patrimoni</h2>
+<div class="row"><span>🏦 UniCredit<small>Risparmio lasciato sul conto e riservato</small></span><b id="bankReserve">0,00 €</b></div>
+<div class="row"><span>💳 Revolut<small>Capitale disponibile dell'attività</small></span><b id="assetRevolut">0,00 €</b></div>
+<div class="row"><span>🔒 Cassaforte<small>Contanti fisici</small></span><b id="safe">0,00 €</b></div>
+<div class="row"><span>🐷 Salvadanaio<small>Monete fisiche</small></span><b id="coins">0,00 €</b></div>
+<p class="notice">
+I soldi riservati su UniCredit non vengono spostati dalla banca.
+Il compenso Vinted è un trasferimento, non una nuova vendita.
+Questo registro non modifica automaticamente il budget stipendio o il piano risparmio della Home.
+</p>
+</div>
+</section>
+
+<section id="records" class="panel" hidden>
+<div class="card">
+<h2>Storico dei movimenti</h2>
+<div id="recordList"></div>
+</div>
+</section>
+
+<section id="settings" class="panel" hidden>
+<div class="card">
+<h2>Saldi di partenza</h2>
+<p class="sub">Inserisci i saldi reali della data da cui inizi a registrare. Gli utili pregressi devono essere già calcolati al netto dei costi.</p>
+<form id="settingsForm" class="fields">
+<label class="full">Data inizio<input id="openingDate" type="date" required></label>
+<label>Revolut €<input id="openingRevolut" type="number" min="0" step=".01" required></label>
+<label>Cassaforte €<input id="openingSafe" type="number" min="0" step=".01" required></label>
+<label>Monete €<input id="openingCoins" type="number" min="0" step=".01" required></label>
+<label>Utili pregressi verificati €<input id="openingProfit" type="number" min="0" step=".01" required></label>
+<button class="primary" type="submit">Salva saldi</button>
+</form>
+<p class="notice">Non inserire di nuovo movimenti già inclusi nei saldi iniziali, altrimenti li conteresti due volte.</p>
+</div>
+</section>
+
+<div class="card">
+<h2>Registra un movimento</h2>
+<form id="moveForm">
+<label>Tipo
+<select id="kind">
+<option value="buy">📦 Acquisto merce Vinted</option>
+<option value="sale">✅ Vendita Vinted incassata</option>
+<option value="expense">🧾 Altra spesa attività</option>
+<option value="deposit">💳 Capitale aggiunto su Revolut</option>
+<option value="payout">💸 Compenso mensile Vinted</option>
+<option value="safeIn">🔒 Contanti aggiunti in cassaforte</option>
+<option value="safeOut">🔓 Contanti prelevati</option>
+<option value="coinsIn">🐷 Monete aggiunte</option>
+<option value="coinsOut">🪙 Monete prelevate</option>
+<option value="reserveIn">🏦 Risparmio riservato UniCredit</option>
+<option value="reserveOut">🏦 Sblocco risparmio UniCredit</option>
+</select>
+</label>
+
+<div class="fields">
+<label>Data<input id="date" type="date" required></label>
+<label>Importo €<input id="amount" type="number" min=".01" step=".01" required></label>
+<label class="full" id="titleBox">Articolo / descrizione
+<input id="description" maxlength="90" placeholder="Es. Giacca vintage" required>
+</label>
+<label class="full" id="purchaseBox" hidden>Articolo acquistato
+<select id="purchase"><option value="">Merce già posseduta / non registrata</option></select>
+</label>
+<label id="costBox" hidden>Costo dell'articolo €
+<input id="itemCost" type="number" min="0" step=".01" value="0">
+</label>
+<label id="feesBox" hidden>Costi di vendita €
+<input id="fees" type="number" min="0" step=".01" value="0">
+</label>
+<label class="full" id="destinationBox" hidden>Destinazione compenso
+<select id="destination">
+<option value="unicredit">UniCredit (non nel budget stipendio)</option>
+<option value="safe">Cassaforte</option>
+</select>
+</label>
+</div>
+
+<p id="kindHint" class="sub"></p>
+<button id="saveMove" class="primary" type="submit" style="width:100%">Salva movimento</button>
+<p id="message" role="status"></p>
+</form>
+</div>
+</div>
+</main>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+import {getFirestore,doc,collection,onSnapshot,setDoc,writeBatch,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+const config={
+ apiKey:'AIzaSyD0kpQb-t5aJrMQ9mNnvJgl53Fe8UgPwrc',
+ authDomain:'backtag-16de3.firebaseapp.com',
+ projectId:'backtag-16de3',
+ storageBucket:'backtag-16de3.firebasestorage.app',
+ messagingSenderId:'415455463905',
+ appId:'1:415455463905:web:abd5e58bdeaaf6e3b9eaa0'
+};
+const app=initializeApp(config);
+const auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const euro=n=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(Number(n)||0);
+const today=()=>{
+ const d=new Date();
+ return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+};
+const esc=s=>String(s??'').replace(/[&<>"']/g,x=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[x]));
+
+let uid=null,rows=[],settings={};
+let stopItems=null,stopProfile=null;
+const defaults={openingDate:today(),revolut:0,safe:0,coins:0,profit:0};
+const activeRows=()=>rows.filter(r=>r.date>=(settings.openingDate||today()));
+const amount=r=>Math.max(0,Number(r.amount)||0);
+const sum=(arr,fn=amount)=>arr.reduce((a,r)=>a+fn(r),0);
+const labels={
+ buy:'Acquisto merce',sale:'Vendita',expense:'Spesa attività',
+ deposit:'Versamento capitale',payout:'Compenso mensile',
+ safeIn:'Contanti aggiunti',safeOut:'Contanti prelevati',
+ coinsIn:'Monete aggiunte',coinsOut:'Monete prelevate',
+ reserveIn:'Risparmio riservato',reserveOut:'Risparmio sbloccato'
+};
+
+function balances(){
+ const a=activeRows();
+ return {
+  revolut:Number(settings.revolut||0)
+   +sum(a.filter(x=>x.kind==='sale'),x=>amount(x)-Number(x.fees||0))
+   +sum(a.filter(x=>x.kind==='deposit'))
+   -sum(a.filter(x=>['buy','expense','payout'].includes(x.kind))),
+  safe:Number(settings.safe||0)
+   +sum(a.filter(x=>x.kind==='safeIn'))
+   +sum(a.filter(x=>x.kind==='payout'&&x.destination==='safe'))
+   -sum(a.filter(x=>x.kind==='safeOut')),
+  coins:Number(settings.coins||0)
+   +sum(a.filter(x=>x.kind==='coinsIn'))
+   -sum(a.filter(x=>x.kind==='coinsOut')),
+  reserve:sum(a.filter(x=>x.kind==='reserveIn'))
+   -sum(a.filter(x=>x.kind==='reserveOut'))
+ };
+}
+
+function totalProfit(){
+ const a=activeRows();
+ return Number(settings.profit||0)
+  +sum(a.filter(x=>x.kind==='sale'),x=>
+    amount(x)-Number(x.itemCost||0)-Number(x.fees||0))
+  -sum(a.filter(x=>x.kind==='expense'));
+}
+
+function payoutAvailable(){
+ return Math.max(0,Math.min(
+  balances().revolut,
+  totalProfit()-sum(activeRows().filter(x=>x.kind==='payout'))
+ ));
+}
+
+function render(){
+ if(!uid)return;
+ const a=activeRows(),b=balances();
+ $('revolutBalance').textContent=euro(b.revolut);
+ $('assetRevolut').textContent=euro(b.revolut);
+ $('safe').textContent=euro(b.safe);
+ $('coins').textContent=euro(b.coins);
+ $('bankReserve').textContent=euro(b.reserve);
+
+ const unsold=a.filter(x=>x.kind==='buy'&&!x.soldSaleId);
+ $('stock').textContent=euro(sum(unsold));
+
+ const month=$('month').value||today().slice(0,7);
+ const m=a.filter(x=>x.date.slice(0,7)===month);
+ const sales=m.filter(x=>x.kind==='sale');
+ const gross=sum(sales);
+ const soldCost=sum(sales,x=>Number(x.itemCost)||0);
+ const fees=sum(sales,x=>Number(x.fees)||0);
+ const other=sum(m.filter(x=>x.kind==='expense'));
+ const profit=gross-soldCost-fees-other;
+ const payout=sum(m.filter(x=>x.kind==='payout'));
+
+ $('sales').textContent=euro(gross);
+ $('costs').textContent=euro(soldCost+fees+other);
+ $('profit').textContent=euro(profit);
+ $('payout').textContent=euro(payout);
+ $('payoutTip').textContent=
+  'Margine del mese: '+euro(profit)+
+  '. Utili non ancora prelevati: '+euro(payoutAvailable())+
+  '. Questo valore è prima di imposte, resi e capitale necessario per nuovi acquisti.';
+
+ const purchases=a.filter(x=>x.kind==='buy'&&!x.soldSaleId);
+ const selected=$('purchase').value;
+ $('purchase').innerHTML=
+  '<option value="">Merce già posseduta / non registrata</option>'+
+  purchases.map(x=>
+   '<option value="'+esc(x.id)+'">'+
+   esc(x.description)+' · '+euro(x.amount)+'</option>'
+  ).join('');
+ if(purchases.some(x=>x.id===selected))$('purchase').value=selected;
+
+ $('recordList').innerHTML=a.length
+  ?a.slice().sort((x,y)=>y.date.localeCompare(x.date)).map(x=>
+   '<div class="row"><span><b>'+esc(labels[x.kind]||x.kind)+
+   '</b><small>'+esc(x.date)+' · '+esc(x.description||'—')+
+   '</small></span><span><b>'+euro(x.amount)+
+   '</b><br><button type="button" class="danger" data-delete="'+
+   esc(x.id)+'">Elimina</button></span></div>'
+  ).join('')
+  :'<p class="sub">Nessun movimento registrato.</p>';
+}
+
+function visibility(){
+ const k=$('kind').value;
+ $('purchaseBox').hidden=k!=='sale';
+ $('costBox').hidden=k!=='sale';
+ $('feesBox').hidden=k!=='sale';
+ $('destinationBox').hidden=k!=='payout';
+ $('titleBox').hidden=[
+  'safeIn','safeOut','coinsIn','coinsOut','reserveIn','reserveOut'
+ ].includes(k);
+ $('description').required=!$('titleBox').hidden;
+
+ const hints={
+  buy:'L’acquisto riduce Revolut. L’articolo resta in magazzino finché non viene venduto.',
+  sale:'Seleziona la merce acquistata o indica manualmente quanto l’avevi pagata.',
+  expense:'Spesa generale dell’attività: riduce sia il capitale sia l’utile.',
+  deposit:'Aumenta il capitale Revolut, ma non i ricavi Vinted.',
+  payout:'Un compenso al mese, prelevato dagli utili disponibili.',
+  safeIn:'Registra contanti ricevuti da altre fonti, evitando di ripetere i compensi Vinted.',
+  safeOut:'Contanti tolti dalla cassaforte.',
+  coinsIn:'Monete realmente inserite nel salvadanaio.',
+  coinsOut:'Monete tolte dal salvadanaio.',
+  reserveIn:'Risparmio lasciato su UniCredit, senza trasferimento bancario.',
+  reserveOut:'Sblocca risparmio precedentemente riservato.'
+ };
+ $('kindHint').textContent=hints[k]||'';
+}
+
+$('kind').addEventListener('change',visibility);
+$('month').addEventListener('change',render);
+$('purchase').addEventListener('change',()=>{
+ const x=rows.find(r=>r.id===$('purchase').value);
+ if(x)$('itemCost').value=x.amount;
+});
+document.querySelectorAll('[data-tab]').forEach(b=>{
+ b.addEventListener('click',()=>{
+  document.querySelectorAll('.panel').forEach(p=>{
+   p.hidden=p.id!==b.dataset.tab;
+  });
+  document.querySelectorAll('[data-tab]').forEach(t=>{
+   t.classList.toggle('on',t===b);
+  });
+ });
+});
+
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ $('loginMsg').textContent='';
+ try{
+  await signInWithEmailAndPassword(
+   auth,$('email').value.trim(),$('pass').value
+  );
+ }catch(err){
+  $('loginMsg').textContent='Accesso non riuscito: '+err.message;
+ }
+});
+$('out').addEventListener('click',()=>signOut(auth));
+
+function message(text,error=false){
+ $('message').className=error?'error':'ok';
+ $('message').textContent=text;
+}
+
+onAuthStateChanged(auth,u=>{
+ if(stopItems)stopItems();
+ if(stopProfile)stopProfile();
+ uid=u?.uid||null;
+ rows=[];
+ settings={...defaults};
+ $('login').hidden=!!uid;
+ $('app').hidden=!uid;
+ $('out').hidden=!uid;
+ if(!uid)return;
+
+ stopProfile=onSnapshot(doc(db,'lifeUsers',uid),snap=>{
+  settings={...defaults,...(snap.data()?.v55||{})};
+  $('openingDate').value=settings.openingDate;
+  $('openingRevolut').value=settings.revolut;
+  $('openingSafe').value=settings.safe;
+  $('openingCoins').value=settings.coins;
+  $('openingProfit').value=settings.profit;
+  render();
+ },err=>message('Impostazioni: '+err.message,true));
+
+ stopItems=onSnapshot(collection(db,'lifeUsers',uid,'items'),snap=>{
+  rows=snap.docs
+   .filter(d=>String(d.data().kind||'').startsWith('v55_'))
+   .map(d=>({
+    id:d.id,
+    ...d.data(),
+    kind:d.data().kind.slice(4)
+   }));
+  render();
+ },err=>message('Movimenti: '+err.message,true));
+});
+
+$('settingsForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!uid)return;
+ const d=$('openingDate').value;
+ const values=[
+  'openingRevolut','openingSafe','openingCoins','openingProfit'
+ ].map(id=>Number($(id).value));
+
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||
+    values.some(v=>!Number.isFinite(v)||v<0)){
+  return message('Controlla i saldi iniziali.',true);
+ }
+ try{
+  await setDoc(doc(db,'lifeUsers',uid),{
+   v55:{
+    openingDate:d,
+    revolut:values[0],
+    safe:values[1],
+    coins:values[2],
+    profit:values[3]
+   },
+   v55UpdatedAt:serverTimestamp()
+  },{merge:true});
+  message('Saldi iniziali salvati.');
+ }catch(err){message(err.message,true)}
+});
+
+$('moveForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!uid)return;
+
+ const k=$('kind').value;
+ const d=$('date').value;
+ const n=Number($('amount').value);
+ const desc=$('description').value.trim()||k;
+ const fees=Number($('fees').value)||0;
+
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||
+    d>today()||
+    d<(settings.openingDate||today())||
+    !Number.isFinite(n)||n<=0||n>1e7){
+  return message('Controlla data e importo.',true);
+ }
+ if(k==='sale'&&(fees<0||fees>=n)){
+  return message('Controlla i costi di vendita.',true);
+ }
+
+ const b=balances();
+
+ if(k==='payout'){
+  const already=rows.some(x=>
+   x.kind==='payout'&&x.date.slice(0,7)===d.slice(0,7)
+  );
+  if(already)return message(
+   'Hai già registrato il compenso del mese. Per correggerlo elimina quello precedente.',
+   true
+  );
+  if(n>payoutAvailable()+0.001)return message(
+   'Il compenso supera gli utili non ancora prelevati.',true
+  );
+ }
+
+ if(['buy','expense','payout'].includes(k)&&
+    n>b.revolut+0.001){
+  return message('Capitale Revolut insufficiente.',true);
+ }
+ if(
+  (k==='safeOut'&&n>b.safe+0.001)||
+  (k==='coinsOut'&&n>b.coins+0.001)||
+  (k==='reserveOut'&&n>b.reserve+0.001)
+ ){
+  return message('Importo superiore al disponibile.',true);
+ }
+
+ const purchase=rows.find(x=>
+  x.id===$('purchase').value&&x.kind==='buy'
+ );
+ if(k==='sale'&&purchase?.soldSaleId){
+  return message('Articolo già venduto.',true);
+ }
+
+ const itemCost=purchase
+  ?amount(purchase)
+  :Number($('itemCost').value)||0;
+
+ if(k==='sale'&&(itemCost<0||itemCost>1e7)){
+  return message('Costo articolo non valido.',true);
+ }
+
+ const data={
+  kind:'v55_'+k,
+  date:d,
+  amount:Math.round(n*100)/100,
+  description:desc,
+  createdAt:serverTimestamp()
+ };
+
+ if(k==='sale'){
+  Object.assign(data,{
+   itemCost:Math.round(itemCost*100)/100,
+   fees:Math.round(fees*100)/100,
+   linkedPurchaseId:purchase?.id||''
+  });
+ }
+ if(k==='payout'){
+  data.destination=$('destination').value;
+ }
+
+ $('saveMove').disabled=true;
+ try{
+  const batch=writeBatch(db);
+  const ref=doc(collection(db,'lifeUsers',uid,'items'));
+  batch.set(ref,data);
+
+  if(k==='sale'&&purchase){
+   batch.update(
+    doc(db,'lifeUsers',uid,'items',purchase.id),
+    {soldSaleId:ref.id}
+   );
+  }
+  await batch.commit();
+
+  $('moveForm').reset();
+  $('date').value=today();
+  visibility();
+  message('Movimento registrato.');
+ }catch(err){
+  message('Errore: '+err.message,true);
+ }finally{
+  $('saveMove').disabled=false;
+ }
+});
+
+$('recordList').addEventListener('click',async e=>{
+ const button=e.target.closest('[data-delete]');
+ if(!button||!uid)return;
+
+ const x=rows.find(r=>r.id===button.dataset.delete);
+ if(!x)return;
+ if(x.kind==='buy'&&x.soldSaleId){
+  return message('Elimina prima la vendita collegata.',true);
+ }
+ if(!confirm('Eliminare questo movimento da '+euro(x.amount)+'?')){
+  return;
+ }
+
+ try{
+  const batch=writeBatch(db);
+  batch.delete(doc(db,'lifeUsers',uid,'items',x.id));
+
+  if(x.kind==='sale'&&x.linkedPurchaseId){
+   batch.update(
+    doc(db,'lifeUsers',uid,'items',x.linkedPurchaseId),
+    {soldSaleId:''}
+   );
+  }
+
+  await batch.commit();
+  message('Movimento eliminato.');
+ }catch(err){
+  message('Errore eliminazione: '+err.message,true);
+ }
+});
+
+$('date').value=today();
+$('month').value=today().slice(0,7);
+visibility();
+</script>
+</body>
+</html>
