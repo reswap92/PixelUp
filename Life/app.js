@@ -1311,3 +1311,187 @@ setInterval(()=>{if(user){render();checkReminders();}},60*1000);
 // evitano che CSS/JS vecchi vengano riutilizzati dopo l'aggiornamento.
 if('serviceWorker' in navigator&&location.protocol==='https:')
   window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.warn));
+
+/* PIXELUP LIFE V5.4 — LE MIE ENTRATE IN HOME */
+(() => {
+  const oldRender = render;
+
+  render = function (...args) {
+    oldRender(...args);
+    if (!user) return;
+
+    const home = $('homeView');
+    const budget = home?.querySelector('.budget-card');
+    if (!budget) return;
+
+    let panel = $('lifeIncomeV54');
+
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.id = 'lifeIncomeV54';
+      panel.className = 'surface';
+      panel.style.cssText =
+        'padding:18px;margin:14px 0;border-radius:16px';
+
+      budget.insertAdjacentElement('afterend', panel);
+
+      panel.addEventListener('click', e => {
+        if (e.target.closest('[data-extra-add]')) {
+          openModal('income', null, 'work');
+        }
+
+        if (e.target.closest('[data-extra-details]')) {
+          goWork('salary');
+        }
+      });
+    }
+
+    const cycle = displayedCycle();
+    const summary = cycleBudget(cycle);
+    const today = iso(new Date());
+    const sources = new Map();
+
+    let pending = 0;
+    let waiting = 0;
+
+    for (const item of items) {
+      if (item.kind !== 'income') continue;
+
+      const amount = Math.max(0, Number(item.amount) || 0);
+
+      if (incomeWasReceived(item)) {
+        const date = incomeEffectiveDate(item);
+
+        if (!inCycle(date, cycle) || date > today) {
+          continue;
+        }
+
+        const name =
+          String(item.incomeSource || 'Altro').trim() || 'Altro';
+
+        sources.set(
+          name,
+          (sources.get(name) || 0) + amount
+        );
+      } else if (inCycle(item.date, cycle)) {
+        pending++;
+        waiting += amount;
+      }
+    }
+
+    const line = (name, amount) => `
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        padding:11px 0;
+        border-bottom:1px solid #e9e4d9
+      ">
+        <span>${esc(name)}</span>
+        <strong style="white-space:nowrap">
+          ${money(amount)}
+        </strong>
+      </div>
+    `;
+
+    const categories = [
+      'Vinted',
+      'PixelUp',
+      'Secondo lavoro',
+      'Altro'
+    ];
+
+    const sorted = [...sources].sort((a, b) => {
+      const x = categories.indexOf(a[0]);
+      const y = categories.indexOf(b[0]);
+
+      return (x < 0 ? 99 : x) -
+        (y < 0 ? 99 : y) ||
+        a[0].localeCompare(b[0], 'it');
+    });
+
+    panel.innerHTML = `
+      <div style="
+        font-size:11px;
+        letter-spacing:1px;
+        opacity:.7
+      ">
+        RIEPILOGO DEL CICLO
+      </div>
+
+      <h2 style="
+        font:normal 23px Georgia,serif;
+        margin:8px 0 12px
+      ">
+        Le mie entrate
+      </h2>
+
+      ${line('💼 Stipendio principale', summary.salary)}
+
+      ${
+        sorted.length
+          ? sorted.map(
+              ([name, amount]) =>
+                line('＋ ' + name, amount)
+            ).join('')
+          : `<p style="font-size:12px;opacity:.7">
+               Nessuna entrata extra incassata in questo ciclo.
+             </p>`
+      }
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        padding:14px;
+        background:#edf1e6;
+        border-radius:12px;
+        margin-top:12px
+      ">
+        <strong>Totale entrate</strong>
+        <strong>${money(summary.income)}</strong>
+      </div>
+
+      ${
+        pending
+          ? `<p style="font-size:12px">
+               Da confermare: ${pending} entrate
+               (${money(waiting)})
+             </p>`
+          : ''
+      }
+
+      <div style="
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+        margin-top:14px
+      ">
+        <button
+          type="button"
+          class="small-outline"
+          data-extra-add
+        >
+          ＋ Nuova entrata
+        </button>
+
+        <button
+          type="button"
+          class="small-outline"
+          data-extra-details
+        >
+          Vedi dettagli
+        </button>
+      </div>
+
+      <p style="
+        font-size:11px;
+        opacity:.65;
+        margin:12px 0 0
+      ">
+        Sono conteggiate solo le entrate
+        effettivamente incassate nel ciclo visualizzato.
+      </p>
+    `;
+  };
+})();
